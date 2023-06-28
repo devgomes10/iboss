@@ -50,7 +50,6 @@ class _MenuNavigationState extends State<MenuNavigation> {
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Pessoais'),
           BottomNavigationBarItem(icon: Icon(Icons.checklist), label: 'Metas'),
           BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: 'Painel'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Configurações'),
         ],
         onTap: (page) {
           pc.animateToPage(

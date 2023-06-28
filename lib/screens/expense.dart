@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 
-class Dashboard extends StatelessWidget {
-  const Dashboard({super.key});
+class Expense extends StatelessWidget {
+  const Expense ({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: const Text(
+          'Despesas',
+        ),
         backgroundColor: Colors.green,
-        title: Text('Painel'),
         actions: <Widget>[
           IconButton(
             onPressed: () {},
             icon: Icon(
-              Icons.settings,
+              Icons.info,
               color: Colors.black,
             ),
-          ),
+          )
         ],
       ),
       body: Center(
@@ -26,7 +28,7 @@ class Dashboard extends StatelessWidget {
             ElevatedButton(
               onPressed: () {},
               child: const Text(
-                'Empresa',
+                'Custos Fixos',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 20,
@@ -42,7 +44,7 @@ class Dashboard extends StatelessWidget {
             ElevatedButton(
               onPressed: () {},
               child: const Text(
-                'Pessoal',
+                'Custos Variáveis',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 20,
