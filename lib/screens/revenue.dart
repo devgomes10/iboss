@@ -1,62 +1,78 @@
 import 'package:flutter/material.dart';
+import '../repositories/card_revenue_now_repository.dart';
 
 class Revenue extends StatelessWidget {
   const Revenue({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Receitas',
+    final table = CardNowRepository.table;
+
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Receitas',
+          ),
+          backgroundColor: Colors.green,
+          actions: <Widget>[
+            IconButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  barrierDismissible: true,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Informação sobre a receita'),
+                      content: Text('Texto passando as informações'),
+                    );
+                  },
+                );
+              },
+              icon: Icon(
+                Icons.info,
+                color: Colors.black,
+              ),
+            )
+          ],
+          bottom: TabBar(
+            tabs: [
+              Tab(
+                text: 'Pagamento à Vista',
+              ),
+              Tab(
+                text: 'Pagamento a Prazo',
+              ),
+            ],
+            indicatorColor: Colors.white,
+          ),
         ),
-        backgroundColor: Colors.green,
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.info,
-              color: Colors.black,
-            ),
-          )
-        ],
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          child: Icon(Icons.add),
+        ),
+        body: TabBarView(
           children: [
-            ElevatedButton(
-              onPressed: () {},
-              child: const Text(
-                'Pagamento a Prazo',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                ),
-              ),
-              style: ButtonStyle(
-                alignment: Alignment.center,
-                minimumSize: MaterialStateProperty.all(
-                  const Size(350, 80),
-                ),
-              ),
+            ListView.separated(
+              itemBuilder: (
+                BuildContext context,
+                int card_venue_now,
+              ) {
+                return ListTile(
+                  leading: Text(table[card_venue_now].description),
+                  title: Text(
+                    table[card_venue_now].value.toString(),
+                  ),
+                  trailing: Text(
+                    table[card_venue_now].date.toString(),
+                  ),
+                );
+              },
+              separatorBuilder: (_, __) => Divider(),
+              itemCount: table.length,
             ),
-            ElevatedButton(
-              onPressed: () {},
-              child: const Text(
-                'Pagamento à Vista',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                ),
-              ),
-              style: ButtonStyle(
-                alignment: Alignment.center,
-                minimumSize: MaterialStateProperty.all(
-                  const Size(350, 80),
-                ),
-              ),
-            ),
+            Container(),
           ],
         ),
       ),
