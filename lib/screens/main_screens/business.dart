@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:iboss/screens/company_reservation.dart';
-import 'package:iboss/screens/expense.dart';
-import 'package:iboss/screens/plan_accounts.dart';
-import 'package:iboss/screens/revenue.dart';
-import 'package:iboss/screens/wage.dart';
-import 'package:iboss/screens/working_capital.dart';
+
+import '../business_screens/company_reservation.dart';
+import '../business_screens/expense.dart';
+import '../business_screens/plan_accounts.dart';
+import '../business_screens/revenue.dart';
+import '../business_screens/wage.dart';
+import '../business_screens/working_capital.dart';
+
 
 class Business extends StatelessWidget {
   const Business({super.key});
@@ -14,11 +16,11 @@ class Business extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text('Empresa'),
+        title: const Text('Empresa'),
         actions: <Widget>[
           IconButton(
             onPressed: () {},
-            icon: Icon(
+            icon: const Icon(
               Icons.settings,
               color: Colors.black,
             ),

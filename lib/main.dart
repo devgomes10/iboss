@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iboss/screens/menu_navigation.dart';
+import 'package:iboss/components/menu_navigation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
       ),
       home: const MenuNavigation(),

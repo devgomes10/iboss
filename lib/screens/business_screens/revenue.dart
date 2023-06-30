@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
-import '../repositories/card_revenue_now_repository.dart';
+import 'package:iboss/screens/forms/form_revenue.dart';
+import '../../repositories/card_revenue_now_repository.dart';
 
-class Revenue extends StatelessWidget {
+class Revenue extends StatefulWidget {
   const Revenue({super.key});
 
+  @override
+  State<Revenue> createState() => _RevenueState();
+}
+
+class _RevenueState extends State<Revenue> {
   @override
   Widget build(BuildContext context) {
     final table = CardNowRepository.table;
@@ -23,20 +29,20 @@ class Revenue extends StatelessWidget {
                   context: context,
                   barrierDismissible: true,
                   builder: (BuildContext context) {
-                    return AlertDialog(
+                    return const AlertDialog(
                       title: Text('Informação sobre a receita'),
                       content: Text('Texto passando as informações'),
                     );
                   },
                 );
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.info,
                 color: Colors.black,
               ),
             )
           ],
-          bottom: TabBar(
+          bottom: const TabBar(
             tabs: [
               Tab(
                 text: 'Pagamento à Vista',
@@ -49,33 +55,35 @@ class Revenue extends StatelessWidget {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(Icons.add),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const FormRevenue(),),);
+          },
+          child: const Icon(Icons.add),
         ),
         body: TabBarView(
-          children: [
-            ListView.separated(
-              itemBuilder: (
-                BuildContext context,
-                int card_venue_now,
-              ) {
-                return ListTile(
-                  leading: Text(table[card_venue_now].description),
-                  title: Text(
-                    table[card_venue_now].value.toString(),
-                  ),
-                  trailing: Text(
-                    table[card_venue_now].date.toString(),
-                  ),
-                );
-              },
-              separatorBuilder: (_, __) => Divider(),
-              itemCount: table.length,
-            ),
-            Container(),
-          ],
+            children: [
+              ListView.separated(
+                itemBuilder: (
+                  BuildContext context,
+                  int cardVenueNow,
+                ) {
+                  return ListTile(
+                    leading: Text(table[cardVenueNow].description),
+                    title: Text(
+                      table[cardVenueNow].value.toString(),
+                    ),
+                    trailing: Text(
+                      table[cardVenueNow].date.toString(),
+                    ),
+                  );
+                },
+                separatorBuilder: (_, __) => const Divider(),
+                itemCount: table.length,
+              ),
+              Container(),
+            ],
+          ),
         ),
-      ),
     );
   }
 }

@@ -8,11 +8,11 @@ class Goals extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text('Metas'),
+        title: const Text('Metas'),
         actions: <Widget>[
           IconButton(
             onPressed: () {},
-            icon: Icon(
+            icon: const Icon(
               Icons.settings,
               color: Colors.black,
             ),

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:iboss/screens/business.dart';
-import 'package:iboss/screens/dashboard.dart';
-import 'package:iboss/screens/goals.dart';
-import 'package:iboss/screens/personal.dart';
-import 'package:iboss/screens/settings.dart';
+import 'package:iboss/screens/main_screens/business.dart';
+
+import '../screens/main_screens/dashboard.dart';
+import '../screens/main_screens/goals.dart';
+import '../screens/main_screens/personal.dart';
+import '../screens/main_screens/settings.dart';
+
 
 class MenuNavigation extends StatefulWidget {
   const MenuNavigation({super.key});

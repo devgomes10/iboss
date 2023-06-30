@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
-class Wage extends StatelessWidget {
-  const Wage ({super.key});
+class CompanyReservation extends StatelessWidget {
+  const CompanyReservation ({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Pró-labore',
+          'Reserva de Emergência',
         ),
         backgroundColor: Colors.green,
         actions: <Widget>[
           IconButton(
             onPressed: () {},
-            icon: Icon(
+            icon: const Icon(
               Icons.info,
               color: Colors.black,
             ),
