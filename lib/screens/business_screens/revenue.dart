@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import '../../components/cards/revenue_card.dart';
+import 'package:iboss/data/revenue_inherited.dart';
+import '../forms/form_revenue.dart';
 
 class Revenue extends StatefulWidget {
-  const Revenue({super.key});
+  const Revenue({super.key,});
+
 
   @override
   State<Revenue> createState() => _RevenueState();
 }
 
 class _RevenueState extends State<Revenue> {
-  bool isSwitched = false;
 
   @override
   Widget build(BuildContext context) {
@@ -53,66 +54,11 @@ class _RevenueState extends State<Revenue> {
             indicatorColor: Colors.white,
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) => AlertDialog(
-                scrollable: true,
-                title: Text('Din Din'),
-                content: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Form(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        TextFormField(
-                          decoration: InputDecoration(hintText: 'Descrição'),
-                        ),
-                        TextFormField(
-                          decoration: InputDecoration(hintText: 'Valor'),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                actions: [
-                  Center(
-                    child: Column(
-                      children: [
-                        Text('Escolha a classificação'),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              TextButton(
-                                onPressed: () {},
-                                child: Text('À vista'),
-                              ),
-                              TextButton(
-                                onPressed: () {},
-                                child: Text('Fiado'),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-          child: const Icon(Icons.add),
-        ),
+        floatingActionButton: FormRevenue(),
         body: TabBarView(
           children: [
             ListView(
-              children: [
-                RevenueCard('corte de cabelo', 15.00, 20052023),
-                RevenueCard('corte de cabelo e barba', 20.00, 20052023),
-              ],
+              children: RevenueInhereted.of(context).nowList,
             ),
             ListView(
               children: [],

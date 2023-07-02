@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
-class RevenueCard extends StatelessWidget {
+class RevenueCard extends StatefulWidget {
   final String description;
   final double value;
-  final int date;
-  const RevenueCard(this.description, this.value, this.date, {super.key});
+  const RevenueCard(this.description, this.value,{super.key});
 
+  @override
+  State<RevenueCard> createState() => _RevenueCardState();
+}
 
+class _RevenueCardState extends State<RevenueCard> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -25,11 +28,10 @@ class RevenueCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(description),
-                Text('$value'),
+                Text(widget.description),
+                Text('${widget.value}'),
               ],
             ),
-            Text('$date'),
           ],
         ),
       ),

@@ -36,7 +36,7 @@ class Business extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const Revenue(),
+                    builder: (context) => Revenue(),
                   ),
                 );
               },

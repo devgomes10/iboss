@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:iboss/components/menu_navigation.dart';
+import 'package:iboss/data/revenue_inherited.dart';
+import 'package:iboss/screens/business_screens/revenue.dart';
 
 void main() {
   runApp(const MyApp());
@@ -8,7 +9,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
       ),
-      home: const MenuNavigation(),
+      home: RevenueInhereted(child: const Revenue()),
     );
   }
 }

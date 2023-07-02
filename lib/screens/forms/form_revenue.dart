@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../data/revenue_inherited.dart';
 
 class FormRevenue extends StatefulWidget {
   const FormRevenue({super.key});
@@ -9,103 +10,80 @@ class FormRevenue extends StatefulWidget {
 
 class _FormRevenueState extends State<FormRevenue> {
   TextEditingController descriptionController = TextEditingController();
-  TextEditingController ValueController = TextEditingController();
-
-  bool isSwitched = false;
-
-  final _formKey = GlobalKey<FormState>();
+  TextEditingController valueController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.green,
-          title: Text('Dinheiro entrando'),
-        ),
-        body: Center(
-          child: SingleChildScrollView(
-            child: Container(
-              height: 650,
-              width: 375,
-              decoration: BoxDecoration(
-                color: Colors.black12,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(width: 3),
-              ),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      controller: descriptionController,
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Descrição',
-                        fillColor: Colors.white70,
-                        filled: true,
+    return FloatingActionButton(
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            scrollable: true,
+            title: Text('Din Din'),
+            content: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Form(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      TextFormField(
+                        keyboardType: TextInputType.text,
+                        controller: descriptionController,
+                        decoration: InputDecoration(hintText: 'Descrição'),
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      controller: ValueController,
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Valor',
-                        fillColor: Colors.white70,
-                        filled: true,
+                      TextFormField(
+                        keyboardType: TextInputType.number,
+                        controller: valueController,
+                        decoration: InputDecoration(hintText: 'Valor'),
                       ),
-                    ),
+                    ],
                   ),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 80,
-                      width: 350,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 1),
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white70,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text('Pagamento a prazo?'),
-                          Switch(
-                              value: isSwitched,
-                              onChanged: (value) {
-                                setState(() {
-                                  isSwitched = value;
-                                });
-                              },),
-                        ],
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Salvando nova tarefa'),
-                          ),
-                        );
-                      }
-                    },
-                    child: Text('Adicionar'),
-                  ),
-                ],
+                ),
               ),
             ),
+            actions: [
+              Center(
+                child: Column(
+                  children: [
+                    Text('Escolha a classificação'),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              // print(descriptionController.text);
+                              // print(int.parse(valueController.text));
+                              RevenueInhereted.of(context).newRevenueCard(
+                                  descriptionController.text,
+                                  double.parse(valueController.text));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Criando uma nova receita'),
+                                ),
+                              );
+                              Navigator.pop(context);
+                            },
+                            child: Text('À vista'),
+                          ),
+                          TextButton(
+                            onPressed: () {},
+                            child: Text('Fiado'),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
           ),
-        ),
-      ),
+        );
+      },
+      child: const Icon(Icons.add),
     );
   }
 }
