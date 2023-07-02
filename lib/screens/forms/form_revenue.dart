@@ -83,7 +83,7 @@ class _FormRevenueState extends State<FormRevenue> {
                                 setState(() {
                                   isSwitched = value;
                                 });
-                              }),
+                              },),
                         ],
                       ),
                     ),

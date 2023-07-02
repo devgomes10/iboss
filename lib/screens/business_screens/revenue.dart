@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iboss/screens/forms/form_revenue.dart';
-import '../../repositories/card_revenue_now_repository.dart';
+import '../../components/cards/revenue_card.dart';
 
 class Revenue extends StatefulWidget {
   const Revenue({super.key});
@@ -10,10 +9,10 @@ class Revenue extends StatefulWidget {
 }
 
 class _RevenueState extends State<Revenue> {
+  bool isSwitched = false;
+
   @override
   Widget build(BuildContext context) {
-    final table = CardNowRepository.table;
-
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -56,34 +55,71 @@ class _RevenueState extends State<Revenue> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const FormRevenue(),),);
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                scrollable: true,
+                title: Text('Din Din'),
+                content: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Form(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        TextFormField(
+                          decoration: InputDecoration(hintText: 'Descrição'),
+                        ),
+                        TextFormField(
+                          decoration: InputDecoration(hintText: 'Valor'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                actions: [
+                  Center(
+                    child: Column(
+                      children: [
+                        Text('Escolha a classificação'),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              TextButton(
+                                onPressed: () {},
+                                child: Text('À vista'),
+                              ),
+                              TextButton(
+                                onPressed: () {},
+                                child: Text('Fiado'),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
           },
           child: const Icon(Icons.add),
         ),
         body: TabBarView(
-            children: [
-              ListView.separated(
-                itemBuilder: (
-                  BuildContext context,
-                  int cardVenueNow,
-                ) {
-                  return ListTile(
-                    leading: Text(table[cardVenueNow].description),
-                    title: Text(
-                      table[cardVenueNow].value.toString(),
-                    ),
-                    trailing: Text(
-                      table[cardVenueNow].date.toString(),
-                    ),
-                  );
-                },
-                separatorBuilder: (_, __) => const Divider(),
-                itemCount: table.length,
-              ),
-              Container(),
-            ],
-          ),
+          children: [
+            ListView(
+              children: [
+                RevenueCard('corte de cabelo', 15.00, 20052023),
+                RevenueCard('corte de cabelo e barba', 20.00, 20052023),
+              ],
+            ),
+            ListView(
+              children: [],
+            ),
+          ],
         ),
+      ),
     );
   }
 }
