@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../data/revenue_inherited.dart';
+import 'package:iboss/controllers/revenue_controller.dart';
 
 class FormRevenue extends StatefulWidget {
   const FormRevenue({super.key});
@@ -56,10 +56,7 @@ class _FormRevenueState extends State<FormRevenue> {
                           TextButton(
                             onPressed: () {
                               // print(descriptionController.text);
-                              // print(int.parse(valueController.text));
-                              RevenueInhereted.of(context).newRevenueCard(
-                                  descriptionController.text,
-                                  double.parse(valueController.text));
+                              // print(double.parse(valueController.text));
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text('Criando uma nova receita'),

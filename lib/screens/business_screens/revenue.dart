@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:iboss/data/revenue_inherited.dart';
+import 'package:iboss/models/card_revenue_now.dart';
 import '../forms/form_revenue.dart';
+import 'package:iboss/controllers/revenue_controller.dart';
 
 class Revenue extends StatefulWidget {
-  const Revenue({super.key,});
 
+  Revenue({super.key});
 
   @override
   State<Revenue> createState() => _RevenueState();
 }
 
 class _RevenueState extends State<Revenue> {
+  var controller = RevenueController();
 
   @override
   Widget build(BuildContext context) {
@@ -54,12 +56,10 @@ class _RevenueState extends State<Revenue> {
             indicatorColor: Colors.white,
           ),
         ),
-        floatingActionButton: FormRevenue(),
+        floatingActionButton: const FormRevenue(),
         body: TabBarView(
           children: [
-            ListView(
-              children: RevenueInhereted.of(context).nowList,
-            ),
+            cardsNow(),
             ListView(
               children: [],
             ),
@@ -67,5 +67,29 @@ class _RevenueState extends State<Revenue> {
         ),
       ),
     );
+  }
+
+  Widget cardsNow() {
+    final quantidade = controller.revenueNow.length;
+
+    return quantidade == 0
+        ? Container(
+            child: Center(
+              child: Text('Nenhuma receita ainda!'),
+            ),
+          )
+        : ListView.separated(
+            itemCount: controller.revenueNow.length,
+            itemBuilder: (BuildContext context, int i) {
+              final viewList = controller.revenueNow;
+              return ListTile(
+                leading: Text(viewList[i].description),
+                trailing: Text(viewList[i].value.toString()),
+              );
+            },
+            separatorBuilder: (_, __) => Divider(),
+            padding: EdgeInsets.all(16),
+
+          );
   }
 }

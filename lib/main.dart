@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iboss/data/revenue_inherited.dart';
-import 'package:iboss/screens/business_screens/revenue.dart';
+import 'package:iboss/components/menu_navigation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
       ),
-      home: RevenueInhereted(child: const Revenue()),
+      home: const MenuNavigation(),
     );
   }
 }
