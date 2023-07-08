@@ -1,4 +1,4 @@
-import 'package:iboss/models/card_revenue_now.dart';
+import 'package:iboss/models/cash_payment.dart';
 
 class CardNowRepository {
   static List<CardNow> table = [
