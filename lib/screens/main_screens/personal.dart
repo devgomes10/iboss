@@ -25,6 +25,12 @@ class Personal extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () {},
+              style: ButtonStyle(
+                alignment: Alignment.center,
+                minimumSize: MaterialStateProperty.all(
+                  const Size(350, 80),
+                ),
+              ),
               child: const Text(
                 'Entradas',
                 style: TextStyle(
@@ -32,15 +38,15 @@ class Personal extends StatelessWidget {
                   fontSize: 20,
                 ),
               ),
+            ),
+            ElevatedButton(
+              onPressed: () {},
               style: ButtonStyle(
                 alignment: Alignment.center,
                 minimumSize: MaterialStateProperty.all(
                   const Size(350, 80),
                 ),
               ),
-            ),
-            ElevatedButton(
-              onPressed: () {},
               child: const Text(
                 'Saídas',
                 style: TextStyle(
@@ -48,42 +54,20 @@ class Personal extends StatelessWidget {
                   fontSize: 20,
                 ),
               ),
+            ),
+            ElevatedButton(
+              onPressed: () {},
               style: ButtonStyle(
                 alignment: Alignment.center,
                 minimumSize: MaterialStateProperty.all(
                   const Size(350, 80),
                 ),
               ),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: const Text(
-                'Plano de Contas',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                ),
-              ),
-              style: ButtonStyle(
-                alignment: Alignment.center,
-                minimumSize: MaterialStateProperty.all(
-                  const Size(350, 80),
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {},
               child: const Text(
                 'Reserva de Emergência',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 20,
-                ),
-              ),
-              style: ButtonStyle(
-                alignment: Alignment.center,
-                minimumSize: MaterialStateProperty.all(
-                  const Size(350, 80),
                 ),
               ),
             ),

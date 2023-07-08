@@ -31,23 +31,24 @@ class _MenuNavigationState extends State<MenuNavigation> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
         controller: pc,
-        children: [
+        onPageChanged: setCurrentPage,
+        children: const [
           Business(),
           Personal(),
           Goals(),
           Dashboard(),
           Settings(),
         ],
-        onPageChanged: setCurrentPage,
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: currentPage,
-        items: [
+        items: const [
           BottomNavigationBarItem(icon: Icon(Icons.business), label: 'Empresa'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Pessoais'),
           BottomNavigationBarItem(icon: Icon(Icons.checklist), label: 'Metas'),
@@ -56,7 +57,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
         onTap: (page) {
           pc.animateToPage(
               page,
-              duration: Duration(milliseconds: 400),
+              duration: const Duration(milliseconds: 400),
               curve: Curves.ease);
         },
       ),

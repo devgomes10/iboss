@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:iboss/models/card_revenue_now.dart';
 import '../business_screens/company_reservation.dart';
 import '../business_screens/expense.dart';
-import '../business_screens/plan_accounts.dart';
 import '../business_screens/revenue.dart';
 import '../business_screens/wage.dart';
-import '../business_screens/working_capital.dart';
 
 
 class Business extends StatelessWidget {
@@ -40,17 +37,17 @@ class Business extends StatelessWidget {
                   ),
                 );
               },
+              style: ButtonStyle(
+                alignment: Alignment.center,
+                minimumSize: MaterialStateProperty.all(
+                  const Size(350, 80),
+                ),
+              ),
               child: const Text(
                 'Receitas',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 20,
-                ),
-              ),
-              style: ButtonStyle(
-                alignment: Alignment.center,
-                minimumSize: MaterialStateProperty.all(
-                  const Size(350, 80),
                 ),
               ),
             ),
@@ -63,63 +60,17 @@ class Business extends StatelessWidget {
                   ),
                 );
               },
+              style: ButtonStyle(
+                alignment: Alignment.center,
+                minimumSize: MaterialStateProperty.all(
+                  const Size(350, 80),
+                ),
+              ),
               child: const Text(
                 'Despesas',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 20,
-                ),
-              ),
-              style: ButtonStyle(
-                alignment: Alignment.center,
-                minimumSize: MaterialStateProperty.all(
-                  const Size(350, 80),
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const PlanAccounts(),
-                  ),
-                );
-              },
-              child: const Text(
-                'Plano de Contas',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                ),
-              ),
-              style: ButtonStyle(
-                alignment: Alignment.center,
-                minimumSize: MaterialStateProperty.all(
-                  const Size(350, 80),
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const WorkingCapital(),
-                  ),
-                );
-              },
-              child: const Text(
-                'Capital de Giro',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                ),
-              ),
-              style: ButtonStyle(
-                alignment: Alignment.center,
-                minimumSize: MaterialStateProperty.all(
-                  const Size(350, 80),
                 ),
               ),
             ),
@@ -132,17 +83,17 @@ class Business extends StatelessWidget {
                   ),
                 );
               },
+              style: ButtonStyle(
+                alignment: Alignment.center,
+                minimumSize: MaterialStateProperty.all(
+                  const Size(350, 80),
+                ),
+              ),
               child: const Text(
                 'Pró-labore',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 20,
-                ),
-              ),
-              style: ButtonStyle(
-                alignment: Alignment.center,
-                minimumSize: MaterialStateProperty.all(
-                  const Size(350, 80),
                 ),
               ),
             ),
@@ -155,17 +106,17 @@ class Business extends StatelessWidget {
                   ),
                 );
               },
+              style: ButtonStyle(
+                alignment: Alignment.center,
+                minimumSize: MaterialStateProperty.all(
+                  const Size(350, 80),
+                ),
+              ),
               child: const Text(
                 'Reserva para Emergências',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 20,
-                ),
-              ),
-              style: ButtonStyle(
-                alignment: Alignment.center,
-                minimumSize: MaterialStateProperty.all(
-                  const Size(350, 80),
                 ),
               ),
             ),

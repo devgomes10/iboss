@@ -1,11 +1,9 @@
-class CashPayment {
+class CompanyGoals {
   String description;
-  double value;
   String date;
 
-  CashPayment ({
+  CompanyGoals ({
     required this.description,
-    required this.value,
     required this.date,
   });
 }

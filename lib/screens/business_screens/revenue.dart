@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:iboss/models/card_revenue_now.dart';
-import '../forms/form_revenue.dart';
-import 'package:iboss/controllers/revenue_controller.dart';
+import 'package:iboss/models/cash_payment.dart';
+import 'package:iboss/repositories/cash_payment_repository.dart';
+import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class Revenue extends StatefulWidget {
-
-  Revenue({super.key});
+  const Revenue({super.key});
 
   @override
   State<Revenue> createState() => _RevenueState();
 }
 
 class _RevenueState extends State<Revenue> {
-  var controller = RevenueController();
+  final date = DateFormat('dd/MM/yyyy').format(DateTime.now());
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController valueController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -56,10 +58,111 @@ class _RevenueState extends State<Revenue> {
             indicatorColor: Colors.white,
           ),
         ),
-        floatingActionButton: const FormRevenue(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                scrollable: true,
+                title: const Text('Din Din'),
+                content: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Form(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          TextFormField(
+                            keyboardType: TextInputType.text,
+                            controller: descriptionController,
+                            decoration:
+                                const InputDecoration(hintText: 'Descrição'),
+                          ),
+                          TextFormField(
+                            keyboardType: TextInputType.number,
+                            controller: valueController,
+                            decoration:
+                                const InputDecoration(hintText: 'Valor'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                actions: [
+                  Center(
+                    child: Column(
+                      children: [
+                        const Text('Escolha a classificação'),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Consumer<CashPaymentRepository>(
+                                builder: (BuildContext context,
+                                    CashPaymentRepository inCash,
+                                    Widget? widget) {
+                                  return TextButton(
+                                    onPressed: () async {
+                                      inCash.add(CashPayment(
+                                          description:
+                                              descriptionController.text,
+                                          value: double.parse(
+                                              valueController.text),
+                                          date: date));
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content:
+                                              Text('Criando uma nova receita'),
+                                        ),
+                                      );
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text('À vista'),
+                                  );
+                                },
+                              ),
+                              TextButton(
+                                onPressed: () {},
+                                child: const Text('Fiado'),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+          child: const Icon(Icons.add),
+        ),
         body: TabBarView(
           children: [
-            cardsNow(),
+            Consumer<CashPaymentRepository>(builder: (BuildContext context,
+                CashPaymentRepository inCash, Widget? widget) {
+              return ListView.separated(
+                  itemBuilder: (BuildContext context, int i) {
+                    return Dismissible(
+                      key: UniqueKey(),
+                      background: Container(color: Colors.red),
+                      child: ListTile(
+                        leading: Text(inCash.cashPayments[i].description),
+                        title: Text(inCash.cashPayments[i].value.toString()),
+                        trailing: Text(inCash.cashPayments[i].date.toString()),
+                      ),
+                      onDismissed: (direction) {
+                        inCash.remove(i);
+                      },
+                    );
+                  },
+                  separatorBuilder: (_, __) => const Divider(),
+                  padding: const EdgeInsets.all(16),
+                  itemCount: inCash.cashPayments.length);
+            }),
             ListView(
               children: [],
             ),
@@ -67,29 +170,5 @@ class _RevenueState extends State<Revenue> {
         ),
       ),
     );
-  }
-
-  Widget cardsNow() {
-    final quantidade = controller.revenueNow.length;
-
-    return quantidade == 0
-        ? Container(
-            child: Center(
-              child: Text('Nenhuma receita ainda!'),
-            ),
-          )
-        : ListView.separated(
-            itemCount: controller.revenueNow.length,
-            itemBuilder: (BuildContext context, int i) {
-              final viewList = controller.revenueNow;
-              return ListTile(
-                leading: Text(viewList[i].description),
-                trailing: Text(viewList[i].value.toString()),
-              );
-            },
-            separatorBuilder: (_, __) => Divider(),
-            padding: EdgeInsets.all(16),
-
-          );
   }
 }
