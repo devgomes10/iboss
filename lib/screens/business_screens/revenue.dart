@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iboss/models/cash_payment.dart';
+import 'package:iboss/models/deferred_payment.dart';
 import 'package:iboss/repositories/cash_payment_repository.dart';
+import 'package:iboss/repositories/deferred_payment_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -115,7 +117,7 @@ class _RevenueState extends State<Revenue> {
                                           .showSnackBar(
                                         const SnackBar(
                                           content:
-                                              Text('Criando uma nova receita'),
+                                              Text('Criando um pagamento à vista'),
                                         ),
                                       );
                                       Navigator.pop(context);
@@ -124,9 +126,30 @@ class _RevenueState extends State<Revenue> {
                                   );
                                 },
                               ),
-                              TextButton(
-                                onPressed: () {},
-                                child: const Text('Fiado'),
+                              Consumer<DeferredPaymentRepository>(
+                                builder: (BuildContext context,
+                                    DeferredPaymentRepository inTerm,
+                                    Widget? widget) {
+                                  return TextButton(
+                                    onPressed: () async {
+                                      inTerm.add(DeferredPayment(
+                                          description:
+                                          descriptionController.text,
+                                          value: double.parse(
+                                              valueController.text),
+                                          date: date));
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content:
+                                          Text('Criando um pagamento a prazo'),
+                                        ),
+                                      );
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text('Fiado'),
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -163,9 +186,27 @@ class _RevenueState extends State<Revenue> {
                   padding: const EdgeInsets.all(16),
                   itemCount: inCash.cashPayments.length);
             }),
-            ListView(
-              children: [],
-            ),
+            Consumer<DeferredPaymentRepository>(builder: (BuildContext context,
+                DeferredPaymentRepository inTerm, Widget? widget) {
+              return ListView.separated(
+                  itemBuilder: (BuildContext context, int i) {
+                    return Dismissible(
+                      key: UniqueKey(),
+                      background: Container(color: Colors.red),
+                      child: ListTile(
+                        leading: Text(inTerm.deferredPayments[i].description),
+                        title: Text(inTerm.deferredPayments[i].value.toString()),
+                        trailing: Text(inTerm.deferredPayments[i].date.toString()),
+                      ),
+                      onDismissed: (direction) {
+                        inTerm.remove(i);
+                      },
+                    );
+                  },
+                  separatorBuilder: (_, __) => const Divider(),
+                  padding: const EdgeInsets.all(16),
+                  itemCount: inTerm.deferredPayments.length);
+            }),
           ],
         ),
       ),

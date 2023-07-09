@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../business_screens/company_reservation.dart';
+import 'package:iboss/screens/business_screens/categories.dart';
 import '../business_screens/expense.dart';
 import '../business_screens/revenue.dart';
 import '../business_screens/wage.dart';
@@ -67,7 +67,7 @@ class Business extends StatelessWidget {
                 ),
               ),
               child: const Text(
-                'Despesas',
+                'Gastos',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 20,
@@ -97,29 +97,29 @@ class Business extends StatelessWidget {
                 ),
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const CompanyReservation(),
-                  ),
-                );
-              },
-              style: ButtonStyle(
-                alignment: Alignment.center,
-                minimumSize: MaterialStateProperty.all(
-                  const Size(350, 80),
-                ),
-              ),
-              child: const Text(
-                'Reserva para Emergências',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                ),
-              ),
-            ),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //         builder: (context) => const Categories(),
+            //       ),
+            //     );
+            //   },
+            //   style: ButtonStyle(
+            //     alignment: Alignment.center,
+            //     minimumSize: MaterialStateProperty.all(
+            //       const Size(350, 80),
+            //     ),
+            //   ),
+            //   child: const Text(
+            //     'Categorias de Gastos',
+            //     style: TextStyle(
+            //       color: Colors.black,
+            //       fontSize: 20,
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),
