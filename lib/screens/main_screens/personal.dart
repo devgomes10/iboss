@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iboss/screens/personal_screens/entry.dart';
 
 class Personal extends StatelessWidget {
   const Personal({super.key});
@@ -24,7 +25,14 @@ class Personal extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Entry(),
+                  ),
+                );
+              },
               style: ButtonStyle(
                 alignment: Alignment.center,
                 minimumSize: MaterialStateProperty.all(
