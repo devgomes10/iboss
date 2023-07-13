@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:iboss/models/fixed_expense.dart';
-import 'package:iboss/models/variable_expense.dart';
-import 'package:iboss/repositories/fixed_expense_repository.dart';
-import 'package:iboss/repositories/variable_expense_repository.dart';
+import 'package:iboss/models/fixed_outflow.dart';
+import 'package:iboss/models/variable_outflow.dart';
+import 'package:iboss/repositories/fixed_outflow_repository.dart';
+import 'package:iboss/repositories/variable_outflow_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-class Expense extends StatefulWidget {
-  const Expense({super.key});
+class Outflow extends StatefulWidget {
+  const Outflow({super.key});
 
   @override
-  State<Expense> createState() => _ExpenseState();
+  State<Outflow> createState() => _OutflowState();
 }
 
-class _ExpenseState extends State<Expense> {
+class _OutflowState extends State<Outflow> {
+
+  final date = DateFormat('dd/MM/yyyy').format(DateTime.now());
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController valueController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    final currentMonth = DateFormat.MMM().format(DateTime.now());
-    final date = DateFormat('dd/MM/yyyy').format(DateTime.now());
-    TextEditingController descriptionController = TextEditingController();
-    TextEditingController valueController = TextEditingController();
-
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-            'Gastos - $currentMonth'
+          title: const Text(
+            'Saídas',
           ),
           backgroundColor: Colors.green,
           actions: <Widget>[
@@ -37,7 +37,7 @@ class _ExpenseState extends State<Expense> {
                   barrierDismissible: true,
                   builder: (BuildContext context) {
                     return const AlertDialog(
-                      title: Text('Informação sobre os Gastos'),
+                      title: Text('Informação sobre a saída'),
                       content: Text('Texto passando as informações'),
                     );
                   },
@@ -52,10 +52,10 @@ class _ExpenseState extends State<Expense> {
           bottom: const TabBar(
             tabs: [
               Tab(
-                text: 'Gastos Fixos',
+                text: 'Saídas fixas',
               ),
               Tab(
-                text: 'Gastos Variáveis',
+                text: 'Saídas variáveis',
               ),
             ],
             indicatorColor: Colors.white,
@@ -102,13 +102,13 @@ class _ExpenseState extends State<Expense> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Consumer<FixedExpenseRepository>(
+                              Consumer<FixedOutflowRepository>(
                                 builder: (BuildContext context,
-                                    FixedExpenseRepository fixed,
+                                    FixedOutflowRepository fixed,
                                     Widget? widget) {
                                   return TextButton(
                                     onPressed: () async {
-                                      fixed.add(FixedExpense(
+                                      fixed.add(FixedOutflow(
                                           description:
                                           descriptionController.text,
                                           value: double.parse(
@@ -117,23 +117,23 @@ class _ExpenseState extends State<Expense> {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         const SnackBar(
-                                          content:
-                                          Text('Criando um gasto fixo'),
+                                          content: Text(
+                                              'Criando uma saída fixa'),
                                         ),
                                       );
                                       Navigator.pop(context);
                                     },
-                                    child: const Text('Fixo'),
+                                    child: const Text('Fixa'),
                                   );
                                 },
                               ),
-                              Consumer<VariableExpenseRepository>(
+                              Consumer<VariableOutflowRepository>(
                                 builder: (BuildContext context,
-                                    VariableExpenseRepository variable,
+                                    VariableOutflowRepository variable,
                                     Widget? widget) {
                                   return TextButton(
                                     onPressed: () async {
-                                      variable.add(VariableExpense(
+                                      variable.add(VariableOutflow(
                                           description:
                                           descriptionController.text,
                                           value: double.parse(
@@ -142,8 +142,8 @@ class _ExpenseState extends State<Expense> {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         const SnackBar(
-                                          content:
-                                          Text('Criando um gasto variável'),
+                                          content: Text(
+                                              'Criando uma saída variável'),
                                         ),
                                       );
                                       Navigator.pop(context);
@@ -166,17 +166,17 @@ class _ExpenseState extends State<Expense> {
         ),
         body: TabBarView(
           children: [
-            Consumer<FixedExpenseRepository>(builder: (BuildContext context,
-                FixedExpenseRepository fixed, Widget? widget) {
+            Consumer<FixedOutflowRepository>(builder: (BuildContext context,
+                FixedOutflowRepository fixed, Widget? widget) {
               return ListView.separated(
                   itemBuilder: (BuildContext context, int i) {
                     return Dismissible(
                       key: UniqueKey(),
                       background: Container(color: Colors.red),
                       child: ListTile(
-                        leading: Text(fixed.fixedExpenses[i].description),
-                        title: Text(fixed.fixedExpenses[i].value.toString()),
-                        trailing: Text(fixed.fixedExpenses[i].date.toString()),
+                        leading: Text(fixed.fixedOutflow[i].description),
+                        title: Text(fixed.fixedOutflow[i].value.toString()),
+                        trailing: Text(fixed.fixedOutflow[i].date.toString()),
                       ),
                       onDismissed: (direction) {
                         fixed.remove(i);
@@ -185,29 +185,33 @@ class _ExpenseState extends State<Expense> {
                   },
                   separatorBuilder: (_, __) => const Divider(),
                   padding: const EdgeInsets.all(16),
-                  itemCount: fixed.fixedExpenses.length);
+                  itemCount: fixed.fixedOutflow.length);
             }),
-            Consumer<VariableExpenseRepository>(builder: (BuildContext context,
-                VariableExpenseRepository variable, Widget? widget) {
-              return ListView.separated(
-                  itemBuilder: (BuildContext context, int i) {
-                    return Dismissible(
-                      key: UniqueKey(),
-                      background: Container(color: Colors.red),
-                      child: ListTile(
-                        leading: Text(variable.variableExpenses[i].description),
-                        title: Text(variable.variableExpenses[i].value.toString()),
-                        trailing: Text(variable.variableExpenses[i].date.toString()),
-                      ),
-                      onDismissed: (direction) {
-                        variable.remove(i);
-                      },
-                    );
-                  },
-                  separatorBuilder: (_, __) => const Divider(),
-                  padding: const EdgeInsets.all(16),
-                  itemCount: variable.variableExpenses.length);
-            }),
+            Consumer<VariableOutflowRepository>(
+              builder: (BuildContext context, VariableOutflowRepository variable,
+                  Widget? widget) {
+                return ListView.separated(
+                    itemBuilder: (BuildContext context, int i) {
+                      return Dismissible(
+                        key: UniqueKey(),
+                        background: Container(color: Colors.red),
+                        child: ListTile(
+                          leading: Text(variable.variableOutflow[i].description),
+                          title:
+                          Text(variable.variableOutflow[i].value.toString()),
+                          trailing:
+                          Text(variable.variableOutflow[i].date.toString()),
+                        ),
+                        onDismissed: (direction) {
+                          variable.remove(i);
+                        },
+                      );
+                    },
+                    separatorBuilder: (_, __) => const Divider(),
+                    padding: const EdgeInsets.all(16),
+                    itemCount: variable.variableOutflow.length);
+              },
+            ),
           ],
         ),
       ),

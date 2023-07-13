@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iboss/models/company_goals.dart';
+import 'package:iboss/models/personal_goals.dart';
 import 'package:iboss/repositories/company_goals_repository.dart';
+import 'package:iboss/repositories/personal_goals_repository.dart';
 import 'package:provider/provider.dart';
 
 class Goals extends StatefulWidget {
@@ -11,6 +13,7 @@ class Goals extends StatefulWidget {
 }
 
 class _GoalsState extends State<Goals> {
+
   TextEditingController descriptionController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   bool checked = false;
@@ -128,10 +131,26 @@ class _GoalsState extends State<Goals> {
                                   child: const Text('Empresa'),
                                 );
                               }),
-                              TextButton(
-                                onPressed: () {},
-                                child: const Text('Pessoal'),
-                              ),
+                              Consumer<PersonalGoalsRepository>(builder:
+                                  (BuildContext context,
+                                  PersonalGoalsRepository forPersonal,
+                                  Widget? widget) {
+                                return TextButton(
+                                  onPressed: () {
+                                    forPersonal.add(PersonalGoals(
+                                        description: descriptionController.text,
+                                        date:
+                                        "${selectedDate.day} / ${selectedDate.month} / ${selectedDate.year}"));
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Criando uma nova Meta'),
+                                      ),
+                                    );
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Pessoal'),
+                                );
+                              }),
                             ],
                           ),
                         )
@@ -171,9 +190,27 @@ class _GoalsState extends State<Goals> {
                   separatorBuilder: (_, __) => const Divider(),
                   itemCount: forCompany.companyGoals.length);
             }),
-            ListView(
-              children: [],
-            ),
+            Consumer<PersonalGoalsRepository>(builder: (BuildContext context, PersonalGoalsRepository forPersonal, Widget? widget) {
+              return ListView.separated(itemBuilder: (BuildContext context, int i) {
+                return Dismissible(
+                    key: UniqueKey(),
+                    background: Container(color: Colors.red),
+                    child: CheckboxListTile(
+                      title: Text(forPersonal.personalGoals[i].description),
+                      secondary:
+                      Text(forPersonal.personalGoals[i].date.toString()),
+                      controlAffinity: ListTileControlAffinity.leading,
+                      value: checked,
+                      onChanged: (value) {
+                        setState(() {
+                          checked = value!;
+                        });
+                      },
+                      activeColor: Colors.green,
+                      checkColor: Colors.black,
+                    ));
+              }, separatorBuilder: (_, __) => const Divider(), itemCount: forPersonal.personalGoals.length);
+            })
           ],
         ),
       ),

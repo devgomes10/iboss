@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iboss/screens/personal_screens/entry.dart';
+import '../personal_screens/outflow.dart';
 
 class Personal extends StatelessWidget {
   const Personal({super.key});
@@ -22,7 +23,7 @@ class Personal extends StatelessWidget {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             ElevatedButton(
               onPressed: () {
@@ -48,7 +49,14 @@ class Personal extends StatelessWidget {
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Outflow(),
+                  ),
+                );
+              },
               style: ButtonStyle(
                 alignment: Alignment.center,
                 minimumSize: MaterialStateProperty.all(
@@ -63,20 +71,30 @@ class Personal extends StatelessWidget {
                 ),
               ),
             ),
-            ElevatedButton(
-              onPressed: () {},
-              style: ButtonStyle(
-                alignment: Alignment.center,
-                minimumSize: MaterialStateProperty.all(
-                  const Size(350, 80),
-                ),
-              ),
-              child: const Text(
-                'Reserva de Emergência',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                ),
+            Container(
+              width: 350,
+              height: 100,
+              decoration: BoxDecoration(border: Border.all(width: 3)),
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Container(
+                    child: Text('Reserva de dinheiro'),
+                  ),
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('2.000'),
+                      Container(
+                        width: 100,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [Icon(Icons.info), Icon(Icons.edit)],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ],
