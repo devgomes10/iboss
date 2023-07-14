@@ -3,14 +3,17 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:iboss/components/menu_navigation.dart';
 import 'package:iboss/repositories/cash_payment_repository.dart';
 import 'package:iboss/repositories/company_goals_repository.dart';
+import 'package:iboss/repositories/company_reservation_repository.dart';
 import 'package:iboss/repositories/deferred_payment_repository.dart';
 import 'package:iboss/repositories/fixed_entry_repository.dart';
 import 'package:iboss/repositories/fixed_expense_repository.dart';
 import 'package:iboss/repositories/fixed_outflow_repository.dart';
 import 'package:iboss/repositories/personal_goals_repository.dart';
+import 'package:iboss/repositories/personal_reservation_repository.dart';
 import 'package:iboss/repositories/variable_entry_repository.dart';
 import 'package:iboss/repositories/variable_expense_repository.dart';
 import 'package:iboss/repositories/variable_outflow_repository.dart';
+import 'package:iboss/repositories/wage_repository.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -25,6 +28,9 @@ void main() {
     ChangeNotifierProvider(create: (context) => FixedOutflowRepository(fixedOutflow: [])),
     ChangeNotifierProvider(create: (context) => VariableOutflowRepository(variableOutflow: [])),
     ChangeNotifierProvider(create: (context) => PersonalGoalsRepository(personalGoals: [])),
+    ChangeNotifierProvider(create: (context) => WageRepository(salary: [])),
+    ChangeNotifierProvider(create: (context) => PersonalReservationRepository(personalReservations: [])),
+    ChangeNotifierProvider(create: (context) => CompanyReservationRepository(companyReservations: [])),
   ], child: const MyApp()));
 }
 

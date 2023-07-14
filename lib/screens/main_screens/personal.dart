@@ -89,7 +89,7 @@ class Personal extends StatelessWidget {
                         width: 100,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [Icon(Icons.info), Icon(Icons.edit)],
+                          children: [IconButton(onPressed: () {}, icon: Icon(Icons.info)), IconButton(onPressed: () {}, icon: Icon(Icons.edit))],
                         ),
                       ),
                     ],
