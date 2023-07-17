@@ -170,17 +170,11 @@ class _OutflowState extends State<Outflow> {
                 FixedOutflowRepository fixed, Widget? widget) {
               return ListView.separated(
                   itemBuilder: (BuildContext context, int i) {
-                    return Dismissible(
-                      key: UniqueKey(),
-                      background: Container(color: Colors.red),
-                      child: ListTile(
-                        leading: Text(fixed.fixedOutflow[i].description),
-                        title: Text(fixed.fixedOutflow[i].value.toString()),
-                        trailing: Text(fixed.fixedOutflow[i].date.toString()),
-                      ),
-                      onDismissed: (direction) {
-                        fixed.remove(i);
-                      },
+                    return ListTile(
+                      leading: Icon(Icons.trending_down),
+                      title:  Text(fixed.fixedOutflow[i].description),
+                      subtitle: Text(fixed.fixedOutflow[i].date.toString()),
+                      trailing: Text(fixed.fixedOutflow[i].value.toString()),
                     );
                   },
                   separatorBuilder: (_, __) => const Divider(),
@@ -192,19 +186,11 @@ class _OutflowState extends State<Outflow> {
                   Widget? widget) {
                 return ListView.separated(
                     itemBuilder: (BuildContext context, int i) {
-                      return Dismissible(
-                        key: UniqueKey(),
-                        background: Container(color: Colors.red),
-                        child: ListTile(
-                          leading: Text(variable.variableOutflow[i].description),
-                          title:
-                          Text(variable.variableOutflow[i].value.toString()),
-                          trailing:
-                          Text(variable.variableOutflow[i].date.toString()),
-                        ),
-                        onDismissed: (direction) {
-                          variable.remove(i);
-                        },
+                      return ListTile(
+                        leading: Icon(Icons.trending_down),
+                        title: Text(variable.variableOutflow[i].description),
+                        subtitle:  Text(variable.variableOutflow[i].date.toString()),
+                      trailing: Text(variable.variableOutflow[i].value.toString()),
                       );
                     },
                     separatorBuilder: (_, __) => const Divider(),

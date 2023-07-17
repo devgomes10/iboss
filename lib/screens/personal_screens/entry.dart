@@ -169,17 +169,11 @@ class _EntryState extends State<Entry> {
                 FixedEntryRepository fixed, Widget? widget) {
               return ListView.separated(
                   itemBuilder: (BuildContext context, int i) {
-                    return Dismissible(
-                      key: UniqueKey(),
-                      background: Container(color: Colors.red),
-                      child: ListTile(
-                        leading: Text(fixed.fixedEntry[i].description),
-                        title: Text(fixed.fixedEntry[i].value.toString()),
-                        trailing: Text(fixed.fixedEntry[i].date.toString()),
-                      ),
-                      onDismissed: (direction) {
-                        fixed.remove(i);
-                      },
+                    return ListTile(
+                      leading: Icon(Icons.trending_up),
+                      title: Text(fixed.fixedEntry[i].description),
+                      subtitle: Text(fixed.fixedEntry[i].date.toString()),
+                      trailing: Text(fixed.fixedEntry[i].value.toString()),
                     );
                   },
                   separatorBuilder: (_, __) => const Divider(),
@@ -191,19 +185,11 @@ class _EntryState extends State<Entry> {
                   Widget? widget) {
                 return ListView.separated(
                     itemBuilder: (BuildContext context, int i) {
-                      return Dismissible(
-                        key: UniqueKey(),
-                        background: Container(color: Colors.red),
-                        child: ListTile(
-                          leading: Text(variable.variableEntry[i].description),
-                          title:
-                              Text(variable.variableEntry[i].value.toString()),
-                          trailing:
-                              Text(variable.variableEntry[i].date.toString()),
-                        ),
-                        onDismissed: (direction) {
-                          variable.remove(i);
-                        },
+                      return ListTile(
+                        leading: Icon(Icons.trending_up),
+                        title: Text(variable.variableEntry[i].description),
+                        subtitle: Text(variable.variableEntry[i].date.toString()),
+                        trailing: Text(variable.variableEntry[i].value.toString()),
                       );
                     },
                     separatorBuilder: (_, __) => const Divider(),

@@ -170,17 +170,11 @@ class _ExpenseState extends State<Expense> {
                 FixedExpenseRepository fixed, Widget? widget) {
               return ListView.separated(
                   itemBuilder: (BuildContext context, int i) {
-                    return Dismissible(
-                      key: UniqueKey(),
-                      background: Container(color: Colors.red),
-                      child: ListTile(
-                        leading: Text(fixed.fixedExpenses[i].description),
-                        title: Text(fixed.fixedExpenses[i].value.toString()),
-                        trailing: Text(fixed.fixedExpenses[i].date.toString()),
-                      ),
-                      onDismissed: (direction) {
-                        fixed.remove(i);
-                      },
+                    return ListTile(
+                      leading: Icon(Icons.trending_down),
+                      title: Text(fixed.fixedExpenses[i].description),
+                      subtitle: Text(fixed.fixedExpenses[i].date.toString()),
+                      trailing: Text(fixed.fixedExpenses[i].value.toString()),
                     );
                   },
                   separatorBuilder: (_, __) => const Divider(),
@@ -191,17 +185,11 @@ class _ExpenseState extends State<Expense> {
                 VariableExpenseRepository variable, Widget? widget) {
               return ListView.separated(
                   itemBuilder: (BuildContext context, int i) {
-                    return Dismissible(
-                      key: UniqueKey(),
-                      background: Container(color: Colors.red),
-                      child: ListTile(
-                        leading: Text(variable.variableExpenses[i].description),
-                        title: Text(variable.variableExpenses[i].value.toString()),
-                        trailing: Text(variable.variableExpenses[i].date.toString()),
-                      ),
-                      onDismissed: (direction) {
-                        variable.remove(i);
-                      },
+                    return ListTile(
+                      leading: Icon(Icons.trending_down),
+                      title: Text(variable.variableExpenses[i].description),
+                      subtitle: Text(variable.variableExpenses[i].date.toString()),
+                      trailing: Text(variable.variableExpenses[i].value.toString()),
                     );
                   },
                   separatorBuilder: (_, __) => const Divider(),

@@ -14,51 +14,80 @@ class Revenue extends StatefulWidget {
 }
 
 class _RevenueState extends State<Revenue> {
+  List<CashPayment> cashSelected = [];
   final currentMonth = DateFormat.MMM('pt_BR').format(DateTime.now());
   final date = DateFormat('dd/MM/yyyy', 'pt_BR').format(DateTime.now());
   TextEditingController descriptionController = TextEditingController();
   TextEditingController valueController = TextEditingController();
+  NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
+
+  dynamicAppBar() {
+    if (cashSelected.isEmpty) {
+      return AppBar(
+        title: Text('Receitas - $currentMonth'),
+        backgroundColor: Colors.green,
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                barrierDismissible: true,
+                builder: (BuildContext context) {
+                  return const AlertDialog(
+                    title: Text('Informação sobre a receita'),
+                    content: Text('Texto passando as informações'),
+                  );
+                },
+              );
+            },
+            icon: const Icon(
+              Icons.info,
+              color: Colors.black,
+            ),
+          )
+        ],
+        bottom: const TabBar(
+          tabs: [
+            Tab(
+              text: 'Pagamento à Vista',
+            ),
+            Tab(
+              text: 'Pagamento a Prazo',
+            ),
+          ],
+          indicatorColor: Colors.white,
+        ),
+      );
+    } else {
+      return AppBar(
+        backgroundColor: Colors.green,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            setState(() {
+              cashSelected = [];
+            });
+          },
+        ),
+        title: Text('${cashSelected.length} selecionados'),
+        actions: [
+          Consumer<CashPaymentRepository>(builder: (BuildContext context,
+              CashPaymentRepository inCash, Widget? widget) {
+            return IconButton(onPressed: () {
+                inCash.remove(cashSelected.length);
+            }, icon: Icon(Icons.delete));
+          })
+        ],
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text('Receitas - $currentMonth'),
-          backgroundColor: Colors.green,
-          actions: <Widget>[
-            IconButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  barrierDismissible: true,
-                  builder: (BuildContext context) {
-                    return const AlertDialog(
-                      title: Text('Informação sobre a receita'),
-                      content: Text('Texto passando as informações'),
-                    );
-                  },
-                );
-              },
-              icon: const Icon(
-                Icons.info,
-                color: Colors.black,
-              ),
-            )
-          ],
-          bottom: const TabBar(
-            tabs: [
-              Tab(
-                text: 'Pagamento à Vista',
-              ),
-              Tab(
-                text: 'Pagamento a Prazo',
-              ),
-            ],
-            indicatorColor: Colors.white,
-          ),
-        ),
+        appBar: dynamicAppBar(),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             showDialog(
@@ -168,40 +197,24 @@ class _RevenueState extends State<Revenue> {
                 CashPaymentRepository inCash, Widget? widget) {
               return ListView.separated(
                   itemBuilder: (BuildContext context, int i) {
-                    return Dismissible(
-                      key: UniqueKey(),
-                      background: Container(color: Colors.red),
-                      child: ListTile(
-                        leading: Text(inCash.cashPayments[i].value.toString()),
-                        title: Text(inCash.cashPayments[i].description),
-                        trailing: Text(inCash.cashPayments[i].date.toString()),
-                        onLongPress: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) => AlertDialog(
-                              scrollable: true,
-                              title: const Text('Din Din'),
-                              content: SingleChildScrollView(
-                                child: Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Column(
-                                    children: [
-                                      TextButton(
-                                          onPressed: () {},
-                                          child: Text('Excluir')),
-                                      TextButton(
-                                          onPressed: () {},
-                                          child: Text('Paga')),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
+                    return ListTile(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
                       ),
-                      onDismissed: (direction) {
-                        inCash.remove(i);
+                      leading: (cashSelected.contains(inCash.cashPayments[i]))
+                          ? CircleAvatar(child: Icon(Icons.check))
+                          : Icon(Icons.trending_up),
+                      title: Text(inCash.cashPayments[i].description),
+                      subtitle: Text(inCash.cashPayments[i].date.toString()),
+                      trailing: Text(real.format(inCash.cashPayments[i].value)),
+                      selected: cashSelected.contains(inCash.cashPayments[i]),
+                      selectedTileColor: Colors.indigo[50],
+                      onLongPress: () {
+                        setState(() {
+                          (cashSelected.contains(inCash.cashPayments[i]))
+                              ? cashSelected.remove(inCash.cashPayments[i])
+                              : cashSelected.add(inCash.cashPayments[i]);
+                        });
                       },
                     );
                   },
@@ -213,19 +226,13 @@ class _RevenueState extends State<Revenue> {
                 DeferredPaymentRepository inTerm, Widget? widget) {
               return ListView.separated(
                   itemBuilder: (BuildContext context, int i) {
-                    return Dismissible(
-                      key: UniqueKey(),
-                      background: Container(color: Colors.red),
-                      child: ListTile(
-                        leading:
-                            Text(inTerm.deferredPayments[i].value.toString()),
-                        title: Text(inTerm.deferredPayments[i].description),
-                        trailing:
-                            Text(inTerm.deferredPayments[i].date.toString()),
-                      ),
-                      onDismissed: (direction) {
-                        inTerm.remove(i);
-                      },
+                    return ListTile(
+                      leading: Icon(Icons.trending_up),
+                      title: Text(inTerm.deferredPayments[i].description),
+                      subtitle:
+                          Text(inTerm.deferredPayments[i].date.toString()),
+                      trailing:
+                          Text(real.format(inTerm.deferredPayments[i].value)),
                     );
                   },
                   separatorBuilder: (_, __) => const Divider(),
