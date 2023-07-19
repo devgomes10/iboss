@@ -16,10 +16,12 @@ class Expense extends StatefulWidget {
 class _ExpenseState extends State<Expense> {
   @override
   Widget build(BuildContext context) {
+    
     final currentMonth = DateFormat.MMM().format(DateTime.now());
     final date = DateFormat('dd/MM/yyyy').format(DateTime.now());
     TextEditingController descriptionController = TextEditingController();
     TextEditingController valueController = TextEditingController();
+    NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
 
     return DefaultTabController(
       length: 2,
@@ -173,8 +175,44 @@ class _ExpenseState extends State<Expense> {
                     return ListTile(
                       leading: Icon(Icons.trending_down),
                       title: Text(fixed.fixedExpenses[i].description),
-                      subtitle: Text(fixed.fixedExpenses[i].date.toString()),
-                      trailing: Text(fixed.fixedExpenses[i].value.toString()),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(real.format(fixed.fixedExpenses[i].value)),
+                          Text(fixed.fixedExpenses[i].date.toString()),
+                        ],
+                      ),
+                      trailing: IconButton(onPressed: () {
+                        showDialog(context: context, builder: (BuildContext context) => AlertDialog(
+                            scrollable: true,
+                            title: const Text('Deseja mesmo exluir este gasto?'),
+                            content: SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    TextButton(onPressed: () {
+                                      Navigator.pop(context);
+                                    }, child: Text('Não')),
+                                    TextButton(onPressed: () {
+                                      fixed.remove(i);
+                                      Navigator.pop(context);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                              'Gasto deletado'),
+                                        ),
+                                      );
+                                    }, child: Text('Exluir')),
+                                  ],
+                                ),
+                              ),
+                            )
+                        ),);
+                      }, icon: Icon(Icons.delete),),
                     );
                   },
                   separatorBuilder: (_, __) => const Divider(),
@@ -188,8 +226,44 @@ class _ExpenseState extends State<Expense> {
                     return ListTile(
                       leading: Icon(Icons.trending_down),
                       title: Text(variable.variableExpenses[i].description),
-                      subtitle: Text(variable.variableExpenses[i].date.toString()),
-                      trailing: Text(variable.variableExpenses[i].value.toString()),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(real.format(variable.variableExpenses[i].value)),
+                          Text(variable.variableExpenses[i].date.toString()),
+                        ],
+                      ),
+                      trailing: IconButton(onPressed: () {
+                        showDialog(context: context, builder: (BuildContext context) => AlertDialog(
+                            scrollable: true,
+                            title: const Text('Deseja mesmo exluir este gasto?'),
+                            content: SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    TextButton(onPressed: () {
+                                      Navigator.pop(context);
+                                    }, child: Text('Não')),
+                                    TextButton(onPressed: () {
+                                      variable.remove(i);
+                                      Navigator.pop(context);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                              'Gasto deletado'),
+                                        ),
+                                      );
+                                    }, child: Text('Exluir')),
+                                  ],
+                                ),
+                              ),
+                            )
+                        ),);
+                      }, icon: Icon(Icons.delete)),
                     );
                   },
                   separatorBuilder: (_, __) => const Divider(),
