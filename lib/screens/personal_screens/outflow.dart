@@ -18,6 +18,7 @@ class _OutflowState extends State<Outflow> {
   final date = DateFormat('dd/MM/yyyy').format(DateTime.now());
   TextEditingController descriptionController = TextEditingController();
   TextEditingController valueController = TextEditingController();
+  NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
 
   @override
   Widget build(BuildContext context) {
@@ -173,8 +174,44 @@ class _OutflowState extends State<Outflow> {
                     return ListTile(
                       leading: Icon(Icons.trending_down),
                       title:  Text(fixed.fixedOutflow[i].description),
-                      subtitle: Text(fixed.fixedOutflow[i].date.toString()),
-                      trailing: Text(fixed.fixedOutflow[i].value.toString()),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(real.format(fixed.fixedOutflow[i].value)),
+                          Text(fixed.fixedOutflow[i].date.toString()),
+                        ],
+                      ),
+                      trailing: IconButton(onPressed: () {
+                        showDialog(context: context, builder: (BuildContext context) => AlertDialog(
+                            scrollable: true,
+                            title: const Text('Deseja mesmo exluir esta saída?'),
+                            content: SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    TextButton(onPressed: () {
+                                      Navigator.pop(context);
+                                    }, child: const Text('Não')),
+                                    TextButton(onPressed: () {
+                                      fixed.remove(i);
+                                      Navigator.pop(context);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                              'saída deletada'),
+                                        ),
+                                      );
+                                    }, child: const Text('Exluir')),
+                                  ],
+                                ),
+                              ),
+                            )
+                        ),);
+                      }, icon: const Icon(Icons.delete)),
                     );
                   },
                   separatorBuilder: (_, __) => const Divider(),
@@ -189,8 +226,44 @@ class _OutflowState extends State<Outflow> {
                       return ListTile(
                         leading: Icon(Icons.trending_down),
                         title: Text(variable.variableOutflow[i].description),
-                        subtitle:  Text(variable.variableOutflow[i].date.toString()),
-                      trailing: Text(variable.variableOutflow[i].value.toString()),
+                        subtitle:  Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(real.format(variable.variableOutflow[i].value)),
+                            Text(variable.variableOutflow[i].date.toString()),
+                          ],
+                        ),
+                      trailing: IconButton(onPressed: () {
+                        showDialog(context: context, builder: (BuildContext context) => AlertDialog(
+                            scrollable: true,
+                            title: const Text('Deseja mesmo exluir esta saída?'),
+                            content: SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    TextButton(onPressed: () {
+                                      Navigator.pop(context);
+                                    }, child: const Text('Não')),
+                                    TextButton(onPressed: () {
+                                      variable.remove(i);
+                                      Navigator.pop(context);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                              'saída deletada'),
+                                        ),
+                                      );
+                                    }, child: const Text('Exluir')),
+                                  ],
+                                ),
+                              ),
+                            )
+                        ),);
+                      }, icon: const Icon(Icons.delete)),
                       );
                     },
                     separatorBuilder: (_, __) => const Divider(),

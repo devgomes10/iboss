@@ -17,6 +17,7 @@ class _EntryState extends State<Entry> {
   final date = DateFormat('dd/MM/yyyy').format(DateTime.now());
   TextEditingController descriptionController = TextEditingController();
   TextEditingController valueController = TextEditingController();
+  NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
 
   @override
   Widget build(BuildContext context) {
@@ -170,10 +171,46 @@ class _EntryState extends State<Entry> {
               return ListView.separated(
                   itemBuilder: (BuildContext context, int i) {
                     return ListTile(
-                      leading: Icon(Icons.trending_up),
+                      leading: const Icon(Icons.trending_up),
                       title: Text(fixed.fixedEntry[i].description),
-                      subtitle: Text(fixed.fixedEntry[i].date.toString()),
-                      trailing: Text(fixed.fixedEntry[i].value.toString()),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(real.format(fixed.fixedEntry[i].value)),
+                          Text(fixed.fixedEntry[i].date.toString()),
+                        ],
+                      ),
+                      trailing: IconButton(onPressed: () {
+                        showDialog(context: context, builder: (BuildContext context) => AlertDialog(
+                            scrollable: true,
+                            title: const Text('Deseja mesmo exluir esta entrada?'),
+                            content: SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    TextButton(onPressed: () {
+                                      Navigator.pop(context);
+                                    }, child: const Text('Não')),
+                                    TextButton(onPressed: () {
+                                      fixed.remove(i);
+                                      Navigator.pop(context);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                              'Entrada deletada'),
+                                        ),
+                                      );
+                                    }, child: const Text('Exluir')),
+                                  ],
+                                ),
+                              ),
+                            )
+                        ),);
+                      }, icon: const Icon(Icons.delete)),
                     );
                   },
                   separatorBuilder: (_, __) => const Divider(),
@@ -186,10 +223,46 @@ class _EntryState extends State<Entry> {
                 return ListView.separated(
                     itemBuilder: (BuildContext context, int i) {
                       return ListTile(
-                        leading: Icon(Icons.trending_up),
+                        leading: const Icon(Icons.trending_up),
                         title: Text(variable.variableEntry[i].description),
-                        subtitle: Text(variable.variableEntry[i].date.toString()),
-                        trailing: Text(variable.variableEntry[i].value.toString()),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(real.format(variable.variableEntry[i].value)),
+                            Text(variable.variableEntry[i].date.toString()),
+                          ],
+                        ),
+                        trailing: IconButton(onPressed: () {
+                          showDialog(context: context, builder: (BuildContext context) => AlertDialog(
+                              scrollable: true,
+                              title: const Text('Deseja mesmo exluir esta entrada?'),
+                              content: SingleChildScrollView(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      TextButton(onPressed: () {
+                                        Navigator.pop(context);
+                                      }, child: const Text('Não')),
+                                      TextButton(onPressed: () {
+                                        variable.remove(i);
+                                        Navigator.pop(context);
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                                'Entrada deletada'),
+                                          ),
+                                        );
+                                      }, child: const Text('Exluir')),
+                                    ],
+                                  ),
+                                ),
+                              )
+                          ),);
+                        }, icon: const Icon(Icons.delete)),
                       );
                     },
                     separatorBuilder: (_, __) => const Divider(),

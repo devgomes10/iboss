@@ -20,6 +20,11 @@ class _RevenueState extends State<Revenue> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController valueController = TextEditingController();
   NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
+  List<DeferredPayment> wasPaid = [];
+
+  void add(DeferredPayment paid) {
+    wasPaid.add(paid);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -257,6 +262,14 @@ class _RevenueState extends State<Revenue> {
                                                   Navigator.pop(context);
                                                 }, child: Text('Não')),
                                                 TextButton(onPressed: () {
+                                                  inTerm.remove(i);
+                                                  wasPaid.add(DeferredPayment(
+                                                      description:
+                                                      descriptionController.text,
+                                                      value: double.parse(
+                                                          valueController.text),
+                                                      date: date));
+                                                  print(wasPaid.length);
                                                   Navigator.pop(context);
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(
