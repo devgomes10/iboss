@@ -30,7 +30,7 @@ void main() {
     ChangeNotifierProvider(create: (context) => PersonalGoalsRepository(personalGoals: [])),
     ChangeNotifierProvider(create: (context) => WageRepository(salary: [])),
     ChangeNotifierProvider(create: (context) => PersonalReservationRepository(personalReservations: [])),
-    ChangeNotifierProvider(create: (context) => CompanyReservationRepository(companyReservations: [])),
+    ChangeNotifierProvider(create: (context) => CompanyReservationRepository()),
   ], child: const MyApp()));
 }
 

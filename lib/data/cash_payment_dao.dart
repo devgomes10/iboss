@@ -1,9 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:iboss/models/cash_payment.dart';
 import 'package:sqflite/sqflite.dart';
-import 'database.dart';
+import 'db.dart';
 
-class CashPaymentDao {
+class CashPaymentDao extends ChangeNotifier {
+  late Database db;
+
   static String cashPayment = 'CREATE TABLE $_cashPaymentName ('
+      'id INTEGER PRIMARY KEY AUTOINCREMENT, '
       '$_description TEXT, '
       '$_value REAL, '
       '$_date NUMERIC)';
@@ -15,9 +19,9 @@ class CashPaymentDao {
 
   save(CashPayment inCash) async {
     print('iniciando o save: ');
-    final Database database = await getDatabase();
+    db = await DB.instance.database;
     Map<String, dynamic> paymentMap = toMap(inCash);
-    return await database.insert(_cashPaymentName, paymentMap);
+    return await db.insert(_cashPaymentName, paymentMap);
   }
 
   Map<String, dynamic> toMap(CashPayment inCash) {
@@ -32,9 +36,9 @@ class CashPaymentDao {
 
   Future<List<CashPayment>> findAll() async {
     print('acessando findAll: ');
-    final Database database = await getDatabase();
+    db = await DB.instance.database;
     final List<Map<String, dynamic>> result =
-        await database.query(_cashPaymentName);
+        await db.query(_cashPaymentName);
     print('Procurando dados no banco de dados... encontrado: $result');
     return toList(result);
   }
@@ -55,8 +59,8 @@ class CashPaymentDao {
 
   Future<List<CashPayment>> find(String entryDescription) async {
     print('acessando find: ');
-    final Database database = await getDatabase();
-    final List<Map<String, dynamic>> result = await database.query(
+    db = await DB.instance.database;
+    final List<Map<String, dynamic>> result = await db.query(
       _cashPaymentName,
       where: '$_description = ?',
       whereArgs: [entryDescription],
@@ -67,8 +71,8 @@ class CashPaymentDao {
 
   delete(String entryDescription) async {
     print('deletando tarefa: $entryDescription');
-    final Database database = await getDatabase();
-    return database.delete(
+    db = await DB.instance.database;
+    return db.delete(
       _cashPaymentName,
       where: '$_description',
       whereArgs: [entryDescription],

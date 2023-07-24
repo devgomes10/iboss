@@ -9,61 +9,60 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-
   final currentMonth = DateFormat.MMM().format(DateTime.now());
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text('Painel - $currentMonth'),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.settings,
-              color: Colors.black,
-            ),
+    return DefaultTabController (
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Receitas - $currentMonth'),
+          backgroundColor: Colors.green,
+          actions: <Widget>[
+            IconButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  barrierDismissible: true,
+                  builder: (BuildContext context) {
+                    return const AlertDialog(
+                      title: Text('Informação sobre a receita'),
+                      content: Text('Texto passando as informações'),
+                    );
+                  },
+                );
+              },
+              icon: const Icon(
+                Icons.info,
+                color: Colors.black,
+              ),
+            )
+          ],
+          bottom: const TabBar(
+            tabs: [
+              Tab(
+                text: 'Empresa',
+              ),
+              Tab(
+                text: 'Pessoal',
+              ),
+            ],
+            indicatorColor: Colors.white,
           ),
-        ],
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        ),
+        body: TabBarView(
           children: [
-            ElevatedButton(
-              onPressed: () {},
-              style: ButtonStyle(
-                alignment: Alignment.center,
-                minimumSize: MaterialStateProperty.all(
-                  const Size(350, 80),
-                ),
-              ),
-              child: const Text(
-                'Empresa',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                ),
+            SingleChildScrollView(
+              padding: EdgeInsets.only(top: 48),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+
+                ],
               ),
             ),
-            ElevatedButton(
-              onPressed: () {},
-              child: const Text(
-                'Pessoal',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                ),
-              ),
-              style: ButtonStyle(
-                alignment: Alignment.center,
-                minimumSize: MaterialStateProperty.all(
-                  const Size(350, 80),
-                ),
-              ),
-            ),
+            Container(),
           ],
         ),
       ),
