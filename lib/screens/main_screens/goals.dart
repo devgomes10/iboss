@@ -169,10 +169,7 @@ class _GoalsState extends State<Goals> {
                 CompanyGoalsRepository forCompany, Widget? widget) {
               return ListView.separated(
                   itemBuilder: (BuildContext context, int i) {
-                    return Dismissible(
-                        key: UniqueKey(),
-                        background: Container(color: Colors.red),
-                        child: CheckboxListTile(
+                    return CheckboxListTile(
                           title: Text(forCompany.companyGoals[i].description),
                           secondary:
                               Text(forCompany.companyGoals[i].date.toString()),
@@ -185,17 +182,14 @@ class _GoalsState extends State<Goals> {
                           },
                           activeColor: Colors.green,
                           checkColor: Colors.black,
-                        ));
+                        );
                   },
                   separatorBuilder: (_, __) => const Divider(),
                   itemCount: forCompany.companyGoals.length);
             }),
             Consumer<PersonalGoalsRepository>(builder: (BuildContext context, PersonalGoalsRepository forPersonal, Widget? widget) {
               return ListView.separated(itemBuilder: (BuildContext context, int i) {
-                return Dismissible(
-                    key: UniqueKey(),
-                    background: Container(color: Colors.red),
-                    child: CheckboxListTile(
+                return CheckboxListTile(
                       title: Text(forPersonal.personalGoals[i].description),
                       secondary:
                       Text(forPersonal.personalGoals[i].date.toString()),
@@ -208,7 +202,7 @@ class _GoalsState extends State<Goals> {
                       },
                       activeColor: Colors.green,
                       checkColor: Colors.black,
-                    ));
+                    );
               }, separatorBuilder: (_, __) => const Divider(), itemCount: forPersonal.personalGoals.length);
             })
           ],

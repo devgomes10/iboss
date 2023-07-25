@@ -171,61 +171,60 @@ class _RevenueState extends State<Revenue> {
         ),
         body: TabBarView(
           children: [
-            
-            // Consumer<CashPaymentRepository>(builder: (BuildContext context,
-            //     CashPaymentRepository inCash, Widget? widget) {
-            //   return ListView.separated(
-            //       itemBuilder: (BuildContext context, int i) {
-            //         return ListTile(
-            //             shape: RoundedRectangleBorder(
-            //               borderRadius: BorderRadius.all(Radius.circular(12)),
-            //             ),
-            //             leading: Icon(Icons.trending_up),
-            //             title: Text(inCash.cashPayments[i].description),
-            //             subtitle: Column(
-            //               crossAxisAlignment: CrossAxisAlignment.start,
-            //               children: [
-            //                 Text(real.format(inCash.cashPayments[i].value)),
-            //                 Text(inCash.cashPayments[i].date.toString()),
-            //               ],
-            //             ),
-            //             trailing: IconButton(
-            //                 onPressed: () {
-            //                   showDialog(context: context, builder: (BuildContext context) => AlertDialog(
-            //                       scrollable: true,
-            //                       title: const Text('Deseja mesmo exluir este pagamento?'),
-            //                       content: SingleChildScrollView(
-            //                         child: Padding(
-            //                           padding: const EdgeInsets.all(8.0),
-            //                           child: Row(
-            //                             crossAxisAlignment: CrossAxisAlignment.center,
-            //                             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //                             children: [
-            //                               TextButton(onPressed: () {
-            //                                 Navigator.pop(context);
-            //                               }, child: Text('Não')),
-            //                               TextButton(onPressed: () {
-            //                                 inCash.remove(i);
-            //                                 Navigator.pop(context);
-            //                                 ScaffoldMessenger.of(context)
-            //                                     .showSnackBar(
-            //                                   const SnackBar(
-            //                                     content: Text(
-            //                                         'Pagamento deletado'),
-            //                                   ),
-            //                                 );
-            //                               }, child: Text('Exluir')),
-            //                             ],
-            //                           ),
-            //                         ),
-            //                       )
-            //                   ),);
-            //                 }, icon: Icon(Icons.delete)));
-            //       },
-            //       separatorBuilder: (_, __) => const Divider(),
-            //       padding: const EdgeInsets.all(22),
-            //       itemCount: inCash.cashPayments.length);
-            // }),
+            Consumer<CashPaymentRepository>(builder: (BuildContext context,
+                CashPaymentRepository inCash, Widget? widget) {
+              return ListView.separated(
+                  itemBuilder: (BuildContext context, int i) {
+                    return ListTile(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(12)),
+                        ),
+                        leading: Icon(Icons.trending_up),
+                        title: Text(inCash.cashPayments[i].description),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(real.format(inCash.cashPayments[i].value)),
+                            Text(inCash.cashPayments[i].date.toString()),
+                          ],
+                        ),
+                        trailing: IconButton(
+                            onPressed: () {
+                              showDialog(context: context, builder: (BuildContext context) => AlertDialog(
+                                  scrollable: true,
+                                  title: const Text('Deseja mesmo exluir este pagamento?'),
+                                  content: SingleChildScrollView(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        children: [
+                                          TextButton(onPressed: () {
+                                            Navigator.pop(context);
+                                          }, child: Text('Não')),
+                                          TextButton(onPressed: () {
+                                            inCash.remove(i);
+                                            Navigator.pop(context);
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                    'Pagamento deletado'),
+                                              ),
+                                            );
+                                          }, child: Text('Exluir')),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                              ),);
+                            }, icon: Icon(Icons.delete)));
+                  },
+                  separatorBuilder: (_, __) => const Divider(),
+                  padding: const EdgeInsets.all(22),
+                  itemCount: inCash.cashPayments.length);
+            }),
             Consumer<DeferredPaymentRepository>(builder: (BuildContext context,
                 DeferredPaymentRepository inTerm, Widget? widget) {
               return ListView.separated(
