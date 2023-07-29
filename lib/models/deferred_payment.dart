@@ -1,7 +1,7 @@
 class DeferredPayment {
   String description;
   double value;
-  String date;
+  DateTime date;
 
   DeferredPayment ({
     required this.description,

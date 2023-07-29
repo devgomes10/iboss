@@ -1,7 +1,7 @@
 class CashPayment {
   String description;
   double value;
-  String date;
+  DateTime date;
 
   CashPayment ({
     required this.description,

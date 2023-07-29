@@ -14,6 +14,7 @@ import 'package:iboss/repositories/variable_entry_repository.dart';
 import 'package:iboss/repositories/variable_expense_repository.dart';
 import 'package:iboss/repositories/variable_outflow_repository.dart';
 import 'package:iboss/repositories/wage_repository.dart';
+import 'package:iboss/screens/business_screens/revenue.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -52,7 +53,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
       ),
-      home: const MenuNavigation(),
+      home: const Revenue(),
     );
   }
 }
