@@ -17,6 +17,7 @@ import 'package:iboss/repositories/wage_repository.dart';
 import 'package:iboss/screens/business_screens/revenue.dart';
 import 'package:provider/provider.dart';
 
+
 void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => CashPaymentRepository(cashPayments: [])),

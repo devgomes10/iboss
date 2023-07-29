@@ -20,12 +20,16 @@ dependencies:
     sdk: flutter
   sqflite: ^2.2.8+4
   fl_chart: ^0.63.0
-
+  flutter_native_splash: ^2.2.9
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_native_splash:
+  color: "#00BF63"
+  image: assets/splash.png
 
   flutter_lints: ^2.0.0
 
