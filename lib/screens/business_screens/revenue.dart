@@ -213,7 +213,7 @@ class _RevenueState extends State<Revenue> {
                                                     'Pagamento deletado'),
                                               ),
                                             );
-                                          }, child: Text('Exluir')),
+                                          }, child: Text('Exlsssuir')),
                                         ],
                                       ),
                                     ),
