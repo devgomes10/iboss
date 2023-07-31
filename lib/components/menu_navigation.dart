@@ -41,7 +41,6 @@ class _MenuNavigationState extends State<MenuNavigation> {
           Personal(),
           Goals(),
           Dashboard(),
-          Settings(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

@@ -4,6 +4,8 @@ import 'package:iboss/models/wage.dart';
 import 'package:iboss/repositories/company_reservation_repository.dart';
 import 'package:iboss/repositories/wage_repository.dart';
 import 'package:iboss/screens/business_screens/categories.dart';
+import 'package:iboss/screens/Register.dart';
+import 'package:iboss/screens/main_screens/settings.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../business_screens/expense.dart';
@@ -25,22 +27,46 @@ class _BusinessState extends State<Business> {
   Widget build(BuildContext context) {
     final companyReservation = context.watch<CompanyReservationRepository>();
     return Scaffold(
+      backgroundColor: Color(0xFF3c3c3c),
       appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: const Text('Empresa'),
+        // centerTitle: true,
+        backgroundColor: Color(0xFF3c3c3c),
+        title: const Text(
+          'EMPRESA',
+          // textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20),
+            bottomRight: Radius.circular(20),
+          ),
+        ),
         actions: <Widget>[
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Settings(),
+                ),
+              );
+            },
             icon: const Icon(
               Icons.settings,
-              color: Colors.black,
+              color: Colors.white,
+              size: 30,
             ),
           )
         ],
       ),
       body: Center(
         child:
-        Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+            Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
           ElevatedButton(
             onPressed: () {
               Navigator.push(
@@ -59,8 +85,9 @@ class _BusinessState extends State<Business> {
             child: const Text(
               'Receitas',
               style: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                fontSize: 25,
               ),
             ),
           ),
@@ -82,8 +109,9 @@ class _BusinessState extends State<Business> {
             child: const Text(
               'Gastos',
               style: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                fontSize: 25,
               ),
             ),
           ),
@@ -92,12 +120,15 @@ class _BusinessState extends State<Business> {
             subtitle: Text(
               real.format(companyReservation.saldo),
               style: TextStyle(
-                fontSize: 25, color: Colors.indigo,
+                fontSize: 25,
+                color: Colors.indigo,
               ),
             ),
-            trailing: IconButton(onPressed: updateSaldo, icon: Icon(Icons.edit),),
+            trailing: IconButton(
+              onPressed: updateSaldo,
+              icon: Icon(Icons.edit),
+            ),
           ),
-          Divider(),
         ]),
       ),
     );
@@ -127,13 +158,17 @@ class _BusinessState extends State<Business> {
         ),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: Text('CANCELAR')),
-        TextButton(onPressed: () {
-          if (form.currentState!.validate()) {
-            companyReservation.setSaldo(double.parse(valueReservation.text));
-            Navigator.pop(context);
-          }
-        }, child: Text('SALVAR')),
+        TextButton(
+            onPressed: () => Navigator.pop(context), child: Text('CANCELAR')),
+        TextButton(
+            onPressed: () {
+              if (form.currentState!.validate()) {
+                companyReservation
+                    .setSaldo(double.parse(valueReservation.text));
+                Navigator.pop(context);
+              }
+            },
+            child: Text('SALVAR')),
       ],
     );
     showDialog(context: context, builder: (context) => dialog);

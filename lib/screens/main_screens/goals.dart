@@ -3,6 +3,7 @@ import 'package:iboss/models/company_goals.dart';
 import 'package:iboss/models/personal_goals.dart';
 import 'package:iboss/repositories/company_goals_repository.dart';
 import 'package:iboss/repositories/personal_goals_repository.dart';
+import 'package:iboss/screens/main_screens/settings.dart';
 import 'package:provider/provider.dart';
 
 class Goals extends StatefulWidget {
@@ -13,11 +14,12 @@ class Goals extends StatefulWidget {
 }
 
 class _GoalsState extends State<Goals> {
-
   TextEditingController descriptionController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   bool checked = false;
   DateTime selectedDate = DateTime.now();
+  List<bool> companyCheckedList = [];
+  List<bool> personalCheckedList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -32,19 +34,15 @@ class _GoalsState extends State<Goals> {
           actions: <Widget>[
             IconButton(
               onPressed: () {
-                showDialog(
-                  context: context,
-                  barrierDismissible: true,
-                  builder: (BuildContext context) {
-                    return const AlertDialog(
-                      title: Text('Informação sobre as metas'),
-                      content: Text('Texto passando as informações'),
-                    );
-                  },
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Settings(),
+                  ),
                 );
               },
               icon: const Icon(
-                Icons.info,
+                Icons.settings,
                 color: Colors.black,
               ),
             )
@@ -133,14 +131,14 @@ class _GoalsState extends State<Goals> {
                               }),
                               Consumer<PersonalGoalsRepository>(builder:
                                   (BuildContext context,
-                                  PersonalGoalsRepository forPersonal,
-                                  Widget? widget) {
+                                      PersonalGoalsRepository forPersonal,
+                                      Widget? widget) {
                                 return TextButton(
                                   onPressed: () {
                                     forPersonal.add(PersonalGoals(
                                         description: descriptionController.text,
                                         date:
-                                        "${selectedDate.day} / ${selectedDate.month} / ${selectedDate.year}"));
+                                            "${selectedDate.day} / ${selectedDate.month} / ${selectedDate.year}"));
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         content: Text('Criando uma nova Meta'),
@@ -165,46 +163,66 @@ class _GoalsState extends State<Goals> {
         ),
         body: TabBarView(
           children: [
-            Consumer<CompanyGoalsRepository>(builder: (BuildContext context,
-                CompanyGoalsRepository forCompany, Widget? widget) {
-              return ListView.separated(
+            Consumer<CompanyGoalsRepository>(
+              builder: (BuildContext context, CompanyGoalsRepository forCompany,
+                  Widget? widget) {
+                return ListView.separated(
                   itemBuilder: (BuildContext context, int i) {
+                    // Check if the index is within the bounds of the checked list
+                    if (i >= companyCheckedList.length) {
+                      companyCheckedList.add(false);
+                    }
                     return CheckboxListTile(
-                          title: Text(forCompany.companyGoals[i].description),
-                          secondary:
-                              Text(forCompany.companyGoals[i].date.toString()),
-                          controlAffinity: ListTileControlAffinity.leading,
-                          value: checked,
-                          onChanged: (value) {
-                            setState(() {
-                              checked = value!;
-                            });
-                          },
-                          activeColor: Colors.green,
-                          checkColor: Colors.black,
-                        );
-                  },
-                  separatorBuilder: (_, __) => const Divider(),
-                  itemCount: forCompany.companyGoals.length);
-            }),
-            Consumer<PersonalGoalsRepository>(builder: (BuildContext context, PersonalGoalsRepository forPersonal, Widget? widget) {
-              return ListView.separated(itemBuilder: (BuildContext context, int i) {
-                return CheckboxListTile(
-                      title: Text(forPersonal.personalGoals[i].description),
+                      title: Text(forCompany.companyGoals[i].description),
                       secondary:
-                      Text(forPersonal.personalGoals[i].date.toString()),
+                          Text(forCompany.companyGoals[i].date.toString()),
                       controlAffinity: ListTileControlAffinity.leading,
-                      value: checked,
+                      value: companyCheckedList[i],
+                      // Use the appropriate checked value
                       onChanged: (value) {
                         setState(() {
-                          checked = value!;
+                          companyCheckedList[i] = value!;
                         });
                       },
                       activeColor: Colors.green,
                       checkColor: Colors.black,
                     );
-              }, separatorBuilder: (_, __) => const Divider(), itemCount: forPersonal.personalGoals.length);
-            })
+                  },
+                  separatorBuilder: (_, __) => const Divider(),
+                  itemCount: forCompany.companyGoals.length,
+                );
+              },
+            ),
+            Consumer<PersonalGoalsRepository>(
+              builder: (BuildContext context,
+                  PersonalGoalsRepository forPersonal, Widget? widget) {
+                return ListView.separated(
+                  itemBuilder: (BuildContext context, int i) {
+                    // Check if the index is within the bounds of the checked list
+                    if (i >= personalCheckedList.length) {
+                      personalCheckedList.add(false);
+                    }
+                    return CheckboxListTile(
+                      title: Text(forPersonal.personalGoals[i].description),
+                      secondary:
+                          Text(forPersonal.personalGoals[i].date.toString()),
+                      controlAffinity: ListTileControlAffinity.leading,
+                      value: personalCheckedList[i],
+                      // Use the appropriate checked value
+                      onChanged: (value) {
+                        setState(() {
+                          personalCheckedList[i] = value!;
+                        });
+                      },
+                      activeColor: Colors.green,
+                      checkColor: Colors.black,
+                    );
+                  },
+                  separatorBuilder: (_, __) => const Divider(),
+                  itemCount: forPersonal.personalGoals.length,
+                );
+              },
+            ),
           ],
         ),
       ),

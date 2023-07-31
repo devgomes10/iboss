@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iboss/models/personal_reservation.dart';
 import 'package:iboss/repositories/personal_reservation_repository.dart';
+import 'package:iboss/screens/main_screens/settings.dart';
 import 'package:iboss/screens/personal_screens/entry.dart';
 import 'package:provider/provider.dart';
 import '../personal_screens/outflow.dart';
@@ -18,7 +19,14 @@ class Personal extends StatelessWidget {
         title: const Text('Pessoais'),
         actions: <Widget>[
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Settings(),
+                ),
+              );
+            },
             icon: const Icon(
               Icons.settings,
               color: Colors.black,
@@ -133,55 +141,57 @@ class Personal extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                          actions: [
-                                            Center(
-                                              child: Column(
-                                                children: [
-                                                  // const Text('Escolha a classificação'),
-                                                  Padding(
-                                                    padding:
+                                      actions: [
+                                        Center(
+                                          child: Column(
+                                            children: [
+                                              // const Text('Escolha a classificação'),
+                                              Padding(
+                                                padding:
                                                     const EdgeInsets.all(8.0),
-                                                    child: Row(
-                                                      mainAxisAlignment:
+                                                child: Row(
+                                                  mainAxisAlignment:
                                                       MainAxisAlignment
                                                           .spaceAround,
-                                                      children: [
-                                                        Consumer<PersonalReservationRepository>(
-                                                          builder:
-                                                              (BuildContext context,
-                                                              PersonalReservationRepository personal,
-                                                              Widget? widget) {
-                                                            return TextButton(
-                                                              onPressed: () async {
-                                                                personal.add(
-                                                                  PersonalReservation(
-                                                                      value: double.parse(
-                                                                          reservationController
-                                                                              .text)),
-                                                                );
-                                                                ScaffoldMessenger.of(
-                                                                    context)
-                                                                    .showSnackBar(
-                                                                  const SnackBar(
-                                                                    content: Text(
-                                                                        'Criando uma nova reserva de emegência'),
-                                                                  ),
-                                                                );
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              child: const Text(
-                                                                  'Atualizar'),
+                                                  children: [
+                                                    Consumer<
+                                                        PersonalReservationRepository>(
+                                                      builder: (BuildContext
+                                                              context,
+                                                          PersonalReservationRepository
+                                                              personal,
+                                                          Widget? widget) {
+                                                        return TextButton(
+                                                          onPressed: () async {
+                                                            personal.add(
+                                                              PersonalReservation(
+                                                                  value: double.parse(
+                                                                      reservationController
+                                                                          .text)),
                                                             );
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .showSnackBar(
+                                                              const SnackBar(
+                                                                content: Text(
+                                                                    'Criando uma nova reserva de emegência'),
+                                                              ),
+                                                            );
+                                                            Navigator.pop(
+                                                                context);
                                                           },
-                                                        ),
-                                                      ],
+                                                          child: const Text(
+                                                              'Atualizar'),
+                                                        );
+                                                      },
                                                     ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ],
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   );
                                 },

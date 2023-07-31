@@ -15,6 +15,8 @@ import 'package:iboss/repositories/variable_expense_repository.dart';
 import 'package:iboss/repositories/variable_outflow_repository.dart';
 import 'package:iboss/repositories/wage_repository.dart';
 import 'package:iboss/screens/business_screens/revenue.dart';
+import 'package:iboss/screens/login.dart';
+import 'package:iboss/screens/main_screens/settings.dart';
 import 'package:provider/provider.dart';
 
 
@@ -51,10 +53,16 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFF515151),
+            side: BorderSide(color: Color(0xFF00BF63), width: 5),
+          )
+        ),
+        // colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
       ),
-      home: const Revenue(),
+      home: MenuNavigation(),
     );
   }
 }
