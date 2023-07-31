@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/models/wage.dart';
 import 'package:iboss/repositories/company_reservation_repository.dart';
 import 'package:iboss/repositories/wage_repository.dart';
@@ -56,14 +57,9 @@ class _BusinessState extends State<Business> {
                 ),
               );
             },
-            icon: const Icon(
-              Icons.settings,
-              color: Colors.white,
-              size: 30,
+            icon: FaIcon(FontAwesomeIcons.gear, color: Colors.white),
             ),
-          )
-        ],
-      ),
+          ],),
       body: Center(
         child:
             Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
@@ -141,7 +137,7 @@ class _BusinessState extends State<Business> {
                   ),
                   trailing: IconButton(
                     onPressed: updateSaldo,
-                    icon: Icon(Icons.edit, color: Colors.white),
+                    icon: FaIcon(FontAwesomeIcons.penToSquare, color: Colors.white,),
                   ),
                 ),
               ],
@@ -173,7 +169,7 @@ class _BusinessState extends State<Business> {
                   ),
                   trailing: IconButton(
                     onPressed: updateSaldo,
-                    icon: Icon(Icons.edit, color: Colors.white),
+                    icon: FaIcon(FontAwesomeIcons.penToSquare, color: Colors.white,),
                   ),
                 ),
               ],
