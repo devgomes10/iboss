@@ -35,7 +35,7 @@ class _BusinessState extends State<Business> {
           'EMPRESA',
           // textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 25,
+            fontSize: 35,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
@@ -115,18 +115,68 @@ class _BusinessState extends State<Business> {
               ),
             ),
           ),
-          ListTile(
-            title: Text('Reserva Financeira'),
-            subtitle: Text(
-              real.format(companyReservation.saldo),
-              style: TextStyle(
-                fontSize: 25,
-                color: Colors.indigo,
-              ),
+          Container(
+            width: 350,
+            decoration: BoxDecoration(
+                color: Colors.green, borderRadius: BorderRadius.circular(15)),
+            child: Column(
+              children: [
+                Text(
+                  'Reserva financeira',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
+                ),
+                ListTile(
+                  title: Text(
+                    real.format(companyReservation.saldo),
+                    style: TextStyle(
+                      fontSize: 25,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  trailing: IconButton(
+                    onPressed: updateSaldo,
+                    icon: Icon(Icons.edit, color: Colors.white),
+                  ),
+                ),
+              ],
             ),
-            trailing: IconButton(
-              onPressed: updateSaldo,
-              icon: Icon(Icons.edit),
+          ),
+          Container(
+            width: 350,
+            decoration: BoxDecoration(
+                color: Colors.green, borderRadius: BorderRadius.circular(15)),
+            child: Column(
+              children: [
+                Text(
+                  'Pró-labore',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
+                ),
+                ListTile(
+                  title: Text(
+                    real.format(companyReservation.saldo),
+                    style: TextStyle(
+                      fontSize: 25,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  trailing: IconButton(
+                    onPressed: updateSaldo,
+                    icon: Icon(Icons.edit, color: Colors.white),
+                  ),
+                ),
+              ],
             ),
           ),
         ]),
