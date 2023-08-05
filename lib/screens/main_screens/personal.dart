@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/models/personal_reservation.dart';
 import 'package:iboss/repositories/personal_reservation_repository.dart';
 import 'package:iboss/screens/main_screens/settings.dart';
@@ -14,9 +15,10 @@ class Personal extends StatelessWidget {
     TextEditingController reservationController = TextEditingController();
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: const Text('Pessoais'),
+        title: const Text('Empresa'),
+        centerTitle: true,
         actions: <Widget>[
           IconButton(
             onPressed: () {
@@ -27,184 +29,159 @@ class Personal extends StatelessWidget {
                 ),
               );
             },
-            icon: const Icon(
-              Icons.settings,
-              color: Colors.black,
+            icon: FaIcon(
+              FontAwesomeIcons.gear,
             ),
           ),
         ],
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const Entry(),
-                  ),
-                );
-              },
-              style: ButtonStyle(
-                alignment: Alignment.center,
-                minimumSize: MaterialStateProperty.all(
-                  const Size(350, 80),
-                ),
-              ),
-              child: const Text(
-                'Entradas',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const Outflow(),
-                  ),
-                );
-              },
-              style: ButtonStyle(
-                alignment: Alignment.center,
-                minimumSize: MaterialStateProperty.all(
-                  const Size(350, 80),
-                ),
-              ),
-              child: const Text(
-                'Saídas',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                ),
-              ),
-            ),
-            Container(
-              width: 350,
-              height: 100,
-              decoration: BoxDecoration(border: Border.all(width: 3)),
-              alignment: Alignment.center,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Container(
-                    child: Text('Reserva de dinheiro'),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Card(
+                color: Theme.of(context).primaryColor,
+                elevation: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Consumer<PersonalReservationRepository>(builder:
-                          (BuildContext context,
-                              PersonalReservationRepository personal,
-                              Widget? widget) {
-                        return Text(reservationController.text);
-                      }),
-                      Container(
-                        width: 100,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            IconButton(
-                                onPressed: () {}, icon: Icon(Icons.info)),
-                            IconButton(
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        AlertDialog(
-                                      scrollable: true,
-                                      title: const Text('atualize pro'),
-                                      content: SingleChildScrollView(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Form(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                TextFormField(
-                                                  keyboardType:
-                                                      TextInputType.number,
-                                                  controller:
-                                                      reservationController,
-                                                  decoration: const InputDecoration(
-                                                      hintText:
-                                                          'Reserva de Emergência'),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      actions: [
-                                        Center(
-                                          child: Column(
-                                            children: [
-                                              // const Text('Escolha a classificação'),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceAround,
-                                                  children: [
-                                                    Consumer<
-                                                        PersonalReservationRepository>(
-                                                      builder: (BuildContext
-                                                              context,
-                                                          PersonalReservationRepository
-                                                              personal,
-                                                          Widget? widget) {
-                                                        return TextButton(
-                                                          onPressed: () async {
-                                                            personal.add(
-                                                              PersonalReservation(
-                                                                  value: double.parse(
-                                                                      reservationController
-                                                                          .text)),
-                                                            );
-                                                            ScaffoldMessenger
-                                                                    .of(context)
-                                                                .showSnackBar(
-                                                              const SnackBar(
-                                                                content: Text(
-                                                                    'Criando uma nova reserva de emegência'),
-                                                              ),
-                                                            );
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          child: const Text(
-                                                              'Atualizar'),
-                                                        );
-                                                      },
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                                icon: Icon(Icons.edit)),
-                          ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Entradas',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 23,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                          ),
+                          FaIcon(
+                            FontAwesomeIcons.arrowTrendUp,
+                            color: Colors.green,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 12),
+                      Text(
+                        'Total',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      Text(
+                        'RS 100,00',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green,
                         ),
                       ),
+                      SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Column(
+                            children: [
+                              Text("Entradas fixas"),
+                              Text("RS 50,00", style: TextStyle(color: Colors.green),),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text("entradas variáveis"),
+                              Text("RS 50,00", style: TextStyle(color: Colors.green),),
+                            ],
+                          ),
+                        ],
+                      )
                     ],
                   ),
-                ],
+                ),
               ),
-            ),
-          ],
+              Divider(
+                color: Colors.transparent,
+                height: 50,
+              ),
+              Card(
+                color: Theme.of(context).primaryColor,
+                elevation: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Saídas',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 23,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                          ),
+                          FaIcon(
+                            FontAwesomeIcons.arrowTrendDown,
+                            color: Colors.red,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 12),
+                      Text('Total', style: TextStyle(fontSize: 16)),
+                      Text(
+                        'RS 100,00',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red,
+                        ),
+                      ),
+                      SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Column(
+                            children: [
+                              Text("Saídas fixos"),
+                              Text("RS 50,00", style: TextStyle(color: Colors.red),),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text("Saídas variáveis"),
+                              Text("RS 50,00", style: TextStyle(color: Colors.red),),
+                            ],
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              Divider(
+                color: Colors.transparent,
+                height: 50,
+              ),
+              ListTile(
+                title: Text('Reserva de emergência'),
+                subtitle: Text(
+                  'RS 100,00',
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                ),
+                trailing: IconButton(
+                  onPressed: () {},
+                  icon: FaIcon(FontAwesomeIcons.penToSquare),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

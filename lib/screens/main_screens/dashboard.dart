@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/screens/main_screens/settings.dart';
 import 'package:intl/intl.dart';
 
@@ -15,9 +16,9 @@ class _DashboardState extends State<Dashboard> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
           title: Text('Painel'),
-          backgroundColor: Colors.green,
           actions: <Widget>[
             IconButton(
               onPressed: () {
@@ -30,16 +31,18 @@ class _DashboardState extends State<Dashboard> {
               },
               icon: const Icon(
                 Icons.settings,
-                color: Colors.black,
+                color: Colors.white,
               ),
             )
           ],
           bottom: const TabBar(
             tabs: [
               Tab(
+                icon: FaIcon(FontAwesomeIcons.industry),
                 text: 'Empresa',
               ),
               Tab(
+                icon: FaIcon(FontAwesomeIcons.userLarge),
                 text: 'Pessoal',
               ),
             ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/models/company_goals.dart';
 import 'package:iboss/models/personal_goals.dart';
 import 'package:iboss/repositories/company_goals_repository.dart';
@@ -26,11 +27,11 @@ class _GoalsState extends State<Goals> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
           title: const Text(
             'Metas financeiras',
           ),
-          backgroundColor: Colors.green,
           actions: <Widget>[
             IconButton(
               onPressed: () {
@@ -43,16 +44,18 @@ class _GoalsState extends State<Goals> {
               },
               icon: const Icon(
                 Icons.settings,
-                color: Colors.black,
+                color: Colors.white,
               ),
             )
           ],
           bottom: const TabBar(
             tabs: [
               Tab(
+                icon: FaIcon(FontAwesomeIcons.industry),
                 text: 'Empresa',
               ),
               Tab(
+                icon: FaIcon(FontAwesomeIcons.userLarge),
                 text: 'Pessoal',
               ),
             ],
@@ -184,7 +187,7 @@ class _GoalsState extends State<Goals> {
                           companyCheckedList[i] = value!;
                         });
                       },
-                      activeColor: Colors.green,
+                      activeColor: Colors.red,
                       checkColor: Colors.black,
                     );
                   },

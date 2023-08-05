@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../business_screens/expense.dart';
 import '../business_screens/revenue.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Business extends StatefulWidget {
   const Business({super.key});
@@ -28,25 +29,10 @@ class _BusinessState extends State<Business> {
   Widget build(BuildContext context) {
     final companyReservation = context.watch<CompanyReservationRepository>();
     return Scaffold(
-      backgroundColor: Color(0xFF3c3c3c),
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        // centerTitle: true,
-        backgroundColor: Color(0xFF3c3c3c),
-        title: const Text(
-          'EMPRESA',
-          // textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 35,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(20),
-            bottomRight: Radius.circular(20),
-          ),
-        ),
+        title: const Text('Empresa'),
+        centerTitle: true,
         actions: <Widget>[
           IconButton(
             onPressed: () {
@@ -57,125 +43,170 @@ class _BusinessState extends State<Business> {
                 ),
               );
             },
-            icon: FaIcon(FontAwesomeIcons.gear, color: Colors.white),
+            icon: FaIcon(
+              FontAwesomeIcons.gear,
             ),
-          ],),
+          ),
+        ],
+      ),
       body: Center(
-        child:
-            Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Revenue(),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Card(
+                color: Theme.of(context).primaryColor,
+                elevation: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Receitas',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 23,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                          ),
+                          FaIcon(
+                            FontAwesomeIcons.arrowTrendUp,
+                            color: Colors.green,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 12),
+                      Text('Total', style: TextStyle(fontSize: 16),),
+                      Text(
+                        'RS 100,00',
+                        style:
+                            TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.green,),
+                      ),
+                      SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Column(
+                            children: [
+                              Text("Pagamentos à vista"),
+                              Text("RS 50,00"),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text("Pagamentos a prazo"),
+                              Text("RS 50,00"),
+                            ],
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
-              );
-            },
-            style: ButtonStyle(
-              alignment: Alignment.center,
-              minimumSize: MaterialStateProperty.all(
-                const Size(350, 80),
               ),
-            ),
-            child: const Text(
-              'Receitas',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                fontSize: 25,
+              Divider(
+                color: Colors.transparent,
+                height: 30,
               ),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Expense(),
+              Card(
+                color: Theme.of(context).primaryColor,
+                elevation: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Gastos',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 23,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                          ),
+                          FaIcon(
+                            FontAwesomeIcons.arrowTrendDown,
+                            color: Colors.red,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 12),
+                      Text('Total', style: TextStyle(fontSize: 16)),
+                      Text(
+                        'RS 100,00',
+                        style:
+                            TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.red,),
+                      ),
+                      SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Column(
+                            children: [
+                              Text("Gastos fixos"),
+                              Text("RS 50,00"),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text("Gastos variáveis"),
+                              Text("RS 50,00"),
+                            ],
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
-              );
-            },
-            style: ButtonStyle(
-              alignment: Alignment.center,
-              minimumSize: MaterialStateProperty.all(
-                const Size(350, 80),
               ),
-            ),
-            child: const Text(
-              'Gastos',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                fontSize: 25,
+              Divider(
+                color: Colors.transparent,
+                height: 30,
               ),
-            ),
-          ),
-          Container(
-            width: 350,
-            decoration: BoxDecoration(
-                color: Colors.green, borderRadius: BorderRadius.circular(15)),
-            child: Column(
-              children: [
-                Text(
-                  'Reserva financeira',
-                  textAlign: TextAlign.center,
+              ListTile(
+                title: Text('Pró-labore'),
+                subtitle: Text(
+                  'RS 100,00',
                   style: TextStyle(
+                    fontSize: 25,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 20,
+                      color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
-                ListTile(
-                  title: Text(
-                    real.format(companyReservation.saldo),
-                    style: TextStyle(
-                      fontSize: 25,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  trailing: IconButton(
-                    onPressed: updateSaldo,
-                    icon: FaIcon(FontAwesomeIcons.penToSquare, color: Colors.white,),
-                  ),
+                trailing: IconButton(
+                  onPressed: () {},
+                  icon: FaIcon(FontAwesomeIcons.penToSquare),
                 ),
-              ],
-            ),
-          ),
-          Container(
-            width: 350,
-            decoration: BoxDecoration(
-                color: Colors.green, borderRadius: BorderRadius.circular(15)),
-            child: Column(
-              children: [
-                Text(
-                  'Pró-labore',
-                  textAlign: TextAlign.center,
+              ),
+              Divider(
+                color: Colors.transparent,
+                height: 30,
+              ),
+              ListTile(
+                title: Text('Reserva de emergência'),
+                subtitle: Text(
+                  'RS 100,00',
                   style: TextStyle(
+                    fontSize: 25,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 20,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
-                ListTile(
-                  title: Text(
-                    real.format(companyReservation.saldo),
-                    style: TextStyle(
-                      fontSize: 25,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  trailing: IconButton(
-                    onPressed: updateSaldo,
-                    icon: FaIcon(FontAwesomeIcons.penToSquare, color: Colors.white,),
-                  ),
+                trailing: IconButton(
+                  onPressed: () {},
+                  icon: FaIcon(FontAwesomeIcons.penToSquare),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ]),
+        ),
       ),
     );
   }
@@ -205,16 +236,18 @@ class _BusinessState extends State<Business> {
       ),
       actions: [
         TextButton(
-            onPressed: () => Navigator.pop(context), child: Text('CANCELAR')),
+          onPressed: () => Navigator.pop(context),
+          child: Text('Cancelar'),
+        ),
         TextButton(
-            onPressed: () {
-              if (form.currentState!.validate()) {
-                companyReservation
-                    .setSaldo(double.parse(valueReservation.text));
-                Navigator.pop(context);
-              }
-            },
-            child: Text('SALVAR')),
+          onPressed: () {
+            if (form.currentState!.validate()) {
+              companyReservation.setSaldo(double.parse(valueReservation.text));
+              Navigator.pop(context);
+            }
+          },
+          child: Text('Salvar'),
+        ),
       ],
     );
     showDialog(context: context, builder: (context) => dialog);

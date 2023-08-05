@@ -45,13 +45,13 @@ class _MenuNavigationState extends State<MenuNavigation> {
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
           // Defina a cor de fundo da BottomNavigationBar
-          canvasColor: Color(0xFF3c3c3c),
+          canvasColor: Theme.of(context).colorScheme.primary,
         ),
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           currentIndex: currentPage,
           selectedItemColor: Colors.white, // Defina a cor do ícone e do texto selecionado
-          unselectedItemColor: Color(0xFF00BF63), // Defina a cor do ícone e do texto não selecionado
+          unselectedItemColor: Theme.of(context).colorScheme.secondary, // Defina a cor do ícone e do texto não selecionado
           showSelectedLabels: true, // Mostre os rótulos quando o item estiver selecionado
           showUnselectedLabels: false, // Oculte os rótulos quando o item não estiver selecionado
           items: const [
