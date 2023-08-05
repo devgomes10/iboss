@@ -54,57 +54,83 @@ class _BusinessState extends State<Business> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              Card(
-                color: Theme.of(context).primaryColor,
-                elevation: 4,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Receitas',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 23,
-                              color: Theme.of(context).colorScheme.secondary,
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Revenue(),
+                    ),
+                  );
+                },
+                child: Card(
+                  color: Theme.of(context).primaryColor,
+                  elevation: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Receitas',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 23,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
                             ),
-                          ),
-                          FaIcon(
-                            FontAwesomeIcons.arrowTrendUp,
+                            FaIcon(
+                              FontAwesomeIcons.arrowTrendUp,
+                              color: Colors.green,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 12),
+                        Text(
+                          'Total',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        Text(
+                          'RS 100,00',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                             color: Colors.green,
                           ),
-                        ],
-                      ),
-                      SizedBox(height: 12),
-                      Text('Total', style: TextStyle(fontSize: 16),),
-                      Text(
-                        'RS 100,00',
-                        style:
-                            TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.green,),
-                      ),
-                      SizedBox(height: 12),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Column(
-                            children: [
-                              Text("Pagamentos à vista"),
-                              Text("RS 50,00"),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Text("Pagamentos a prazo"),
-                              Text("RS 50,00"),
-                            ],
-                          ),
-                        ],
-                      )
-                    ],
+                        ),
+                        SizedBox(height: 12),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Column(
+                              children: [
+                                Text("Pagamentos à vista"),
+                                Text(
+                                  "RS 50,00",
+                                  style: TextStyle(
+                                    color: Colors.green,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Text("Pagamentos a prazo"),
+                                Text(
+                                  "RS 50,00",
+                                  style: TextStyle(
+                                    color: Colors.green,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -112,57 +138,75 @@ class _BusinessState extends State<Business> {
                 color: Colors.transparent,
                 height: 30,
               ),
-              Card(
-                color: Theme.of(context).primaryColor,
-                elevation: 4,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Gastos',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 23,
-                              color: Theme.of(context).colorScheme.secondary,
+              InkWell(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Expense(),),);
+                },
+                child: Card(
+                  color: Theme.of(context).primaryColor,
+                  elevation: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Gastos',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 23,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
                             ),
-                          ),
-                          FaIcon(
-                            FontAwesomeIcons.arrowTrendDown,
+                            FaIcon(
+                              FontAwesomeIcons.arrowTrendDown,
+                              color: Colors.red,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 12),
+                        Text('Total', style: TextStyle(fontSize: 16)),
+                        Text(
+                          'RS 100,00',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                             color: Colors.red,
                           ),
-                        ],
-                      ),
-                      SizedBox(height: 12),
-                      Text('Total', style: TextStyle(fontSize: 16)),
-                      Text(
-                        'RS 100,00',
-                        style:
-                            TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.red,),
-                      ),
-                      SizedBox(height: 12),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Column(
-                            children: [
-                              Text("Gastos fixos"),
-                              Text("RS 50,00"),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Text("Gastos variáveis"),
-                              Text("RS 50,00"),
-                            ],
-                          ),
-                        ],
-                      )
-                    ],
+                        ),
+                        SizedBox(height: 12),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Column(
+                              children: [
+                                Text("Gastos fixos"),
+                                Text(
+                                  "RS 50,00",
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Text("Gastos variáveis"),
+                                Text(
+                                  "RS 50,00",
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -177,7 +221,7 @@ class _BusinessState extends State<Business> {
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.secondary,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
                 trailing: IconButton(

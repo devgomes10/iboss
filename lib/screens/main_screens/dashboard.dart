@@ -29,11 +29,8 @@ class _DashboardState extends State<Dashboard> {
                   ),
                 );
               },
-              icon: const Icon(
-                Icons.settings,
-                color: Colors.white,
-              ),
-            )
+              icon: FaIcon(FontAwesomeIcons.gear),
+            ),
           ],
           bottom: const TabBar(
             tabs: [

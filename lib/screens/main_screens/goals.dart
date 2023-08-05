@@ -42,11 +42,8 @@ class _GoalsState extends State<Goals> {
                   ),
                 );
               },
-              icon: const Icon(
-                Icons.settings,
-                color: Colors.white,
-              ),
-            )
+              icon: FaIcon(FontAwesomeIcons.gear),
+            ),
           ],
           bottom: const TabBar(
             tabs: [

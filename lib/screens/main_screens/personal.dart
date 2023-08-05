@@ -17,7 +17,7 @@ class Personal extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        title: const Text('Empresa'),
+        title: const Text('Pessoal'),
         centerTitle: true,
         actions: <Widget>[
           IconButton(

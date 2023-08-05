@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:iboss/components/menu_navigation.dart';
 import 'package:iboss/dark_theme.dart';
 import 'package:iboss/repositories/cash_payment_repository.dart';
@@ -15,12 +14,14 @@ import 'package:iboss/repositories/variable_entry_repository.dart';
 import 'package:iboss/repositories/variable_expense_repository.dart';
 import 'package:iboss/repositories/variable_outflow_repository.dart';
 import 'package:iboss/repositories/wage_repository.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:iboss/screens/business_screens/revenue.dart';
 import 'package:iboss/screens/login.dart';
 import 'package:iboss/screens/main_screens/settings.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
         create: (context) => CashPaymentRepository(cashPayments: [])),
@@ -55,6 +56,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    initializeDateFormatting('pt_BR', null);
+
     return MaterialApp(
       title: 'Evolve',
       debugShowCheckedModeBanner: false,

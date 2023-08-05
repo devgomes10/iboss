@@ -16,5 +16,4 @@ ThemeData darkTheme = ThemeData(
     secondary: Colors.grey[300]!,
     tertiary: Color(0xFF92E3A9),
   ),
-
 );
