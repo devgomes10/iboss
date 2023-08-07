@@ -1,7 +1,7 @@
 class VariableExpense {
   String description;
   double value;
-  String date;
+  DateTime date;
 
   VariableExpense ({
     required this.description,

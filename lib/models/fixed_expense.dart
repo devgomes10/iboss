@@ -1,7 +1,7 @@
 class FixedExpense {
   String description;
   double value;
-  String date;
+  DateTime date;
 
   FixedExpense ({
     required this.description,

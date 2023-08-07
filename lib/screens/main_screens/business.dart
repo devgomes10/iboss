@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:iboss/components/menu_navigation.dart';
 import 'package:iboss/models/wage.dart';
 import 'package:iboss/repositories/company_reservation_repository.dart';
 import 'package:iboss/repositories/wage_repository.dart';
-import 'package:iboss/screens/business_screens/categories.dart';
 import 'package:iboss/screens/Register.dart';
 import 'package:iboss/screens/main_screens/settings.dart';
 import 'package:intl/intl.dart';
@@ -24,6 +24,7 @@ class _BusinessState extends State<Business> {
   TextEditingController wageController = TextEditingController();
   TextEditingController reservationController = TextEditingController();
   NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
+  final menu = MenuNavigation();
 
   @override
   Widget build(BuildContext context) {

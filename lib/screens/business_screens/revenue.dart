@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../models/cash_payment.dart';
@@ -233,7 +234,7 @@ class _RevenueState extends State<Revenue> {
             );
 
           },
-          child: const Icon(Icons.add),
+          child: const FaIcon(FontAwesomeIcons.plus),
         ),
         body: TabBarView(
           children: [
