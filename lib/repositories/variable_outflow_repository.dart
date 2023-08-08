@@ -18,4 +18,8 @@ class VariableOutflowRepository extends ChangeNotifier {
     variableOutflow.removeAt(i);
     notifyListeners();
   }
+
+  List<VariableOutflow> getVariableOutflowsByMonth(int month) {
+    return variableOutflow.where((variableOutflow) => variableOutflow.date.month == month).toList();
+  }
 }

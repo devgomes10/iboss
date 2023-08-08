@@ -35,12 +35,16 @@ class Personal extends StatelessWidget {
           ),
         ],
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Card(
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            SizedBox(height: 26),
+            InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Entry(),),);
+              },
+              child: Card(
                 color: Theme.of(context).primaryColor,
                 elevation: 4,
                 child: Padding(
@@ -100,11 +104,17 @@ class Personal extends StatelessWidget {
                   ),
                 ),
               ),
-              Divider(
-                color: Colors.transparent,
-                height: 50,
-              ),
-              Card(
+            ),
+            Divider(
+              color: Colors.transparent,
+              height: 50,
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Outflow(),),);
+
+              },
+              child: Card(
                 color: Theme.of(context).primaryColor,
                 elevation: 4,
                 child: Padding(
@@ -161,27 +171,27 @@ class Personal extends StatelessWidget {
                   ),
                 ),
               ),
-              Divider(
-                color: Colors.transparent,
-                height: 50,
-              ),
-              ListTile(
-                title: Text('Reserva de emergência'),
-                subtitle: Text(
-                  'RS 100,00',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                ),
-                trailing: IconButton(
-                  onPressed: () {},
-                  icon: FaIcon(FontAwesomeIcons.penToSquare),
+            ),
+            Divider(
+              color: Colors.transparent,
+              height: 50,
+            ),
+            ListTile(
+              title: Text('Reserva de emergência'),
+              subtitle: Text(
+                'RS 100,00',
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
-            ],
-          ),
+              trailing: IconButton(
+                onPressed: () {},
+                icon: FaIcon(FontAwesomeIcons.penToSquare),
+              ),
+            ),
+          ],
         ),
       ),
     );

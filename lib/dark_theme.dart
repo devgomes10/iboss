@@ -2,13 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 ThemeData darkTheme = ThemeData(
+  textTheme: TextTheme(
+    bodySmall: GoogleFonts.montserrat(
+      fontSize: 15,
+    ),
+    bodyMedium: GoogleFonts.montserrat(
+      fontSize: 18,
+    ),
+    bodyLarge: GoogleFonts.montserrat(fontSize: 23, fontWeight: FontWeight.bold),
+  ),
   brightness: Brightness.dark,
   appBarTheme: AppBarTheme(
     backgroundColor: Colors.black,
     centerTitle: true,
-    titleTextStyle: TextStyle(
-      fontSize: 25,
-    )
+    titleTextStyle: GoogleFonts.concertOne(
+      fontSize: 34,
+    ),
   ),
   colorScheme: ColorScheme.dark(
     background: Colors.black,

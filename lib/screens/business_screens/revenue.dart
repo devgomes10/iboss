@@ -7,7 +7,6 @@ import '../../models/deferred_payment.dart';
 import '../../repositories/cash_payment_repository.dart';
 import '../../repositories/deferred_payment_repository.dart';
 
-
 class Revenue extends StatefulWidget {
   const Revenue({super.key});
 
@@ -22,7 +21,6 @@ class _RevenueState extends State<Revenue> {
   final descriptionController = TextEditingController();
   final valueController = TextEditingController();
   final NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
-
 
   @override
   void initState() {
@@ -51,9 +49,11 @@ class _RevenueState extends State<Revenue> {
   void _changeMonth(bool increment) {
     setState(() {
       if (increment) {
-        _selectedDate = DateTime(_selectedDate.year, _selectedDate.month + 1, 1);
+        _selectedDate =
+            DateTime(_selectedDate.year, _selectedDate.month + 1, 1);
       } else {
-        _selectedDate = DateTime(_selectedDate.year, _selectedDate.month - 1, 1);
+        _selectedDate =
+            DateTime(_selectedDate.year, _selectedDate.month - 1, 1);
       }
       _initializeRevenueMap(_selectedDate);
     });
@@ -70,6 +70,7 @@ class _RevenueState extends State<Revenue> {
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.primary,
           title: const Text('Receitas'),
           actions: <Widget>[
             IconButton(
@@ -87,7 +88,7 @@ class _RevenueState extends State<Revenue> {
               },
               icon: const Icon(
                 Icons.info,
-                color: Colors.black,
+                color: Colors.white,
               ),
             )
           ],
@@ -168,17 +169,23 @@ class _RevenueState extends State<Revenue> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Consumer<CashPaymentRepository>(
-                                builder: (BuildContext context, CashPaymentRepository inCash, Widget? widget) {
+                                builder: (BuildContext context,
+                                    CashPaymentRepository inCash,
+                                    Widget? widget) {
                                   return TextButton(
                                     onPressed: () async {
                                       inCash.add(CashPayment(
                                         description: descriptionController.text,
-                                        value: double.parse(valueController.text),
-                                        date: DateTime.now(), // Usando a data atual
+                                        value:
+                                            double.parse(valueController.text),
+                                        date: DateTime
+                                            .now(), // Usando a data atual
                                       ));
-                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
                                         SnackBar(
-                                          content: Text('Criando um pagamento à vista'),
+                                          content: Text(
+                                              'Criando um pagamento à vista'),
                                         ),
                                       );
                                       Navigator.pop(context);
@@ -196,17 +203,22 @@ class _RevenueState extends State<Revenue> {
                                 },
                               ),
                               Consumer<DeferredPaymentRepository>(
-                                builder: (BuildContext context, DeferredPaymentRepository inTerm, Widget? widget) {
+                                builder: (BuildContext context,
+                                    DeferredPaymentRepository inTerm,
+                                    Widget? widget) {
                                   return TextButton(
                                     onPressed: () async {
                                       inTerm.add(DeferredPayment(
                                         description: descriptionController.text,
-                                        value: double.parse(valueController.text),
+                                        value:
+                                            double.parse(valueController.text),
                                         date: DateTime.now(),
                                       ));
-                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
                                         SnackBar(
-                                          content: Text('Criando um pagamento a prazo'),
+                                          content: Text(
+                                              'Criando um pagamento a prazo'),
                                         ),
                                       );
                                       Navigator.pop(context);
@@ -232,7 +244,6 @@ class _RevenueState extends State<Revenue> {
                 ],
               ),
             );
-
           },
           child: const FaIcon(FontAwesomeIcons.plus),
         ),
@@ -241,7 +252,8 @@ class _RevenueState extends State<Revenue> {
             Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -251,7 +263,8 @@ class _RevenueState extends State<Revenue> {
                       ),
                       Text(
                         _getMonthYearString(),
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       IconButton(
                         icon: Icon(Icons.arrow_right),
@@ -262,37 +275,56 @@ class _RevenueState extends State<Revenue> {
                 ),
                 Expanded(
                   child: Consumer<CashPaymentRepository>(
-                    builder: (BuildContext context, CashPaymentRepository inCash, Widget? widget) {
-                      final monthYearString = DateFormat('MM-yyyy', 'pt_BR').format(_selectedDate);
-                      final List<CashPayment> cashPayments = inCash.getCashPaymentsByMonth(_selectedDate);
+                    builder: (BuildContext context,
+                        CashPaymentRepository inCash, Widget? widget) {
+                      final monthYearString =
+                          DateFormat('MM-yyyy', 'pt_BR').format(_selectedDate);
+                      final List<CashPayment> cashPayments =
+                          inCash.getCashPaymentsByMonth(_selectedDate);
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(12)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12)),
                             ),
                             leading: Icon(Icons.trending_up),
-                            title: Text(cashPayments[i].description, style: TextStyle(fontSize: 20,),),
+                            title: Text(
+                              cashPayments[i].description,
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(real.format(cashPayments[i].value), style: TextStyle(fontSize: 16,),),
-                                Text(DateFormat('dd/MM/yyyy').format(cashPayments[i].date)),
+                                Text(
+                                  real.format(cashPayments[i].value),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Text(DateFormat('dd/MM/yyyy')
+                                    .format(cashPayments[i].date)),
                               ],
                             ),
                             trailing: IconButton(
                               onPressed: () {
                                 showDialog(
                                   context: context,
-                                  builder: (BuildContext context) => AlertDialog(
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
                                     scrollable: true,
-                                    title: const Text('Deseja mesmo excluir este pagamento?'),
+                                    title: const Text(
+                                        'Deseja mesmo excluir este pagamento?'),
                                     content: SingleChildScrollView(
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Row(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
                                           children: [
                                             TextButton(
                                               onPressed: () {
@@ -302,11 +334,14 @@ class _RevenueState extends State<Revenue> {
                                             ),
                                             TextButton(
                                               onPressed: () {
-                                                inCash.remove(i, monthYearString);
+                                                inCash.remove(
+                                                    i, monthYearString);
                                                 Navigator.pop(context);
-                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
                                                   const SnackBar(
-                                                    content: Text('Pagamento deletado'),
+                                                    content: Text(
+                                                        'Pagamento deletado'),
                                                   ),
                                                 );
                                               },
@@ -335,7 +370,8 @@ class _RevenueState extends State<Revenue> {
             Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -345,7 +381,8 @@ class _RevenueState extends State<Revenue> {
                       ),
                       Text(
                         _getMonthYearString(),
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       IconButton(
                         icon: Icon(Icons.arrow_right),
@@ -356,22 +393,39 @@ class _RevenueState extends State<Revenue> {
                 ),
                 Expanded(
                   child: Consumer<DeferredPaymentRepository>(
-                    builder: (BuildContext context, DeferredPaymentRepository inTerm, Widget? widget) {
-                      final monthYearString = DateFormat('MM-yyyy', 'pt_BR').format(_selectedDate);
-                      final List<DeferredPayment> deferredPayments = inTerm.getDeferredPaymentsByMonth(_selectedDate);
+                    builder: (BuildContext context,
+                        DeferredPaymentRepository inTerm, Widget? widget) {
+                      final monthYearString =
+                          DateFormat('MM-yyyy', 'pt_BR').format(_selectedDate);
+                      final List<DeferredPayment> deferredPayments =
+                          inTerm.getDeferredPaymentsByMonth(_selectedDate);
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(12)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12)),
                             ),
                             leading: Icon(Icons.trending_up),
-                            title: Text(deferredPayments[i].description, style: TextStyle(fontSize: 20,),),
+                            title: Text(
+                              deferredPayments[i].description,
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(real.format(deferredPayments[i].value), style: TextStyle(fontSize: 16,),),
-                                Text(DateFormat('dd/MM/yyyy').format(deferredPayments[i].date),),
+                                Text(
+                                  real.format(deferredPayments[i].value),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Text(
+                                  DateFormat('dd/MM/yyyy')
+                                      .format(deferredPayments[i].date),
+                                ),
                               ],
                             ),
                             trailing: Container(
@@ -382,15 +436,21 @@ class _RevenueState extends State<Revenue> {
                                     onPressed: () {
                                       showDialog(
                                         context: context,
-                                        builder: (BuildContext context) => AlertDialog(
+                                        builder: (BuildContext context) =>
+                                            AlertDialog(
                                           scrollable: true,
-                                          title: const Text('Você realmente recebeu o dinheiro?'),
+                                          title: const Text(
+                                              'Você realmente recebeu o dinheiro?'),
                                           content: SingleChildScrollView(
                                             child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
                                               child: Row(
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
                                                 children: [
                                                   TextButton(
                                                     onPressed: () {
@@ -400,17 +460,29 @@ class _RevenueState extends State<Revenue> {
                                                   ),
                                                   TextButton(
                                                     onPressed: () {
-                                                      inTerm.remove(i, monthYearString);
-                                                      wasPaid.add(DeferredPayment(
-                                                        description: descriptionController.text,
-                                                        value: double.parse(valueController.text),
-                                                        date: DateFormat("dd/MM/yyyy").parse(_selectedDate.toString()),
+                                                      inTerm.remove(
+                                                          i, monthYearString);
+                                                      wasPaid
+                                                          .add(DeferredPayment(
+                                                        description:
+                                                            descriptionController
+                                                                .text,
+                                                        value: double.parse(
+                                                            valueController
+                                                                .text),
+                                                        date: DateFormat(
+                                                                "dd/MM/yyyy")
+                                                            .parse(_selectedDate
+                                                                .toString()),
                                                       ));
                                                       print(wasPaid.length);
                                                       Navigator.pop(context);
-                                                      ScaffoldMessenger.of(context).showSnackBar(
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
                                                         const SnackBar(
-                                                          content: Text('Pagamento Recebido'),
+                                                          content: Text(
+                                                              'Pagamento Recebido'),
                                                         ),
                                                       );
                                                     },
@@ -429,15 +501,21 @@ class _RevenueState extends State<Revenue> {
                                     onPressed: () {
                                       showDialog(
                                         context: context,
-                                        builder: (BuildContext context) => AlertDialog(
+                                        builder: (BuildContext context) =>
+                                            AlertDialog(
                                           scrollable: true,
-                                          title: const Text('Deseja mesmo excluir este pagamento?'),
+                                          title: const Text(
+                                              'Deseja mesmo excluir este pagamento?'),
                                           content: SingleChildScrollView(
                                             child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
                                               child: Row(
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
                                                 children: [
                                                   TextButton(
                                                     onPressed: () {
@@ -447,11 +525,15 @@ class _RevenueState extends State<Revenue> {
                                                   ),
                                                   TextButton(
                                                     onPressed: () {
-                                                      inTerm.remove(i, monthYearString);
+                                                      inTerm.remove(
+                                                          i, monthYearString);
                                                       Navigator.pop(context);
-                                                      ScaffoldMessenger.of(context).showSnackBar(
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
                                                         const SnackBar(
-                                                          content: Text('Pagamento deletado'),
+                                                          content: Text(
+                                                              'Pagamento deletado'),
                                                         ),
                                                       );
                                                     },
@@ -486,7 +568,3 @@ class _RevenueState extends State<Revenue> {
     );
   }
 }
-
-
-
-

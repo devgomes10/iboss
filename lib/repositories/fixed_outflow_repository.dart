@@ -18,4 +18,8 @@ class FixedOutflowRepository extends ChangeNotifier {
     fixedOutflow.removeAt(i);
     notifyListeners();
   }
+
+  List<FixedOutflow> getFixedOutflowsByMonth(int month) {
+    return fixedOutflow.where((fixedOutflow) => fixedOutflow.date.month == month).toList();
+  }
 }

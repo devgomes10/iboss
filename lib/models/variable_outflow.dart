@@ -1,7 +1,7 @@
 class VariableOutflow {
   String description;
   double value;
-  String date;
+  DateTime date;
 
   VariableOutflow ({
     required this.description,

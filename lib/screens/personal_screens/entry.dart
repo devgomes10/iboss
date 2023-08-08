@@ -39,11 +39,11 @@ class _EntryState extends State<Entry> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
           title: const Text(
             'Entradas',
           ),
-          backgroundColor: Colors.green,
           actions: <Widget>[
             IconButton(
               onPressed: () {
@@ -67,11 +67,9 @@ class _EntryState extends State<Entry> {
           bottom: const TabBar(
             tabs: [
               Tab(
-                icon: FaIcon(FontAwesomeIcons.calendarCheck),
                 text: 'Entradas fixas',
               ),
               Tab(
-                icon: FaIcon(FontAwesomeIcons.calendarMinus),
                 text: 'Entradas variáveis',
               ),
             ],

@@ -25,11 +25,11 @@ class _OutflowState extends State<Outflow> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
           title: const Text(
             'Saídas',
           ),
-          backgroundColor: Colors.green,
           actions: <Widget>[
             IconButton(
               onPressed: () {
@@ -114,7 +114,7 @@ class _OutflowState extends State<Outflow> {
                                           descriptionController.text,
                                           value: double.parse(
                                               valueController.text),
-                                          date: date));
+                                          date: DateTime.now()));
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         const SnackBar(
@@ -139,7 +139,7 @@ class _OutflowState extends State<Outflow> {
                                           descriptionController.text,
                                           value: double.parse(
                                               valueController.text),
-                                          date: date));
+                                          date: DateTime.now()));
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         const SnackBar(

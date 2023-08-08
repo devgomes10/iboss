@@ -59,6 +59,7 @@ class _GoalsState extends State<Goals> {
             indicatorColor: Colors.white,
           ),
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterTop,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             showDialog(

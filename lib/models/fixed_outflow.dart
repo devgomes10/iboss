@@ -1,7 +1,7 @@
 class FixedOutflow {
   String description;
   double value;
-  String date;
+  DateTime date;
 
   FixedOutflow ({
     required this.description,
