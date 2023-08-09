@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
 import 'package:iboss/models/fixed_outflow.dart';
 import 'package:iboss/models/variable_outflow.dart';
 import 'package:iboss/repositories/fixed_outflow_repository.dart';
 import 'package:iboss/repositories/variable_outflow_repository.dart';
-import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 
 class Outflow extends StatefulWidget {
   const Outflow({super.key});
@@ -14,11 +15,20 @@ class Outflow extends StatefulWidget {
 }
 
 class _OutflowState extends State<Outflow> {
-
-  final date = DateFormat('dd/MM/yyyy').format(DateTime.now());
+  DateTime _selectedDate = DateTime.now();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController valueController = TextEditingController();
   NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
+
+  void _changeMonth(bool increment) {
+    setState(() {
+      if (increment) {
+        _selectedDate = DateTime(_selectedDate.year, _selectedDate.month + 1, 1);
+      } else {
+        _selectedDate = DateTime(_selectedDate.year, _selectedDate.month - 1, 1);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +37,7 @@ class _OutflowState extends State<Outflow> {
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
-          title: const Text(
-            'Saídas',
-          ),
+          title: const Text('Saídas'),
           actions: <Widget>[
             IconButton(
               onPressed: () {
@@ -46,7 +54,7 @@ class _OutflowState extends State<Outflow> {
               },
               icon: const Icon(
                 Icons.info,
-                color: Colors.black,
+                color: Colors.white,
               ),
             )
           ],
@@ -68,7 +76,7 @@ class _OutflowState extends State<Outflow> {
               context: context,
               builder: (BuildContext context) => AlertDialog(
                 scrollable: true,
-                title: const Text('Din Din'),
+                title: const Text('Adicione uma nova saída'),
                 content: SingleChildScrollView(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -79,14 +87,12 @@ class _OutflowState extends State<Outflow> {
                           TextFormField(
                             keyboardType: TextInputType.text,
                             controller: descriptionController,
-                            decoration:
-                            const InputDecoration(hintText: 'Descrição'),
+                            decoration: const InputDecoration(hintText: 'Descrição'),
                           ),
                           TextFormField(
                             keyboardType: TextInputType.number,
                             controller: valueController,
-                            decoration:
-                            const InputDecoration(hintText: 'Valor'),
+                            decoration: const InputDecoration(hintText: 'Valor'),
                           ),
                         ],
                       ),
@@ -110,16 +116,12 @@ class _OutflowState extends State<Outflow> {
                                   return TextButton(
                                     onPressed: () async {
                                       fixed.add(FixedOutflow(
-                                          description:
-                                          descriptionController.text,
-                                          value: double.parse(
-                                              valueController.text),
+                                          description: descriptionController.text,
+                                          value: double.parse(valueController.text),
                                           date: DateTime.now()));
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
+                                      ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
-                                          content: Text(
-                                              'Criando uma saída fixa'),
+                                          content: Text('Criando uma saída fixa'),
                                         ),
                                       );
                                       Navigator.pop(context);
@@ -135,16 +137,12 @@ class _OutflowState extends State<Outflow> {
                                   return TextButton(
                                     onPressed: () async {
                                       variable.add(VariableOutflow(
-                                          description:
-                                          descriptionController.text,
-                                          value: double.parse(
-                                              valueController.text),
+                                          description: descriptionController.text,
+                                          value: double.parse(valueController.text),
                                           date: DateTime.now()));
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
+                                      ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
-                                          content: Text(
-                                              'Criando uma saída variável'),
+                                          content: Text('Criando uma saída variável'),
                                         ),
                                       );
                                       Navigator.pop(context);
@@ -165,111 +163,161 @@ class _OutflowState extends State<Outflow> {
           },
           child: const Icon(Icons.add),
         ),
-        body: TabBarView(
+        body: Column(
           children: [
-            Consumer<FixedOutflowRepository>(builder: (BuildContext context,
-                FixedOutflowRepository fixed, Widget? widget) {
-              return ListView.separated(
-                  itemBuilder: (BuildContext context, int i) {
-                    return ListTile(
-                      leading: Icon(Icons.trending_down),
-                      title:  Text(fixed.fixedOutflow[i].description),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(real.format(fixed.fixedOutflow[i].value)),
-                          Text(fixed.fixedOutflow[i].date.toString()),
-                        ],
-                      ),
-                      trailing: IconButton(onPressed: () {
-                        showDialog(context: context, builder: (BuildContext context) => AlertDialog(
-                            scrollable: true,
-                            title: const Text('Deseja mesmo exluir esta saída?'),
-                            content: SingleChildScrollView(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    TextButton(onPressed: () {
-                                      Navigator.pop(context);
-                                    }, child: const Text('Não')),
-                                    TextButton(onPressed: () {
-                                      fixed.remove(i);
-                                      Navigator.pop(context);
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content: Text(
-                                              'saída deletada'),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.arrow_left),
+                    onPressed: () => _changeMonth(false),
+                  ),
+                  Text(
+                    DateFormat.yMMMM('pt_BR').format(_selectedDate),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.arrow_right),
+                    onPressed: () => _changeMonth(true),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: TabBarView(
+                children: [
+                  Consumer<FixedOutflowRepository>(
+                    builder: (BuildContext context, FixedOutflowRepository fixed, Widget? widget) {
+                      final List<FixedOutflow> fixedOutflows = fixed.getFixedOutflowsByMonth(_selectedDate);
+                      return ListView.separated(
+                        itemBuilder: (BuildContext context, int i) {
+                          return ListTile(
+                            leading: Icon(Icons.trending_down),
+                            title: Text(fixedOutflows[i].description),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(real.format(fixedOutflows[i].value)),
+                                Text(fixedOutflows[i].date.toString()),
+                              ],
+                            ),
+                            trailing: IconButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) => AlertDialog(
+                                    scrollable: true,
+                                    title: const Text('Deseja mesmo excluir esta saída?'),
+                                    content: SingleChildScrollView(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          children: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text('Não'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                fixed.remove(i);
+                                                Navigator.pop(context);
+                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                  const SnackBar(
+                                                    content: Text('Saída deletada'),
+                                                  ),
+                                                );
+                                              },
+                                              child: const Text('Excluir'),
+                                            ),
+                                          ],
                                         ),
-                                      );
-                                    }, child: const Text('Exluir')),
-                                  ],
-                                ),
-                              ),
-                            )
-                        ),);
-                      }, icon: const Icon(Icons.delete)),
-                    );
-                  },
-                  separatorBuilder: (_, __) => const Divider(),
-                  padding: const EdgeInsets.all(16),
-                  itemCount: fixed.fixedOutflow.length);
-            }),
-            Consumer<VariableOutflowRepository>(
-              builder: (BuildContext context, VariableOutflowRepository variable,
-                  Widget? widget) {
-                return ListView.separated(
-                    itemBuilder: (BuildContext context, int i) {
-                      return ListTile(
-                        leading: Icon(Icons.trending_down),
-                        title: Text(variable.variableOutflow[i].description),
-                        subtitle:  Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(real.format(variable.variableOutflow[i].value)),
-                            Text(variable.variableOutflow[i].date.toString()),
-                          ],
-                        ),
-                      trailing: IconButton(onPressed: () {
-                        showDialog(context: context, builder: (BuildContext context) => AlertDialog(
-                            scrollable: true,
-                            title: const Text('Deseja mesmo exluir esta saída?'),
-                            content: SingleChildScrollView(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    TextButton(onPressed: () {
-                                      Navigator.pop(context);
-                                    }, child: const Text('Não')),
-                                    TextButton(onPressed: () {
-                                      variable.remove(i);
-                                      Navigator.pop(context);
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content: Text(
-                                              'saída deletada'),
-                                        ),
-                                      );
-                                    }, child: const Text('Exluir')),
-                                  ],
-                                ),
-                              ),
-                            )
-                        ),);
-                      }, icon: const Icon(Icons.delete)),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                              icon: const Icon(Icons.delete),
+                            ),
+                          );
+                        },
+                        separatorBuilder: (_, __) => const Divider(),
+                        padding: const EdgeInsets.all(16),
+                        itemCount: fixedOutflows.length,
                       );
                     },
-                    separatorBuilder: (_, __) => const Divider(),
-                    padding: const EdgeInsets.all(16),
-                    itemCount: variable.variableOutflow.length);
-              },
+                  ),
+                  Consumer<VariableOutflowRepository>(
+                    builder: (BuildContext context, VariableOutflowRepository variable, Widget? widget) {
+                      final List<VariableOutflow> variableOutflows = variable.getVariableOutflowsByMonth(_selectedDate);
+                      return ListView.separated(
+                        itemBuilder: (BuildContext context, int i) {
+                          return ListTile(
+                            leading: Icon(Icons.trending_down),
+                            title: Text(variableOutflows[i].description),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(real.format(variableOutflows[i].value)),
+                                Text(variableOutflows[i].date.toString()),
+                              ],
+                            ),
+                            trailing: IconButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) => AlertDialog(
+                                    scrollable: true,
+                                    title: const Text('Deseja mesmo excluir esta saída?'),
+                                    content: SingleChildScrollView(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          children: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text('Não'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                variable.remove(i);
+                                                Navigator.pop(context);
+                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                  const SnackBar(
+                                                    content: Text('Saída deletada'),
+                                                  ),
+                                                );
+                                              },
+                                              child: const Text('Excluir'),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                              icon: const Icon(Icons.delete),
+                            ),
+                          );
+                        },
+                        separatorBuilder: (_, __) => const Divider(),
+                        padding: const EdgeInsets.all(16),
+                        itemCount: variableOutflows.length,
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ],
         ),

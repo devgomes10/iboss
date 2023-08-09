@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iboss/models/fixed_outflow.dart';
+import 'package:intl/intl.dart';
 
 
 class FixedOutflowRepository extends ChangeNotifier {
@@ -19,7 +20,8 @@ class FixedOutflowRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<FixedOutflow> getFixedOutflowsByMonth(int month) {
-    return fixedOutflow.where((fixedOutflow) => fixedOutflow.date.month == month).toList();
+  List<FixedOutflow> getFixedOutflowsByMonth(DateTime selectedDate) {
+    final String monthYearString = DateFormat('MM-yyyy').format(selectedDate);
+    return fixedOutflow.where((expense) => DateFormat('MM-yyyy').format(expense.date) == monthYearString).toList();
   }
 }

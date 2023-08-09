@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iboss/models/variable_outflow.dart';
+import 'package:intl/intl.dart';
 
 
 class VariableOutflowRepository extends ChangeNotifier {
@@ -19,7 +20,8 @@ class VariableOutflowRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<VariableOutflow> getVariableOutflowsByMonth(int month) {
-    return variableOutflow.where((variableOutflow) => variableOutflow.date.month == month).toList();
+  List<VariableOutflow> getVariableOutflowsByMonth(DateTime selectedDate) {
+    final String monthYearString = DateFormat('MM-yyyy').format(selectedDate);
+    return variableOutflow.where((expense) => DateFormat('MM-yyyy').format(expense.date) == monthYearString).toList();
   }
 }
