@@ -33,16 +33,21 @@ class _GoalsState extends State<Goals> {
             'Metas financeiras',
           ),
           actions: <Widget>[
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Settings(),
-                  ),
-                );
-              },
-              icon: FaIcon(FontAwesomeIcons.gear),
+            Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(20)),
+              child: IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Settings(),
+                    ),
+                  );
+                },
+                icon: FaIcon(FontAwesomeIcons.plus),
+              ),
             ),
           ],
           bottom: const TabBar(
@@ -59,7 +64,6 @@ class _GoalsState extends State<Goals> {
             indicatorColor: Colors.white,
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterTop,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             showDialog(

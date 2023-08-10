@@ -46,7 +46,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
         onPressed: () {},
         child: FaIcon(FontAwesomeIcons.plus),
       ),
-      // extendBody: true,
+      extendBody: true,
       bottomNavigationBar: BottomAppBar(
         notchMargin: 8,
         shape: const CircularNotchedRectangle(),

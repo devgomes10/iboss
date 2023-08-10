@@ -36,10 +36,10 @@ class Personal extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
-            SizedBox(height: 26),
+            SizedBox(height: 15),
             InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => Entry(),),);
@@ -69,7 +69,7 @@ class Personal extends StatelessWidget {
                           ),
                         ],
                       ),
-                      SizedBox(height: 12),
+                      SizedBox(height: 15),
                       Text(
                         'Total',
                         style: TextStyle(fontSize: 16),
@@ -82,7 +82,7 @@ class Personal extends StatelessWidget {
                           color: Colors.green,
                         ),
                       ),
-                      SizedBox(height: 12),
+                      SizedBox(height: 15),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -107,7 +107,7 @@ class Personal extends StatelessWidget {
             ),
             Divider(
               color: Colors.transparent,
-              height: 50,
+              height: 35,
             ),
             InkWell(
               onTap: () {
@@ -139,7 +139,7 @@ class Personal extends StatelessWidget {
                           ),
                         ],
                       ),
-                      SizedBox(height: 12),
+                      SizedBox(height: 15),
                       Text('Total', style: TextStyle(fontSize: 16)),
                       Text(
                         'RS 100,00',
@@ -149,7 +149,7 @@ class Personal extends StatelessWidget {
                           color: Colors.red,
                         ),
                       ),
-                      SizedBox(height: 12),
+                      SizedBox(height: 15),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -174,7 +174,7 @@ class Personal extends StatelessWidget {
             ),
             Divider(
               color: Colors.transparent,
-              height: 50,
+              height: 35,
             ),
             ListTile(
               title: Text('Reserva de emergência'),

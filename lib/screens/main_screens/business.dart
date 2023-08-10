@@ -2,16 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/menu_navigation.dart';
-import 'package:iboss/models/wage.dart';
 import 'package:iboss/repositories/company_reservation_repository.dart';
-import 'package:iboss/repositories/wage_repository.dart';
-import 'package:iboss/screens/Register.dart';
 import 'package:iboss/screens/main_screens/settings.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../business_screens/expense.dart';
 import '../business_screens/revenue.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class Business extends StatefulWidget {
   const Business({super.key});
@@ -28,7 +24,6 @@ class _BusinessState extends State<Business> {
 
   @override
   Widget build(BuildContext context) {
-    final companyReservation = context.watch<CompanyReservationRepository>();
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
@@ -51,10 +46,10 @@ class _BusinessState extends State<Business> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
-            SizedBox(height: 12),
+            SizedBox(height: 5),
             InkWell(
               onTap: () {
                 Navigator.push(
@@ -85,7 +80,7 @@ class _BusinessState extends State<Business> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 12),
+                      SizedBox(height: 3),
                       Text(
                         'Total',
                         style: Theme.of(context).textTheme.bodyMedium,
@@ -98,7 +93,7 @@ class _BusinessState extends State<Business> {
                           color: Colors.green,
                         ),
                       ),
-                      SizedBox(height: 12),
+                      SizedBox(height: 3),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -139,7 +134,7 @@ class _BusinessState extends State<Business> {
             ),
             Divider(
               color: Colors.transparent,
-              height: 30,
+              height: 25,
             ),
             InkWell(
               onTap: () {
@@ -171,7 +166,7 @@ class _BusinessState extends State<Business> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 12),
+                      SizedBox(height: 3),
                       Text(
                         'Total',
                         style: Theme.of(context).textTheme.bodyMedium,
@@ -184,7 +179,7 @@ class _BusinessState extends State<Business> {
                           color: Colors.red,
                         ),
                       ),
-                      SizedBox(height: 12),
+                      SizedBox(height: 3),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -225,10 +220,12 @@ class _BusinessState extends State<Business> {
             ),
             Divider(
               color: Colors.transparent,
-              height: 30,
+              height: 25,
             ),
             ListTile(
-              title: Text('Pró-labore',                         style: Theme.of(context).textTheme.bodyMedium,
+              title: Text(
+                'Pró-labore',
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
               subtitle: Text(
                 'RS 100,00',
@@ -245,10 +242,12 @@ class _BusinessState extends State<Business> {
             ),
             Divider(
               color: Colors.transparent,
-              height: 30,
+              height: 25,
             ),
             ListTile(
-              title: Text('Reserva de emergência',                         style: Theme.of(context).textTheme.bodyMedium,
+              title: Text(
+                'Reserva de emergência',
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
               subtitle: Text(
                 'RS 100,00',
