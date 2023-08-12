@@ -128,7 +128,8 @@ class _EntryState extends State<Entry> {
                                               descriptionController.text,
                                           value: double.parse(
                                               valueController.text),
-                                          date: date));
+                                          date: DateTime
+                                              .now()));
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         const SnackBar(
@@ -153,7 +154,8 @@ class _EntryState extends State<Entry> {
                                               descriptionController.text,
                                           value: double.parse(
                                               valueController.text),
-                                          date: date));
+                                          date: DateTime
+                                              .now()));
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         const SnackBar(

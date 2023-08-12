@@ -1,7 +1,7 @@
 class VariableEntry {
   String description;
   double value;
-  String date;
+  DateTime date;
 
   VariableEntry ({
     required this.description,

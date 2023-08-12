@@ -2,18 +2,57 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/models/personal_reservation.dart';
 import 'package:iboss/repositories/personal_reservation_repository.dart';
+import 'package:iboss/repositories/variable_entry_repository.dart';
 import 'package:iboss/screens/main_screens/settings.dart';
 import 'package:iboss/screens/personal_screens/entry.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import '../../repositories/fixed_entry_repository.dart';
+import '../../repositories/fixed_outflow_repository.dart';
+import '../../repositories/variable_expense_repository.dart';
+import '../../repositories/variable_outflow_repository.dart';
 import '../personal_screens/outflow.dart';
 
-class Personal extends StatelessWidget {
+class Personal extends StatefulWidget {
   const Personal({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    TextEditingController reservationController = TextEditingController();
+  State<Personal> createState() => _PersonalState();
+}
 
+class _PersonalState extends State<Personal> {
+
+  TextEditingController reservationController = TextEditingController();
+  DateTime _selectedDate = DateTime.now();
+  NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
+
+  double totalFixedEntry = 0.0;
+  double totalVariableEntry = 0.0;
+
+  double totalFixedOutflow = 0.0;
+  double totalVariableOutflow = 0.0;
+
+  @override
+  Widget build(BuildContext context) {
+
+    final fixedEntryRepository =
+    Provider.of<FixedEntryRepository>(context);
+    totalFixedEntry = fixedEntryRepository
+        .getTotalFixedEntryByMonth(_selectedDate);
+    final variableEntryRepository =
+    Provider.of<VariableEntryRepository>(context);
+    totalVariableEntry = variableEntryRepository
+        .getTotalVariableEntryByMonth(_selectedDate);
+
+    final fixedOutflowRepository =
+    Provider.of<FixedOutflowRepository>(context);
+    totalFixedOutflow = fixedOutflowRepository
+        .getTotalFixedOutflowByMonth(_selectedDate);
+    final variableOutflowRepository =
+    Provider.of<VariableOutflowRepository>(context);
+    totalVariableOutflow = variableOutflowRepository
+        .getTotalVariableOutflowByMonth(_selectedDate);
+    
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
@@ -75,7 +114,7 @@ class Personal extends StatelessWidget {
                         style: TextStyle(fontSize: 16),
                       ),
                       Text(
-                        'RS 100,00',
+                        '${real.format(totalFixedEntry + totalVariableEntry)}',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -89,13 +128,13 @@ class Personal extends StatelessWidget {
                           Column(
                             children: [
                               Text("Entradas fixas"),
-                              Text("RS 50,00", style: TextStyle(color: Colors.green),),
+                              Text("${real.format(totalFixedEntry)}", style: TextStyle(color: Colors.green),),
                             ],
                           ),
                           Column(
                             children: [
                               Text("entradas variáveis"),
-                              Text("RS 50,00", style: TextStyle(color: Colors.green),),
+                              Text("${real.format(totalVariableEntry)}", style: TextStyle(color: Colors.green),),
                             ],
                           ),
                         ],
@@ -142,7 +181,7 @@ class Personal extends StatelessWidget {
                       SizedBox(height: 15),
                       Text('Total', style: TextStyle(fontSize: 16)),
                       Text(
-                        'RS 100,00',
+                        '${real.format(totalFixedOutflow + totalVariableOutflow)}',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -156,13 +195,13 @@ class Personal extends StatelessWidget {
                           Column(
                             children: [
                               Text("Saídas fixos"),
-                              Text("RS 50,00", style: TextStyle(color: Colors.red),),
+                              Text("${real.format(totalFixedOutflow)}", style: TextStyle(color: Colors.red),),
                             ],
                           ),
                           Column(
                             children: [
                               Text("Saídas variáveis"),
-                              Text("RS 50,00", style: TextStyle(color: Colors.red),),
+                              Text("${real.format(totalVariableOutflow)}", style: TextStyle(color: Colors.red),),
                             ],
                           ),
                         ],

@@ -6,6 +6,10 @@ import 'package:iboss/repositories/company_reservation_repository.dart';
 import 'package:iboss/screens/main_screens/settings.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import '../../repositories/cash_payment_repository.dart';
+import '../../repositories/deferred_payment_repository.dart';
+import '../../repositories/fixed_expense_repository.dart';
+import '../../repositories/variable_expense_repository.dart';
 import '../business_screens/expense.dart';
 import '../business_screens/revenue.dart';
 
@@ -17,6 +21,13 @@ class Business extends StatefulWidget {
 }
 
 class _BusinessState extends State<Business> {
+  DateTime _selectedDate = DateTime.now();
+  double totalCashPayments = 0.0;
+  double totalDeferredPayments = 0.0;
+
+  double totalFixedExpenses = 0.0;
+  double totalVariableExpense = 0.0;
+
   TextEditingController wageController = TextEditingController();
   TextEditingController reservationController = TextEditingController();
   NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
@@ -24,6 +35,23 @@ class _BusinessState extends State<Business> {
 
   @override
   Widget build(BuildContext context) {
+    
+    final cashPaymentRepository = Provider.of<CashPaymentRepository>(context);
+    totalCashPayments =
+        cashPaymentRepository.getTotalCashPaymentsByMonth(_selectedDate);
+    final deferredPaymentRepository =
+    Provider.of<DeferredPaymentRepository>(context);
+    totalDeferredPayments = deferredPaymentRepository
+        .getTotalDeferredPaymentsByMonth(_selectedDate);
+
+    final fixedExpenseRepository = Provider.of<FixedExpenseRepository>(context);
+    totalFixedExpenses =
+        fixedExpenseRepository.getTotalFixedExpensesByMonth(_selectedDate);
+    final variableExpensesRepository =
+    Provider.of<VariableExpenseRepository>(context);
+    totalVariableExpense = variableExpensesRepository
+        .getTotalVariableExpensesByMonth(_selectedDate);
+    
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
@@ -86,7 +114,7 @@ class _BusinessState extends State<Business> {
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       Text(
-                        'RS 100,00',
+                        '${real.format(totalCashPayments + totalDeferredPayments)}',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -104,7 +132,7 @@ class _BusinessState extends State<Business> {
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               Text(
-                                "RS 50,00",
+                                "${real.format(totalCashPayments)}",
                                 style: TextStyle(
                                   color: Colors.green,
                                 ),
@@ -118,7 +146,7 @@ class _BusinessState extends State<Business> {
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               Text(
-                                "RS 50,00",
+                                "${real.format(totalDeferredPayments)}",
                                 style: TextStyle(
                                   color: Colors.green,
                                 ),
@@ -172,7 +200,7 @@ class _BusinessState extends State<Business> {
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       Text(
-                        'RS 100,00',
+                        '${real.format(totalFixedExpenses + totalVariableExpense)}',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -190,7 +218,7 @@ class _BusinessState extends State<Business> {
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               Text(
-                                "RS 50,00",
+                                "${real.format(totalFixedExpenses)}",
                                 style: TextStyle(
                                   color: Colors.red,
                                 ),
@@ -204,7 +232,7 @@ class _BusinessState extends State<Business> {
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               Text(
-                                "RS 50,00",
+                                "${real.format(totalVariableExpense)}",
                                 style: TextStyle(
                                   color: Colors.red,
                                 ),

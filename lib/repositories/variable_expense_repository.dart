@@ -20,6 +20,20 @@ class VariableExpenseRepository extends ChangeNotifier {
     notifyListeners();
   }
 
+  double getTotalVariableExpensesByMonth(DateTime selectedMonth) {
+    double total = 0.0;
+
+    variableExpenses.forEach((payment) {
+      final paymentYear = payment.date.year;
+      final paymentMonth = payment.date.month;
+      if (paymentYear == selectedMonth.year &&
+          paymentMonth == selectedMonth.month) {
+        total += payment.value;
+      }
+    });
+    return total;
+  }
+
   List<VariableExpense> getVariableExpensesByMonth(DateTime selectedDate) {
     final String monthYearString = DateFormat('MM-yyyy').format(selectedDate);
     return variableExpenses.where((expense) => DateFormat('MM-yyyy').format(expense.date) == monthYearString).toList();

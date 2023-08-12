@@ -1,7 +1,7 @@
 class FixedEntry {
   String description;
   double value;
-  String date;
+  DateTime date;
 
   FixedEntry ({
     required this.description,

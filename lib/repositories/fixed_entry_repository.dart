@@ -17,4 +17,18 @@ class FixedEntryRepository extends ChangeNotifier {
     fixedEntry.removeAt(i);
     notifyListeners();
   }
+
+  double getTotalFixedEntryByMonth(DateTime selectedMonth) {
+    double total = 0.0;
+
+    fixedEntry.forEach((payment) {
+      final paymentYear = payment.date.year;
+      final paymentMonth = payment.date.month;
+      if (paymentYear == selectedMonth.year &&
+          paymentMonth == selectedMonth.month) {
+        total += payment.value;
+      }
+    });
+    return total;
+  }
 }
