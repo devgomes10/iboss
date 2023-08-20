@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/menu_navigation.dart';
-import 'package:iboss/repositories/company_reservation_repository.dart';
 import 'package:iboss/screens/main_screens/settings.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -21,37 +20,40 @@ class Business extends StatefulWidget {
 }
 
 class _BusinessState extends State<Business> {
+  // variables
   DateTime _selectedDate = DateTime.now();
   double totalCashPayments = 0.0;
   double totalDeferredPayments = 0.0;
-
   double totalFixedExpenses = 0.0;
   double totalVariableExpense = 0.0;
-
   TextEditingController wageController = TextEditingController();
   TextEditingController reservationController = TextEditingController();
   NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
-  final menu = MenuNavigation();
 
   @override
   Widget build(BuildContext context) {
-    
+    // total cash payments
     final cashPaymentRepository = Provider.of<CashPaymentRepository>(context);
     totalCashPayments =
         cashPaymentRepository.getTotalCashPaymentsByMonth(_selectedDate);
+
+    // total payments on time
     final deferredPaymentRepository =
     Provider.of<DeferredPaymentRepository>(context);
     totalDeferredPayments = deferredPaymentRepository
         .getTotalDeferredPaymentsByMonth(_selectedDate);
 
+    // total fixed expenses
     final fixedExpenseRepository = Provider.of<FixedExpenseRepository>(context);
     totalFixedExpenses =
         fixedExpenseRepository.getTotalFixedExpensesByMonth(_selectedDate);
+
+    // total variable expenses
     final variableExpensesRepository =
     Provider.of<VariableExpenseRepository>(context);
     totalVariableExpense = variableExpensesRepository
         .getTotalVariableExpensesByMonth(_selectedDate);
-    
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
@@ -108,7 +110,7 @@ class _BusinessState extends State<Business> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 3),
+                      SizedBox(height: 10),
                       Text(
                         'Total',
                         style: Theme.of(context).textTheme.bodyMedium,
@@ -121,7 +123,7 @@ class _BusinessState extends State<Business> {
                           color: Colors.green,
                         ),
                       ),
-                      SizedBox(height: 3),
+                      SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -194,7 +196,7 @@ class _BusinessState extends State<Business> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 3),
+                      SizedBox(height: 10),
                       Text(
                         'Total',
                         style: Theme.of(context).textTheme.bodyMedium,
@@ -207,7 +209,7 @@ class _BusinessState extends State<Business> {
                           color: Colors.red,
                         ),
                       ),
-                      SizedBox(height: 3),
+                      SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -248,7 +250,7 @@ class _BusinessState extends State<Business> {
             ),
             Divider(
               color: Colors.transparent,
-              height: 25,
+              height: 20,
             ),
             ListTile(
               title: Text(
@@ -270,7 +272,7 @@ class _BusinessState extends State<Business> {
             ),
             Divider(
               color: Colors.transparent,
-              height: 25,
+              height: 12,
             ),
             ListTile(
               title: Text(
@@ -299,9 +301,6 @@ class _BusinessState extends State<Business> {
   updateSaldo() async {
     final form = GlobalKey<FormState>();
     final valueReservation = TextEditingController();
-    final companyReservation = context.read<CompanyReservationRepository>();
-
-    valueReservation.text = companyReservation.saldo.toString();
 
     AlertDialog dialog = AlertDialog(
       title: Text('Qual sua reserva financeira atual?'),
@@ -327,7 +326,6 @@ class _BusinessState extends State<Business> {
         TextButton(
           onPressed: () {
             if (form.currentState!.validate()) {
-              companyReservation.setSaldo(double.parse(valueReservation.text));
               Navigator.pop(context);
             }
           },

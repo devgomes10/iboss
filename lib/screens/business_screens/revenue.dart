@@ -15,12 +15,11 @@ class Revenue extends StatefulWidget {
 }
 
 class _RevenueState extends State<Revenue> {
-  List<DeferredPayment> wasPaid = [];
+  final _formKey = GlobalKey<FormState>();
   DateTime _selectedDate = DateTime.now();
   final descriptionController = TextEditingController();
   final valueController = TextEditingController();
   final NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
-
 
   void _changeMonth(bool increment) {
     setState(() {
@@ -33,7 +32,6 @@ class _RevenueState extends State<Revenue> {
       }
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -67,10 +65,10 @@ class _RevenueState extends State<Revenue> {
           bottom: const TabBar(
             tabs: [
               Tab(
-                text: 'Pagamento à Vista',
+                text: 'Pagos',
               ),
               Tab(
-                text: 'Pagamento a Prazo',
+                text: 'Faltam pagar',
               ),
             ],
             indicatorColor: Colors.white,
@@ -97,10 +95,19 @@ class _RevenueState extends State<Revenue> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Form(
+                      key: _formKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           TextFormField(
+                            validator: (String? value) {
+                              if (value!.isEmpty) {
+                                return "insira uma descrição";
+                              }
+                              if (value.length > 45) {
+                                return "Descrição muito grande";
+                              }
+                            },
                             keyboardType: TextInputType.text,
                             controller: descriptionController,
                             decoration: InputDecoration(
@@ -111,6 +118,11 @@ class _RevenueState extends State<Revenue> {
                           ),
                           SizedBox(height: 16),
                           TextFormField(
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Insira um valor";
+                              }
+                            },
                             keyboardType: TextInputType.number,
                             controller: valueController,
                             decoration: InputDecoration(
@@ -146,21 +158,23 @@ class _RevenueState extends State<Revenue> {
                                     Widget? widget) {
                                   return TextButton(
                                     onPressed: () async {
-                                      inCash.add(CashPayment(
-                                        description: descriptionController.text,
-                                        value:
-                                            double.parse(valueController.text),
-                                        date: DateTime
-                                            .now(),
-                                      ));
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                              'Criando um pagamento à vista'),
-                                        ),
-                                      );
-                                      Navigator.pop(context);
+                                      if (_formKey.currentState!.validate()) {
+                                        inCash.add(CashPayment(
+                                          description:
+                                          descriptionController.text,
+                                          value: double.parse(
+                                              valueController.text),
+                                          date: DateTime.now(),
+                                        ));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                                'Criando um pagamento à vista'),
+                                          ),
+                                        );
+                                        Navigator.pop(context);
+                                      }
                                     },
                                     style: TextButton.styleFrom(
                                       primary: Colors.green,
@@ -180,20 +194,24 @@ class _RevenueState extends State<Revenue> {
                                     Widget? widget) {
                                   return TextButton(
                                     onPressed: () async {
-                                      inTerm.add(DeferredPayment(
-                                        description: descriptionController.text,
-                                        value:
-                                            double.parse(valueController.text),
-                                        date: DateTime.now(),
-                                      ));
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                              'Criando um pagamento a prazo'),
-                                        ),
-                                      );
-                                      Navigator.pop(context);
+                                      if (_formKey.currentState!.validate()) {
+                                        inTerm.add(DeferredPayment(
+                                          description:
+                                          descriptionController.text,
+                                          value: double.parse(
+                                              valueController.text),
+                                          date: DateTime.now(),
+                                        ));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              'Criando um pagamento a prazo',
+                                            ),
+                                          ),
+                                        );
+                                        Navigator.pop(context);
+                                      }
                                     },
                                     style: TextButton.styleFrom(
                                       primary: Colors.blue,
@@ -248,15 +266,15 @@ class _RevenueState extends State<Revenue> {
                     builder: (BuildContext context,
                         CashPaymentRepository inCash, Widget? widget) {
                       final monthYearString =
-                          DateFormat('MM-yyyy', 'pt_BR').format(_selectedDate);
+                      DateFormat('MM-yyyy', 'pt_BR').format(_selectedDate);
                       final List<CashPayment> cashPayments =
-                          inCash.getCashPaymentsByMonth(_selectedDate);
+                      inCash.getCashPaymentsByMonth(_selectedDate);
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
                             shape: RoundedRectangleBorder(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(12)),
+                              BorderRadius.all(Radius.circular(12)),
                             ),
                             leading: Icon(Icons.trending_up),
                             title: Text(
@@ -284,44 +302,44 @@ class _RevenueState extends State<Revenue> {
                                   context: context,
                                   builder: (BuildContext context) =>
                                       AlertDialog(
-                                    scrollable: true,
-                                    title: const Text(
-                                        'Deseja mesmo excluir este pagamento?'),
-                                    content: SingleChildScrollView(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          crossAxisAlignment:
+                                        scrollable: true,
+                                        title: const Text(
+                                          'Deseja mesmo excluir este pagamento?',),
+                                        content: SingleChildScrollView(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Row(
+                                              crossAxisAlignment:
                                               CrossAxisAlignment.center,
-                                          mainAxisAlignment:
+                                              mainAxisAlignment:
                                               MainAxisAlignment.spaceAround,
-                                          children: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text('Não'),
+                                              children: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text('Não'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    inCash.remove(
+                                                        i, monthYearString);
+                                                    Navigator.pop(context);
+                                                    ScaffoldMessenger.of(context)
+                                                        .showSnackBar(
+                                                      const SnackBar(
+                                                        content: Text(
+                                                            'Pagamento deletado'),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Text('Excluir'),
+                                                ),
+                                              ],
                                             ),
-                                            TextButton(
-                                              onPressed: () {
-                                                inCash.remove(
-                                                    i, monthYearString);
-                                                Navigator.pop(context);
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  const SnackBar(
-                                                    content: Text(
-                                                        'Pagamento deletado'),
-                                                  ),
-                                                );
-                                              },
-                                              child: Text('Excluir'),
-                                            ),
-                                          ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ),
                                 );
                               },
                               icon: Icon(Icons.delete),
@@ -335,8 +353,8 @@ class _RevenueState extends State<Revenue> {
                     },
                   ),
                   Consumer<DeferredPaymentRepository>(
-                    builder: (BuildContext context, DeferredPaymentRepository inTerm,
-                        Widget? widget) {
+                    builder: (BuildContext context,
+                        DeferredPaymentRepository inTerm, Widget? widget) {
                       final monthYearString =
                       DateFormat('MM-yyyy', 'pt_BR').format(_selectedDate);
                       final List<DeferredPayment> deferredPayments =
@@ -345,7 +363,8 @@ class _RevenueState extends State<Revenue> {
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(12)),
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(12)),
                             ),
                             leading: Icon(Icons.trending_up),
                             title: Text(
@@ -384,12 +403,14 @@ class _RevenueState extends State<Revenue> {
                                                   'Você realmente recebeu o dinheiro?'),
                                               content: SingleChildScrollView(
                                                 child: Padding(
-                                                  padding: const EdgeInsets.all(8.0),
+                                                  padding:
+                                                  const EdgeInsets.all(8.0),
                                                   child: Row(
                                                     crossAxisAlignment:
                                                     CrossAxisAlignment.center,
                                                     mainAxisAlignment:
-                                                    MainAxisAlignment.spaceAround,
+                                                    MainAxisAlignment
+                                                        .spaceAround,
                                                     children: [
                                                       TextButton(
                                                         onPressed: () {
@@ -397,31 +418,49 @@ class _RevenueState extends State<Revenue> {
                                                         },
                                                         child: Text('Não'),
                                                       ),
-                                                      TextButton(
-                                                        onPressed: () {
-                                                          inTerm.remove(
-                                                              i, monthYearString);
-                                                          wasPaid.add(DeferredPayment(
-                                                            description:
-                                                            descriptionController
-                                                                .text,
-                                                            value: double.parse(
-                                                                valueController.text),
-                                                            date: DateFormat("dd/MM/yyyy")
-                                                                .parse(_selectedDate
-                                                                .toString()),
-                                                          ));
-                                                          print(wasPaid.length);
-                                                          Navigator.pop(context);
-                                                          ScaffoldMessenger.of(context)
-                                                              .showSnackBar(
-                                                            const SnackBar(
-                                                              content: Text(
-                                                                  'Pagamento Recebido'),
+                                                      Consumer<
+                                                          CashPaymentRepository>(
+                                                        builder: (BuildContext
+                                                        context,
+                                                            CashPaymentRepository
+                                                            inCash,
+                                                            Widget? widget) {
+                                                          return TextButton(
+                                                            onPressed: () async {
+                                                              inCash
+                                                                  .add(CashPayment(
+                                                                description:
+                                                                descriptionController
+                                                                    .text,
+                                                                value: double.parse(
+                                                                    valueController
+                                                                        .text),
+                                                                date:
+                                                                DateTime.now(),
+                                                              ));
+                                                              inTerm.remove(i,
+                                                                  monthYearString);
+                                                              ScaffoldMessenger.of(
+                                                                  context)
+                                                                  .showSnackBar(
+                                                                SnackBar(
+                                                                  content: Text(
+                                                                      'Criando um pagamento à vista'),
+                                                                ),
+                                                              );
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            style: TextButton
+                                                                .styleFrom(),
+                                                            child: const Text(
+                                                              'Sim',
+                                                              style: TextStyle(
+                                                                fontSize: 16,
+                                                              ),
                                                             ),
                                                           );
                                                         },
-                                                        child: Text('Sim'),
                                                       ),
                                                     ],
                                                   ),
@@ -443,12 +482,14 @@ class _RevenueState extends State<Revenue> {
                                                   'Deseja mesmo excluir este pagamento?'),
                                               content: SingleChildScrollView(
                                                 child: Padding(
-                                                  padding: const EdgeInsets.all(8.0),
+                                                  padding:
+                                                  const EdgeInsets.all(8.0),
                                                   child: Row(
                                                     crossAxisAlignment:
                                                     CrossAxisAlignment.center,
                                                     mainAxisAlignment:
-                                                    MainAxisAlignment.spaceAround,
+                                                    MainAxisAlignment
+                                                        .spaceAround,
                                                     children: [
                                                       TextButton(
                                                         onPressed: () {
@@ -461,7 +502,8 @@ class _RevenueState extends State<Revenue> {
                                                           inTerm.remove(
                                                               i, monthYearString);
                                                           Navigator.pop(context);
-                                                          ScaffoldMessenger.of(context)
+                                                          ScaffoldMessenger.of(
+                                                              context)
                                                               .showSnackBar(
                                                             const SnackBar(
                                                               content: Text(
@@ -494,10 +536,10 @@ class _RevenueState extends State<Revenue> {
                 ],
               ),
             ),
-
           ],
         ),
       ),
     );
   }
 }
+

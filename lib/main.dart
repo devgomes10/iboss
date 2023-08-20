@@ -3,7 +3,6 @@ import 'package:iboss/components/menu_navigation.dart';
 import 'package:iboss/dark_theme.dart';
 import 'package:iboss/repositories/cash_payment_repository.dart';
 import 'package:iboss/repositories/company_goals_repository.dart';
-import 'package:iboss/repositories/company_reservation_repository.dart';
 import 'package:iboss/repositories/deferred_payment_repository.dart';
 import 'package:iboss/repositories/fixed_entry_repository.dart';
 import 'package:iboss/repositories/fixed_expense_repository.dart';
@@ -47,7 +46,6 @@ void main() async {
     ChangeNotifierProvider(
         create: (context) =>
             PersonalReservationRepository(personalReservations: [])),
-    ChangeNotifierProvider(create: (context) => CompanyReservationRepository()),
   ], child: const MyApp()));
 }
 

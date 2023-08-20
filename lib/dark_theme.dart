@@ -7,6 +7,7 @@ ThemeData darkTheme = ThemeData(
       fontSize: 15,
     ),
     bodyMedium: GoogleFonts.montserrat(
+      color: Colors.grey[300],
       fontSize: 18,
     ),
     bodyLarge: GoogleFonts.montserrat(fontSize: 23, fontWeight: FontWeight.bold),
@@ -22,7 +23,7 @@ ThemeData darkTheme = ThemeData(
   colorScheme: ColorScheme.dark(
     background: Colors.black,
     primary: Colors.grey[900]!,
-    secondary: Colors.grey[300]!,
+    secondary: Colors.grey[400]!,
     tertiary: Color(0xFF92E3A9),
   ),
 );

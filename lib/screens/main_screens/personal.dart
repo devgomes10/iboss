@@ -21,38 +21,33 @@ class Personal extends StatefulWidget {
 }
 
 class _PersonalState extends State<Personal> {
-
+  // variables
   TextEditingController reservationController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
   NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
-
   double totalFixedEntry = 0.0;
   double totalVariableEntry = 0.0;
-
   double totalFixedOutflow = 0.0;
   double totalVariableOutflow = 0.0;
 
   @override
   Widget build(BuildContext context) {
-
-    final fixedEntryRepository =
-    Provider.of<FixedEntryRepository>(context);
-    totalFixedEntry = fixedEntryRepository
-        .getTotalFixedEntryByMonth(_selectedDate);
+    final fixedEntryRepository = Provider.of<FixedEntryRepository>(context);
+    totalFixedEntry =
+        fixedEntryRepository.getTotalFixedEntryByMonth(_selectedDate);
     final variableEntryRepository =
     Provider.of<VariableEntryRepository>(context);
-    totalVariableEntry = variableEntryRepository
-        .getTotalVariableEntryByMonth(_selectedDate);
+    totalVariableEntry =
+        variableEntryRepository.getTotalVariableEntryByMonth(_selectedDate);
 
-    final fixedOutflowRepository =
-    Provider.of<FixedOutflowRepository>(context);
-    totalFixedOutflow = fixedOutflowRepository
-        .getTotalFixedOutflowByMonth(_selectedDate);
+    final fixedOutflowRepository = Provider.of<FixedOutflowRepository>(context);
+    totalFixedOutflow =
+        fixedOutflowRepository.getTotalFixedOutflowByMonth(_selectedDate);
     final variableOutflowRepository =
     Provider.of<VariableOutflowRepository>(context);
-    totalVariableOutflow = variableOutflowRepository
-        .getTotalVariableOutflowByMonth(_selectedDate);
-    
+    totalVariableOutflow =
+        variableOutflowRepository.getTotalVariableOutflowByMonth(_selectedDate);
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
@@ -78,10 +73,15 @@ class _PersonalState extends State<Personal> {
         padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
-            SizedBox(height: 15),
+            SizedBox(height: 5),
             InkWell(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Entry(),),);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Entry(),
+                  ),
+                );
               },
               child: Card(
                 color: Theme.of(context).primaryColor,
@@ -96,11 +96,7 @@ class _PersonalState extends State<Personal> {
                         children: [
                           Text(
                             'Entradas',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 23,
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           FaIcon(
                             FontAwesomeIcons.arrowTrendUp,
@@ -108,10 +104,10 @@ class _PersonalState extends State<Personal> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 15),
+                      SizedBox(height: 10),
                       Text(
                         'Total',
-                        style: TextStyle(fontSize: 16),
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       Text(
                         '${real.format(totalFixedEntry + totalVariableEntry)}',
@@ -121,20 +117,29 @@ class _PersonalState extends State<Personal> {
                           color: Colors.green,
                         ),
                       ),
-                      SizedBox(height: 15),
+                      SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Column(
                             children: [
-                              Text("Entradas fixas"),
-                              Text("${real.format(totalFixedEntry)}", style: TextStyle(color: Colors.green),),
+                              Text(
+                                "Entradas fixas",
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              Text(
+                                "${real.format(totalFixedEntry)}",
+                                style: TextStyle(color: Colors.green),
+                              ),
                             ],
                           ),
                           Column(
                             children: [
                               Text("entradas variáveis"),
-                              Text("${real.format(totalVariableEntry)}", style: TextStyle(color: Colors.green),),
+                              Text(
+                                "${real.format(totalVariableEntry)}",
+                                style: TextStyle(color: Colors.green),
+                              ),
                             ],
                           ),
                         ],
@@ -150,8 +155,12 @@ class _PersonalState extends State<Personal> {
             ),
             InkWell(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Outflow(),),);
-
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Outflow(),
+                  ),
+                );
               },
               child: Card(
                 color: Theme.of(context).primaryColor,
@@ -166,11 +175,7 @@ class _PersonalState extends State<Personal> {
                         children: [
                           Text(
                             'Saídas',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 23,
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           FaIcon(
                             FontAwesomeIcons.arrowTrendDown,
@@ -178,8 +183,9 @@ class _PersonalState extends State<Personal> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 15),
-                      Text('Total', style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 8),
+                      Text('Total',
+                          style: Theme.of(context).textTheme.bodyMedium),
                       Text(
                         '${real.format(totalFixedOutflow + totalVariableOutflow)}',
                         style: TextStyle(
@@ -188,20 +194,32 @@ class _PersonalState extends State<Personal> {
                           color: Colors.red,
                         ),
                       ),
-                      SizedBox(height: 15),
+                      SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Column(
                             children: [
-                              Text("Saídas fixos"),
-                              Text("${real.format(totalFixedOutflow)}", style: TextStyle(color: Colors.red),),
+                              Text(
+                                "Saídas fixas",
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              Text(
+                                "${real.format(totalFixedOutflow)}",
+                                style: TextStyle(color: Colors.red),
+                              ),
                             ],
                           ),
                           Column(
                             children: [
-                              Text("Saídas variáveis"),
-                              Text("${real.format(totalVariableOutflow)}", style: TextStyle(color: Colors.red),),
+                              Text(
+                                "Saídas variáveis",
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              Text(
+                                "${real.format(totalVariableOutflow)}",
+                                style: TextStyle(color: Colors.red),
+                              ),
                             ],
                           ),
                         ],

@@ -15,6 +15,7 @@ class Expense extends StatefulWidget {
 }
 
 class _ExpenseState extends State<Expense> {
+  final _formKey = GlobalKey<FormState>();
   DateTime _selectedDate = DateTime.now();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController valueController = TextEditingController();
@@ -99,10 +100,20 @@ class _ExpenseState extends State<Expense> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Form(
+                      key: _formKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           TextFormField(
+                            validator: (String? value) {
+                              if (value!.isEmpty) {
+                                return "Insira uma descrição";
+                              }
+                              if (value.length > 45) {
+                                return "Descrição muito longa";
+                              }
+                              return null;
+                            },
                             keyboardType: TextInputType.text,
                             controller: descriptionController,
                             decoration: InputDecoration(
@@ -113,6 +124,12 @@ class _ExpenseState extends State<Expense> {
                           ),
                           SizedBox(height: 16),
                           TextFormField(
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Insira um valor";
+                              }
+                              return null;
+                            },
                             keyboardType: TextInputType.number,
                             controller: valueController,
                             decoration: InputDecoration(
@@ -148,21 +165,23 @@ class _ExpenseState extends State<Expense> {
                                     Widget? widget) {
                                   return TextButton(
                                     onPressed: () async {
-                                      fixed.add(FixedExpense(
-                                        description: descriptionController.text,
-                                        value:
-                                            double.parse(valueController.text),
-                                        date: DateTime
-                                            .now(),
-                                      ));
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content:
-                                              Text('Criando um gasto fixo'),
-                                        ),
-                                      );
-                                      Navigator.pop(context);
+                                      if (_formKey.currentState!.validate()) {
+                                        fixed.add(FixedExpense(
+                                          description: descriptionController.text,
+                                          value:
+                                          double.parse(valueController.text),
+                                          date: DateTime
+                                              .now(),
+                                        ));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content:
+                                            Text('Criando um gasto fixo'),
+                                          ),
+                                        );
+                                        Navigator.pop(context);
+                                      }
                                     },
                                     style: TextButton.styleFrom(
                                       primary: Colors.green,
@@ -182,20 +201,22 @@ class _ExpenseState extends State<Expense> {
                                     Widget? widget) {
                                   return TextButton(
                                     onPressed: () async {
-                                      variable.add(VariableExpense(
-                                        description: descriptionController.text,
-                                        value:
-                                            double.parse(valueController.text),
-                                        date: DateTime.now(),
-                                      ));
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content:
-                                              Text('Criando um gasto variável'),
-                                        ),
-                                      );
-                                      Navigator.pop(context);
+                                      if (_formKey.currentState!.validate()) {
+                                        variable.add(VariableExpense(
+                                          description: descriptionController.text,
+                                          value:
+                                          double.parse(valueController.text),
+                                          date: DateTime.now(),
+                                        ));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content:
+                                            Text('Criando um gasto variável'),
+                                          ),
+                                        );
+                                        Navigator.pop(context);
+                                      }
                                     },
                                     style: TextButton.styleFrom(
                                       primary: Colors.blue,
@@ -250,7 +271,7 @@ class _ExpenseState extends State<Expense> {
                     builder: (BuildContext context,
                         FixedExpenseRepository fixed, Widget? widget) {
                       final List<FixedExpense> fixedExpenses =
-                          fixed.getFixedExpensesByMonth(_selectedDate);
+                      fixed.getFixedExpensesByMonth(_selectedDate);
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
@@ -269,41 +290,41 @@ class _ExpenseState extends State<Expense> {
                                   context: context,
                                   builder: (BuildContext context) =>
                                       AlertDialog(
-                                    scrollable: true,
-                                    title: const Text(
-                                        'Deseja mesmo excluir este gasto?'),
-                                    content: SingleChildScrollView(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          crossAxisAlignment:
+                                        scrollable: true,
+                                        title: const Text(
+                                            'Deseja mesmo excluir este gasto?'),
+                                        content: SingleChildScrollView(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Row(
+                                              crossAxisAlignment:
                                               CrossAxisAlignment.center,
-                                          mainAxisAlignment:
+                                              mainAxisAlignment:
                                               MainAxisAlignment.spaceAround,
-                                          children: [
-                                            TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text('Não')),
-                                            TextButton(
-                                                onPressed: () {
-                                                  fixed.remove(i);
-                                                  Navigator.pop(context);
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    const SnackBar(
-                                                      content: Text(
-                                                          'Gasto deletado'),
-                                                    ),
-                                                  );
-                                                },
-                                                child: Text('Excluir')),
-                                          ],
+                                              children: [
+                                                TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Text('Não')),
+                                                TextButton(
+                                                    onPressed: () {
+                                                      fixed.remove(i);
+                                                      Navigator.pop(context);
+                                                      ScaffoldMessenger.of(context)
+                                                          .showSnackBar(
+                                                        const SnackBar(
+                                                          content: Text(
+                                                              'Gasto deletado'),
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: Text('Excluir')),
+                                              ],
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ),
                                 );
                               },
                               icon: Icon(Icons.delete),
@@ -320,7 +341,7 @@ class _ExpenseState extends State<Expense> {
                     builder: (BuildContext context,
                         VariableExpenseRepository variable, Widget? widget) {
                       final List<VariableExpense> variableExpenses =
-                          variable.getVariableExpensesByMonth(_selectedDate);
+                      variable.getVariableExpensesByMonth(_selectedDate);
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
@@ -339,42 +360,42 @@ class _ExpenseState extends State<Expense> {
                                     context: context,
                                     builder: (BuildContext context) =>
                                         AlertDialog(
-                                      scrollable: true,
-                                      title: const Text(
-                                          'Deseja mesmo excluir este gasto?'),
-                                      content: SingleChildScrollView(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            crossAxisAlignment:
+                                          scrollable: true,
+                                          title: const Text(
+                                              'Deseja mesmo excluir este gasto?'),
+                                          content: SingleChildScrollView(
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Row(
+                                                crossAxisAlignment:
                                                 CrossAxisAlignment.center,
-                                            mainAxisAlignment:
+                                                mainAxisAlignment:
                                                 MainAxisAlignment.spaceAround,
-                                            children: [
-                                              TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: Text('Não')),
-                                              TextButton(
-                                                  onPressed: () {
-                                                    variable.remove(i);
-                                                    Navigator.pop(context);
-                                                    ScaffoldMessenger.of(
+                                                children: [
+                                                  TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text('Não')),
+                                                  TextButton(
+                                                      onPressed: () {
+                                                        variable.remove(i);
+                                                        Navigator.pop(context);
+                                                        ScaffoldMessenger.of(
                                                             context)
-                                                        .showSnackBar(
-                                                      const SnackBar(
-                                                        content: Text(
-                                                            'Gasto deletado'),
-                                                      ),
-                                                    );
-                                                  },
-                                                  child: Text('Excluir')),
-                                            ],
+                                                            .showSnackBar(
+                                                          const SnackBar(
+                                                            content: Text(
+                                                                'Gasto deletado'),
+                                                          ),
+                                                        );
+                                                      },
+                                                      child: Text('Excluir')),
+                                                ],
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ),
                                   );
                                 },
                                 icon: Icon(Icons.delete)),

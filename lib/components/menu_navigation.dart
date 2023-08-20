@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:iboss/screens/business_screens/revenue.dart';
 import 'package:iboss/screens/main_screens/business.dart';
 import 'package:iboss/screens/main_screens/dashboard.dart';
 import 'package:iboss/screens/main_screens/goals.dart';
 import 'package:iboss/screens/main_screens/personal.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class MenuNavigation extends StatefulWidget {
   const MenuNavigation({super.key});
@@ -42,9 +44,42 @@ class _MenuNavigationState extends State<MenuNavigation> {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: FaIcon(FontAwesomeIcons.plus),
+      floatingActionButton: SpeedDial(
+        icon: FontAwesomeIcons.plus,
+        overlayColor: Colors.black,
+        overlayOpacity: 0.7,
+        spacing: 12,
+        spaceBetweenChildren: 12,
+        children: [
+          SpeedDialChild(
+            child:FaIcon(FontAwesomeIcons.industry),
+            label: 'Receita',
+            backgroundColor: Colors.green,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Revenue(),
+                ),
+              );
+            },
+          ),
+          SpeedDialChild(
+            child: FaIcon(FontAwesomeIcons.industry),
+            label: 'Gasto',
+            backgroundColor: Colors.red,
+          ),
+          SpeedDialChild(
+            child: FaIcon(FontAwesomeIcons.userLarge),
+            label: 'Entrada',
+            backgroundColor: Colors.green,
+          ),
+          SpeedDialChild(
+            child: FaIcon(FontAwesomeIcons.userLarge),
+            label: 'Saída',
+            backgroundColor: Colors.red,
+          ),
+        ],
       ),
       extendBody: true,
       bottomNavigationBar: BottomAppBar(
@@ -78,7 +113,9 @@ class _MenuNavigationState extends State<MenuNavigation> {
                   icon: FaIcon(FontAwesomeIcons.userLarge),
                   color: currentPage == 1 ? Colors.white : Colors.grey,
                 ),
-                const SizedBox(width: 24,),
+                const SizedBox(
+                  width: 24,
+                ),
                 IconButton(
                   onPressed: () {
                     setState(() {
@@ -107,4 +144,3 @@ class _MenuNavigationState extends State<MenuNavigation> {
     );
   }
 }
-

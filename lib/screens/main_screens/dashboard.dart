@@ -22,6 +22,8 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   DateTime _selectedDate = DateTime.now();
+  final NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
+
   double totalCashPayments = 0.0;
   double totalDeferredPayments = 0.0;
 
@@ -52,7 +54,7 @@ class _DashboardState extends State<Dashboard> {
     totalCashPayments =
         cashPaymentRepository.getTotalCashPaymentsByMonth(_selectedDate);
     final deferredPaymentRepository =
-        Provider.of<DeferredPaymentRepository>(context);
+    Provider.of<DeferredPaymentRepository>(context);
     totalDeferredPayments = deferredPaymentRepository
         .getTotalDeferredPaymentsByMonth(_selectedDate);
 
@@ -60,28 +62,25 @@ class _DashboardState extends State<Dashboard> {
     totalFixedExpenses =
         fixedExpenseRepository.getTotalFixedExpensesByMonth(_selectedDate);
     final variableExpensesRepository =
-        Provider.of<VariableExpenseRepository>(context);
+    Provider.of<VariableExpenseRepository>(context);
     totalVariableExpense = variableExpensesRepository
         .getTotalVariableExpensesByMonth(_selectedDate);
 
-    final fixedEntryRepository =
-    Provider.of<FixedEntryRepository>(context);
-    totalFixedEntry = fixedEntryRepository
-        .getTotalFixedEntryByMonth(_selectedDate);
+    final fixedEntryRepository = Provider.of<FixedEntryRepository>(context);
+    totalFixedEntry =
+        fixedEntryRepository.getTotalFixedEntryByMonth(_selectedDate);
     final variableEntryRepository =
     Provider.of<VariableEntryRepository>(context);
-    totalVariableEntry = variableEntryRepository
-        .getTotalVariableEntryByMonth(_selectedDate);
+    totalVariableEntry =
+        variableEntryRepository.getTotalVariableEntryByMonth(_selectedDate);
 
-    final fixedOutflowRepository =
-    Provider.of<FixedOutflowRepository>(context);
-    totalFixedOutflow = fixedOutflowRepository
-        .getTotalFixedOutflowByMonth(_selectedDate);
+    final fixedOutflowRepository = Provider.of<FixedOutflowRepository>(context);
+    totalFixedOutflow =
+        fixedOutflowRepository.getTotalFixedOutflowByMonth(_selectedDate);
     final variableOutflowRepository =
     Provider.of<VariableOutflowRepository>(context);
-    totalVariableOutflow = variableOutflowRepository
-        .getTotalVariableOutflowByMonth(_selectedDate);
-
+    totalVariableOutflow =
+        variableOutflowRepository.getTotalVariableOutflowByMonth(_selectedDate);
 
     return DefaultTabController(
       length: 2,
@@ -124,9 +123,9 @@ class _DashboardState extends State<Dashboard> {
                 children: [
                   TabBar(
                     tabs: [
-                      Tab(text: 'Receita'),
+                      Tab(text: 'Receitas'),
                       Tab(text: 'Gastos'),
-                      Tab(text: 'Pró-labore'),
+                      Tab(text: 'Saldo'),
                     ],
                   ),
                   Expanded(
@@ -139,7 +138,7 @@ class _DashboardState extends State<Dashboard> {
                                   horizontal: 16, vertical: 8),
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
                                     icon: Icon(Icons.arrow_left),
@@ -159,28 +158,84 @@ class _DashboardState extends State<Dashboard> {
                                 ],
                               ),
                             ),
+                            SizedBox(height: 25,),
                             Container(
-                              width: 200,
-                              height: 200,
-                              child:
-                                  totalCashPayments + totalDeferredPayments > 0
-                                      ? PieChart(
-                                          PieChartData(
-                                            sections: [
-                                              PieChartSectionData(
-                                                  value: totalCashPayments,
-                                                  title: 'À vista'),
-                                              PieChartSectionData(
-                                                  value: totalDeferredPayments,
-                                                  title: 'A prazo'),
-                                            ],
-                                          ),
-                                        )
-                                      : Center(
-                                          child: Text(
-                                              'Vocâ não recebeu nenhum pagamento esse mês'),
+                              width: 250,
+                              height: 250,
+                              child: totalCashPayments + totalDeferredPayments >
+                                  0
+                                  ? Stack(
+                                children: [
+                                  PieChart(
+                                    PieChartData(
+                                      sections: [
+                                        PieChartSectionData(
+                                          color: Colors.green,
+                                          value: totalCashPayments,
+                                          title: '${real.format(totalCashPayments)}',
+                                          titleStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                                         ),
+                                        PieChartSectionData(
+                                          color: Colors.blue,
+                                          value: totalDeferredPayments,
+                                          title: '${real.format(totalDeferredPayments)}',
+                                          titleStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Center(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Text(
+                                              'Total',
+                                              style: TextStyle(
+                                                fontSize: 25,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            Text('${real.format(totalCashPayments + totalDeferredPayments)}',
+                                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              )
+                                  : Center(
+                                child: Text(
+                                    'Vocâ não recebeu nenhum pagamento esse mês'),
+                              ),
+                            ),SizedBox(
+                              height: 50,
                             ),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  color: Colors.blue,
+                                  width: 12,
+                                  height: 12,
+                                ),
+                                SizedBox(width: 4),
+                                Text('A prazo'),
+                                SizedBox(width: 70),
+                                Container(
+                                  color: Colors.green,
+                                  width: 12,
+                                  height: 12,
+                                ),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Text('À vista'),
+                              ],
+                            )
                           ],
                         ),
                         Column(
@@ -190,7 +245,7 @@ class _DashboardState extends State<Dashboard> {
                                   horizontal: 16, vertical: 8),
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
                                     icon: Icon(Icons.arrow_left),
@@ -210,28 +265,84 @@ class _DashboardState extends State<Dashboard> {
                                 ],
                               ),
                             ),
+                            SizedBox(height: 25,),
                             Container(
-                              width: 200,
-                              height: 200,
-                              child:
-                                  totalFixedExpenses + totalVariableExpense > 0
-                                      ? PieChart(
-                                          PieChartData(
-                                            sections: [
-                                              PieChartSectionData(
-                                                  value: totalFixedExpenses,
-                                                  title: 'A'),
-                                              PieChartSectionData(
-                                                  value: totalVariableExpense,
-                                                  title: 'B'),
-                                            ],
-                                          ),
-                                        )
-                                      : Center(
-                                          child: Text(
-                                              'Vocâ não teve nenhum gasto esse mês'),
+                              width: 250,
+                              height: 250,
+                              child: totalVariableExpense + totalFixedExpenses >
+                                  0
+                                  ? Stack(
+                                children: [
+                                  PieChart(
+                                    PieChartData(
+                                      sections: [
+                                        PieChartSectionData(
+                                          color: Colors.green,
+                                          value: totalFixedExpenses,
+                                          title: '${real.format(totalFixedExpenses)}',
+                                          titleStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                                         ),
+                                        PieChartSectionData(
+                                          color: Colors.blue,
+                                          value: totalVariableExpense,
+                                          title: '${real.format(totalVariableExpense)}',
+                                          titleStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Center(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Text(
+                                              'Total',
+                                              style: TextStyle(
+                                                fontSize: 25,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            Text('${real.format(totalVariableExpense + totalFixedExpenses)}',
+                                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              )
+                                  : Center(
+                                child: Text(
+                                    'Vocâ não recebeu nenhum pagamento esse mês'),
+                              ),
+                            ),SizedBox(
+                              height: 50,
                             ),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  color: Colors.blue,
+                                  width: 12,
+                                  height: 12,
+                                ),
+                                SizedBox(width: 4),
+                                Text('Fixo'),
+                                SizedBox(width: 70),
+                                Container(
+                                  color: Colors.green,
+                                  width: 12,
+                                  height: 12,
+                                ),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Text('Variável'),
+                              ],
+                            )
                           ],
                         ),
                         Column(
@@ -241,7 +352,7 @@ class _DashboardState extends State<Dashboard> {
                                   horizontal: 16, vertical: 8),
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
                                     icon: Icon(Icons.arrow_left),
@@ -264,13 +375,27 @@ class _DashboardState extends State<Dashboard> {
                             Container(
                               width: 200,
                               height: 200,
-                              child: PieChart(
+                              child: totalCashPayments +
+                                  totalDeferredPayments +
+                                  totalFixedExpenses +
+                                  totalVariableExpense >
+                                  0
+                                  ? PieChart(
                                 PieChartData(
                                   sections: [
-                                    PieChartSectionData(value: 60, title: 'A'),
-                                    PieChartSectionData(value: 40, title: 'B'),
+                                    PieChartSectionData(
+                                        value: totalCashPayments +
+                                            totalDeferredPayments,
+                                        title: 'A'),
+                                    PieChartSectionData(
+                                        value: totalFixedExpenses +
+                                            totalVariableExpense,
+                                        title: 'B'),
                                   ],
                                 ),
+                              )
+                                  : Center(
+                                child: Text("Não há saldo esse mês"),
                               ),
                             ),
                           ],
@@ -282,13 +407,14 @@ class _DashboardState extends State<Dashboard> {
               ),
             ),
             DefaultTabController(
-              length: 2,
+              length: 3,
               child: Column(
                 children: [
                   TabBar(
                     tabs: [
                       Tab(text: 'Entradas'),
                       Tab(text: 'Saídas'),
+                      Tab(text: 'Saldo'),
                     ],
                   ),
                   Expanded(
@@ -301,7 +427,7 @@ class _DashboardState extends State<Dashboard> {
                                   horizontal: 16, vertical: 8),
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
                                     icon: Icon(Icons.arrow_left),
@@ -328,11 +454,19 @@ class _DashboardState extends State<Dashboard> {
                                   ? PieChart(
                                 PieChartData(
                                   sections: [
-                                    PieChartSectionData(value: totalVariableEntry, title: 'A'),
-                                    PieChartSectionData(value: totalFixedEntry, title: 'B'),
+                                    PieChartSectionData(
+                                        value: totalVariableEntry,
+                                        title: 'A'),
+                                    PieChartSectionData(
+                                        value: totalFixedEntry,
+                                        title: 'B'),
                                   ],
                                 ),
-                              ) : Center(child: Text('Vocâ não recebeu nenhuma entrada esse mês'),),
+                              )
+                                  : Center(
+                                child: Text(
+                                    'Vocâ não recebeu nenhuma entrada esse mês'),
+                              ),
                             ),
                           ],
                         ),
@@ -343,7 +477,7 @@ class _DashboardState extends State<Dashboard> {
                                   horizontal: 16, vertical: 8),
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
                                     icon: Icon(Icons.arrow_left),
@@ -366,15 +500,74 @@ class _DashboardState extends State<Dashboard> {
                             Container(
                               width: 200,
                               height: 200,
-                              child: totalFixedOutflow + totalVariableOutflow > 0
+                              child:
+                              totalFixedOutflow + totalVariableOutflow > 0
                                   ? PieChart(
                                 PieChartData(
                                   sections: [
-                                    PieChartSectionData(value: totalFixedOutflow, title: 'A'),
-                                    PieChartSectionData(value: totalVariableOutflow, title: 'B'),
+                                    PieChartSectionData(
+                                        value: totalFixedOutflow,
+                                        title: 'A'),
+                                    PieChartSectionData(
+                                        value: totalVariableOutflow,
+                                        title: 'B'),
                                   ],
                                 ),
-                              ) : Center(child: Text('Vocâ não recebeu nenhum pagamento esse mês'),),
+                              )
+                                  : Center(
+                                child: Text(
+                                    'Vocâ não recebeu nenhum pagamento esse mês'),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 8),
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  IconButton(
+                                    icon: Icon(Icons.arrow_left),
+                                    onPressed: () => _changeMonth(false),
+                                  ),
+                                  Text(
+                                    DateFormat.yMMMM('pt_BR')
+                                        .format(_selectedDate),
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.arrow_right),
+                                    onPressed: () => _changeMonth(true),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              width: 200,
+                              height: 200,
+                              child: totalFixedEntry + totalVariableEntry + totalFixedOutflow + totalVariableOutflow >
+                                  0
+                                  ? PieChart(
+                                PieChartData(
+                                  sections: [
+                                    PieChartSectionData(
+                                        value: totalFixedEntry + totalVariableEntry,
+                                        title: 'A'),
+                                    PieChartSectionData(
+                                        value: totalFixedOutflow + totalVariableOutflow,
+                                        title: 'B'),
+                                  ],
+                                ),
+                              )
+                                  : Center(
+                                child: Text("Não há saldo esse mês"),
+                              ),
                             ),
                           ],
                         ),

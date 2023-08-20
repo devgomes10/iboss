@@ -15,6 +15,7 @@ class Entry extends StatefulWidget {
 }
 
 class _EntryState extends State<Entry> {
+  final _formKey = GlobalKey<FormState>();
   DateTime _selectedDate = DateTime.now();
 
   void _changeMonth(bool increment) {
@@ -87,20 +88,34 @@ class _EntryState extends State<Entry> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Form(
+                      key: _formKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           TextFormField(
+                            validator: (String? value) {
+                              if (value!.isEmpty) {
+                                return "Insira uma descrição";
+                              }
+                              if (value.length > 45) {
+                                return "Descrição muito longa";
+                              }
+                            },
                             keyboardType: TextInputType.text,
                             controller: descriptionController,
                             decoration:
-                                const InputDecoration(hintText: 'Descrição'),
+                            const InputDecoration(hintText: 'Descrição'),
                           ),
                           TextFormField(
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Insira um valor";
+                              }
+                            },
                             keyboardType: TextInputType.number,
                             controller: valueController,
                             decoration:
-                                const InputDecoration(hintText: 'Valor'),
+                            const InputDecoration(hintText: 'Valor'),
                           ),
                         ],
                       ),
@@ -123,21 +138,22 @@ class _EntryState extends State<Entry> {
                                     Widget? widget) {
                                   return TextButton(
                                     onPressed: () async {
-                                      fixed.add(FixedEntry(
-                                          description:
-                                              descriptionController.text,
-                                          value: double.parse(
-                                              valueController.text),
-                                          date: DateTime
-                                              .now()));
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content: Text(
-                                              'Criando um pagamento à vista'),
-                                        ),
-                                      );
-                                      Navigator.pop(context);
+                                      if (_formKey.currentState!.validate()) {
+                                        fixed.add(FixedEntry(
+                                            description:
+                                            descriptionController.text,
+                                            value: double.parse(
+                                                valueController.text),
+                                            date: DateTime.now()));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                                'Criando um pagamento à vista'),
+                                          ),
+                                        );
+                                        Navigator.pop(context);
+                                      }
                                     },
                                     child: const Text('À vista'),
                                   );
@@ -149,21 +165,22 @@ class _EntryState extends State<Entry> {
                                     Widget? widget) {
                                   return TextButton(
                                     onPressed: () async {
-                                      variable.add(VariableEntry(
-                                          description:
-                                              descriptionController.text,
-                                          value: double.parse(
-                                              valueController.text),
-                                          date: DateTime
-                                              .now()));
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content: Text(
-                                              'Criando um pagamento a prazo'),
-                                        ),
-                                      );
-                                      Navigator.pop(context);
+                                      if (_formKey.currentState!.validate()) {
+                                        variable.add(VariableEntry(
+                                            description:
+                                            descriptionController.text,
+                                            value: double.parse(
+                                                valueController.text),
+                                            date: DateTime.now()));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                                'Criando um pagamento a prazo'),
+                                          ),
+                                        );
+                                        Navigator.pop(context);
+                                      }
                                     },
                                     child: const Text('Fiado'),
                                   );
@@ -232,13 +249,13 @@ class _EntryState extends State<Entry> {
                                             content: SingleChildScrollView(
                                               child: Padding(
                                                 padding:
-                                                    const EdgeInsets.all(8.0),
+                                                const EdgeInsets.all(8.0),
                                                 child: Row(
                                                   crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
+                                                  CrossAxisAlignment.center,
                                                   mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceAround,
+                                                  MainAxisAlignment
+                                                      .spaceAround,
                                                   children: [
                                                     TextButton(
                                                         onPressed: () {
@@ -246,14 +263,14 @@ class _EntryState extends State<Entry> {
                                                               context);
                                                         },
                                                         child:
-                                                            const Text('Não')),
+                                                        const Text('Não')),
                                                     TextButton(
                                                         onPressed: () {
                                                           fixed.remove(i);
                                                           Navigator.pop(
                                                               context);
                                                           ScaffoldMessenger.of(
-                                                                  context)
+                                                              context)
                                                               .showSnackBar(
                                                             const SnackBar(
                                                               content: Text(
@@ -284,7 +301,7 @@ class _EntryState extends State<Entry> {
                             return ListTile(
                               leading: const Icon(Icons.trending_up),
                               title:
-                                  Text(variable.variableEntry[i].description),
+                              Text(variable.variableEntry[i].description),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -306,14 +323,14 @@ class _EntryState extends State<Entry> {
                                               content: SingleChildScrollView(
                                                 child: Padding(
                                                   padding:
-                                                      const EdgeInsets.all(8.0),
+                                                  const EdgeInsets.all(8.0),
                                                   child: Row(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
+                                                    CrossAxisAlignment
+                                                        .center,
                                                     mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceAround,
+                                                    MainAxisAlignment
+                                                        .spaceAround,
                                                     children: [
                                                       TextButton(
                                                           onPressed: () {
@@ -328,7 +345,7 @@ class _EntryState extends State<Entry> {
                                                             Navigator.pop(
                                                                 context);
                                                             ScaffoldMessenger
-                                                                    .of(context)
+                                                                .of(context)
                                                                 .showSnackBar(
                                                               const SnackBar(
                                                                 content: Text(
