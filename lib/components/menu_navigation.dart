@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:iboss/screens/business_screens/revenue.dart';
-import 'package:iboss/screens/main_screens/business.dart';
-import 'package:iboss/screens/main_screens/dashboard.dart';
-import 'package:iboss/screens/main_screens/goals.dart';
-import 'package:iboss/screens/main_screens/personal.dart';
+import 'package:iboss/components/forms/business/expense_form.dart';
+import 'package:iboss/components/forms/business/revenue_form.dart';
+import 'package:iboss/components/forms/personal/entry_form.dart';
+import 'package:iboss/components/forms/personal/outflow_form.dart';
+import 'package:iboss/screens/business/business.dart';
+import 'package:iboss/screens/business/expense.dart';
+import 'package:iboss/screens/dashboard/dashboard.dart';
+import 'package:iboss/screens/goals/goals.dart';
+import 'package:iboss/screens/personal/entry.dart';
+import 'package:iboss/screens/personal/outflow.dart';
+import 'package:iboss/screens/personal/personal.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import '../screens/business/revenue.dart';
 
 class MenuNavigation extends StatefulWidget {
   const MenuNavigation({super.key});
@@ -52,32 +59,60 @@ class _MenuNavigationState extends State<MenuNavigation> {
         spaceBetweenChildren: 12,
         children: [
           SpeedDialChild(
-            child:FaIcon(FontAwesomeIcons.industry),
-            label: 'Receita',
+            child: const FaIcon(FontAwesomeIcons.industry),
+            label: 'Receitas',
             backgroundColor: Colors.green,
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Revenue(),
+                  builder: (context) => const Revenue(),
                 ),
               );
+              NewRevenueDialog.show(context);
             },
           ),
           SpeedDialChild(
-            child: FaIcon(FontAwesomeIcons.industry),
-            label: 'Gasto',
+            child: const FaIcon(FontAwesomeIcons.industry),
+            label: 'Gastos',
             backgroundColor: Colors.red,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const Expense(),
+                ),
+              );
+              NewExpenseDialog.show(context);
+            },
           ),
           SpeedDialChild(
-            child: FaIcon(FontAwesomeIcons.userLarge),
+            child: const FaIcon(FontAwesomeIcons.userLarge),
             label: 'Entrada',
             backgroundColor: Colors.green,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const Entry(),
+                ),
+              );
+              NewEntryDialog.show(context);
+            },
           ),
           SpeedDialChild(
-            child: FaIcon(FontAwesomeIcons.userLarge),
+            child: const FaIcon(FontAwesomeIcons.userLarge),
             label: 'Saída',
             backgroundColor: Colors.red,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const Outflow(),
+                ),
+              );
+              NewOutflowDialog.show(context);
+            },
           ),
         ],
       ),
@@ -100,7 +135,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
                     });
                     pc.jumpToPage(0);
                   },
-                  icon: FaIcon(FontAwesomeIcons.industry),
+                  icon: const FaIcon(FontAwesomeIcons.industry),
                   color: currentPage == 0 ? Colors.white : Colors.grey,
                 ),
                 IconButton(
@@ -110,7 +145,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
                     });
                     pc.jumpToPage(1);
                   },
-                  icon: FaIcon(FontAwesomeIcons.userLarge),
+                  icon: const FaIcon(FontAwesomeIcons.userLarge),
                   color: currentPage == 1 ? Colors.white : Colors.grey,
                 ),
                 const SizedBox(
@@ -123,7 +158,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
                     });
                     pc.jumpToPage(2);
                   },
-                  icon: FaIcon(FontAwesomeIcons.bullseye),
+                  icon: const FaIcon(FontAwesomeIcons.bullseye),
                   color: currentPage == 2 ? Colors.white : Colors.grey,
                 ),
                 IconButton(
@@ -133,7 +168,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
                     });
                     pc.jumpToPage(3);
                   },
-                  icon: FaIcon(FontAwesomeIcons.gauge),
+                  icon: const FaIcon(FontAwesomeIcons.gauge),
                   color: currentPage == 3 ? Colors.white : Colors.grey,
                 ),
               ],

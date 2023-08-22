@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:iboss/components/menu_navigation.dart';
-import 'package:iboss/dark_theme.dart';
-import 'package:iboss/repositories/cash_payment_repository.dart';
-import 'package:iboss/repositories/company_goals_repository.dart';
-import 'package:iboss/repositories/deferred_payment_repository.dart';
-import 'package:iboss/repositories/fixed_entry_repository.dart';
-import 'package:iboss/repositories/fixed_expense_repository.dart';
-import 'package:iboss/repositories/fixed_outflow_repository.dart';
-import 'package:iboss/repositories/personal_goals_repository.dart';
-import 'package:iboss/repositories/personal_reservation_repository.dart';
-import 'package:iboss/repositories/variable_entry_repository.dart';
-import 'package:iboss/repositories/variable_expense_repository.dart';
-import 'package:iboss/repositories/variable_outflow_repository.dart';
-import 'package:iboss/repositories/wage_repository.dart';
+import 'package:iboss/repositories/business/deferred_payment_repository.dart';
+import 'package:iboss/repositories/business/fixed_expense_repository.dart';
+import 'package:iboss/repositories/business/variable_expense_repository.dart';
+import 'package:iboss/repositories/goals/company_goals_repository.dart';
+import 'package:iboss/repositories/personal/fixed_outflow_repository.dart';
+import 'package:iboss/repositories/personal/variable_entry_repository.dart';
+import 'package:iboss/repositories/personal/variable_outflow_repository.dart';
+import 'package:iboss/theme/dark_theme.dart';
+import 'package:iboss/repositories/business/cash_payment_repository.dart';
+import 'package:iboss/repositories/personal/fixed_entry_repository.dart';
+import 'package:iboss/repositories/goals/personal_goals_repository.dart';
+import 'package:iboss/repositories/personal/personal_reservation_repository.dart';
+import 'package:iboss/repositories/business/wage_repository.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:iboss/screens/business_screens/revenue.dart';
-import 'package:iboss/screens/login.dart';
-import 'package:iboss/screens/main_screens/settings.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -60,7 +56,7 @@ class MyApp extends StatelessWidget {
       title: 'Evolve',
       debugShowCheckedModeBanner: false,
       theme: darkTheme,
-      home: MenuNavigation(),
+      home: const MenuNavigation(),
     );
   }
 }
