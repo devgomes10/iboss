@@ -23,12 +23,19 @@ dependencies:
   animations: ^2.0.0
   font_awesome_flutter: ^10.5.0
   google_fonts: ^5.1.0
+  flutter_speed_dial: ^7.0.0
+  flutter_native_splash: ^2.3.2
+
+flutter_native_splash:
+  android: true
+  ios: true
+  color: "#003060"
+  image: "assets/splash.png"
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-
 
   flutter_lints: ^2.0.0
 

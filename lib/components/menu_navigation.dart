@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/forms/business/expense_form.dart';
 import 'package:iboss/components/forms/business/revenue_form.dart';
@@ -11,7 +12,6 @@ import 'package:iboss/screens/goals/goals.dart';
 import 'package:iboss/screens/personal/entry.dart';
 import 'package:iboss/screens/personal/outflow.dart';
 import 'package:iboss/screens/personal/personal.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import '../screens/business/revenue.dart';
 
 class MenuNavigation extends StatefulWidget {

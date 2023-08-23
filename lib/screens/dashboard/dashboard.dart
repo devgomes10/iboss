@@ -94,7 +94,7 @@ class _DashboardState extends State<Dashboard> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Settings(),
+                    builder: (context) => const Settings(),
                   ),
                 );
               },
@@ -266,10 +266,10 @@ class _DashboardState extends State<Dashboard> {
                               ),
                             ),
                             const SizedBox(height: 25,),
-                            Container(
+                            SizedBox(
                               width: 250,
                               height: 250,
-                              child: totalVariableExpense + totalFixedExpenses >
+                              child: totalFixedExpenses + totalVariableExpense >
                                   0
                                   ? Stack(
                                 children: [
@@ -279,14 +279,14 @@ class _DashboardState extends State<Dashboard> {
                                         PieChartSectionData(
                                           color: Colors.green,
                                           value: totalFixedExpenses,
-                                          title: '${real.format(totalFixedExpenses)}',
-                                          titleStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                          title: real.format(totalFixedExpenses),
+                                          titleStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                                         ),
                                         PieChartSectionData(
                                           color: Colors.blue,
                                           value: totalVariableExpense,
-                                          title: '${real.format(totalVariableExpense)}',
-                                          titleStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                          title: real.format(totalVariableExpense),
+                                          titleStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                                         ),
                                       ],
                                     ),
@@ -297,15 +297,15 @@ class _DashboardState extends State<Dashboard> {
                                       children: [
                                         Column(
                                           children: [
-                                            Text(
+                                            const Text(
                                               'Total',
                                               style: TextStyle(
                                                 fontSize: 25,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
-                                            Text('${real.format(totalVariableExpense + totalFixedExpenses)}',
-                                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                            Text(real.format(totalFixedExpenses + totalVariableExpense),
+                                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                                             ),
                                           ],
                                         ),
@@ -314,11 +314,11 @@ class _DashboardState extends State<Dashboard> {
                                   ),
                                 ],
                               )
-                                  : Center(
+                                  : const Center(
                                 child: Text(
-                                    'Vocâ não recebeu nenhum pagamento esse mês'),
+                                    'Vocâ ainda não gastou nada esse mês'),
                               ),
-                            ),SizedBox(
+                            ),const SizedBox(
                               height: 50,
                             ),
                             Row(
@@ -329,18 +329,18 @@ class _DashboardState extends State<Dashboard> {
                                   width: 12,
                                   height: 12,
                                 ),
-                                SizedBox(width: 4),
-                                Text('Fixo'),
-                                SizedBox(width: 70),
+                                const SizedBox(width: 4),
+                                const Text('Variável'),
+                                const SizedBox(width: 70),
                                 Container(
                                   color: Colors.green,
                                   width: 12,
                                   height: 12,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 4,
                                 ),
-                                Text('Variável'),
+                                const Text('Fixo'),
                               ],
                             )
                           ],
@@ -355,49 +355,101 @@ class _DashboardState extends State<Dashboard> {
                                 MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
-                                    icon: Icon(Icons.arrow_left),
+                                    icon: const Icon(Icons.arrow_left),
                                     onPressed: () => _changeMonth(false),
                                   ),
                                   Text(
                                     DateFormat.yMMMM('pt_BR')
                                         .format(_selectedDate),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   IconButton(
-                                    icon: Icon(Icons.arrow_right),
+                                    icon: const Icon(Icons.arrow_right),
                                     onPressed: () => _changeMonth(true),
                                   ),
                                 ],
                               ),
                             ),
-                            Container(
-                              width: 200,
-                              height: 200,
-                              child: totalCashPayments +
-                                  totalDeferredPayments +
-                                  totalFixedExpenses +
-                                  totalVariableExpense >
+                            const SizedBox(height: 25,),
+                            SizedBox(
+                              width: 250,
+                              height: 250,
+                              child: totalFixedExpenses + totalVariableExpense + totalCashPayments + totalDeferredPayments>
                                   0
-                                  ? PieChart(
-                                PieChartData(
-                                  sections: [
-                                    PieChartSectionData(
-                                        value: totalCashPayments +
-                                            totalDeferredPayments,
-                                        title: 'A'),
-                                    PieChartSectionData(
-                                        value: totalFixedExpenses +
-                                            totalVariableExpense,
-                                        title: 'B'),
-                                  ],
-                                ),
+                                  ? Stack(
+                                children: [
+                                  PieChart(
+                                    PieChartData(
+                                      sections: [
+                                        PieChartSectionData(
+                                          color: Colors.green,
+                                          value: totalCashPayments + totalDeferredPayments,
+                                          title: real.format(totalCashPayments + totalDeferredPayments),
+                                          titleStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                        ),
+                                        PieChartSectionData(
+                                          color: Colors.blue,
+                                          value: totalFixedExpenses + totalVariableExpense,
+                                          title: real.format(totalFixedExpenses + totalVariableExpense),
+                                          titleStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Center(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            const Text(
+                                              'Saldo',
+                                              style: TextStyle(
+                                                fontSize: 25,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            Text(real.format((totalCashPayments + totalDeferredPayments) - (totalFixedExpenses + totalVariableExpense)),
+                                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               )
-                                  : Center(
-                                child: Text("Não há saldo esse mês"),
+                                  : const Center(
+                                child: Text(
+                                    'Gráfico Pendente'),
                               ),
+                            ),const SizedBox(
+                              height: 50,
                             ),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  color: Colors.blue,
+                                  width: 12,
+                                  height: 12,
+                                ),
+                                const SizedBox(width: 4),
+                                const Text('Gastos'),
+                                const SizedBox(width: 70),
+                                Container(
+                                  color: Colors.green,
+                                  width: 12,
+                                  height: 12,
+                                ),
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                                const Text('Receita'),
+                              ],
+                            )
                           ],
                         ),
                       ],
@@ -410,7 +462,7 @@ class _DashboardState extends State<Dashboard> {
               length: 3,
               child: Column(
                 children: [
-                  TabBar(
+                  const TabBar(
                     tabs: [
                       Tab(text: 'Entradas'),
                       Tab(text: 'Saídas'),
@@ -430,145 +482,315 @@ class _DashboardState extends State<Dashboard> {
                                 MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
-                                    icon: Icon(Icons.arrow_left),
+                                    icon: const Icon(Icons.arrow_left),
                                     onPressed: () => _changeMonth(false),
                                   ),
                                   Text(
                                     DateFormat.yMMMM('pt_BR')
                                         .format(_selectedDate),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   IconButton(
-                                    icon: Icon(Icons.arrow_right),
+                                    icon: const Icon(Icons.arrow_right),
                                     onPressed: () => _changeMonth(true),
                                   ),
                                 ],
                               ),
                             ),
-                            Container(
-                              width: 200,
-                              height: 200,
-                              child: totalFixedEntry + totalVariableEntry > 0
-                                  ? PieChart(
-                                PieChartData(
-                                  sections: [
-                                    PieChartSectionData(
-                                        value: totalVariableEntry,
-                                        title: 'A'),
-                                    PieChartSectionData(
-                                        value: totalFixedEntry,
-                                        title: 'B'),
-                                  ],
-                                ),
-                              )
-                                  : Center(
-                                child: Text(
-                                    'Vocâ não recebeu nenhuma entrada esse mês'),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 8),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  IconButton(
-                                    icon: Icon(Icons.arrow_left),
-                                    onPressed: () => _changeMonth(false),
-                                  ),
-                                  Text(
-                                    DateFormat.yMMMM('pt_BR')
-                                        .format(_selectedDate),
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  IconButton(
-                                    icon: Icon(Icons.arrow_right),
-                                    onPressed: () => _changeMonth(true),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: 200,
-                              height: 200,
-                              child:
-                              totalFixedOutflow + totalVariableOutflow > 0
-                                  ? PieChart(
-                                PieChartData(
-                                  sections: [
-                                    PieChartSectionData(
-                                        value: totalFixedOutflow,
-                                        title: 'A'),
-                                    PieChartSectionData(
-                                        value: totalVariableOutflow,
-                                        title: 'B'),
-                                  ],
-                                ),
-                              )
-                                  : Center(
-                                child: Text(
-                                    'Vocâ não recebeu nenhum pagamento esse mês'),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 8),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  IconButton(
-                                    icon: Icon(Icons.arrow_left),
-                                    onPressed: () => _changeMonth(false),
-                                  ),
-                                  Text(
-                                    DateFormat.yMMMM('pt_BR')
-                                        .format(_selectedDate),
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  IconButton(
-                                    icon: Icon(Icons.arrow_right),
-                                    onPressed: () => _changeMonth(true),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: 200,
-                              height: 200,
-                              child: totalFixedEntry + totalVariableEntry + totalFixedOutflow + totalVariableOutflow >
+                            const SizedBox(height: 25,),
+                            SizedBox(
+                              width: 250,
+                              height: 250,
+                              child: totalFixedEntry + totalVariableEntry>
                                   0
-                                  ? PieChart(
-                                PieChartData(
-                                  sections: [
-                                    PieChartSectionData(
-                                        value: totalFixedEntry + totalVariableEntry,
-                                        title: 'A'),
-                                    PieChartSectionData(
-                                        value: totalFixedOutflow + totalVariableOutflow,
-                                        title: 'B'),
-                                  ],
-                                ),
+                                  ? Stack(
+                                children: [
+                                  PieChart(
+                                    PieChartData(
+                                      sections: [
+                                        PieChartSectionData(
+                                          color: Colors.green,
+                                          value: totalFixedEntry,
+                                          title: real.format(totalFixedEntry),
+                                          titleStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                        ),
+                                        PieChartSectionData(
+                                          color: Colors.blue,
+                                          value: totalVariableEntry,
+                                          title: real.format(totalVariableEntry),
+                                          titleStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Center(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            const Text(
+                                              'Total',
+                                              style: TextStyle(
+                                                fontSize: 25,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            Text(real.format((totalFixedEntry + totalVariableEntry),),
+                                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               )
-                                  : Center(
-                                child: Text("Não há saldo esse mês"),
+                                  : const Center(
+                                child: Text(
+                                    'Gráfico Pendente'),
+                              ),
+                            ),const SizedBox(
+                              height: 50,
+                            ),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  color: Colors.blue,
+                                  width: 12,
+                                  height: 12,
+                                ),
+                                const SizedBox(width: 4),
+                                const Text('Variável'),
+                                const SizedBox(width: 70),
+                                Container(
+                                  color: Colors.green,
+                                  width: 12,
+                                  height: 12,
+                                ),
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                                const Text('Fixo'),
+                              ],
+                            )
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 8),
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.arrow_left),
+                                    onPressed: () => _changeMonth(false),
+                                  ),
+                                  Text(
+                                    DateFormat.yMMMM('pt_BR')
+                                        .format(_selectedDate),
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.arrow_right),
+                                    onPressed: () => _changeMonth(true),
+                                  ),
+                                ],
                               ),
                             ),
+                            const SizedBox(height: 25,),
+                            SizedBox(
+                              width: 250,
+                              height: 250,
+                              child: totalFixedOutflow + totalVariableOutflow>
+                                  0
+                                  ? Stack(
+                                children: [
+                                  PieChart(
+                                    PieChartData(
+                                      sections: [
+                                        PieChartSectionData(
+                                          color: Colors.green,
+                                          value: totalFixedOutflow,
+                                          title: real.format(totalFixedOutflow),
+                                          titleStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                        ),
+                                        PieChartSectionData(
+                                          color: Colors.blue,
+                                          value: totalVariableOutflow,
+                                          title: real.format(totalVariableOutflow),
+                                          titleStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Center(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            const Text(
+                                              'Total',
+                                              style: TextStyle(
+                                                fontSize: 25,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            Text(real.format((totalFixedOutflow + totalVariableOutflow),),
+                                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              )
+                                  : const Center(
+                                child: Text(
+                                    'Gráfico Pendente'),
+                              ),
+                            ),const SizedBox(
+                              height: 50,
+                            ),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  color: Colors.blue,
+                                  width: 12,
+                                  height: 12,
+                                ),
+                                const SizedBox(width: 4),
+                                const Text('Variável'),
+                                const SizedBox(width: 70),
+                                Container(
+                                  color: Colors.green,
+                                  width: 12,
+                                  height: 12,
+                                ),
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                                const Text('Fixo'),
+                              ],
+                            )
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 8),
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.arrow_left),
+                                    onPressed: () => _changeMonth(false),
+                                  ),
+                                  Text(
+                                    DateFormat.yMMMM('pt_BR')
+                                        .format(_selectedDate),
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.arrow_right),
+                                    onPressed: () => _changeMonth(true),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 25,),
+                            SizedBox(
+                              width: 250,
+                              height: 250,
+                              child: totalFixedOutflow + totalVariableOutflow + totalFixedEntry + totalVariableEntry>
+                                  0
+                                  ? Stack(
+                                children: [
+                                  PieChart(
+                                    PieChartData(
+                                      sections: [
+                                        PieChartSectionData(
+                                          color: Colors.green,
+                                          value: totalFixedEntry + totalVariableEntry,
+                                          title: real.format(totalFixedEntry + totalVariableEntry),
+                                          titleStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                        ),
+                                        PieChartSectionData(
+                                          color: Colors.blue,
+                                          value: totalFixedOutflow + totalVariableOutflow,
+                                          title: real.format(totalFixedOutflow + totalVariableOutflow),
+                                          titleStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Center(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            const Text(
+                                              'Saldo',
+                                              style: TextStyle(
+                                                fontSize: 25,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            Text(real.format((totalFixedEntry + totalVariableEntry) - (totalFixedOutflow + totalVariableOutflow),),
+                                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              )
+                                  : const Center(
+                                child: Text(
+                                    'Gráfico Pendente'),
+                              ),
+                            ),const SizedBox(
+                              height: 50,
+                            ),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  color: Colors.blue,
+                                  width: 12,
+                                  height: 12,
+                                ),
+                                const SizedBox(width: 4),
+                                const Text('Saídas'),
+                                const SizedBox(width: 70),
+                                Container(
+                                  color: Colors.green,
+                                  width: 12,
+                                  height: 12,
+                                ),
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                                const Text('Entradas'),
+                              ],
+                            )
                           ],
                         ),
                       ],
