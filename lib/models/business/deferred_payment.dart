@@ -8,4 +8,5 @@ class DeferredPayment {
     required this.value,
     required this.date,
   });
+
 }

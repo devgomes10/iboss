@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../models/business/deferred_payment.dart';
 
 class DeferredPaymentRepository extends ChangeNotifier {
@@ -48,8 +49,7 @@ class DeferredPaymentRepository extends ChangeNotifier {
       final paymentYear = payment.date.year;
       final paymentMonth = payment.date.month;
       return paymentYear == selectedMonth.year && paymentMonth == selectedMonth.month;
-
     }).toList();
-
   }
 }
+
