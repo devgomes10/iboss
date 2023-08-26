@@ -42,7 +42,7 @@ class _GoalsState extends State<Goals> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Settings(),
+                    builder: (context) => const Settings(),
                   ),
                 );
               },
@@ -130,7 +130,8 @@ class _GoalsState extends State<Goals> {
                                             });
                                           }
                                         },
-                                        icon: const FaIcon(FontAwesomeIcons.calendar),
+                                        icon: const FaIcon(
+                                            FontAwesomeIcons.calendar),
                                       ),
                                     ],
                                   ),
@@ -281,7 +282,7 @@ class _GoalsState extends State<Goals> {
                               ),
                             ),
                             subtitle: Text(
-                              forCompany.companyGoals[i].date.toString(),
+                              forCompany.companyGoals[i].date,
                               style: const TextStyle(fontSize: 12),
                             ),
                             secondary: IconButton(
@@ -356,7 +357,10 @@ class _GoalsState extends State<Goals> {
                                   ),
                                 );
                               },
-                              icon: const FaIcon(FontAwesomeIcons.trash),
+                              icon: const FaIcon(
+                                FontAwesomeIcons.trash,
+                                color: Colors.red,
+                              ),
                             ),
                             controlAffinity: ListTileControlAffinity.leading,
                             value: companyCheckedList[i],
@@ -369,7 +373,9 @@ class _GoalsState extends State<Goals> {
                             checkColor: Colors.black,
                           );
                         },
-                        separatorBuilder: (_, __) => const Divider(),
+                        separatorBuilder: (_, __) => const Divider(
+                          color: Colors.white,
+                        ),
                         itemCount: forCompany.companyGoals.length,
                       );
                     },
@@ -470,7 +476,10 @@ class _GoalsState extends State<Goals> {
                                   ),
                                 );
                               },
-                              icon: const FaIcon(FontAwesomeIcons.trash),
+                              icon: const FaIcon(
+                                FontAwesomeIcons.trash,
+                                color: Colors.red,
+                              ),
                             ),
                             controlAffinity: ListTileControlAffinity.leading,
                             value: personalCheckedList[i],
@@ -483,7 +492,9 @@ class _GoalsState extends State<Goals> {
                             checkColor: Colors.black,
                           );
                         },
-                        separatorBuilder: (_, __) => const Divider(),
+                        separatorBuilder: (_, __) => const Divider(
+                          color: Colors.white,
+                        ),
                         itemCount: forPersonal.personalGoals.length,
                       );
                     },

@@ -33,7 +33,7 @@ class _PersonalState extends State<Personal> {
     totalFixedEntry =
         fixedEntryRepository.getTotalFixedEntryByMonth(_selectedDate);
     final variableEntryRepository =
-    Provider.of<VariableEntryRepository>(context);
+        Provider.of<VariableEntryRepository>(context);
     totalVariableEntry =
         variableEntryRepository.getTotalVariableEntryByMonth(_selectedDate);
 
@@ -41,7 +41,7 @@ class _PersonalState extends State<Personal> {
     totalFixedOutflow =
         fixedOutflowRepository.getTotalFixedOutflowByMonth(_selectedDate);
     final variableOutflowRepository =
-    Provider.of<VariableOutflowRepository>(context);
+        Provider.of<VariableOutflowRepository>(context);
     totalVariableOutflow =
         variableOutflowRepository.getTotalVariableOutflowByMonth(_selectedDate);
 
@@ -132,7 +132,10 @@ class _PersonalState extends State<Personal> {
                           ),
                           Column(
                             children: [
-                              const Text("entradas variáveis"),
+                              Text(
+                                "entradas variáveis",
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
                               Text(
                                 real.format(totalVariableEntry),
                                 style: const TextStyle(color: Colors.green),
@@ -231,7 +234,10 @@ class _PersonalState extends State<Personal> {
               height: 35,
             ),
             ListTile(
-              title: const Text('Reserva de emergência'),
+              title: Text(
+                'Reserva de emergência',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
               subtitle: Text(
                 'RS 100,00',
                 style: TextStyle(
@@ -251,7 +257,10 @@ class _PersonalState extends State<Personal> {
                     ),
                     IconButton(
                       onPressed: () {},
-                      icon: const FaIcon(FontAwesomeIcons.circleInfo),
+                      icon: const FaIcon(
+                        FontAwesomeIcons.circleInfo,
+                        color: Colors.yellow,
+                      ),
                     ),
                   ],
                 ),

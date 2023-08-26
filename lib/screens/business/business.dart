@@ -275,7 +275,7 @@ class _BusinessState extends State<Business> {
                     ),
                     IconButton(
                       onPressed: () {},
-                      icon: const FaIcon(FontAwesomeIcons.circleInfo),
+                      icon: const FaIcon(FontAwesomeIcons.circleInfo, color: Colors.yellow,),
                     ),
                   ],
                 ),
@@ -309,7 +309,7 @@ class _BusinessState extends State<Business> {
                     ),
                     IconButton(
                       onPressed: () {},
-                      icon: const FaIcon(FontAwesomeIcons.circleInfo),
+                      icon: const FaIcon(FontAwesomeIcons.circleInfo, color: Colors.yellow,),
                     ),
                   ],
                 ),

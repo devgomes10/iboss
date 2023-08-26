@@ -50,43 +50,44 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    // final cashPaymentRepository = Provider.of<CashPaymentRepository>(context);
-    // totalCashPayments =
-    //     cashPaymentRepository.getTotalCashPaymentsByMonth(_selectedDate);
-    // final deferredPaymentRepository =
-    // Provider.of<DeferredPaymentRepository>(context);
-    // totalDeferredPayments = deferredPaymentRepository
-    //     .getTotalDeferredPaymentsByMonth(_selectedDate);
-    //
-    // final fixedExpenseRepository = Provider.of<FixedExpenseRepository>(context);
-    // totalFixedExpenses =
-    //     fixedExpenseRepository.getTotalFixedExpensesByMonth(_selectedDate);
-    // final variableExpensesRepository =
-    // Provider.of<VariableExpenseRepository>(context);
-    // totalVariableExpense = variableExpensesRepository
-    //     .getTotalVariableExpensesByMonth(_selectedDate);
-    //
-    // final fixedEntryRepository = Provider.of<FixedEntryRepository>(context);
-    // totalFixedEntry =
-    //     fixedEntryRepository.getTotalFixedEntryByMonth(_selectedDate);
-    // final variableEntryRepository =
-    // Provider.of<VariableEntryRepository>(context);
-    // totalVariableEntry =
-    //     variableEntryRepository.getTotalVariableEntryByMonth(_selectedDate);
-    //
-    // final fixedOutflowRepository = Provider.of<FixedOutflowRepository>(context);
-    // totalFixedOutflow =
-    //     fixedOutflowRepository.getTotalFixedOutflowByMonth(_selectedDate);
-    // final variableOutflowRepository =
-    // Provider.of<VariableOutflowRepository>(context);
-    // totalVariableOutflow =
-    //     variableOutflowRepository.getTotalVariableOutflowByMonth(_selectedDate);
+    final cashPaymentRepository = Provider.of<CashPaymentRepository>(context);
+    totalCashPayments =
+        cashPaymentRepository.getTotalCashPaymentsByMonth(_selectedDate);
+    final deferredPaymentRepository =
+    Provider.of<DeferredPaymentRepository>(context);
+    totalDeferredPayments = deferredPaymentRepository
+        .getTotalDeferredPaymentsByMonth(_selectedDate);
+
+    final fixedExpenseRepository = Provider.of<FixedExpenseRepository>(context);
+    totalFixedExpenses =
+        fixedExpenseRepository.getTotalFixedExpensesByMonth(_selectedDate);
+    final variableExpensesRepository =
+    Provider.of<VariableExpenseRepository>(context);
+    totalVariableExpense = variableExpensesRepository
+        .getTotalVariableExpensesByMonth(_selectedDate);
+
+    final fixedEntryRepository = Provider.of<FixedEntryRepository>(context);
+    totalFixedEntry =
+        fixedEntryRepository.getTotalFixedEntryByMonth(_selectedDate);
+    final variableEntryRepository =
+    Provider.of<VariableEntryRepository>(context);
+    totalVariableEntry =
+        variableEntryRepository.getTotalVariableEntryByMonth(_selectedDate);
+
+    final fixedOutflowRepository = Provider.of<FixedOutflowRepository>(context);
+    totalFixedOutflow =
+        fixedOutflowRepository.getTotalFixedOutflowByMonth(_selectedDate);
+    final variableOutflowRepository =
+    Provider.of<VariableOutflowRepository>(context);
+    totalVariableOutflow =
+        variableOutflowRepository.getTotalVariableOutflowByMonth(_selectedDate);
 
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
+          backgroundColor: Theme.of(context).primaryColor,
           title: const Text('Painel'),
           actions: <Widget>[
             IconButton(
@@ -123,7 +124,7 @@ class _DashboardState extends State<Dashboard> {
                 children: [
                   const TabBar(
                     tabs: [
-                      Tab(text: 'Receitas'),
+                      Tab(text: 'Receitas',),
                       Tab(text: 'Gastos'),
                       Tab(text: 'Saldo'),
                     ],
@@ -141,7 +142,7 @@ class _DashboardState extends State<Dashboard> {
                                 MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
-                                    icon: const Icon(Icons.arrow_left),
+                                    icon: const FaIcon(FontAwesomeIcons.caretLeft),
                                     onPressed: () => _changeMonth(false),
                                   ),
                                   Text(
@@ -152,7 +153,7 @@ class _DashboardState extends State<Dashboard> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   IconButton(
-                                    icon: const Icon(Icons.arrow_right),
+                                    icon: const FaIcon(FontAwesomeIcons.caretRight),
                                     onPressed: () => _changeMonth(true),
                                   ),
                                 ],
@@ -248,7 +249,7 @@ class _DashboardState extends State<Dashboard> {
                                 MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
-                                    icon: const Icon(Icons.arrow_left),
+                                    icon: const FaIcon(FontAwesomeIcons.caretLeft),
                                     onPressed: () => _changeMonth(false),
                                   ),
                                   Text(
@@ -259,7 +260,7 @@ class _DashboardState extends State<Dashboard> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   IconButton(
-                                    icon: const Icon(Icons.arrow_right),
+                                    icon: const FaIcon(FontAwesomeIcons.caretRight),
                                     onPressed: () => _changeMonth(true),
                                   ),
                                 ],
@@ -355,7 +356,7 @@ class _DashboardState extends State<Dashboard> {
                                 MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
-                                    icon: const Icon(Icons.arrow_left),
+                                    icon: const FaIcon(FontAwesomeIcons.caretLeft),
                                     onPressed: () => _changeMonth(false),
                                   ),
                                   Text(
@@ -366,7 +367,7 @@ class _DashboardState extends State<Dashboard> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   IconButton(
-                                    icon: const Icon(Icons.arrow_right),
+                                    icon: const FaIcon(FontAwesomeIcons.caretRight),
                                     onPressed: () => _changeMonth(true),
                                   ),
                                 ],
@@ -482,7 +483,7 @@ class _DashboardState extends State<Dashboard> {
                                 MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
-                                    icon: const Icon(Icons.arrow_left),
+                                    icon: const FaIcon(FontAwesomeIcons.caretLeft),
                                     onPressed: () => _changeMonth(false),
                                   ),
                                   Text(
@@ -493,7 +494,7 @@ class _DashboardState extends State<Dashboard> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   IconButton(
-                                    icon: const Icon(Icons.arrow_right),
+                                    icon: const FaIcon(FontAwesomeIcons.caretRight),
                                     onPressed: () => _changeMonth(true),
                                   ),
                                 ],
@@ -589,7 +590,7 @@ class _DashboardState extends State<Dashboard> {
                                 MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
-                                    icon: const Icon(Icons.arrow_left),
+                                    icon: const FaIcon(FontAwesomeIcons.caretLeft),
                                     onPressed: () => _changeMonth(false),
                                   ),
                                   Text(
@@ -600,7 +601,7 @@ class _DashboardState extends State<Dashboard> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   IconButton(
-                                    icon: const Icon(Icons.arrow_right),
+                                    icon: const FaIcon(FontAwesomeIcons.caretRight),
                                     onPressed: () => _changeMonth(true),
                                   ),
                                 ],
@@ -696,7 +697,7 @@ class _DashboardState extends State<Dashboard> {
                                 MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
-                                    icon: const Icon(Icons.arrow_left),
+                                    icon: const FaIcon(FontAwesomeIcons.caretLeft),
                                     onPressed: () => _changeMonth(false),
                                   ),
                                   Text(
@@ -707,7 +708,7 @@ class _DashboardState extends State<Dashboard> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   IconButton(
-                                    icon: const Icon(Icons.arrow_right),
+                                    icon: const FaIcon(FontAwesomeIcons.caretRight),
                                     onPressed: () => _changeMonth(true),
                                   ),
                                 ],

@@ -16,7 +16,6 @@ class Expense extends StatefulWidget {
 }
 
 class _ExpenseState extends State<Expense> {
-  final _formKey = GlobalKey<FormState>();
   DateTime _selectedDate = DateTime.now();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController valueController = TextEditingController();
@@ -36,8 +35,6 @@ class _ExpenseState extends State<Expense> {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController descriptionController = TextEditingController();
-    TextEditingController valueController = TextEditingController();
     NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
 
     return DefaultTabController(
@@ -45,23 +42,23 @@ class _ExpenseState extends State<Expense> {
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.primary,
           title: const Text('Gastos'),
           actions: <Widget>[
             IconButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  barrierDismissible: true,
-                  builder: (BuildContext context) {
-                    return const AlertDialog(
-                      title: Text('Informação sobre os Gastos'),
-                      content: Text('Texto passando as informações'),
-                    );
-                  },
-                );
-              },
-                icon: const FaIcon(FontAwesomeIcons.circleInfo)
-            )
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (BuildContext context) {
+                      return const AlertDialog(
+                        title: Text('Informação sobre os Gastos'),
+                        content: Text('Texto passando as informações'),
+                      );
+                    },
+                  );
+                },
+                icon: const FaIcon(FontAwesomeIcons.circleInfo))
           ],
           bottom: const TabBar(
             tabs: [
@@ -89,15 +86,16 @@ class _ExpenseState extends State<Expense> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.arrow_left),
+                    icon: const FaIcon(FontAwesomeIcons.caretLeft),
                     onPressed: () => _changeMonth(false),
                   ),
                   Text(
                     DateFormat.yMMMM('pt_BR').format(_selectedDate),
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.arrow_right),
+                    icon: const FaIcon(FontAwesomeIcons.caretRight),
                     onPressed: () => _changeMonth(true),
                   ),
                 ],
@@ -109,18 +107,36 @@ class _ExpenseState extends State<Expense> {
                   Consumer<FixedExpenseRepository>(
                     builder: (BuildContext context,
                         FixedExpenseRepository fixed, Widget? widget) {
+                      final monthYearString =
+                          DateFormat('MM-yyyy', 'pt_BR').format(_selectedDate);
                       final List<FixedExpense> fixedExpenses =
-                      fixed.getFixedExpensesByMonth(_selectedDate);
+                          fixed.getFixedExpensesByMonth(_selectedDate);
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
-                            leading: const Icon(Icons.trending_down),
-                            title: Text(fixedExpenses[i].description),
+                            leading: const FaIcon(FontAwesomeIcons.arrowTrendDown, color: Colors.red,),
+                            title: Text(
+                              fixedExpenses[i].description,
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(real.format(fixedExpenses[i].value)),
-                                Text(fixedExpenses[i].date.toString()),
+                                Text(
+                                  real.format(fixedExpenses[i].value),
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                Text(
+                                  DateFormat('dd/MM/yyyy')
+                                      .format(fixedExpenses[i].date),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
                               ],
                             ),
                             trailing: IconButton(
@@ -129,48 +145,49 @@ class _ExpenseState extends State<Expense> {
                                   context: context,
                                   builder: (BuildContext context) =>
                                       AlertDialog(
-                                        scrollable: true,
-                                        title: const Text(
-                                            'Deseja mesmo excluir este gasto?'),
-                                        content: SingleChildScrollView(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              crossAxisAlignment:
+                                    scrollable: true,
+                                    title: const Text(
+                                        'Deseja mesmo excluir este gasto?'),
+                                    content: SingleChildScrollView(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          crossAxisAlignment:
                                               CrossAxisAlignment.center,
-                                              mainAxisAlignment:
+                                          mainAxisAlignment:
                                               MainAxisAlignment.spaceAround,
-                                              children: [
-                                                TextButton(
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: const Text('Não')),
-                                                TextButton(
-                                                    onPressed: () {
-                                                      fixed.remove(i);
-                                                      Navigator.pop(context);
-                                                      ScaffoldMessenger.of(context)
-                                                          .showSnackBar(
-                                                        const SnackBar(
-                                                          content: Text(
-                                                              'Gasto deletado'),
-                                                        ),
-                                                      );
-                                                    },
-                                                    child: const Text('Excluir')),
-                                              ],
-                                            ),
-                                          ),
+                                          children: [
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text('Não')),
+                                            TextButton(
+                                                onPressed: () {
+                                                  fixed.remove(i);
+                                                  Navigator.pop(context);
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    const SnackBar(
+                                                      content: Text(
+                                                          'Gasto deletado'),
+                                                    ),
+                                                  );
+                                                },
+                                                child: const Text('Excluir')),
+                                          ],
                                         ),
                                       ),
+                                    ),
+                                  ),
                                 );
                               },
-                              icon: const Icon(Icons.delete),
+                              icon: const FaIcon(FontAwesomeIcons.trash, color: Colors.red,),
                             ),
                           );
                         },
-                        separatorBuilder: (_, __) => const Divider(),
+                        separatorBuilder: (_, __) =>
+                            const Divider(color: Colors.white),
                         padding: const EdgeInsets.all(16),
                         itemCount: fixedExpenses.length,
                       );
@@ -180,17 +197,35 @@ class _ExpenseState extends State<Expense> {
                     builder: (BuildContext context,
                         VariableExpenseRepository variable, Widget? widget) {
                       final List<VariableExpense> variableExpenses =
-                      variable.getVariableExpensesByMonth(_selectedDate);
+                          variable.getVariableExpensesByMonth(_selectedDate);
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
-                            leading: const Icon(Icons.trending_down),
-                            title: Text(variableExpenses[i].description),
+                            leading: const FaIcon(FontAwesomeIcons.arrowTrendDown, color: Colors.red,),
+                            title: Text(
+                              variableExpenses[i].description,
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(real.format(variableExpenses[i].value)),
-                                Text(variableExpenses[i].date.toString()),
+                                Text(
+                                  real.format(
+                                    variableExpenses[i].value,
+                                  ),
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                Text(
+                                  DateFormat('dd/MM/yyyy')
+                                      .format(variableExpenses[i].date),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
                               ],
                             ),
                             trailing: IconButton(
@@ -199,48 +234,49 @@ class _ExpenseState extends State<Expense> {
                                     context: context,
                                     builder: (BuildContext context) =>
                                         AlertDialog(
-                                          scrollable: true,
-                                          title: const Text(
-                                              'Deseja mesmo excluir este gasto?'),
-                                          content: SingleChildScrollView(
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Row(
-                                                crossAxisAlignment:
+                                      scrollable: true,
+                                      title: const Text(
+                                          'Deseja mesmo excluir este gasto?'),
+                                      content: SingleChildScrollView(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            crossAxisAlignment:
                                                 CrossAxisAlignment.center,
-                                                mainAxisAlignment:
+                                            mainAxisAlignment:
                                                 MainAxisAlignment.spaceAround,
-                                                children: [
-                                                  TextButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: const Text('Não')),
-                                                  TextButton(
-                                                      onPressed: () {
-                                                        variable.remove(i);
-                                                        Navigator.pop(context);
-                                                        ScaffoldMessenger.of(
+                                            children: [
+                                              TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: const Text('Não')),
+                                              TextButton(
+                                                  onPressed: () {
+                                                    variable.remove(i);
+                                                    Navigator.pop(context);
+                                                    ScaffoldMessenger.of(
                                                             context)
-                                                            .showSnackBar(
-                                                          const SnackBar(
-                                                            content: Text(
-                                                                'Gasto deletado'),
-                                                          ),
-                                                        );
-                                                      },
-                                                      child: const Text('Excluir')),
-                                                ],
-                                              ),
-                                            ),
+                                                        .showSnackBar(
+                                                      const SnackBar(
+                                                        content: Text(
+                                                            'Gasto deletado'),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: const Text('Excluir')),
+                                            ],
                                           ),
                                         ),
+                                      ),
+                                    ),
                                   );
                                 },
-                                icon: const Icon(Icons.delete)),
+                                icon: const FaIcon(FontAwesomeIcons.trash), color: Colors.red,),
                           );
                         },
-                        separatorBuilder: (_, __) => const Divider(),
+                        separatorBuilder: (_, __) =>
+                            const Divider(color: Colors.white),
                         padding: const EdgeInsets.all(16),
                         itemCount: variableExpenses.length,
                       );

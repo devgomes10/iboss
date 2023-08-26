@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/forms/personal/entry_form.dart';
-import 'package:iboss/models/personal/fixed_entry.dart';
 import 'package:iboss/repositories/personal/fixed_entry_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-import '../../models/personal/variable_entry.dart';
 import '../../repositories/personal/variable_entry_repository.dart';
 
 class Entry extends StatefulWidget {
@@ -16,7 +14,6 @@ class Entry extends StatefulWidget {
 }
 
 class _EntryState extends State<Entry> {
-  final _formKey = GlobalKey<FormState>();
   DateTime _selectedDate = DateTime.now();
 
   void _changeMonth(bool increment) {
@@ -33,8 +30,6 @@ class _EntryState extends State<Entry> {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController descriptionController = TextEditingController();
-    TextEditingController valueController = TextEditingController();
     NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
 
     return DefaultTabController(
@@ -47,20 +42,19 @@ class _EntryState extends State<Entry> {
           ),
           actions: <Widget>[
             IconButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  barrierDismissible: true,
-                  builder: (BuildContext context) {
-                    return const AlertDialog(
-                      title: Text('Informação sobre a entrada'),
-                      content: Text('Texto passando as informações'),
-                    );
-                  },
-                );
-              },
-                icon: const FaIcon(FontAwesomeIcons.circleInfo)
-            )
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (BuildContext context) {
+                      return const AlertDialog(
+                        title: Text('Informação sobre a entrada'),
+                        content: Text('Texto passando as informações'),
+                      );
+                    },
+                  );
+                },
+                icon: const FaIcon(FontAwesomeIcons.circleInfo))
           ],
           bottom: const TabBar(
             tabs: [
@@ -78,7 +72,7 @@ class _EntryState extends State<Entry> {
           onPressed: () {
             NewEntryDialog.show(context);
           },
-          child: const Icon(Icons.add),
+          child: const FaIcon(FontAwesomeIcons.plus),
         ),
         body: Column(
           children: [
@@ -88,15 +82,16 @@ class _EntryState extends State<Entry> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.arrow_left),
+                    icon: const FaIcon(FontAwesomeIcons.caretLeft),
                     onPressed: () => _changeMonth(false),
                   ),
                   Text(
                     DateFormat.yMMMM('pt_BR').format(_selectedDate),
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.arrow_right),
+                    icon: const FaIcon(FontAwesomeIcons.caretRight),
                     onPressed: () => _changeMonth(true),
                   ),
                 ],
@@ -110,13 +105,26 @@ class _EntryState extends State<Entry> {
                     return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
-                            leading: const Icon(Icons.trending_up),
-                            title: Text(fixed.fixedEntry[i].description),
+                            leading: const FaIcon(
+                              FontAwesomeIcons.arrowTrendUp,
+                              color: Colors.green,
+                            ),
+                            title: Text(
+                              fixed.fixedEntry[i].description,
+                              style: TextStyle(fontSize: 20),
+                            ),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(real.format(fixed.fixedEntry[i].value)),
-                                Text(fixed.fixedEntry[i].date.toString()),
+                                Text(
+                                  real.format(fixed.fixedEntry[i].value),
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                Text(
+                                  DateFormat('dd/MM/yyyy')
+                                      .format(fixed.fixedEntry[i].date),
+                                  style: TextStyle(fontSize: 16),
+                                ),
                               ],
                             ),
                             trailing: IconButton(
@@ -125,53 +133,53 @@ class _EntryState extends State<Entry> {
                                     context: context,
                                     builder: (BuildContext context) =>
                                         AlertDialog(
-                                            scrollable: true,
-                                            title: const Text(
-                                                'Deseja mesmo exluir esta entrada?'),
-                                            content: SingleChildScrollView(
-                                              child: Padding(
-                                                padding:
-                                                const EdgeInsets.all(8.0),
-                                                child: Row(
-                                                  crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceAround,
-                                                  children: [
-                                                    TextButton(
-                                                        onPressed: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
-                                                        child:
-                                                        const Text('Não')),
-                                                    TextButton(
-                                                        onPressed: () {
-                                                          fixed.remove(i);
-                                                          Navigator.pop(
-                                                              context);
-                                                          ScaffoldMessenger.of(
-                                                              context)
-                                                              .showSnackBar(
-                                                            const SnackBar(
-                                                              content: Text(
-                                                                  'Entrada deletada'),
-                                                            ),
-                                                          );
-                                                        },
-                                                        child: const Text(
-                                                            'Exluir')),
-                                                  ],
-                                                ),
+                                      scrollable: true,
+                                      title: const Text(
+                                          'Deseja mesmo exluir esta entrada?'),
+                                      content: SingleChildScrollView(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: const Text('Não')),
+                                              TextButton(
+                                                onPressed: () {
+                                                  fixed.remove(i);
+                                                  Navigator.pop(context);
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    const SnackBar(
+                                                      content: Text(
+                                                          'Entrada deletada'),
+                                                    ),
+                                                  );
+                                                },
+                                                child: const Text('Exluir'),
                                               ),
-                                            )),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   );
                                 },
-                                icon: const Icon(Icons.delete)),
+                                icon: const FaIcon(
+                                  FontAwesomeIcons.trash,
+                                  color: Colors.red,
+                                )),
                           );
                         },
-                        separatorBuilder: (_, __) => const Divider(),
+                        separatorBuilder: (_, __) => const Divider(
+                              color: Colors.white,
+                            ),
                         padding: const EdgeInsets.all(16),
                         itemCount: fixed.fixedEntry.length);
                   }),
@@ -181,72 +189,81 @@ class _EntryState extends State<Entry> {
                       return ListView.separated(
                           itemBuilder: (BuildContext context, int i) {
                             return ListTile(
-                              leading: const Icon(Icons.trending_up),
-                              title:
-                              Text(variable.variableEntry[i].description),
+                              leading: const FaIcon(
+                                FontAwesomeIcons.arrowTrendUp,
+                                color: Colors.green,
+                              ),
+                              title: Text(
+                                variable.variableEntry[i].description,
+                                style: TextStyle(fontSize: 20),
+                              ),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(real
-                                      .format(variable.variableEntry[i].value)),
-                                  Text(variable.variableEntry[i].date
-                                      .toString()),
+                                  Text(
+                                    real.format(
+                                        variable.variableEntry[i].value),
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                  Text(
+                                    DateFormat('dd/MM/yyyy')
+                                        .format(variable.variableEntry[i].date),
+                                    style: TextStyle(fontSize: 16),
+                                  ),
                                 ],
                               ),
                               trailing: IconButton(
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          AlertDialog(
-                                              scrollable: true,
-                                              title: const Text(
-                                                  'Deseja mesmo exluir esta entrada?'),
-                                              content: SingleChildScrollView(
-                                                child: Padding(
-                                                  padding:
-                                                  const EdgeInsets.all(8.0),
-                                                  child: Row(
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment
-                                                        .center,
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
-                                                    children: [
-                                                      TextButton(
-                                                          onPressed: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          child: const Text(
-                                                              'Não')),
-                                                      TextButton(
-                                                          onPressed: () {
-                                                            variable.remove(i);
-                                                            Navigator.pop(
-                                                                context);
-                                                            ScaffoldMessenger
-                                                                .of(context)
-                                                                .showSnackBar(
-                                                              const SnackBar(
-                                                                content: Text(
-                                                                    'Entrada deletada'),
-                                                              ),
-                                                            );
-                                                          },
-                                                          child: const Text(
-                                                              'Exluir')),
-                                                    ],
-                                                  ),
-                                                ),
-                                              )),
-                                    );
-                                  },
-                                  icon: const Icon(Icons.delete)),
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        AlertDialog(
+                                      scrollable: true,
+                                      title: const Text(
+                                          'Deseja mesmo exluir esta entrada?'),
+                                      content: SingleChildScrollView(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: const Text('Não')),
+                                              TextButton(
+                                                onPressed: () {
+                                                  variable.remove(i);
+                                                  Navigator.pop(context);
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    const SnackBar(
+                                                      content: Text(
+                                                          'Entrada deletada'),
+                                                    ),
+                                                  );
+                                                },
+                                                child: const Text('Exluir'),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                icon: const FaIcon(FontAwesomeIcons.trash),
+                                color: Colors.red,
+                              ),
                             );
                           },
-                          separatorBuilder: (_, __) => const Divider(),
+                          separatorBuilder: (_, __) => const Divider(
+                                color: Colors.white,
+                              ),
                           padding: const EdgeInsets.all(16),
                           itemCount: variable.variableEntry.length);
                     },

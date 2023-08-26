@@ -16,7 +16,6 @@ class Revenue extends StatefulWidget {
 }
 
 class _RevenueState extends State<Revenue> {
-  final _formKey = GlobalKey<FormState>();
   DateTime _selectedDate = DateTime.now();
   final descriptionController = TextEditingController();
   final valueController = TextEditingController();
@@ -45,19 +44,23 @@ class _RevenueState extends State<Revenue> {
           title: const Text('Receitas'),
           actions: <Widget>[
             IconButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (BuildContext context) {
-                      return const AlertDialog(
-                        title: Text('Mesada da empresa'),
-                        content: Text('... '),
-                      );
-                    },
-                  );
-                },
-                icon: const FaIcon(FontAwesomeIcons.circleInfo))
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  barrierDismissible: true,
+                  builder: (BuildContext context) {
+                    return const AlertDialog(
+                      title: Text('Mesada da empresa'),
+                      content: Text('... '),
+                    );
+                  },
+                );
+              },
+              icon: const FaIcon(
+                FontAwesomeIcons.circleInfo,
+                color: Colors.yellow,
+              ),
+            ),
           ],
           bottom: const TabBar(
             tabs: [
@@ -85,7 +88,7 @@ class _RevenueState extends State<Revenue> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.arrow_left),
+                    icon: const FaIcon(FontAwesomeIcons.caretLeft),
                     onPressed: () => _changeMonth(false),
                   ),
                   Text(
@@ -94,7 +97,7 @@ class _RevenueState extends State<Revenue> {
                         fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.arrow_right),
+                    icon: const FaIcon(FontAwesomeIcons.caretRight),
                     onPressed: () => _changeMonth(true),
                   ),
                 ],
@@ -117,10 +120,7 @@ class _RevenueState extends State<Revenue> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(12)),
                             ),
-                            leading: const Icon(
-                              Icons.trending_up,
-                              color: Colors.green,
-                            ),
+                            leading: FaIcon(FontAwesomeIcons.arrowTrendUp, color: Colors.green,),
                             title: Text(
                               cashPayments[i].description,
                               style: const TextStyle(
@@ -133,11 +133,16 @@ class _RevenueState extends State<Revenue> {
                                 Text(
                                   real.format(cashPayments[i].value),
                                   style: const TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                Text(
+                                  DateFormat('dd/MM/yyyy')
+                                      .format(cashPayments[i].date),
+                                  style: TextStyle(
                                     fontSize: 16,
                                   ),
                                 ),
-                                Text(DateFormat('dd/MM/yyyy')
-                                    .format(cashPayments[i].date)),
                               ],
                             ),
                             trailing: IconButton(
@@ -187,11 +192,12 @@ class _RevenueState extends State<Revenue> {
                                   ),
                                 );
                               },
-                              icon: const Icon(Icons.delete),
+                              icon: FaIcon(FontAwesomeIcons.trash, color: Colors.red,),
                             ),
                           );
                         },
-                        separatorBuilder: (_, __) => const Divider(),
+                        separatorBuilder: (_, __) =>
+                            const Divider(color: Colors.white),
                         padding: const EdgeInsets.all(22),
                         itemCount: cashPayments.length,
                       );
@@ -211,10 +217,7 @@ class _RevenueState extends State<Revenue> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(12)),
                             ),
-                            leading: const Icon(
-                              Icons.trending_up,
-                              color: Colors.yellow,
-                            ),
+                            leading: FaIcon(FontAwesomeIcons.arrowTrendUp, color: Colors.green,),
                             title: Text(
                               deferredPayments[i].description,
                               style: const TextStyle(
@@ -227,12 +230,15 @@ class _RevenueState extends State<Revenue> {
                                 Text(
                                   real.format(deferredPayments[i].value),
                                   style: const TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 18,
                                   ),
                                 ),
                                 Text(
                                   DateFormat('dd/MM/yyyy')
                                       .format(deferredPayments[i].date),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
                                 ),
                               ],
                             ),
@@ -317,7 +323,7 @@ class _RevenueState extends State<Revenue> {
                                         ),
                                       );
                                     },
-                                    icon: const Icon(Icons.done),
+                                    icon: const FaIcon(FontAwesomeIcons.check,),
                                   ),
                                   IconButton(
                                     onPressed: () {
@@ -369,14 +375,15 @@ class _RevenueState extends State<Revenue> {
                                         ),
                                       );
                                     },
-                                    icon: const Icon(Icons.delete),
+                                    icon: const FaIcon(FontAwesomeIcons.trash, color: Colors.red,),
                                   ),
                                 ],
                               ),
                             ),
                           );
                         },
-                        separatorBuilder: (_, __) => const Divider(),
+                        separatorBuilder: (_, __) =>
+                            const Divider(color: Colors.white),
                         padding: const EdgeInsets.all(16),
                         itemCount: deferredPayments.length,
                       );

@@ -53,7 +53,7 @@ class __DialogoNovaReceitaState extends State<_DialogoNewExpense> {
                     if (value!.isEmpty) {
                       return "Insira uma descrição";
                     }
-                    if (value.length > 45) {
+                    if (value.length > 80) {
                       return "Descrição muito longa";
                     }
                     return null;

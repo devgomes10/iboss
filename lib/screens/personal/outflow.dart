@@ -16,7 +16,6 @@ class Outflow extends StatefulWidget {
 }
 
 class _OutflowState extends State<Outflow> {
-  final _formKey = GlobalKey<FormState>();
   DateTime _selectedDate = DateTime.now();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController valueController = TextEditingController();
@@ -75,7 +74,7 @@ class _OutflowState extends State<Outflow> {
           onPressed: () {
             NewOutflowDialog.show(context);
           },
-          child: const Icon(Icons.add),
+          child: const FaIcon(FontAwesomeIcons.plus),
         ),
         body: Column(
           children: [
@@ -85,7 +84,7 @@ class _OutflowState extends State<Outflow> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.arrow_left),
+                    icon: const FaIcon(FontAwesomeIcons.caretLeft),
                     onPressed: () => _changeMonth(false),
                   ),
                   Text(
@@ -93,7 +92,7 @@ class _OutflowState extends State<Outflow> {
                     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.arrow_right),
+                    icon: const FaIcon(FontAwesomeIcons.caretRight),
                     onPressed: () => _changeMonth(true),
                   ),
                 ],
@@ -110,13 +109,13 @@ class _OutflowState extends State<Outflow> {
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
-                            leading: const Icon(Icons.trending_down),
-                            title: Text(fixedOutflows[i].description),
+                            leading: const FaIcon(FontAwesomeIcons.arrowTrendDown, color: Colors.red,),
+                            title: Text(fixedOutflows[i].description, style: TextStyle(fontSize: 20),),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(real.format(fixedOutflows[i].value)),
-                                Text(fixedOutflows[i].date.toString()),
+                                Text(real.format(fixedOutflows[i].value,), style: TextStyle(fontSize: 18),),
+                                Text(DateFormat('dd/MM/yyyy').format(fixedOutflows[i].date), style: TextStyle(fontSize: 16),),
                               ],
                             ),
                             trailing: IconButton(
@@ -164,7 +163,7 @@ class _OutflowState extends State<Outflow> {
                                       ),
                                 );
                               },
-                              icon: const Icon(Icons.delete),
+                              icon: const FaIcon(FontAwesomeIcons.trash, color: Colors.red,),
                             ),
                           );
                         },
@@ -182,13 +181,13 @@ class _OutflowState extends State<Outflow> {
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
-                            leading: const Icon(Icons.trending_down),
-                            title: Text(variableOutflows[i].description),
+                            leading: const FaIcon(FontAwesomeIcons.arrowTrendDown, color: Colors.red,),
+                            title: Text(variableOutflows[i].description, style: TextStyle(fontSize: 20),),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(real.format(variableOutflows[i].value)),
-                                Text(variableOutflows[i].date.toString()),
+                                Text(real.format(variableOutflows[i].value), style: TextStyle(fontSize: 18),),
+                                Text(DateFormat("dd/MM/yyyy").format(variableOutflows[i].date), style: TextStyle(fontSize: 16),),
                               ],
                             ),
                             trailing: IconButton(
@@ -236,7 +235,7 @@ class _OutflowState extends State<Outflow> {
                                       ),
                                 );
                               },
-                              icon: const Icon(Icons.delete),
+                              icon: const FaIcon(FontAwesomeIcons.trash, color: Colors.red,),
                             ),
                           );
                         },

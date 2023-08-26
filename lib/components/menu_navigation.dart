@@ -158,7 +158,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
                     });
                     pc.jumpToPage(2);
                   },
-                  icon: const FaIcon(FontAwesomeIcons.bullseye),
+                  icon: const FaIcon(FontAwesomeIcons.solidFlag),
                   color: currentPage == 2 ? Colors.white : Colors.grey,
                 ),
                 IconButton(
@@ -168,7 +168,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
                     });
                     pc.jumpToPage(3);
                   },
-                  icon: const FaIcon(FontAwesomeIcons.gauge),
+                  icon: const FaIcon(FontAwesomeIcons.chartSimple),
                   color: currentPage == 3 ? Colors.white : Colors.grey,
                 ),
               ],
