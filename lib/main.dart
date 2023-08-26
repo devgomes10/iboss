@@ -7,6 +7,9 @@ import 'package:iboss/repositories/goals/company_goals_repository.dart';
 import 'package:iboss/repositories/personal/fixed_outflow_repository.dart';
 import 'package:iboss/repositories/personal/variable_entry_repository.dart';
 import 'package:iboss/repositories/personal/variable_outflow_repository.dart';
+import 'package:iboss/screens/login/login.dart';
+import 'package:iboss/screens/register/register.dart';
+import 'package:iboss/screens/settings/settings.dart';
 import 'package:iboss/theme/dark_theme.dart';
 import 'package:iboss/repositories/business/cash_payment_repository.dart';
 import 'package:iboss/repositories/personal/fixed_entry_repository.dart';
@@ -56,7 +59,7 @@ class MyApp extends StatelessWidget {
       title: 'Evolve',
       debugShowCheckedModeBanner: false,
       theme: darkTheme,
-      home: const MenuNavigation(),
+      home: Settings(),
     );
   }
 }

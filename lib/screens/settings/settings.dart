@@ -9,28 +9,27 @@ class Settings extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Configurações'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            _buildButton('Meu cadastro', Icons.person, () {
-              // Lógica para abrir a tela de cadastro
-              print('Abrir tela de cadastro');
-            }),
-            _buildButton('Evolve Premium', Icons.star, () {
-              // Lógica para adquirir o plano premium
-              print('Adquirir o plano premium');
-            }),
-            _buildButton('Sair do aplicativo', Icons.exit_to_app, () {
-              // Lógica para sair do aplicativo
-              print('Sair do aplicativo');
-            }),
-            _buildButton('Cancelar plano', Icons.cancel, () {
-              // Lógica para cancelar o plano premium
-              print('Cancelar plano premium');
-            }),
-          ],
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _buildButton('Meu cadastro', Icons.person, () {
+            // Lógica para abrir a tela de cadastro
+            print('Abrir tela de cadastro');
+          }),
+          _buildButton('Evolve Premium', Icons.star, () {
+            // Lógica para adquirir o plano premium
+            print('Adquirir o plano premium');
+          }),
+          _buildButton('Sair do aplicativo', Icons.exit_to_app, () {
+            // Lógica para sair do aplicativo
+            print('Sair do aplicativo');
+          }),
+          _buildButton('Cancelar plano', Icons.cancel, () {
+            // Lógica para cancelar o plano premium
+            print('Cancelar plano premium');
+          }),
+        ],
       ),
     );
   }
@@ -46,6 +45,7 @@ class Settings extends StatelessWidget {
           style: const TextStyle(fontSize: 18),
         ),
         style: ElevatedButton.styleFrom(
+          elevation: 5,
           foregroundColor: Colors.white, backgroundColor: Colors.teal, // Cor do texto do botão
           padding: const EdgeInsets.all(16), // Espaçamento interno do botão
           shape: RoundedRectangleBorder(
