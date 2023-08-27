@@ -63,7 +63,8 @@ class __DialogoNovaReceitaState extends State<_DialogonewRevenue> {
                   controller: descriptionController,
                   decoration: const InputDecoration(
                     hintText: 'Descrição',
-                    labelText: 'Descrição',
+                    labelText: 'Insira uma descrição...',
+                    labelStyle: TextStyle(color: Colors.white),
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -79,7 +80,8 @@ class __DialogoNovaReceitaState extends State<_DialogonewRevenue> {
                   controller: valueController,
                   decoration: const InputDecoration(
                     hintText: 'Valor',
-                    labelText: 'Valor',
+                    labelText: 'Insira o valor...',
+                    labelStyle: TextStyle(color: Colors.white),
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -107,29 +109,32 @@ class __DialogoNovaReceitaState extends State<_DialogonewRevenue> {
                     Consumer<CashPaymentRepository>(
                       builder: (BuildContext context,
                           CashPaymentRepository inCash, Widget? widget) {
-                        return TextButton(
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              inCash.add(CashPayment(
-                                description: descriptionController.text,
-                                value: double.parse(valueController.text),
-                                date: DateTime.now(),
-                              ));
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Criando um pagamento à vista'),
-                                ),
-                              );
-                              Navigator.pop(context);
-                            }
-                          },
-                          style: TextButton.styleFrom(
-                            foregroundColor: Colors.green,
-                          ),
-                          child: const Text(
-                            'À vista',
-                            style: TextStyle(
-                              fontSize: 16,
+                        return Container(
+                          width: 100,
+                          child: TextButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                inCash.add(CashPayment(
+                                  description: descriptionController.text,
+                                  value: double.parse(valueController.text),
+                                  date: DateTime.now(),
+                                ),);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Criando um novo pagamento'),
+                                  ),
+                                );
+                                Navigator.pop(context);
+                              }
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor: Colors.grey[200],
+                            ),
+                            child: const Text(
+                              'Pago',
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                         );
@@ -138,31 +143,34 @@ class __DialogoNovaReceitaState extends State<_DialogonewRevenue> {
                     Consumer<DeferredPaymentRepository>(
                       builder: (BuildContext context,
                           DeferredPaymentRepository inTerm, Widget? widget) {
-                        return TextButton(
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              inTerm.add(DeferredPayment(
-                                description: descriptionController.text,
-                                value: double.parse(valueController.text),
-                                date: DateTime.now(),
-                              ));
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    'Criando um pagamento a prazo',
+                        return Container(
+                          width: 100,
+                          child: TextButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                inTerm.add(DeferredPayment(
+                                  description: descriptionController.text,
+                                  value: double.parse(valueController.text),
+                                  date: DateTime.now(),
+                                ),);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'Criando um novo pagamento pendente',
+                                    ),
                                   ),
-                                ),
-                              );
-                              Navigator.pop(context);
-                            }
-                          },
-                          style: TextButton.styleFrom(
-                            foregroundColor: Colors.blue,
-                          ),
-                          child: const Text(
-                            'Fiado',
-                            style: TextStyle(
-                              fontSize: 16,
+                                );
+                                Navigator.pop(context);
+                              }
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor: Colors.grey[200],
+                            ),
+                            child: const Text(
+                              'Pendente',
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                         );

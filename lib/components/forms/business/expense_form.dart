@@ -62,7 +62,8 @@ class __DialogoNovaReceitaState extends State<_DialogoNewExpense> {
                   controller: descriptionController,
                   decoration: const InputDecoration(
                     hintText: 'Descrição',
-                    labelText: 'Descrição',
+                    labelText: 'insira uma descrição...',
+                    labelStyle: TextStyle(color: Colors.white),
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -78,7 +79,8 @@ class __DialogoNovaReceitaState extends State<_DialogoNewExpense> {
                   controller: valueController,
                   decoration: const InputDecoration(
                     hintText: 'Valor',
-                    labelText: 'Valor',
+                    labelText: 'Insira o valor...',
+                    labelStyle: TextStyle(color: Colors.white),
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -107,33 +109,36 @@ class __DialogoNovaReceitaState extends State<_DialogoNewExpense> {
                       builder: (BuildContext context,
                           FixedExpenseRepository fixed,
                           Widget? widget) {
-                        return TextButton(
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              fixed.add(FixedExpense(
-                                description: descriptionController.text,
-                                value:
-                                double.parse(valueController.text),
-                                date: DateTime
-                                    .now(),
-                              ));
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(
-                                const SnackBar(
-                                  content:
-                                  Text('Criando um gasto fixo'),
-                                ),
-                              );
-                              Navigator.pop(context);
-                            }
-                          },
-                          style: TextButton.styleFrom(
-                            foregroundColor: Colors.green,
-                          ),
-                          child: const Text(
-                            'Fixo',
-                            style: TextStyle(
-                              fontSize: 16,
+                        return Container(
+                          width: 100,
+                          child: TextButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                fixed.add(FixedExpense(
+                                  description: descriptionController.text,
+                                  value:
+                                  double.parse(valueController.text),
+                                  date: DateTime
+                                      .now(),
+                                ));
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(
+                                  const SnackBar(
+                                    content:
+                                    Text('Criando um novo gasto fixo'),
+                                  ),
+                                );
+                                Navigator.pop(context);
+                              }
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor: Colors.grey[200],
+                            ),
+                            child: const Text(
+                              'Fixo',
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                         );
@@ -143,32 +148,35 @@ class __DialogoNovaReceitaState extends State<_DialogoNewExpense> {
                       builder: (BuildContext context,
                           VariableExpenseRepository variable,
                           Widget? widget) {
-                        return TextButton(
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              variable.add(VariableExpense(
-                                description: descriptionController.text,
-                                value:
-                                double.parse(valueController.text),
-                                date: DateTime.now(),
-                              ));
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(
-                                const SnackBar(
-                                  content:
-                                  Text('Criando um gasto variável'),
-                                ),
-                              );
-                              Navigator.pop(context);
-                            }
-                          },
-                          style: TextButton.styleFrom(
-                            foregroundColor: Colors.blue,
-                          ),
-                          child: const Text(
-                            'Variável',
-                            style: TextStyle(
-                              fontSize: 16,
+                        return Container(
+                          width: 100,
+                          child: TextButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                variable.add(VariableExpense(
+                                  description: descriptionController.text,
+                                  value:
+                                  double.parse(valueController.text),
+                                  date: DateTime.now(),
+                                ));
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(
+                                  const SnackBar(
+                                    content:
+                                    Text('Criando um novo gasto variável'),
+                                  ),
+                                );
+                                Navigator.pop(context);
+                              }
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor: Colors.grey[100],
+                            ),
+                            child: const Text(
+                              'Variável',
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                         );

@@ -29,8 +29,19 @@ class __DialogoNovaReceitaState extends State<_DialogNewOutflow> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(scrollable: true,
-      title: const Text('Adicione uma nova saída'),
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      scrollable: true,
+      title: Text(
+        'Adicione uma nova saída',
+        style: TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+      ),
       content: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -51,9 +62,14 @@ class __DialogoNovaReceitaState extends State<_DialogNewOutflow> {
                   },
                   keyboardType: TextInputType.text,
                   controller: descriptionController,
-                  decoration:
-                  const InputDecoration(hintText: 'Descrição'),
+                  decoration: const InputDecoration(
+                    hintText: 'Descrição',
+                    labelText: 'Insira uma descrição...',
+                    labelStyle: TextStyle(color: Colors.white),
+                    border: OutlineInputBorder(),
+                  ),
                 ),
+                const SizedBox(height: 16),
                 TextFormField(
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -63,8 +79,12 @@ class __DialogoNovaReceitaState extends State<_DialogNewOutflow> {
                   },
                   keyboardType: TextInputType.number,
                   controller: valueController,
-                  decoration:
-                  const InputDecoration(hintText: 'Valor'),
+                  decoration: const InputDecoration(
+                    hintText: 'Valor',
+                    labelText: 'Insira o valor...',
+                    labelStyle: TextStyle(color: Colors.white),
+                    border: OutlineInputBorder(),
+                  ),
                 ),
               ],
             ),
@@ -75,7 +95,13 @@ class __DialogoNovaReceitaState extends State<_DialogNewOutflow> {
         Center(
           child: Column(
             children: [
-              const Text('Escolha a classificação'),
+              const Text(
+                'Escolha a classificação',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -83,55 +109,67 @@ class __DialogoNovaReceitaState extends State<_DialogNewOutflow> {
                   children: [
                     Consumer<FixedOutflowRepository>(
                       builder: (BuildContext context,
-                          FixedOutflowRepository fixed,
-                          Widget? widget) {
-                        return TextButton(
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              fixed.add(FixedOutflow(
-                                  description:
-                                  descriptionController.text,
-                                  value: double.parse(
-                                      valueController.text),
-                                  date: DateTime.now()));
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(
-                                const SnackBar(
-                                  content:
-                                  Text('Criando uma saída fixa'),
-                                ),
-                              );
-                              Navigator.pop(context);
-                            }
-                          },
-                          child: const Text('Fixa'),
+                          FixedOutflowRepository fixed, Widget? widget) {
+                        return Container(
+                          width: 100,
+                          child: TextButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                fixed.add(FixedOutflow(
+                                    description: descriptionController.text,
+                                    value: double.parse(valueController.text),
+                                    date: DateTime.now()));
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Criando uma saída fixa'),
+                                  ),
+                                );
+                                Navigator.pop(context);
+                              }
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor: Colors.grey[200],
+                            ),
+                            child: const Text(
+                              'Fixa',
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
                         );
                       },
                     ),
                     Consumer<VariableOutflowRepository>(
                       builder: (BuildContext context,
-                          VariableOutflowRepository variable,
-                          Widget? widget) {
-                        return TextButton(
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              variable.add(VariableOutflow(
-                                  description:
-                                  descriptionController.text,
-                                  value: double.parse(
-                                      valueController.text),
-                                  date: DateTime.now()));
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                      'Criando uma saída variável'),
-                                ),
-                              );
-                              Navigator.pop(context);
-                            }
-                          },
-                          child: const Text('Variável'),
+                          VariableOutflowRepository variable, Widget? widget) {
+                        return Container(
+                          width: 100,
+                          child: TextButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                variable.add(VariableOutflow(
+                                    description: descriptionController.text,
+                                    value: double.parse(valueController.text),
+                                    date: DateTime.now()));
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Criando uma saída variável'),
+                                  ),
+                                );
+                                Navigator.pop(context);
+                              }
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor: Colors.grey[200],
+                            ),
+                            child: const Text(
+                              'Variável',
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
                         );
                       },
                     ),
@@ -141,4 +179,7 @@ class __DialogoNovaReceitaState extends State<_DialogNewOutflow> {
             ],
           ),
         ),
-      ],); }}
+      ],
+    );
+  }
+}

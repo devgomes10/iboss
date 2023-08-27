@@ -61,12 +61,13 @@ class _ExpenseState extends State<Expense> {
                 icon: const FaIcon(FontAwesomeIcons.circleInfo))
           ],
           bottom: const TabBar(
+            labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             tabs: [
               Tab(
-                text: 'Gastos Fixos',
+                text: 'Fixos',
               ),
               Tab(
-                text: 'Gastos Variáveis',
+                text: 'Variáveis',
               ),
             ],
             indicatorColor: Colors.white,
@@ -114,7 +115,10 @@ class _ExpenseState extends State<Expense> {
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
-                            leading: const FaIcon(FontAwesomeIcons.arrowTrendDown, color: Colors.red,),
+                            leading: const FaIcon(
+                              FontAwesomeIcons.arrowTrendDown,
+                              color: Colors.red,
+                            ),
                             title: Text(
                               fixedExpenses[i].description,
                               style: TextStyle(
@@ -146,8 +150,12 @@ class _ExpenseState extends State<Expense> {
                                   builder: (BuildContext context) =>
                                       AlertDialog(
                                     scrollable: true,
-                                    title: const Text(
-                                        'Deseja mesmo excluir este gasto?'),
+                                    title: Text(
+                                      'Deseja mesmo excluir este gasto fixo?',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
                                     content: SingleChildScrollView(
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
@@ -158,23 +166,39 @@ class _ExpenseState extends State<Expense> {
                                               MainAxisAlignment.spaceAround,
                                           children: [
                                             TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: const Text('Não')),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text(
+                                                'NÃO',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                            ),
                                             TextButton(
-                                                onPressed: () {
-                                                  fixed.remove(i);
-                                                  Navigator.pop(context);
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    const SnackBar(
-                                                      content: Text(
-                                                          'Gasto deletado'),
-                                                    ),
-                                                  );
-                                                },
-                                                child: const Text('Excluir')),
+                                              onPressed: () {
+                                                fixed.remove(i);
+                                                Navigator.pop(context);
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  const SnackBar(
+                                                    content:
+                                                        Text('Gasto deletado'),
+                                                  ),
+                                                );
+                                              },
+                                              child: const Text(
+                                                'EXCLUIR',
+                                                style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -182,7 +206,10 @@ class _ExpenseState extends State<Expense> {
                                   ),
                                 );
                               },
-                              icon: const FaIcon(FontAwesomeIcons.trash, color: Colors.red,),
+                              icon: const FaIcon(
+                                FontAwesomeIcons.trash,
+                                color: Colors.red,
+                              ),
                             ),
                           );
                         },
@@ -201,7 +228,10 @@ class _ExpenseState extends State<Expense> {
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
-                            leading: const FaIcon(FontAwesomeIcons.arrowTrendDown, color: Colors.red,),
+                            leading: const FaIcon(
+                              FontAwesomeIcons.arrowTrendDown,
+                              color: Colors.red,
+                            ),
                             title: Text(
                               variableExpenses[i].description,
                               style: TextStyle(
@@ -229,50 +259,71 @@ class _ExpenseState extends State<Expense> {
                               ],
                             ),
                             trailing: IconButton(
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        AlertDialog(
-                                      scrollable: true,
-                                      title: const Text(
-                                          'Deseja mesmo excluir este gasto?'),
-                                      content: SingleChildScrollView(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: const Text('Não')),
-                                              TextButton(
-                                                  onPressed: () {
-                                                    variable.remove(i);
-                                                    Navigator.pop(context);
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(
-                                                      const SnackBar(
-                                                        content: Text(
-                                                            'Gasto deletado'),
-                                                      ),
-                                                    );
-                                                  },
-                                                  child: const Text('Excluir')),
-                                            ],
-                                          ),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                    scrollable: true,
+                                    title: Text(
+                                      'Deseja mesmo excluir este gasto variável?',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
+                                    content: SingleChildScrollView(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text(
+                                                'NÃO',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                variable.remove(i);
+                                                Navigator.pop(context);
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  const SnackBar(
+                                                    content:
+                                                        Text('Gasto deletado'),
+                                                  ),
+                                                );
+                                              },
+                                              child: const Text(
+                                                'EXCLUIR',
+                                                style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
-                                  );
-                                },
-                                icon: const FaIcon(FontAwesomeIcons.trash), color: Colors.red,),
+                                  ),
+                                );
+                              },
+                              icon: const FaIcon(FontAwesomeIcons.trash),
+                              color: Colors.red,
+                            ),
                           );
                         },
                         separatorBuilder: (_, __) =>

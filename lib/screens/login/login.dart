@@ -19,7 +19,7 @@ class Login extends StatelessWidget {
                 end: Alignment.bottomRight,
                 colors: [
                   Color(0xff003060),
-                  Color(0xff6495ed)
+                  Color(0xff6495ed),
                 ],
               ),
             ),
@@ -34,9 +34,7 @@ class Login extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const FlutterLogo(
-                        size: 100,
-                      ),
+                      const FlutterLogo(),
                       const SizedBox(height: 32.0),
                       TextFormField(
                         validator: (String? value) {

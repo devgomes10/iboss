@@ -37,6 +37,7 @@ class _EntryState extends State<Entry> {
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.primary,
           title: const Text(
             'Entradas',
           ),
@@ -57,12 +58,13 @@ class _EntryState extends State<Entry> {
                 icon: const FaIcon(FontAwesomeIcons.circleInfo))
           ],
           bottom: const TabBar(
+            labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             tabs: [
               Tab(
-                text: 'Entradas fixas',
+                text: 'Fixas',
               ),
               Tab(
-                text: 'Entradas variáveis',
+                text: 'Variáveis',
               ),
             ],
             indicatorColor: Colors.white,
@@ -134,8 +136,12 @@ class _EntryState extends State<Entry> {
                                     builder: (BuildContext context) =>
                                         AlertDialog(
                                       scrollable: true,
-                                      title: const Text(
-                                          'Deseja mesmo exluir esta entrada?'),
+                                      title: Text(
+                                        'Deseja exluir esta entrada fixa?',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium,
+                                      ),
                                       content: SingleChildScrollView(
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
@@ -146,10 +152,18 @@ class _EntryState extends State<Entry> {
                                                 MainAxisAlignment.spaceAround,
                                             children: [
                                               TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: const Text('Não')),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text(
+                                                  'NÃO',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20,
+                                                  ),
+                                                ),
+                                              ),
                                               TextButton(
                                                 onPressed: () {
                                                   fixed.remove(i);
@@ -162,7 +176,14 @@ class _EntryState extends State<Entry> {
                                                     ),
                                                   );
                                                 },
-                                                child: const Text('Exluir'),
+                                                child: const Text(
+                                                  'EXCLUIR',
+                                                  style: TextStyle(
+                                                    color: Colors.red,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20,
+                                                  ),
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -219,8 +240,12 @@ class _EntryState extends State<Entry> {
                                     builder: (BuildContext context) =>
                                         AlertDialog(
                                       scrollable: true,
-                                      title: const Text(
-                                          'Deseja mesmo exluir esta entrada?'),
+                                      title: Text(
+                                        'Deseja exluir esta entrada variável?',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium,
+                                      ),
                                       content: SingleChildScrollView(
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
@@ -231,10 +256,18 @@ class _EntryState extends State<Entry> {
                                                 MainAxisAlignment.spaceAround,
                                             children: [
                                               TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: const Text('Não')),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text(
+                                                  'NÃO',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20,
+                                                  ),
+                                                ),
+                                              ),
                                               TextButton(
                                                 onPressed: () {
                                                   variable.remove(i);
@@ -247,7 +280,14 @@ class _EntryState extends State<Entry> {
                                                     ),
                                                   );
                                                 },
-                                                child: const Text('Exluir'),
+                                                child: const Text(
+                                                  'EXCLUIR',
+                                                  style: TextStyle(
+                                                    color: Colors.red,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20,
+                                                  ),
+                                                ),
                                               ),
                                             ],
                                           ),

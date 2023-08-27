@@ -54,7 +54,10 @@ class _BusinessState extends State<Business> {
         .getTotalVariableExpensesByMonth(_selectedDate);
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme
+          .of(context)
+          .colorScheme
+          .background,
       appBar: AppBar(
         title: const Text('Empresa'),
         centerTitle: true,
@@ -89,7 +92,9 @@ class _BusinessState extends State<Business> {
                 );
               },
               child: Card(
-                color: Theme.of(context).primaryColor,
+                color: Theme
+                    .of(context)
+                    .primaryColor,
                 elevation: 4,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -101,7 +106,10 @@ class _BusinessState extends State<Business> {
                         children: [
                           Text(
                             'Receitas',
-                            style: Theme.of(context).textTheme.bodyLarge,
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .bodyLarge,
                           ),
                           const FaIcon(
                             FontAwesomeIcons.arrowTrendUp,
@@ -112,7 +120,10 @@ class _BusinessState extends State<Business> {
                       const SizedBox(height: 10),
                       Text(
                         'Total',
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyMedium,
                       ),
                       Text(
                         real.format(totalCashPayments + totalDeferredPayments),
@@ -129,8 +140,11 @@ class _BusinessState extends State<Business> {
                           Column(
                             children: [
                               Text(
-                                "À vista",
-                                style: Theme.of(context).textTheme.bodyMedium,
+                                "Pagos",
+                                style: Theme
+                                    .of(context)
+                                    .textTheme
+                                    .bodyMedium,
                               ),
                               Text(
                                 real.format(totalCashPayments),
@@ -143,8 +157,11 @@ class _BusinessState extends State<Business> {
                           Column(
                             children: [
                               Text(
-                                "A prazo",
-                                style: Theme.of(context).textTheme.bodyMedium,
+                                "Pendentes",
+                                style: Theme
+                                    .of(context)
+                                    .textTheme
+                                    .bodyMedium,
                               ),
                               Text(
                                 real.format(totalDeferredPayments),
@@ -175,7 +192,9 @@ class _BusinessState extends State<Business> {
                 );
               },
               child: Card(
-                color: Theme.of(context).primaryColor,
+                color: Theme
+                    .of(context)
+                    .primaryColor,
                 elevation: 4,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -187,7 +206,10 @@ class _BusinessState extends State<Business> {
                         children: [
                           Text(
                             'Gastos',
-                            style: Theme.of(context).textTheme.bodyLarge,
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .bodyLarge,
                           ),
                           const FaIcon(
                             FontAwesomeIcons.arrowTrendDown,
@@ -198,7 +220,10 @@ class _BusinessState extends State<Business> {
                       const SizedBox(height: 10),
                       Text(
                         'Total',
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyMedium,
                       ),
                       Text(
                         real.format(totalFixedExpenses + totalVariableExpense),
@@ -215,8 +240,11 @@ class _BusinessState extends State<Business> {
                           Column(
                             children: [
                               Text(
-                                "Gastos fixos",
-                                style: Theme.of(context).textTheme.bodyMedium,
+                                "Fixos",
+                                style: Theme
+                                    .of(context)
+                                    .textTheme
+                                    .bodyMedium,
                               ),
                               Text(
                                 real.format(totalFixedExpenses),
@@ -229,8 +257,11 @@ class _BusinessState extends State<Business> {
                           Column(
                             children: [
                               Text(
-                                "Gastos variáveis",
-                                style: Theme.of(context).textTheme.bodyMedium,
+                                "Variáveis",
+                                style: Theme
+                                    .of(context)
+                                    .textTheme
+                                    .bodyMedium,
                               ),
                               Text(
                                 real.format(totalVariableExpense),
@@ -254,14 +285,20 @@ class _BusinessState extends State<Business> {
             ListTile(
               title: Text(
                 'Pró-labore',
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodyMedium,
               ),
               subtitle: Text(
                 'RS 100,00',
                 style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.secondary,
+                  color: Theme
+                      .of(context)
+                      .colorScheme
+                      .secondary,
                 ),
               ),
               trailing: SizedBox(
@@ -275,7 +312,8 @@ class _BusinessState extends State<Business> {
                     ),
                     IconButton(
                       onPressed: () {},
-                      icon: const FaIcon(FontAwesomeIcons.circleInfo, color: Colors.yellow,),
+                      icon: const FaIcon(
+                        FontAwesomeIcons.circleInfo, color: Colors.yellow,),
                     ),
                   ],
                 ),
@@ -288,14 +326,20 @@ class _BusinessState extends State<Business> {
             ListTile(
               title: Text(
                 'Reserva de emergência',
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodyMedium,
               ),
               subtitle: Text(
                 'RS 100,00',
                 style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.secondary,
+                  color: Theme
+                      .of(context)
+                      .colorScheme
+                      .secondary,
                 ),
               ),
               trailing: SizedBox(
@@ -309,7 +353,8 @@ class _BusinessState extends State<Business> {
                     ),
                     IconButton(
                       onPressed: () {},
-                      icon: const FaIcon(FontAwesomeIcons.circleInfo, color: Colors.yellow,),
+                      icon: const FaIcon(
+                        FontAwesomeIcons.circleInfo, color: Colors.yellow,),
                     ),
                   ],
                 ),
@@ -319,43 +364,5 @@ class _BusinessState extends State<Business> {
         ),
       ),
     );
-  }
-
-  updateSaldo() async {
-    final form = GlobalKey<FormState>();
-    final valueReservation = TextEditingController();
-
-    AlertDialog dialog = AlertDialog(
-      title: const Text('Qual sua reserva financeira atual?'),
-      content: Form(
-        key: form,
-        child: TextFormField(
-          controller: valueReservation,
-          keyboardType: TextInputType.number,
-          inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d*')),
-          ],
-          validator: (value) {
-            if (value!.isEmpty) return 'Informe o valor do saldo';
-            return null;
-          },
-        ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Cancelar'),
-        ),
-        TextButton(
-          onPressed: () {
-            if (form.currentState!.validate()) {
-              Navigator.pop(context);
-            }
-          },
-          child: const Text('Salvar'),
-        ),
-      ],
-    );
-    showDialog(context: context, builder: (context) => dialog);
   }
 }

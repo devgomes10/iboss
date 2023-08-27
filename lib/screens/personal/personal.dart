@@ -121,7 +121,7 @@ class _PersonalState extends State<Personal> {
                           Column(
                             children: [
                               Text(
-                                "Entradas fixas",
+                                "Fixas",
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               Text(
@@ -133,7 +133,7 @@ class _PersonalState extends State<Personal> {
                           Column(
                             children: [
                               Text(
-                                "entradas variáveis",
+                                "Variáveis",
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               Text(
@@ -201,7 +201,7 @@ class _PersonalState extends State<Personal> {
                           Column(
                             children: [
                               Text(
-                                "Saídas fixas",
+                                "Fixas",
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               Text(
@@ -213,7 +213,7 @@ class _PersonalState extends State<Personal> {
                           Column(
                             children: [
                               Text(
-                                "Saídas variáveis",
+                                "Variáveis",
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               Text(
