@@ -110,7 +110,7 @@ class __DialogoNovaReceitaState extends State<_DialogNewOutflow> {
                     Consumer<FixedOutflowRepository>(
                       builder: (BuildContext context,
                           FixedOutflowRepository fixed, Widget? widget) {
-                        return Container(
+                        return SizedBox(
                           width: 100,
                           child: TextButton(
                             onPressed: () async {
@@ -143,7 +143,7 @@ class __DialogoNovaReceitaState extends State<_DialogNewOutflow> {
                     Consumer<VariableOutflowRepository>(
                       builder: (BuildContext context,
                           VariableOutflowRepository variable, Widget? widget) {
-                        return Container(
+                        return SizedBox(
                           width: 100,
                           child: TextButton(
                             onPressed: () async {

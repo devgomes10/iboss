@@ -121,7 +121,7 @@ class _RevenueState extends State<Revenue> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(12)),
                             ),
-                            leading: FaIcon(
+                            leading: const FaIcon(
                               FontAwesomeIcons.arrowTrendUp,
                               color: Colors.green,
                             ),
@@ -143,7 +143,7 @@ class _RevenueState extends State<Revenue> {
                                 Text(
                                   DateFormat('dd/MM/yyyy')
                                       .format(cashPayments[i].date),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 16,
                                   ),
                                 ),
@@ -157,9 +157,10 @@ class _RevenueState extends State<Revenue> {
                                       AlertDialog(
                                     scrollable: true,
                                     title: Text(
-                                      'Deseja mesmo excluir este pagamento?', style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium,
+                                      'Deseja mesmo excluir este pagamento?',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
                                     ),
                                     content: SingleChildScrollView(
                                       child: Padding(
@@ -174,11 +175,14 @@ class _RevenueState extends State<Revenue> {
                                               onPressed: () {
                                                 Navigator.pop(context);
                                               },
-                                              child: const Text('NÃO', style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20,
-                                              ),),
+                                              child: const Text(
+                                                'NÃO',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20,
+                                                ),
+                                              ),
                                             ),
                                             TextButton(
                                               onPressed: () {
@@ -193,11 +197,14 @@ class _RevenueState extends State<Revenue> {
                                                   ),
                                                 );
                                               },
-                                              child: const Text('EXCLUIR', style: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20,
-                                              ),),
+                                              child: const Text(
+                                                'EXCLUIR',
+                                                style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20,
+                                                ),
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -206,7 +213,7 @@ class _RevenueState extends State<Revenue> {
                                   ),
                                 );
                               },
-                              icon: FaIcon(
+                              icon: const FaIcon(
                                 FontAwesomeIcons.trash,
                                 color: Colors.red,
                               ),
@@ -234,7 +241,7 @@ class _RevenueState extends State<Revenue> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(12)),
                             ),
-                            leading: FaIcon(
+                            leading: const FaIcon(
                               FontAwesomeIcons.arrowTrendUp,
                               color: Colors.green,
                             ),
@@ -256,7 +263,7 @@ class _RevenueState extends State<Revenue> {
                                 Text(
                                   DateFormat('dd/MM/yyyy')
                                       .format(deferredPayments[i].date),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 16,
                                   ),
                                 ),
@@ -274,9 +281,11 @@ class _RevenueState extends State<Revenue> {
                                             AlertDialog(
                                           scrollable: true,
                                           title: Text(
-                                              'Você recebeu o dinheiro?', style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium,),
+                                            'Você recebeu o dinheiro?',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium,
+                                          ),
                                           content: SingleChildScrollView(
                                             child: Padding(
                                               padding:
@@ -292,11 +301,15 @@ class _RevenueState extends State<Revenue> {
                                                     onPressed: () {
                                                       Navigator.pop(context);
                                                     },
-                                                    child: const Text('NÃO', style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight: FontWeight.bold,
-                                                      fontSize: 20,
-                                                    ),),
+                                                    child: const Text(
+                                                      'NÃO',
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 20,
+                                                      ),
+                                                    ),
                                                   ),
                                                   Consumer<
                                                       CashPaymentRepository>(
@@ -307,11 +320,20 @@ class _RevenueState extends State<Revenue> {
                                                         Widget? widget) {
                                                       return TextButton(
                                                         onPressed: () async {
-                                                          inCash.add(CashPayment(
-                                                            description: descriptionController.text,
-                                                            value: double.parse(valueController.text,),
-                                                            date: DateTime.now(),
-                                                          ),);
+                                                          inCash.add(
+                                                            CashPayment(
+                                                              description:
+                                                                  descriptionController
+                                                                      .text,
+                                                              value:
+                                                                  double.parse(
+                                                                valueController
+                                                                    .text,
+                                                              ),
+                                                              date: DateTime
+                                                                  .now(),
+                                                            ),
+                                                          );
                                                           inTerm.remove(i,
                                                               monthYearString);
                                                           ScaffoldMessenger.of(
@@ -331,7 +353,8 @@ class _RevenueState extends State<Revenue> {
                                                           'RECEBI',
                                                           style: TextStyle(
                                                             color: Colors.green,
-                                                            fontWeight: FontWeight.bold,
+                                                            fontWeight:
+                                                                FontWeight.bold,
                                                             fontSize: 20,
                                                           ),
                                                         ),
@@ -357,9 +380,11 @@ class _RevenueState extends State<Revenue> {
                                             AlertDialog(
                                           scrollable: true,
                                           title: Text(
-                                              'Deseja mesmo excluir este pagamento pendente?', style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium,),
+                                            'Deseja mesmo excluir este pagamento pendente?',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium,
+                                          ),
                                           content: SingleChildScrollView(
                                             child: Padding(
                                               padding:
@@ -375,11 +400,15 @@ class _RevenueState extends State<Revenue> {
                                                     onPressed: () {
                                                       Navigator.pop(context);
                                                     },
-                                                    child: const Text('NÃO', style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight: FontWeight.bold,
-                                                      fontSize: 20,
-                                                    ),),
+                                                    child: const Text(
+                                                      'NÃO',
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 20,
+                                                      ),
+                                                    ),
                                                   ),
                                                   TextButton(
                                                     onPressed: () {
@@ -395,12 +424,15 @@ class _RevenueState extends State<Revenue> {
                                                         ),
                                                       );
                                                     },
-                                                    child:
-                                                        const Text('EXCLUIR', style: TextStyle(
-                                                          color: Colors.red,
-                                                          fontWeight: FontWeight.bold,
-                                                          fontSize: 20,
-                                                        ),),
+                                                    child: const Text(
+                                                      'EXCLUIR',
+                                                      style: TextStyle(
+                                                        color: Colors.red,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 20,
+                                                      ),
+                                                    ),
                                                   ),
                                                 ],
                                               ),

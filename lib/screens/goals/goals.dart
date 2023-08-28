@@ -24,6 +24,7 @@ class _GoalsState extends State<Goals> {
   DateTime selectedDate = DateTime.now();
   List<bool> companyCheckedList = [];
   List<bool> personalCheckedList = [];
+  final ptBr = Locale('pt', 'BR');
 
   @override
   Widget build(BuildContext context) {
@@ -116,11 +117,11 @@ class _GoalsState extends State<Goals> {
                                           final DateTime? dateTime =
                                               await showDatePicker(
                                             context: context,
+                                            locale: ptBr,
                                             initialDate: selectedDate,
                                             firstDate: DateTime(2000),
                                             lastDate: DateTime(3000),
                                           );
-
                                           if (dateTime != null) {
                                             setState(() {
                                               selectedDate = dateTime;

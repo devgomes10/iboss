@@ -15,6 +15,7 @@ import 'package:iboss/repositories/personal/personal_reservation_repository.dart
 import 'package:iboss/repositories/business/wage_repository.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   runApp(MultiProvider(providers: [
@@ -53,6 +54,13 @@ class MyApp extends StatelessWidget {
     initializeDateFormatting('pt_BR', null);
 
     return MaterialApp(
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate
+      ],
+      supportedLocales: [
+        const Locale('pt'),
+        const Locale('BR'),
+      ],
       title: 'Evolve',
       debugShowCheckedModeBanner: false,
       theme: darkTheme,

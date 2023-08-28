@@ -109,7 +109,7 @@ class __DialogoNovaReceitaState extends State<_DialogonewRevenue> {
                     Consumer<CashPaymentRepository>(
                       builder: (BuildContext context,
                           CashPaymentRepository inCash, Widget? widget) {
-                        return Container(
+                        return SizedBox(
                           width: 100,
                           child: TextButton(
                             onPressed: () async {
@@ -143,7 +143,7 @@ class __DialogoNovaReceitaState extends State<_DialogonewRevenue> {
                     Consumer<DeferredPaymentRepository>(
                       builder: (BuildContext context,
                           DeferredPaymentRepository inTerm, Widget? widget) {
-                        return Container(
+                        return SizedBox(
                           width: 100,
                           child: TextButton(
                             onPressed: () async {

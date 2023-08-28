@@ -109,7 +109,7 @@ class __DialogoNovaReceitaState extends State<_DialogoNewEntry> {
                     Consumer<FixedEntryRepository>(
                       builder: (BuildContext context,
                           FixedEntryRepository fixed, Widget? widget) {
-                        return Container(
+                        return SizedBox(
                           width: 100,
                           child: TextButton(
                             onPressed: () async {
@@ -142,7 +142,7 @@ class __DialogoNovaReceitaState extends State<_DialogoNewEntry> {
                     Consumer<VariableEntryRepository>(
                       builder: (BuildContext context,
                           VariableEntryRepository variable, Widget? widget) {
-                        return Container(
+                        return SizedBox(
                           width: 100,
                           child: TextButton(
                             onPressed: () async {

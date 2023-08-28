@@ -34,7 +34,11 @@ class Login extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const FlutterLogo(),
+                      Image.asset(
+                        'assets/login_image.png',
+                        width: 200,
+                        height: 200,
+                      ),
                       const SizedBox(height: 32.0),
                       TextFormField(
                         validator: (String? value) {
@@ -94,7 +98,8 @@ class Login extends StatelessWidget {
                         onPressed: () {
                           // Adicione aqui a lógica de autenticação
                         },
-                        style: TextButton.styleFrom(elevation: 4,
+                        style: TextButton.styleFrom(
+                          elevation: 4,
                           backgroundColor: Colors.blue[300],
                         ),
                         child: const Text(
@@ -129,7 +134,8 @@ class Login extends StatelessWidget {
                             ),
                           );
                         },
-                        style: TextButton.styleFrom(elevation: 4,
+                        style: TextButton.styleFrom(
+                          elevation: 4,
                           backgroundColor: Colors.grey[200],
                         ),
                         child: const Text(

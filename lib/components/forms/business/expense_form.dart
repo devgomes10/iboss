@@ -109,7 +109,7 @@ class __DialogoNovaReceitaState extends State<_DialogoNewExpense> {
                       builder: (BuildContext context,
                           FixedExpenseRepository fixed,
                           Widget? widget) {
-                        return Container(
+                        return SizedBox(
                           width: 100,
                           child: TextButton(
                             onPressed: () async {
@@ -148,7 +148,7 @@ class __DialogoNovaReceitaState extends State<_DialogoNewExpense> {
                       builder: (BuildContext context,
                           VariableExpenseRepository variable,
                           Widget? widget) {
-                        return Container(
+                        return SizedBox(
                           width: 100,
                           child: TextButton(
                             onPressed: () async {
