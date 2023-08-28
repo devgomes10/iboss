@@ -47,11 +47,7 @@ class DeferredPaymentRepository extends ChangeNotifier {
   }
 
   List<DeferredPayment> getDeferredPaymentsByMonth(DateTime selectedMonth) {
-    return deferredPayments.where((payment) {
-      final paymentYear = payment.date.year;
-      final paymentMonth = payment.date.month;
-      return paymentYear == selectedMonth.year && paymentMonth == selectedMonth.month;
-    }).toList();
+    return deferredPayments;
   }
 }
 
