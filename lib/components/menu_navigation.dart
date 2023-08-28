@@ -22,7 +22,6 @@ class MenuNavigation extends StatefulWidget {
 }
 
 class _MenuNavigationState extends State<MenuNavigation> {
-  bool isScrolling = false;
   int currentPage = 0;
   late PageController pc;
 
@@ -41,20 +40,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: NotificationListener<ScrollNotification>(
-      onNotification: (scrollNotification) {
-        if (scrollNotification is ScrollUpdateNotification) {
-          setState(() {
-            isScrolling = true;
-          });
-        } else if (scrollNotification is ScrollEndNotification) {
-          setState(() {
-            isScrolling = false;
-          });
-        }
-        return false;
-      },
-      child: PageView(
+      body: PageView(
         controller: pc,
         onPageChanged: setCurrentPage,
         children: const [
@@ -64,8 +50,6 @@ class _MenuNavigationState extends State<MenuNavigation> {
           Dashboard(),
         ],
       ),
-    ),
-
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: SpeedDial(
         icon: FontAwesomeIcons.plus,
@@ -133,7 +117,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
         ],
       ),
       extendBody: true,
-      bottomNavigationBar: isScrolling ? null : BottomAppBar(
+      bottomNavigationBar: BottomAppBar(
         notchMargin: 8,
         shape: const CircularNotchedRectangle(),
         color: Theme.of(context).colorScheme.primary,

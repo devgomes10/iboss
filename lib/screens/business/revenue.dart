@@ -323,10 +323,10 @@ class _RevenueState extends State<Revenue> {
                                                           inCash.add(
                                                             CashPayment(
                                                               description:
-                                                                  descriptionController
-                                                                      .text,
+                                                              descriptionController
+                                                                  .text,
                                                               value:
-                                                                  double.parse(
+                                                              double.parse(
                                                                 valueController
                                                                     .text,
                                                               ),
@@ -341,7 +341,7 @@ class _RevenueState extends State<Revenue> {
                                                               .showSnackBar(
                                                             const SnackBar(
                                                               content: Text(
-                                                                  'Criando um pagamento à vista'),
+                                                                  'Criando um novo pagamento'),
                                                             ),
                                                           );
                                                           Navigator.pop(

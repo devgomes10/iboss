@@ -60,12 +60,12 @@ class MyApp extends StatelessWidget {
     initializeDateFormatting('pt_BR', null);
 
     return MaterialApp(
-      localizationsDelegates: [
+      localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate
       ],
-      supportedLocales: [
-        const Locale('pt'),
-        const Locale('BR'),
+      supportedLocales: const [
+        Locale('pt'),
+        Locale('BR'),
       ],
       title: 'Evolve',
       debugShowCheckedModeBanner: false,

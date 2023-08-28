@@ -114,11 +114,13 @@ class __DialogoNovaReceitaState extends State<_DialogonewRevenue> {
                           child: TextButton(
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                inCash.add(CashPayment(
-                                  description: descriptionController.text,
-                                  value: double.parse(valueController.text),
-                                  date: DateTime.now(),
-                                ),);
+                                inCash.add(
+                                  CashPayment(
+                                    description: descriptionController.text,
+                                    value: double.parse(valueController.text),
+                                    date: DateTime.now(),
+                                  ),
+                                );
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('Criando um novo pagamento'),
@@ -148,11 +150,13 @@ class __DialogoNovaReceitaState extends State<_DialogonewRevenue> {
                           child: TextButton(
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                inTerm.add(DeferredPayment(
-                                  description: descriptionController.text,
-                                  value: double.parse(valueController.text),
-                                  date: DateTime.now(),
-                                ),);
+                                inTerm.add(
+                                  DeferredPayment(
+                                    description: descriptionController.text,
+                                    value: double.parse(valueController.text),
+                                    date: DateTime.now(),
+                                  ),
+                                );
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text(

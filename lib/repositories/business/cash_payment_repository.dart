@@ -18,13 +18,14 @@ class CashPaymentRepository extends ChangeNotifier {
 
   double getTotalCashPayments() {
     double total = 0.0;
-
     for (var payment in cashPayments) {
       total += payment.value;
     }
-
     return total;
   }
+  @override
+  notifyListeners();
+
 
   double getTotalCashPaymentsByMonth(DateTime selectedMonth) {
     double total = 0.0;

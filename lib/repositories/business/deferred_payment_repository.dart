@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import '../../models/business/deferred_payment.dart';
 
 class DeferredPaymentRepository extends ChangeNotifier {
@@ -28,6 +27,9 @@ class DeferredPaymentRepository extends ChangeNotifier {
     notifyListeners();
     return total;
   }
+  @override
+  notifyListeners();
+
 
   double getTotalDeferredPaymentsByMonth(DateTime selectedMonth) {
     double total = 0.0;
