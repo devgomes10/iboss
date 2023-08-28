@@ -322,26 +322,20 @@ class _RevenueState extends State<Revenue> {
                                                         onPressed: () async {
                                                           inCash.add(
                                                             CashPayment(
-                                                              description:
-                                                              descriptionController
-                                                                  .text,
-                                                              value:
-                                                              double.parse(
-                                                                valueController
-                                                                    .text,
-                                                              ),
-                                                              date: DateTime
-                                                                  .now(),
+                                                              description: deferredPayments[i].description,
+                                                              value: deferredPayments[i].value,
+                                                              date: DateTime.now(),
                                                             ),
                                                           );
-                                                          inTerm.remove(i,
-                                                              monthYearString);
+                                                          inTerm.remove(i, monthYearString);
+                                                          inCash.notifyListeners();
+                                                          inTerm.notifyListeners();
                                                           ScaffoldMessenger.of(
                                                                   context)
                                                               .showSnackBar(
                                                             const SnackBar(
                                                               content: Text(
-                                                                  'Criando um novo pagamento'),
+                                                                  'Pagamento Recebido'),
                                                             ),
                                                           );
                                                           Navigator.pop(
