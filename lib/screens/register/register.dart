@@ -120,6 +120,22 @@ class Register extends StatelessWidget {
                         labelStyle: TextStyle(color: Colors.grey)),
                     obscureText: true,
                   ),
+                  const SizedBox(height: 16.0),
+                  TextFormField(
+                    validator: (String? value) {
+                      if (value!.isEmpty) {
+                        return "Confirme a senha";
+                      }
+                      return null;
+                    },
+                    decoration: const InputDecoration(
+                        labelText: 'Confirme a senha',
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        labelStyle: TextStyle(color: Colors.grey)),
+                    obscureText: true,
+                  ),
                   const SizedBox(height: 50.0),
                   ElevatedButton(
                     onPressed: () {
