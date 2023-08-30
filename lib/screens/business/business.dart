@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/screens/business/revenue.dart';
 import 'package:iboss/screens/settings/settings.dart';
@@ -38,7 +37,7 @@ class _BusinessState extends State<Business> {
 
     // total payments on time
     final deferredPaymentRepository =
-    Provider.of<DeferredPaymentRepository>(context);
+        Provider.of<DeferredPaymentRepository>(context);
     totalDeferredPayments = deferredPaymentRepository
         .getTotalDeferredPaymentsByMonth(_selectedDate);
 
@@ -49,15 +48,12 @@ class _BusinessState extends State<Business> {
 
     // total variable expenses
     final variableExpensesRepository =
-    Provider.of<VariableExpenseRepository>(context);
+        Provider.of<VariableExpenseRepository>(context);
     totalVariableExpense = variableExpensesRepository
         .getTotalVariableExpensesByMonth(_selectedDate);
 
     return Scaffold(
-      backgroundColor: Theme
-          .of(context)
-          .colorScheme
-          .background,
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         title: const Text('Empresa'),
         centerTitle: true,
@@ -67,7 +63,7 @@ class _BusinessState extends State<Business> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Settings(),
+                  builder: (context) => const Settings(),
                 ),
               );
             },
@@ -92,9 +88,7 @@ class _BusinessState extends State<Business> {
                 );
               },
               child: Card(
-                color: Theme
-                    .of(context)
-                    .primaryColor,
+                color: Theme.of(context).primaryColor,
                 elevation: 4,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -106,10 +100,7 @@ class _BusinessState extends State<Business> {
                         children: [
                           Text(
                             'Receitas',
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .bodyLarge,
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           const FaIcon(
                             FontAwesomeIcons.arrowTrendUp,
@@ -120,10 +111,7 @@ class _BusinessState extends State<Business> {
                       const SizedBox(height: 10),
                       Text(
                         'Total',
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .bodyMedium,
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       Text(
                         real.format(totalCashPayments + totalDeferredPayments),
@@ -141,10 +129,7 @@ class _BusinessState extends State<Business> {
                             children: [
                               Text(
                                 "Pagos",
-                                style: Theme
-                                    .of(context)
-                                    .textTheme
-                                    .bodyMedium,
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               Text(
                                 real.format(totalCashPayments),
@@ -158,10 +143,7 @@ class _BusinessState extends State<Business> {
                             children: [
                               Text(
                                 "Pendentes",
-                                style: Theme
-                                    .of(context)
-                                    .textTheme
-                                    .bodyMedium,
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               Text(
                                 real.format(totalDeferredPayments),
@@ -192,9 +174,7 @@ class _BusinessState extends State<Business> {
                 );
               },
               child: Card(
-                color: Theme
-                    .of(context)
-                    .primaryColor,
+                color: Theme.of(context).primaryColor,
                 elevation: 4,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -206,10 +186,7 @@ class _BusinessState extends State<Business> {
                         children: [
                           Text(
                             'Gastos',
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .bodyLarge,
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           const FaIcon(
                             FontAwesomeIcons.arrowTrendDown,
@@ -220,10 +197,7 @@ class _BusinessState extends State<Business> {
                       const SizedBox(height: 10),
                       Text(
                         'Total',
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .bodyMedium,
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       Text(
                         real.format(totalFixedExpenses + totalVariableExpense),
@@ -241,10 +215,7 @@ class _BusinessState extends State<Business> {
                             children: [
                               Text(
                                 "Fixos",
-                                style: Theme
-                                    .of(context)
-                                    .textTheme
-                                    .bodyMedium,
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               Text(
                                 real.format(totalFixedExpenses),
@@ -258,10 +229,7 @@ class _BusinessState extends State<Business> {
                             children: [
                               Text(
                                 "Variáveis",
-                                style: Theme
-                                    .of(context)
-                                    .textTheme
-                                    .bodyMedium,
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               Text(
                                 real.format(totalVariableExpense),
@@ -285,20 +253,14 @@ class _BusinessState extends State<Business> {
             ListTile(
               title: Text(
                 'Pró-labore',
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .bodyMedium,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
               subtitle: Text(
-                'RS 100,00',
+                'R\$ 100,00',
                 style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
-                  color: Theme
-                      .of(context)
-                      .colorScheme
-                      .secondary,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
               trailing: SizedBox(
@@ -307,13 +269,89 @@ class _BusinessState extends State<Business> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
+                            scrollable: true,
+                            title: Text(
+                              'Adicione seu pró-labore atual',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                            ),
+                            content: SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Form(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      TextFormField(
+                                        keyboardType: TextInputType.text,
+                                        controller: wageController,
+                                        decoration: const InputDecoration(
+                                          labelText: 'Pró-labore',
+                                          labelStyle:
+                                              TextStyle(color: Colors.white),
+                                          border: OutlineInputBorder(),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 20.0),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              width: 100,
+                                              child: TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text('Cancelar'),
+                                                style: TextButton.styleFrom(
+                                                  backgroundColor: Colors.grey[200],
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 100,
+                                              child: TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text('Confirmar'),
+                                                style: TextButton.styleFrom(
+                                                  backgroundColor: Colors.grey[200],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                       icon: const FaIcon(FontAwesomeIcons.penToSquare),
                     ),
                     IconButton(
                       onPressed: () {},
                       icon: const FaIcon(
-                        FontAwesomeIcons.circleInfo, color: Colors.yellow,),
+                        FontAwesomeIcons.circleInfo,
+                        color: Colors.yellow,
+                      ),
                     ),
                   ],
                 ),
@@ -326,20 +364,14 @@ class _BusinessState extends State<Business> {
             ListTile(
               title: Text(
                 'Reserva de emergência',
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .bodyMedium,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
               subtitle: Text(
                 'RS 100,00',
                 style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
-                  color: Theme
-                      .of(context)
-                      .colorScheme
-                      .secondary,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
               trailing: SizedBox(
@@ -348,13 +380,89 @@ class _BusinessState extends State<Business> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
+                            scrollable: true,
+                            title: Text(
+                              'Adicione sua reserva de emêrgencia atual',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                            ),
+                            content: SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Form(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      TextFormField(
+                                        keyboardType: TextInputType.text,
+                                        controller: wageController,
+                                        decoration: const InputDecoration(
+                                          labelText: 'Reserva de emergência',
+                                          labelStyle:
+                                              TextStyle(color: Colors.white),
+                                          border: OutlineInputBorder(),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 20.0),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              width: 100,
+                                              child: TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text('Cancelar'),
+                                                style: TextButton.styleFrom(
+                                                  backgroundColor: Colors.grey[200],
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 100,
+                                              child: TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text('Confirmar'),
+                                                style: TextButton.styleFrom(
+                                                  backgroundColor: Colors.grey[200],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                       icon: const FaIcon(FontAwesomeIcons.penToSquare),
                     ),
                     IconButton(
                       onPressed: () {},
                       icon: const FaIcon(
-                        FontAwesomeIcons.circleInfo, color: Colors.yellow,),
+                        FontAwesomeIcons.circleInfo,
+                        color: Colors.yellow,
+                      ),
                     ),
                   ],
                 ),

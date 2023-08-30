@@ -29,7 +29,6 @@ class CashPaymentRepository extends ChangeNotifier {
 
   double getTotalCashPaymentsByMonth(DateTime selectedMonth) {
     double total = 0.0;
-
     for (var payment in cashPayments) {
       final paymentYear = payment.date.year;
       final paymentMonth = payment.date.month;

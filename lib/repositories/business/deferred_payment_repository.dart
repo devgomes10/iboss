@@ -34,7 +34,6 @@ class DeferredPaymentRepository extends ChangeNotifier {
 
   double getTotalDeferredPaymentsByMonth(DateTime selectedMonth) {
     double total = 0.0;
-
     for (var payment in deferredPayments) {
       final paymentYear = payment.date.year;
       final paymentMonth = payment.date.month;
