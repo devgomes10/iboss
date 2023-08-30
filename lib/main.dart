@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
         Locale('pt'),
         Locale('BR'),
       ],
-      title: 'Evolve',
+      title: 'evolve',
       debugShowCheckedModeBanner: false,
       theme: darkTheme,
       home: const MenuNavigation(),

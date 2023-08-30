@@ -315,10 +315,10 @@ class _BusinessState extends State<Business> {
                                                 onPressed: () {
                                                   Navigator.pop(context);
                                                 },
-                                                child: const Text('Cancelar'),
                                                 style: TextButton.styleFrom(
                                                   backgroundColor: Colors.grey[200],
                                                 ),
+                                                child: const Text('Cancelar'),
                                               ),
                                             ),
                                             SizedBox(
@@ -327,10 +327,10 @@ class _BusinessState extends State<Business> {
                                                 onPressed: () {
                                                   Navigator.pop(context);
                                                 },
-                                                child: const Text('Confirmar'),
                                                 style: TextButton.styleFrom(
                                                   backgroundColor: Colors.grey[200],
                                                 ),
+                                                child: const Text('Confirmar'),
                                               ),
                                             ),
                                           ],
@@ -406,7 +406,7 @@ class _BusinessState extends State<Business> {
                                     children: <Widget>[
                                       TextFormField(
                                         keyboardType: TextInputType.text,
-                                        controller: wageController,
+                                        controller: reservationController,
                                         decoration: const InputDecoration(
                                           labelText: 'Reserva de emergência',
                                           labelStyle:
@@ -426,10 +426,10 @@ class _BusinessState extends State<Business> {
                                                 onPressed: () {
                                                   Navigator.pop(context);
                                                 },
-                                                child: const Text('Cancelar'),
                                                 style: TextButton.styleFrom(
                                                   backgroundColor: Colors.grey[200],
                                                 ),
+                                                child: const Text('Cancelar'),
                                               ),
                                             ),
                                             SizedBox(
@@ -438,10 +438,10 @@ class _BusinessState extends State<Business> {
                                                 onPressed: () {
                                                   Navigator.pop(context);
                                                 },
-                                                child: const Text('Confirmar'),
                                                 style: TextButton.styleFrom(
                                                   backgroundColor: Colors.grey[200],
                                                 ),
+                                                child: const Text('Confirmar'),
                                               ),
                                             ),
                                           ],
