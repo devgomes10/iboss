@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:iboss/components/menu_navigation.dart';
 import 'package:iboss/repositories/business/deferred_payment_repository.dart';
@@ -24,32 +25,40 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(
-        create: (context) => CashPaymentRepository(cashPayments: [])),
-    ChangeNotifierProvider(
-        create: (context) => CompanyGoalsRepository(companyGoals: [])),
-    ChangeNotifierProvider(
-        create: (context) => DeferredPaymentRepository(deferredPayments: [])),
-    ChangeNotifierProvider(
-        create: (context) => FixedExpenseRepository(fixedExpenses: [])),
-    ChangeNotifierProvider(
-        create: (context) => VariableExpenseRepository(variableExpenses: [])),
-    ChangeNotifierProvider(
-        create: (context) => FixedEntryRepository(fixedEntry: [])),
-    ChangeNotifierProvider(
-        create: (context) => VariableEntryRepository(variableEntry: [])),
-    ChangeNotifierProvider(
-        create: (context) => FixedOutflowRepository(fixedOutflow: [])),
-    ChangeNotifierProvider(
-        create: (context) => VariableOutflowRepository(variableOutflow: [])),
-    ChangeNotifierProvider(
-        create: (context) => PersonalGoalsRepository(personalGoals: [])),
-    ChangeNotifierProvider(create: (context) => WageRepository(salary: [])),
-    ChangeNotifierProvider(
-        create: (context) =>
-            PersonalReservationRepository(personalReservations: [])),
-  ], child: const MyApp()));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+            create: (context) => CashPaymentRepository(cashPayments: [])),
+        ChangeNotifierProvider(
+            create: (context) => CompanyGoalsRepository(companyGoals: [])),
+        ChangeNotifierProvider(
+            create: (context) =>
+                DeferredPaymentRepository(deferredPayments: [])),
+        ChangeNotifierProvider(
+            create: (context) => FixedExpenseRepository(fixedExpenses: [])),
+        ChangeNotifierProvider(
+            create: (context) =>
+                VariableExpenseRepository(variableExpenses: [])),
+        ChangeNotifierProvider(
+            create: (context) => FixedEntryRepository(fixedEntry: [])),
+        ChangeNotifierProvider(
+            create: (context) => VariableEntryRepository(variableEntry: [])),
+        ChangeNotifierProvider(
+            create: (context) => FixedOutflowRepository(fixedOutflow: [])),
+        ChangeNotifierProvider(
+            create: (context) =>
+                VariableOutflowRepository(variableOutflow: [])),
+        ChangeNotifierProvider(
+            create: (context) => PersonalGoalsRepository(personalGoals: [])),
+        ChangeNotifierProvider(create: (context) => WageRepository(salary: [])),
+        ChangeNotifierProvider(
+            create: (context) =>
+                PersonalReservationRepository(personalReservations: [])),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -60,9 +69,7 @@ class MyApp extends StatelessWidget {
     initializeDateFormatting('pt_BR', null);
 
     return MaterialApp(
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate
-      ],
+      localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
       supportedLocales: const [
         Locale('pt'),
         Locale('BR'),

@@ -47,16 +47,11 @@ class DeferredPaymentRepository extends ChangeNotifier {
   }
 
   List<DeferredPayment> getDeferredPaymentsByMonth(DateTime selectedMonth) {
-    DateTime currentMonth = DateTime.now();
-    if (selectedMonth.isAfter(currentMonth)) {
-      return deferredPayments;
-    } else {
-      return deferredPayments.where((payment) {
-        final paymentYear = payment.date.year;
-        final paymentMonth = payment.date.month;
-        return paymentYear == selectedMonth.year &&
-            paymentMonth == selectedMonth.month;
-      }).toList();
-    }
+    return deferredPayments.where((payment) {
+      final paymentYear = payment.date.year;
+      final paymentMonth = payment.date.month;
+      return paymentYear == selectedMonth.year &&
+          paymentMonth == selectedMonth.month;
+    }).toList();
   }
 }

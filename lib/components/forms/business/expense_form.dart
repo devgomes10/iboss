@@ -28,9 +28,10 @@ class __DialogoNovaReceitaState extends State<_DialogoNewExpense> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(16.0),
-    ),
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0),
+      ),
       scrollable: true,
       title: Text(
         'Adicione um novo gasto',
@@ -107,8 +108,7 @@ class __DialogoNovaReceitaState extends State<_DialogoNewExpense> {
                   children: [
                     Consumer<FixedExpenseRepository>(
                       builder: (BuildContext context,
-                          FixedExpenseRepository fixed,
-                          Widget? widget) {
+                          FixedExpenseRepository fixed, Widget? widget) {
                         return SizedBox(
                           width: 100,
                           child: TextButton(
@@ -116,16 +116,12 @@ class __DialogoNovaReceitaState extends State<_DialogoNewExpense> {
                               if (_formKey.currentState!.validate()) {
                                 fixed.add(FixedExpense(
                                   description: descriptionController.text,
-                                  value:
-                                  double.parse(valueController.text),
-                                  date: DateTime
-                                      .now(),
+                                  value: double.parse(valueController.text),
+                                  date: DateTime.now(),
                                 ));
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(
+                                ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content:
-                                    Text('Criando um novo gasto fixo'),
+                                    content: Text('Criando um novo gasto fixo'),
                                   ),
                                 );
                                 Navigator.pop(context);
@@ -146,8 +142,7 @@ class __DialogoNovaReceitaState extends State<_DialogoNewExpense> {
                     ),
                     Consumer<VariableExpenseRepository>(
                       builder: (BuildContext context,
-                          VariableExpenseRepository variable,
-                          Widget? widget) {
+                          VariableExpenseRepository variable, Widget? widget) {
                         return SizedBox(
                           width: 100,
                           child: TextButton(
@@ -155,15 +150,13 @@ class __DialogoNovaReceitaState extends State<_DialogoNewExpense> {
                               if (_formKey.currentState!.validate()) {
                                 variable.add(VariableExpense(
                                   description: descriptionController.text,
-                                  value:
-                                  double.parse(valueController.text),
+                                  value: double.parse(valueController.text),
                                   date: DateTime.now(),
                                 ));
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(
+                                ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content:
-                                    Text('Criando um novo gasto variável'),
+                                        Text('Criando um novo gasto variável'),
                                   ),
                                 );
                                 Navigator.pop(context);
@@ -188,4 +181,7 @@ class __DialogoNovaReceitaState extends State<_DialogoNewExpense> {
             ],
           ),
         ),
-      ],); }}
+      ],
+    );
+  }
+}

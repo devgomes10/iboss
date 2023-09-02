@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 import '../../../models/business/cash_payment.dart';
 import '../../../models/business/deferred_payment.dart';
 import '../../../repositories/business/cash_payment_repository.dart';
@@ -119,6 +120,7 @@ class __DialogoNovaReceitaState extends State<_DialogonewRevenue> {
                                     description: descriptionController.text,
                                     value: double.parse(valueController.text),
                                     date: DateTime.now(),
+                                    id: const Uuid().v1(),
                                   ),
                                 );
                                 ScaffoldMessenger.of(context).showSnackBar(

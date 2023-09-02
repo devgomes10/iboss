@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/forms/business/revenue_form.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 import '../../models/business/cash_payment.dart';
 import '../../models/business/deferred_payment.dart';
 import '../../repositories/business/cash_payment_repository.dart';
@@ -325,6 +326,7 @@ class _RevenueState extends State<Revenue> {
                                                               description: deferredPayments[i].description,
                                                               value: deferredPayments[i].value,
                                                               date: DateTime.now(),
+                                                              id: const Uuid().v1()
                                                             ),
                                                           );
                                                           inTerm.remove(i, monthYearString);
