@@ -108,13 +108,22 @@ class _RevenueState extends State<Revenue> {
             Expanded(
               child: TabBarView(
                 children: [
-                  Consumer<CashPaymentRepository>(
-                    builder: (BuildContext context,
-                        CashPaymentRepository inCash, Widget? widget) {
-                      final monthYearString =
-                          DateFormat('MM-yyyy', 'pt_BR').format(_selectedDate);
-                      final List<CashPayment> cashPayments =
-                          inCash.getCashPaymentsByMonth(_selectedDate);
+                  StreamBuilder<List<CashPayment>>(
+                    stream: CashPaymentRepository().getCashPaymentsByMonth(_selectedDate),
+                    builder: (BuildContext context, AsyncSnapshot<List<CashPayment>> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator(); // Exibir um indicador de carregamento enquanto os dados estão sendo buscados.
+                      }
+
+                      if (snapshot.hasError) {
+                        return Text('Erro: ${snapshot.error}');
+                      }
+
+                      final cashPayments = snapshot.data;
+
+                      if (cashPayments == null || cashPayments.isEmpty) {
+                        return Text('Nenhum pagamento disponível.');
+                      }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
@@ -154,23 +163,18 @@ class _RevenueState extends State<Revenue> {
                               onPressed: () {
                                 showDialog(
                                   context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
+                                  builder: (BuildContext context) => AlertDialog(
                                     scrollable: true,
                                     title: Text(
                                       'Deseja mesmo excluir este pagamento?',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium,
+                                      style: Theme.of(context).textTheme.bodyMedium,
                                     ),
                                     content: SingleChildScrollView(
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                                           children: [
                                             TextButton(
                                               onPressed: () {
@@ -187,14 +191,12 @@ class _RevenueState extends State<Revenue> {
                                             ),
                                             TextButton(
                                               onPressed: () {
-                                                inCash.remove(
-                                                    i, monthYearString);
+                                                final paymentId = cashPayments[i].id;
+                                                CashPaymentRepository().removePaymentFromFirestore(paymentId);
                                                 Navigator.pop(context);
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
+                                                ScaffoldMessenger.of(context).showSnackBar(
                                                   const SnackBar(
-                                                    content: Text(
-                                                        'Pagamento deletado'),
+                                                    content: Text('Pagamento deletado'),
                                                   ),
                                                 );
                                               },
@@ -321,14 +323,13 @@ class _RevenueState extends State<Revenue> {
                                                         Widget? widget) {
                                                       return TextButton(
                                                         onPressed: () async {
-                                                          inCash.add(
-                                                            CashPayment(
-                                                              description: deferredPayments[i].description,
-                                                              value: deferredPayments[i].value,
-                                                              date: DateTime.now(),
-                                                              id: const Uuid().v1()
-                                                            ),
+                                                          final newCashPayment = CashPayment(
+                                                            description: deferredPayments[i].description,
+                                                            value: deferredPayments[i].value,
+                                                            date: DateTime.now(),
+                                                            id: const Uuid().v1(),
                                                           );
+                                                          inCash.addPaymentToFirestore(newCashPayment);
                                                           inTerm.remove(i, monthYearString);
                                                           inCash.notifyListeners();
                                                           inTerm.notifyListeners();

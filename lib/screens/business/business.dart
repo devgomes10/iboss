@@ -18,9 +18,10 @@ class Business extends StatefulWidget {
 }
 
 class _BusinessState extends State<Business> {
+
   // variables
   final DateTime _selectedDate = DateTime.now();
-  double totalCashPayments = 0.0;
+  double totalCashPayments =0.0;
   double totalDeferredPayments = 0.0;
   double totalFixedExpenses = 0.0;
   double totalVariableExpense = 0.0;
@@ -32,8 +33,8 @@ class _BusinessState extends State<Business> {
   Widget build(BuildContext context) {
     // total cash payments
     final cashPaymentRepository = Provider.of<CashPaymentRepository>(context);
-    totalCashPayments =
-        cashPaymentRepository.getTotalCashPaymentsByMonth(_selectedDate);
+    Stream<double> totalCashPaymentsStream =
+    cashPaymentRepository.getTotalCashPaymentsByMonthStream(_selectedDate);
 
     // total payments on time
     final deferredPaymentRepository =
@@ -113,13 +114,21 @@ class _BusinessState extends State<Business> {
                         'Total',
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
-                      Text(
-                        real.format(totalCashPayments + totalDeferredPayments),
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green,
-                        ),
+                      StreamBuilder<double>(
+                        stream: totalCashPaymentsStream,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData && snapshot.data != null) {
+                            final totalCashPaymentsValue = snapshot.data;
+                            return Text(
+                              real.format(totalCashPaymentsValue! + totalDeferredPayments),
+                              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text('Erro ao carregar dados.');
+                          } else {
+                            return CircularProgressIndicator();
+                          }
+                        },
                       ),
                       const SizedBox(height: 8),
                       Row(

@@ -25,11 +25,13 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-            create: (context) => CashPaymentRepository(cashPayments: [])),
+          create: (context) => CashPaymentRepository(),
+        ),
         ChangeNotifierProvider(
             create: (context) => CompanyGoalsRepository(companyGoals: [])),
         ChangeNotifierProvider(
@@ -59,6 +61,11 @@ void main() async {
       child: const MyApp(),
     ),
   );
+
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  firestore.collection("Só para testar").doc("Estou testando").set({
+    "funcionou?": true,
+  });
 }
 
 class MyApp extends StatelessWidget {
