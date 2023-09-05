@@ -121,12 +121,12 @@ class _BusinessState extends State<Business> {
                             final totalCashPaymentsValue = snapshot.data;
                             return Text(
                               real.format(totalCashPaymentsValue! + totalDeferredPayments),
-                              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                             );
                           } else if (snapshot.hasError) {
-                            return Text('Erro ao carregar dados.');
+                            return const Text('Erro ao carregar dados.');
                           } else {
-                            return CircularProgressIndicator();
+                            return const CircularProgressIndicator();
                           }
                         },
                       ),

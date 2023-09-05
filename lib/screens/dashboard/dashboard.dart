@@ -50,9 +50,9 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    final cashPaymentRepository = Provider.of<CashPaymentRepository>(context);
-    totalCashPayments =
-        cashPaymentRepository.getTotalCashPaymentsByMonth(_selectedDate);
+    // final cashPaymentRepository = Provider.of<CashPaymentRepository>(context);
+    // totalCashPayments =
+    //     cashPaymentRepository.getTotalCashPaymentsByMonth(_selectedDate);
     final deferredPaymentRepository =
         Provider.of<DeferredPaymentRepository>(context);
     totalDeferredPayments = deferredPaymentRepository

@@ -33,10 +33,10 @@ void main() async {
           create: (context) => CashPaymentRepository(),
         ),
         ChangeNotifierProvider(
-            create: (context) => CompanyGoalsRepository(companyGoals: [])),
+          create: (context) => DeferredPaymentRepository(),
+        ),
         ChangeNotifierProvider(
-            create: (context) =>
-                DeferredPaymentRepository(deferredPayments: [])),
+            create: (context) => CompanyGoalsRepository(companyGoals: [])),
         ChangeNotifierProvider(
             create: (context) => FixedExpenseRepository(fixedExpenses: [])),
         ChangeNotifierProvider(

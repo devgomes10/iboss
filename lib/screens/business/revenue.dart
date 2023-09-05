@@ -122,7 +122,7 @@ class _RevenueState extends State<Revenue> {
                       final cashPayments = snapshot.data;
 
                       if (cashPayments == null || cashPayments.isEmpty) {
-                        return Text('Nenhum pagamento disponível.');
+                        return const Text('Nenhum pagamento disponível.');
                       }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
@@ -230,13 +230,22 @@ class _RevenueState extends State<Revenue> {
                       );
                     },
                   ),
-                  Consumer<DeferredPaymentRepository>(
-                    builder: (BuildContext context,
-                        DeferredPaymentRepository inTerm, Widget? widget) {
-                      final monthYearString =
-                          DateFormat('MM-yyyy', 'pt_BR').format(_selectedDate);
-                      final List<DeferredPayment> deferredPayments =
-                          inTerm.getDeferredPaymentsByMonth(_selectedDate);
+                  StreamBuilder<List<DeferredPayment>>(
+                    stream: DeferredPaymentRepository().getDeferredPaymentsByMonth(_selectedDate),
+                    builder: (BuildContext context, AsyncSnapshot<List<DeferredPayment>> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator(); // Exibir um indicador de carregamento enquanto os dados estão sendo buscados.
+                      }
+
+                      if (snapshot.hasError) {
+                        return Text('Erro: ${snapshot.error}');
+                      }
+
+                      final deferredPayments = snapshot.data;
+
+                      if (deferredPayments == null || deferredPayments.isEmpty) {
+                        return const Text('Nenhum pagamento disponível.');
+                      }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
@@ -323,16 +332,8 @@ class _RevenueState extends State<Revenue> {
                                                         Widget? widget) {
                                                       return TextButton(
                                                         onPressed: () async {
-                                                          final newCashPayment = CashPayment(
-                                                            description: deferredPayments[i].description,
-                                                            value: deferredPayments[i].value,
-                                                            date: DateTime.now(),
-                                                            id: const Uuid().v1(),
-                                                          );
-                                                          inCash.addPaymentToFirestore(newCashPayment);
-                                                          inTerm.remove(i, monthYearString);
-                                                          inCash.notifyListeners();
-                                                          inTerm.notifyListeners();
+                                                          final paymentId = cashPa[i].id;
+                                                          CashPaymentRepository().removePaymentFromFirestore(paymentId);
                                                           ScaffoldMessenger.of(
                                                                   context)
                                                               .showSnackBar(
@@ -409,8 +410,8 @@ class _RevenueState extends State<Revenue> {
                                                   ),
                                                   TextButton(
                                                     onPressed: () {
-                                                      inTerm.remove(
-                                                          i, monthYearString);
+                                                      final paymentId = deferredPayments[i].id;
+                                                      DeferredPaymentRepository().removePaymentFromFirestore(paymentId);
                                                       Navigator.pop(context);
                                                       ScaffoldMessenger.of(
                                                         context,
