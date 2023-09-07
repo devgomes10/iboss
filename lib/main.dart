@@ -37,19 +37,20 @@ void main() async {
         ChangeNotifierProvider(
             create: (context) => CompanyGoalsRepository(companyGoals: [])),
         ChangeNotifierProvider(
-            create: (context) => FixedExpenseRepository(fixedExpenses: [])),
+          create: (context) => FixedExpenseRepository(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => VariableExpenseRepository(),
+        ),
+        ChangeNotifierProvider(
+            create: (context) => FixedEntryRepository(),),
+        ChangeNotifierProvider(
+            create: (context) => VariableEntryRepository(),),
+        ChangeNotifierProvider(
+            create: (context) => FixedOutflowRepository(),),
         ChangeNotifierProvider(
             create: (context) =>
-                VariableExpenseRepository(variableExpenses: [])),
-        ChangeNotifierProvider(
-            create: (context) => FixedEntryRepository(fixedEntry: [])),
-        ChangeNotifierProvider(
-            create: (context) => VariableEntryRepository(variableEntry: [])),
-        ChangeNotifierProvider(
-            create: (context) => FixedOutflowRepository(fixedOutflow: [])),
-        ChangeNotifierProvider(
-            create: (context) =>
-                VariableOutflowRepository(variableOutflow: [])),
+                VariableOutflowRepository(),),
         ChangeNotifierProvider(
             create: (context) => PersonalGoalsRepository(personalGoals: [])),
         ChangeNotifierProvider(create: (context) => WageRepository(salary: [])),

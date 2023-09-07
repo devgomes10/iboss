@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 import '../../../models/business/fixed_expense.dart';
 import '../../../models/business/variable_expense.dart';
 import '../../../repositories/business/fixed_expense_repository.dart';
@@ -25,6 +26,7 @@ class __DialogoNovaReceitaState extends State<_DialogoNewExpense> {
   final descriptionController = TextEditingController();
   final valueController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  String invoicingId = const Uuid().v1();
 
   @override
   Widget build(BuildContext context) {
@@ -114,11 +116,13 @@ class __DialogoNovaReceitaState extends State<_DialogoNewExpense> {
                           child: TextButton(
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                fixed.add(FixedExpense(
+                                FixedExpense fixedExpense = FixedExpense(
                                   description: descriptionController.text,
                                   value: double.parse(valueController.text),
                                   date: DateTime.now(),
-                                ));
+                                  id: invoicingId,
+                                );
+                                await fixed.addExpenseToFirestore(fixedExpense);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('Criando um novo gasto fixo'),
@@ -148,11 +152,14 @@ class __DialogoNovaReceitaState extends State<_DialogoNewExpense> {
                           child: TextButton(
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                variable.add(VariableExpense(
+                                VariableExpense variableExpense = VariableExpense(
                                   description: descriptionController.text,
                                   value: double.parse(valueController.text),
                                   date: DateTime.now(),
-                                ));
+                                  id: invoicingId,
+                                );
+
+                                await variable.addExpenseToFirestore(variableExpense);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content:

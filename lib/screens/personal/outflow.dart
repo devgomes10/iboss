@@ -103,11 +103,21 @@ class _OutflowState extends State<Outflow> {
             Expanded(
               child: TabBarView(
                 children: [
-                  Consumer<FixedOutflowRepository>(
+                  StreamBuilder<List<FixedOutflow>>(
+                    stream: FixedOutflowRepository()
+                        .getFixedOutflowByMonth(_selectedDate),
                     builder: (BuildContext context,
-                        FixedOutflowRepository fixed, Widget? widget) {
-                      final List<FixedOutflow> fixedOutflows =
-                          fixed.getFixedOutflowsByMonth(_selectedDate);
+                        AsyncSnapshot<List<FixedOutflow>> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      }
+                      if (snapshot.hasError) {
+                        return Text('Erro: ${snapshot.error}');
+                      }
+                      final fixedOutflow = snapshot.data;
+                      if (fixedOutflow == null || fixedOutflow.isEmpty) {
+                        return const Text('Nenhum pagamento disponível.');
+                      }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
@@ -116,7 +126,7 @@ class _OutflowState extends State<Outflow> {
                               color: Colors.red,
                             ),
                             title: Text(
-                              fixedOutflows[i].description,
+                              fixedOutflow[i].description,
                               style: TextStyle(fontSize: 20),
                             ),
                             subtitle: Column(
@@ -124,13 +134,13 @@ class _OutflowState extends State<Outflow> {
                               children: [
                                 Text(
                                   real.format(
-                                    fixedOutflows[i].value,
+                                    fixedOutflow[i].value,
                                   ),
                                   style: TextStyle(fontSize: 18),
                                 ),
                                 Text(
                                   DateFormat('dd/MM/yyyy')
-                                      .format(fixedOutflows[i].date),
+                                      .format(fixedOutflow[i].date),
                                   style: TextStyle(fontSize: 16),
                                 ),
                               ],
@@ -167,7 +177,8 @@ class _OutflowState extends State<Outflow> {
                                             ),
                                             TextButton(
                                               onPressed: () {
-                                                fixed.remove(i);
+                                                final fixedId = fixedOutflow[i].id;
+                                                FixedOutflowRepository().removeOutflowFromFirestore(fixedId);
                                                 Navigator.pop(context);
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(
@@ -201,15 +212,25 @@ class _OutflowState extends State<Outflow> {
                           color: Colors.white,
                         ),
                         padding: const EdgeInsets.all(16),
-                        itemCount: fixedOutflows.length,
+                        itemCount: fixedOutflow.length,
                       );
                     },
                   ),
-                  Consumer<VariableOutflowRepository>(
+                  StreamBuilder<List<VariableOutflow>>(
+                    stream: VariableOutflowRepository()
+                        .getVariableOutflowByMonth(_selectedDate),
                     builder: (BuildContext context,
-                        VariableOutflowRepository variable, Widget? widget) {
-                      final List<VariableOutflow> variableOutflows =
-                          variable.getVariableOutflowsByMonth(_selectedDate);
+                        AsyncSnapshot<List<VariableOutflow>> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      }
+                      if (snapshot.hasError) {
+                        return Text('Erro: ${snapshot.error}');
+                      }
+                      final variableOutflow = snapshot.data;
+                      if (variableOutflow == null || variableOutflow.isEmpty) {
+                        return const Text('Nenhum pagamento disponível.');
+                      }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
@@ -218,19 +239,19 @@ class _OutflowState extends State<Outflow> {
                               color: Colors.red,
                             ),
                             title: Text(
-                              variableOutflows[i].description,
+                              variableOutflow[i].description,
                               style: TextStyle(fontSize: 20),
                             ),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  real.format(variableOutflows[i].value),
+                                  real.format(variableOutflow[i].value),
                                   style: TextStyle(fontSize: 18),
                                 ),
                                 Text(
                                   DateFormat("dd/MM/yyyy")
-                                      .format(variableOutflows[i].date),
+                                      .format(variableOutflow[i].date),
                                   style: TextStyle(fontSize: 16),
                                 ),
                               ],
@@ -267,7 +288,8 @@ class _OutflowState extends State<Outflow> {
                                             ),
                                             TextButton(
                                               onPressed: () {
-                                                variable.remove(i);
+                                                final variableId = variableOutflow[i].id;
+                                                VariableOutflowRepository().removeOutflowFromFirestore(variableId);
                                                 Navigator.pop(context);
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(
@@ -301,7 +323,7 @@ class _OutflowState extends State<Outflow> {
                           color: Colors.white,
                         ),
                         padding: const EdgeInsets.all(16),
-                        itemCount: variableOutflows.length,
+                        itemCount: variableOutflow.length,
                       );
                     },
                   ),

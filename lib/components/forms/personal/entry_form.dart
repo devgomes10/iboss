@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 import '../../../models/personal/fixed_entry.dart';
 import '../../../models/personal/variable_entry.dart';
 import '../../../repositories/personal/fixed_entry_repository.dart';
@@ -25,6 +26,8 @@ class __DialogoNovaReceitaState extends State<_DialogoNewEntry> {
   final descriptionController = TextEditingController();
   final valueController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  String invoicingId = const Uuid().v1();
+
 
   @override
   Widget build(BuildContext context) {
@@ -114,10 +117,13 @@ class __DialogoNovaReceitaState extends State<_DialogoNewEntry> {
                           child: TextButton(
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                fixed.add(FixedEntry(
+                                FixedEntry fixed = FixedEntry(
                                     description: descriptionController.text,
                                     value: double.parse(valueController.text),
-                                    date: DateTime.now()));
+                                    date: DateTime.now(),
+                                  id: invoicingId,
+                                );
+                                FixedEntryRepository().addEntryToFirestore(fixed);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('Criando um pagamento à vista'),
@@ -147,10 +153,13 @@ class __DialogoNovaReceitaState extends State<_DialogoNewEntry> {
                           child: TextButton(
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                variable.add(VariableEntry(
+                                VariableEntry variable = VariableEntry(
                                     description: descriptionController.text,
                                     value: double.parse(valueController.text),
-                                    date: DateTime.now()));
+                                    date: DateTime.now(),
+                                    id: invoicingId,
+                                );
+                                VariableEntryRepository().addEntryToFirestore(variable);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('Criando um pagamento a prazo'),

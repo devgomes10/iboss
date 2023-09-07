@@ -51,37 +51,22 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    // final cashPaymentRepository = Provider.of<CashPaymentRepository>(context);
-    // totalCashPayments =
-    //     cashPaymentRepository.getTotalCashPaymentsByMonth(_selectedDate);
-    // final deferredPaymentRepository =
-    //     Provider.of<DeferredPaymentRepository>(context);
-    // totalDeferredPayments = deferredPaymentRepository
-    //     .getTotalDeferredPaymentsByMonth(_selectedDate);
 
-    final fixedExpenseRepository = Provider.of<FixedExpenseRepository>(context);
-    totalFixedExpenses =
-        fixedExpenseRepository.getTotalFixedExpensesByMonth(_selectedDate);
-    final variableExpensesRepository =
-        Provider.of<VariableExpenseRepository>(context);
-    totalVariableExpense = variableExpensesRepository
-        .getTotalVariableExpensesByMonth(_selectedDate);
-
-    final fixedEntryRepository = Provider.of<FixedEntryRepository>(context);
-    totalFixedEntry =
-        fixedEntryRepository.getTotalFixedEntryByMonth(_selectedDate);
-    final variableEntryRepository =
-        Provider.of<VariableEntryRepository>(context);
-    totalVariableEntry =
-        variableEntryRepository.getTotalVariableEntryByMonth(_selectedDate);
-
-    final fixedOutflowRepository = Provider.of<FixedOutflowRepository>(context);
-    totalFixedOutflow =
-        fixedOutflowRepository.getTotalFixedOutflowByMonth(_selectedDate);
-    final variableOutflowRepository =
-        Provider.of<VariableOutflowRepository>(context);
-    totalVariableOutflow =
-        variableOutflowRepository.getTotalVariableOutflowByMonth(_selectedDate);
+    // final fixedEntryRepository = Provider.of<FixedEntryRepository>(context);
+    // totalFixedEntry =
+    //     fixedEntryRepository.getTotalFixedEntryByMonth(_selectedDate);
+    // final variableEntryRepository =
+    //     Provider.of<VariableEntryRepository>(context);
+    // totalVariableEntry =
+    //     variableEntryRepository.getTotalVariableEntryByMonth(_selectedDate);
+    //
+    // final fixedOutflowRepository = Provider.of<FixedOutflowRepository>(context);
+    // totalFixedOutflow =
+    //     fixedOutflowRepository.getTotalFixedOutflowByMonth(_selectedDate);
+    // final variableOutflowRepository =
+    //     Provider.of<VariableOutflowRepository>(context);
+    // totalVariableOutflow =
+    //     variableOutflowRepository.getTotalVariableOutflowByMonth(_selectedDate);
 
     return DefaultTabController(
       length: 2,
@@ -299,7 +284,6 @@ class _DashboardState extends State<Dashboard> {
                             );
                           },
                         ),
-
                         Column(
                           children: [
                             Padding(

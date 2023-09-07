@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/screens/settings/settings.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart';
 import '../../repositories/personal/fixed_entry_repository.dart';
 import '../../repositories/personal/fixed_outflow_repository.dart';
 import '../../repositories/personal/variable_entry_repository.dart';
@@ -29,21 +30,21 @@ class _PersonalState extends State<Personal> {
 
   @override
   Widget build(BuildContext context) {
-    final fixedEntryRepository = Provider.of<FixedEntryRepository>(context);
-    totalFixedEntry =
-        fixedEntryRepository.getTotalFixedEntryByMonth(_selectedDate);
-    final variableEntryRepository =
-        Provider.of<VariableEntryRepository>(context);
-    totalVariableEntry =
-        variableEntryRepository.getTotalVariableEntryByMonth(_selectedDate);
-
-    final fixedOutflowRepository = Provider.of<FixedOutflowRepository>(context);
-    totalFixedOutflow =
-        fixedOutflowRepository.getTotalFixedOutflowByMonth(_selectedDate);
-    final variableOutflowRepository =
-        Provider.of<VariableOutflowRepository>(context);
-    totalVariableOutflow =
-        variableOutflowRepository.getTotalVariableOutflowByMonth(_selectedDate);
+    // final fixedEntryRepository = Provider.of<FixedEntryRepository>(context);
+    // totalFixedEntry =
+    //     fixedEntryRepository.getTotalFixedEntryByMonth(_selectedDate);
+    // final variableEntryRepository =
+    //     Provider.of<VariableEntryRepository>(context);
+    // totalVariableEntry =
+    //     variableEntryRepository.getTotalVariableEntryByMonth(_selectedDate);
+    //
+    // final fixedOutflowRepository = Provider.of<FixedOutflowRepository>(context);
+    // totalFixedOutflow =
+    //     fixedOutflowRepository.getTotalFixedOutflowByMonth(_selectedDate);
+    // final variableOutflowRepository =
+    //     Provider.of<VariableOutflowRepository>(context);
+    // totalVariableOutflow =
+    //     variableOutflowRepository.getTotalVariableOutflowByMonth(_selectedDate);
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -106,13 +107,31 @@ class _PersonalState extends State<Personal> {
                         'Total',
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
-                      Text(
-                        real.format(totalFixedEntry + totalVariableEntry),
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green,
+                      StreamBuilder<double>(
+                        stream: CombineLatestStream.combine2(
+                          FixedEntryRepository()
+                              .getTotalFixedEntryByMonth(_selectedDate),
+                          VariableEntryRepository()
+                              .getTotalVariableEntryByMonth(_selectedDate),
+                              (double totalFixed, double totalVariable) =>
+                          totalFixed + totalVariable,
                         ),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData && snapshot.data != null) {
+                            final totalValue = snapshot.data;
+                            return Text(
+                              real.format(totalValue!),
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green,
+                              ),
+                            );
+                          } else if (snapshot.hasError) {
+                            return const Text('...');
+                          }
+                          return Container();
+                        },
                       ),
                       const SizedBox(height: 8),
                       Row(
@@ -124,9 +143,26 @@ class _PersonalState extends State<Personal> {
                                 "Fixas",
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
-                              Text(
-                                real.format(totalFixedEntry),
-                                style: const TextStyle(color: Colors.green),
+                              StreamBuilder<double>(
+                                stream: FixedEntryRepository()
+                                    .getTotalFixedEntryByMonth(
+                                    _selectedDate),
+                                builder: (BuildContext,
+                                    AsyncSnapshot<double> snapshot) {
+                                  if (snapshot.hasData &&
+                                      snapshot.data != null) {
+                                    final totalFixedEntry = snapshot.data;
+                                    return Text(
+                                      real.format(totalFixedEntry),
+                                      style: const TextStyle(
+                                        color: Colors.green,
+                                      ),
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    return Text("...");
+                                  }
+                                  return Container();
+                                },
                               ),
                             ],
                           ),
@@ -136,9 +172,26 @@ class _PersonalState extends State<Personal> {
                                 "Variáveis",
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
-                              Text(
-                                real.format(totalVariableEntry),
-                                style: const TextStyle(color: Colors.green),
+                              StreamBuilder<double>(
+                                stream: VariableEntryRepository()
+                                    .getTotalVariableEntryByMonth(
+                                    _selectedDate),
+                                builder: (BuildContext,
+                                    AsyncSnapshot<double> snapshot) {
+                                  if (snapshot.hasData &&
+                                      snapshot.data != null) {
+                                    final totalVariableEntry = snapshot.data;
+                                    return Text(
+                                      real.format(totalVariableEntry),
+                                      style: const TextStyle(
+                                        color: Colors.green,
+                                      ),
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    return Text("...");
+                                  }
+                                  return Container();
+                                },
                               ),
                             ],
                           ),
@@ -186,13 +239,31 @@ class _PersonalState extends State<Personal> {
                       const SizedBox(height: 8),
                       Text('Total',
                           style: Theme.of(context).textTheme.bodyMedium),
-                      Text(
-                        real.format(totalFixedOutflow + totalVariableOutflow),
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red,
+                      StreamBuilder<double>(
+                        stream: CombineLatestStream.combine2(
+                          FixedOutflowRepository()
+                              .getTotalFixedOutflowByMonth(_selectedDate),
+                          VariableOutflowRepository()
+                              .getTotalVariableOutflowByMonth(_selectedDate),
+                              (double totalFixed, double totalVariable) =>
+                          totalFixed + totalVariable,
                         ),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData && snapshot.data != null) {
+                            final totalValue = snapshot.data;
+                            return Text(
+                              real.format(totalValue!),
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red,
+                              ),
+                            );
+                          } else if (snapshot.hasError) {
+                            return const Text('...');
+                          }
+                          return Container();
+                        },
                       ),
                       const SizedBox(height: 8),
                       Row(
@@ -204,9 +275,26 @@ class _PersonalState extends State<Personal> {
                                 "Fixas",
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
-                              Text(
-                                real.format(totalFixedOutflow),
-                                style: const TextStyle(color: Colors.red),
+                              StreamBuilder<double>(
+                                stream: FixedOutflowRepository()
+                                    .getTotalFixedOutflowByMonth(
+                                    _selectedDate),
+                                builder: (BuildContext,
+                                    AsyncSnapshot<double> snapshot) {
+                                  if (snapshot.hasData &&
+                                      snapshot.data != null) {
+                                    final totalFixedOutflow = snapshot.data;
+                                    return Text(
+                                      real.format(totalFixedOutflow),
+                                      style: const TextStyle(
+                                        color: Colors.red,
+                                      ),
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    return Text("...");
+                                  }
+                                  return Container();
+                                },
                               ),
                             ],
                           ),
@@ -216,9 +304,26 @@ class _PersonalState extends State<Personal> {
                                 "Variáveis",
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
-                              Text(
-                                real.format(totalVariableOutflow),
-                                style: const TextStyle(color: Colors.red),
+                              StreamBuilder<double>(
+                                stream: VariableOutflowRepository()
+                                    .getTotalVariableOutflowByMonth(
+                                    _selectedDate),
+                                builder: (BuildContext,
+                                    AsyncSnapshot<double> snapshot) {
+                                  if (snapshot.hasData &&
+                                      snapshot.data != null) {
+                                    final totalVariableOutflow = snapshot.data;
+                                    return Text(
+                                      real.format(totalVariableOutflow),
+                                      style: const TextStyle(
+                                        color: Colors.red,
+                                      ),
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    return Text("...");
+                                  }
+                                  return Container();
+                                },
                               ),
                             ],
                           ),

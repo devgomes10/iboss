@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/forms/personal/entry_form.dart';
+import 'package:iboss/models/personal/fixed_entry.dart';
+import 'package:iboss/models/personal/variable_entry.dart';
 import 'package:iboss/repositories/personal/fixed_entry_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -102,9 +104,22 @@ class _EntryState extends State<Entry> {
             Expanded(
               child: TabBarView(
                 children: [
-                  Consumer<FixedEntryRepository>(builder: (BuildContext context,
-                      FixedEntryRepository fixed, Widget? widget) {
-                    return ListView.separated(
+                  StreamBuilder<List<FixedEntry>>(
+                      stream: FixedEntryRepository()
+                          .getFixedEntryByMonth(_selectedDate),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<FixedEntry>> snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return CircularProgressIndicator();
+                        }
+                        if (snapshot.hasError) {
+                          return Text('Erro: ${snapshot.error}');
+                        }
+                        final fixedEntry = snapshot.data;
+                        if (fixedEntry == null || fixedEntry.isEmpty) {
+                          return const Text('Nenhum pagamento disponível.');
+                        }
+                        return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
                             leading: const FaIcon(
@@ -112,19 +127,19 @@ class _EntryState extends State<Entry> {
                               color: Colors.green,
                             ),
                             title: Text(
-                              fixed.fixedEntry[i].description,
+                              fixedEntry[i].description,
                               style: TextStyle(fontSize: 20),
                             ),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  real.format(fixed.fixedEntry[i].value),
+                                  real.format(fixedEntry[i].value),
                                   style: TextStyle(fontSize: 18),
                                 ),
                                 Text(
                                   DateFormat('dd/MM/yyyy')
-                                      .format(fixed.fixedEntry[i].date),
+                                      .format(fixedEntry[i].date),
                                   style: TextStyle(fontSize: 16),
                                 ),
                               ],
@@ -166,7 +181,8 @@ class _EntryState extends State<Entry> {
                                               ),
                                               TextButton(
                                                 onPressed: () {
-                                                  fixed.remove(i);
+                                                  final fixedId = fixedEntry[i].id;
+                                                  FixedEntryRepository().removeEntryFromFirestore(fixedId);
                                                   Navigator.pop(context);
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(
@@ -202,11 +218,23 @@ class _EntryState extends State<Entry> {
                               color: Colors.white,
                             ),
                         padding: const EdgeInsets.all(16),
-                        itemCount: fixed.fixedEntry.length);
+                        itemCount: fixedEntry.length);
                   }),
-                  Consumer<VariableEntryRepository>(
+                  StreamBuilder<List<VariableEntry>>(
+                    stream: VariableEntryRepository()
+                        .getVariableEntryByMonth(_selectedDate),
                     builder: (BuildContext context,
-                        VariableEntryRepository variable, Widget? widget) {
+                        AsyncSnapshot<List<VariableEntry>> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      }
+                      if (snapshot.hasError) {
+                        return Text('Erro: ${snapshot.error}');
+                      }
+                      final variableEntry = snapshot.data;
+                      if (variableEntry == null || variableEntry.isEmpty) {
+                        return const Text('Nenhum pagamento disponível.');
+                      }
                       return ListView.separated(
                           itemBuilder: (BuildContext context, int i) {
                             return ListTile(
@@ -215,7 +243,7 @@ class _EntryState extends State<Entry> {
                                 color: Colors.green,
                               ),
                               title: Text(
-                                variable.variableEntry[i].description,
+                                variableEntry[i].description,
                                 style: TextStyle(fontSize: 20),
                               ),
                               subtitle: Column(
@@ -223,12 +251,12 @@ class _EntryState extends State<Entry> {
                                 children: [
                                   Text(
                                     real.format(
-                                        variable.variableEntry[i].value),
+                                        variableEntry[i].value),
                                     style: TextStyle(fontSize: 18),
                                   ),
                                   Text(
                                     DateFormat('dd/MM/yyyy')
-                                        .format(variable.variableEntry[i].date),
+                                        .format(variableEntry[i].date),
                                     style: TextStyle(fontSize: 16),
                                   ),
                                 ],
@@ -270,7 +298,8 @@ class _EntryState extends State<Entry> {
                                               ),
                                               TextButton(
                                                 onPressed: () {
-                                                  variable.remove(i);
+                                                  final variableId = variableEntry[i].id;
+                                                  VariableEntryRepository().removeEntryFromFirestore(variableId);
                                                   Navigator.pop(context);
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(
@@ -305,7 +334,7 @@ class _EntryState extends State<Entry> {
                                 color: Colors.white,
                               ),
                           padding: const EdgeInsets.all(16),
-                          itemCount: variable.variableEntry.length);
+                          itemCount: variableEntry.length);
                     },
                   ),
                 ],

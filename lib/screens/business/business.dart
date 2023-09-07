@@ -105,11 +105,12 @@ class _BusinessState extends State<Business> {
                           if (snapshot.hasData && snapshot.data != null) {
                             final totalValue = snapshot.data;
                             return Text(
-                              real.format(totalValue!), style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.green,
-                            ),
+                              real.format(totalValue!),
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green,
+                              ),
                             );
                           } else if (snapshot.hasError) {
                             return const Text('...');
@@ -132,13 +133,15 @@ class _BusinessState extends State<Business> {
                                     .getTotalCashPaymentsByMonth(_selectedDate),
                                 builder: (BuildContext,
                                     AsyncSnapshot<double> snapshot) {
-                                  if (snapshot.hasData && snapshot.data != null) {final totalCashPayments = snapshot.data;
-                                  return Text(
-                                    real.format(totalCashPayments),
-                                    style: const TextStyle(
-                                      color: Colors.green,
-                                    ),
-                                  );
+                                  if (snapshot.hasData &&
+                                      snapshot.data != null) {
+                                    final totalCashPayments = snapshot.data;
+                                    return Text(
+                                      real.format(totalCashPayments),
+                                      style: const TextStyle(
+                                        color: Colors.green,
+                                      ),
+                                    );
                                   } else if (snapshot.hasError) {
                                     return Text("...");
                                   }
@@ -159,7 +162,8 @@ class _BusinessState extends State<Business> {
                                         _selectedDate),
                                 builder: (BuildContext,
                                     AsyncSnapshot<double> snapshot) {
-                                  if (snapshot.hasData && snapshot.data != null) {
+                                  if (snapshot.hasData &&
+                                      snapshot.data != null) {
                                     final totalDeferredPayments = snapshot.data;
                                     return Text(
                                       real.format(totalDeferredPayments),
@@ -221,13 +225,31 @@ class _BusinessState extends State<Business> {
                         'Total',
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
-                      Text(
-                        real.format(totalFixedExpenses + totalVariableExpense),
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red,
+                      StreamBuilder<double>(
+                        stream: CombineLatestStream.combine2(
+                          FixedExpenseRepository()
+                              .getTotalFixedExpensesByMonth(_selectedDate),
+                          VariableExpenseRepository()
+                              .getTotalVariableExpensesByMonth(_selectedDate),
+                          (double totalFixed, double totalVariable) =>
+                              totalFixed + totalVariable,
                         ),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData && snapshot.data != null) {
+                            final totalValue = snapshot.data;
+                            return Text(
+                              real.format(totalValue!),
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red,
+                              ),
+                            );
+                          } else if (snapshot.hasError) {
+                            return const Text('...');
+                          }
+                          return Container();
+                        },
                       ),
                       const SizedBox(height: 8),
                       Row(
@@ -239,11 +261,26 @@ class _BusinessState extends State<Business> {
                                 "Fixos",
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
-                              Text(
-                                real.format(totalFixedExpenses),
-                                style: const TextStyle(
-                                  color: Colors.red,
-                                ),
+                              StreamBuilder<double>(
+                                stream: FixedExpenseRepository()
+                                    .getTotalFixedExpensesByMonth(
+                                        _selectedDate),
+                                builder: (BuildContext,
+                                    AsyncSnapshot<double> snapshot) {
+                                  if (snapshot.hasData &&
+                                      snapshot.data != null) {
+                                    final totalFixedExpense = snapshot.data;
+                                    return Text(
+                                      real.format(totalFixedExpense),
+                                      style: const TextStyle(
+                                        color: Colors.red,
+                                      ),
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    return Text("...");
+                                  }
+                                  return Container();
+                                },
                               ),
                             ],
                           ),
@@ -253,11 +290,26 @@ class _BusinessState extends State<Business> {
                                 "Variáveis",
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
-                              Text(
-                                real.format(totalVariableExpense),
-                                style: const TextStyle(
-                                  color: Colors.red,
-                                ),
+                              StreamBuilder<double>(
+                                stream: VariableExpenseRepository()
+                                    .getTotalVariableExpensesByMonth(
+                                    _selectedDate),
+                                builder: (BuildContext,
+                                    AsyncSnapshot<double> snapshot) {
+                                  if (snapshot.hasData &&
+                                      snapshot.data != null) {
+                                    final totalVariableExpense = snapshot.data;
+                                    return Text(
+                                      real.format(totalVariableExpense),
+                                      style: const TextStyle(
+                                        color: Colors.red,
+                                      ),
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    return Text("...");
+                                  }
+                                  return Container();
+                                },
                               ),
                             ],
                           ),

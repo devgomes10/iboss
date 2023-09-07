@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../models/personal/fixed_outflow.dart';
 import '../../../models/personal/variable_outflow.dart';
@@ -26,6 +27,7 @@ class __DialogoNovaReceitaState extends State<_DialogNewOutflow> {
   final descriptionController = TextEditingController();
   final valueController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  String invoicingId = const Uuid().v1();
 
   @override
   Widget build(BuildContext context) {
@@ -115,10 +117,13 @@ class __DialogoNovaReceitaState extends State<_DialogNewOutflow> {
                           child: TextButton(
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                fixed.add(FixedOutflow(
+                                FixedOutflow fixed = FixedOutflow(
                                     description: descriptionController.text,
                                     value: double.parse(valueController.text),
-                                    date: DateTime.now()));
+                                    date: DateTime.now(),
+                                id: invoicingId,
+                                );
+                                FixedOutflowRepository().addOutflowToFirestore(fixed);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('Criando uma saída fixa'),
@@ -148,10 +153,13 @@ class __DialogoNovaReceitaState extends State<_DialogNewOutflow> {
                           child: TextButton(
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                variable.add(VariableOutflow(
+                                VariableOutflow variable = VariableOutflow(
                                     description: descriptionController.text,
                                     value: double.parse(valueController.text),
-                                    date: DateTime.now()));
+                                    date: DateTime.now(),
+                                id: invoicingId,
+                                );
+                                VariableOutflowRepository().addOutflowToFirestore(variable);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('Criando uma saída variável'),

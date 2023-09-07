@@ -105,14 +105,21 @@ class _ExpenseState extends State<Expense> {
             Expanded(
               child: TabBarView(
                 children: [
-                  Consumer<FixedExpenseRepository>(
+                  StreamBuilder<List<FixedExpense>>(
+                    stream: FixedExpenseRepository()
+                        .getFixedExpensesByMonth(_selectedDate),
                     builder: (BuildContext context,
-                        FixedExpenseRepository fixed, Widget? widget) {
-                      final monthYearString =
-                          DateFormat('MM-yyyy', 'pt_BR').format(_selectedDate);
-                      final List<FixedExpense> fixedExpenses =
-                          fixed.getFixedExpensesByMonth(_selectedDate);
-                      return ListView.separated(
+                        AsyncSnapshot<List<FixedExpense>> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      }
+                      if (snapshot.hasError) {
+                        return Text('Erro: ${snapshot.error}');
+                      }
+                      final fixedExpenses = snapshot.data;
+                      if (fixedExpenses == null || fixedExpenses.isEmpty) {
+                        return const Text('Nenhum pagamento disponível.');
+                      } return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
                             leading: const FaIcon(
@@ -180,7 +187,8 @@ class _ExpenseState extends State<Expense> {
                                             ),
                                             TextButton(
                                               onPressed: () {
-                                                fixed.remove(i);
+                                                final expenseId = fixedExpenses[i].id;
+                                                FixedExpenseRepository().removeExpenseFromFirestore(expenseId);
                                                 Navigator.pop(context);
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(
@@ -220,12 +228,21 @@ class _ExpenseState extends State<Expense> {
                       );
                     },
                   ),
-                  Consumer<VariableExpenseRepository>(
+                  StreamBuilder<List<VariableExpense>>(
+                    stream: VariableExpenseRepository()
+                        .getVariableExpensesByMonth(_selectedDate),
                     builder: (BuildContext context,
-                        VariableExpenseRepository variable, Widget? widget) {
-                      final List<VariableExpense> variableExpenses =
-                          variable.getVariableExpensesByMonth(_selectedDate);
-                      return ListView.separated(
+                        AsyncSnapshot<List<VariableExpense>> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      }
+                      if (snapshot.hasError) {
+                        return Text('Erro: ${snapshot.error}');
+                      }
+                      final variableExpenses = snapshot.data;
+                      if (variableExpenses == null || variableExpenses.isEmpty) {
+                        return const Text('Nenhum pagamento disponível.');
+                      } return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
                             leading: const FaIcon(
@@ -295,7 +312,8 @@ class _ExpenseState extends State<Expense> {
                                             ),
                                             TextButton(
                                               onPressed: () {
-                                                variable.remove(i);
+                                                final expenseId = variableExpenses[i].id;
+                                                VariableExpenseRepository().removeExpenseFromFirestore(expenseId);
                                                 Navigator.pop(context);
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(
