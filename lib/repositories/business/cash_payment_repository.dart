@@ -6,7 +6,7 @@ class CashPaymentRepository extends ChangeNotifier {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Stream<List<CashPayment>> getCashPaymentsStream() {
-    return firestore.collection('cash_payments').snapshots().map(
+    return firestore.collection('received').snapshots().map(
           (snapshot) {
         return snapshot.docs.map((doc) {
           return CashPayment(
@@ -22,7 +22,7 @@ class CashPaymentRepository extends ChangeNotifier {
 
   Future<void> addPaymentToFirestore(CashPayment payment) async {
     try {
-      await firestore.collection('cash_payments').doc(payment.id).set(
+      await firestore.collection('received').doc(payment.id).set(
         payment.toMap(),
       );
     } catch (error) {
@@ -33,7 +33,7 @@ class CashPaymentRepository extends ChangeNotifier {
 
   Future<void> removePaymentFromFirestore(String paymentId) async {
     try {
-      await firestore.collection('cash_payments').doc(paymentId).delete();
+      await firestore.collection('received').doc(paymentId).delete();
     } catch (error) {
       print('Erro ao remover pagamento do Firestore: $error');
     }
@@ -44,7 +44,7 @@ class CashPaymentRepository extends ChangeNotifier {
     List<CashPayment> cashPayments = [];
     try {
       QuerySnapshot querySnapshot =
-      await firestore.collection('cash_payments').get();
+      await firestore.collection('received').get();
       cashPayments = querySnapshot.docs
           .map((doc) =>
           CashPayment.fromMap(
@@ -60,7 +60,7 @@ class CashPaymentRepository extends ChangeNotifier {
   double getTotalCashPaymentsByMonth(DateTime selectedMonth) {
     double total = 0.0;
     firestore
-        .collection('cash_payments')
+        .collection('received')
         .where(
         'date',
         isGreaterThanOrEqualTo: DateTime(selectedMonth.year, selectedMonth.month, 1),
@@ -77,7 +77,7 @@ class CashPaymentRepository extends ChangeNotifier {
 
   Stream<double> getTotalCashPaymentsByMonthStream(DateTime selectedMonth) {
     Stream<QuerySnapshot> queryStream = firestore
-        .collection('cash_payments')
+        .collection('received')
         .where(
         'date',
         isGreaterThanOrEqualTo: DateTime(selectedMonth.year, selectedMonth.month, 1),
@@ -94,7 +94,7 @@ class CashPaymentRepository extends ChangeNotifier {
 
   Stream<List<CashPayment>> getCashPaymentsByMonth(DateTime selectedMonth) {
     return firestore
-        .collection('cash_payments')
+        .collection('received')
         .where('date',
         isGreaterThanOrEqualTo: DateTime(selectedMonth.year, selectedMonth.month, 1),
         isLessThan: DateTime(selectedMonth.year, selectedMonth.month + 1, 1))

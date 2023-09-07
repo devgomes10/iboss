@@ -32,26 +32,26 @@ class _BusinessState extends State<Business> {
   @override
   Widget build(BuildContext context) {
     // total cash payments
-    final cashPaymentRepository = Provider.of<CashPaymentRepository>(context);
-    Stream<double> totalCashPaymentsStream =
-    cashPaymentRepository.getTotalCashPaymentsByMonthStream(_selectedDate);
+    // final cashPaymentRepository = Provider.of<CashPaymentRepository>(context);
+    // Stream<double> totalCashPaymentsStream =
+    // cashPaymentRepository.getTotalCashPaymentsByMonthStream(_selectedDate);
 
-    // total payments on time
-    final deferredPaymentRepository =
-        Provider.of<DeferredPaymentRepository>(context);
-    totalDeferredPayments = deferredPaymentRepository
-        .getTotalDeferredPaymentsByMonth(_selectedDate);
+    // // total payments on time
+    // final deferredPaymentRepository =
+    //     Provider.of<DeferredPaymentRepository>(context);
+    // totalDeferredPayments = deferredPaymentRepository
+    //     .getTotalDeferredPaymentsByMonth(_selectedDate);
 
-    // total fixed expenses
-    final fixedExpenseRepository = Provider.of<FixedExpenseRepository>(context);
-    totalFixedExpenses =
-        fixedExpenseRepository.getTotalFixedExpensesByMonth(_selectedDate);
-
-    // total variable expenses
-    final variableExpensesRepository =
-        Provider.of<VariableExpenseRepository>(context);
-    totalVariableExpense = variableExpensesRepository
-        .getTotalVariableExpensesByMonth(_selectedDate);
+    // // total fixed expenses
+    // final fixedExpenseRepository = Provider.of<FixedExpenseRepository>(context);
+    // totalFixedExpenses =
+    //     fixedExpenseRepository.getTotalFixedExpensesByMonth(_selectedDate);
+    //
+    // // total variable expenses
+    // final variableExpensesRepository =
+    //     Provider.of<VariableExpenseRepository>(context);
+    // totalVariableExpense = variableExpensesRepository
+    //     .getTotalVariableExpensesByMonth(_selectedDate);
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -115,7 +115,7 @@ class _BusinessState extends State<Business> {
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       StreamBuilder<double>(
-                        stream: totalCashPaymentsStream,
+                        // stream: totalCashPaymentsStream,
                         builder: (context, snapshot) {
                           if (snapshot.hasData && snapshot.data != null) {
                             final totalCashPaymentsValue = snapshot.data;

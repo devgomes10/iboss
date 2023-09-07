@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:iboss/components/menu_navigation.dart';
 import 'package:iboss/repositories/business/deferred_payment_repository.dart';
@@ -61,11 +60,6 @@ void main() async {
       child: const MyApp(),
     ),
   );
-
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
-  firestore.collection("Só para testar").doc("Estou testando").set({
-    "funcionou?": true,
-  });
 }
 
 class MyApp extends StatelessWidget {

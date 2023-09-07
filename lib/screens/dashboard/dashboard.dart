@@ -53,10 +53,10 @@ class _DashboardState extends State<Dashboard> {
     // final cashPaymentRepository = Provider.of<CashPaymentRepository>(context);
     // totalCashPayments =
     //     cashPaymentRepository.getTotalCashPaymentsByMonth(_selectedDate);
-    final deferredPaymentRepository =
-        Provider.of<DeferredPaymentRepository>(context);
-    totalDeferredPayments = deferredPaymentRepository
-        .getTotalDeferredPaymentsByMonth(_selectedDate);
+    // final deferredPaymentRepository =
+    //     Provider.of<DeferredPaymentRepository>(context);
+    // totalDeferredPayments = deferredPaymentRepository
+    //     .getTotalDeferredPaymentsByMonth(_selectedDate);
 
     final fixedExpenseRepository = Provider.of<FixedExpenseRepository>(context);
     totalFixedExpenses =
