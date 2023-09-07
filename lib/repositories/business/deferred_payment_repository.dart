@@ -57,34 +57,15 @@ class DeferredPaymentRepository extends ChangeNotifier {
     return deferredPayments;
   }
 
-  double getTotalDeferredPaymentsByMonth(DateTime selectedMonth) {
-    double total = 0.0;
-    firestore
-        .collection('pending')
-        .where(
-        'date',
-        isGreaterThanOrEqualTo: DateTime(
-            selectedMonth.year, selectedMonth.month, 1),
-        isLessThan: DateTime(selectedMonth.year, selectedMonth.month + 1, 1))
-        .get()
-        .then((querySnapshot) {
-      for (var doc in querySnapshot.docs) {
-        total += doc['value'];
-      }
-      notifyListeners();
-    });
-    return total;
-  }
-
-  Stream<double> getTotalDeferredPaymentsByMonthStream(DateTime selectedMonth) {
+  Stream<double> getTotalDeferredPaymentsByMonth(DateTime selectedMonth) {
     Stream<QuerySnapshot> queryStream = firestore
         .collection('pending')
         .where(
         'date',
-        isGreaterThanOrEqualTo: DateTime(
-            selectedMonth.year, selectedMonth.month, 1),
+        isGreaterThanOrEqualTo: DateTime(selectedMonth.year, selectedMonth.month, 1),
         isLessThan: DateTime(selectedMonth.year, selectedMonth.month + 1, 1))
         .snapshots();
+
     return queryStream.map((querySnapshot) {
       double total = 0.0;
       for (var doc in querySnapshot.docs) {

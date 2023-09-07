@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/screens/settings/settings.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart';
 import '../../repositories/business/cash_payment_repository.dart';
 import '../../repositories/business/deferred_payment_repository.dart';
 import '../../repositories/business/fixed_expense_repository.dart';
@@ -24,8 +25,8 @@ class _DashboardState extends State<Dashboard> {
   DateTime _selectedDate = DateTime.now();
   final NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
 
-  double totalCashPayments = 0.0;
-  double totalDeferredPayments = 0.0;
+  // double totalCashPayments = 0.0;
+  // double totalDeferredPayments = 0.0;
 
   double totalFixedExpenses = 0.0;
   double totalVariableExpense = 0.0;
@@ -135,149 +136,170 @@ class _DashboardState extends State<Dashboard> {
                   Expanded(
                     child: TabBarView(
                       children: [
-                        Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 8),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  IconButton(
-                                    icon: const FaIcon(
-                                        FontAwesomeIcons.caretLeft),
-                                    onPressed: () => _changeMonth(false),
-                                  ),
-                                  Text(
-                                    DateFormat.yMMMM('pt_BR')
-                                        .format(_selectedDate),
-                                    style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  IconButton(
-                                    icon: const FaIcon(
-                                        FontAwesomeIcons.caretRight),
-                                    onPressed: () => _changeMonth(true),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 25,
-                            ),
-                            SizedBox(
-                              width: 250,
-                              height: 250,
-                              child: totalCashPayments + totalDeferredPayments >
-                                      0
-                                  ? Stack(
-                                      children: [
-                                        PieChart(
-                                          PieChartData(
-                                            sections: [
-                                              PieChartSectionData(
-                                                showTitle: false,
-                                                color: Colors.green,
-                                                value: totalCashPayments,
-                                              ),
-                                              PieChartSectionData(
-                                                showTitle: false,
-                                                color: Colors.blue,
-                                                value: totalDeferredPayments,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Center(
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Column(
-                                                children: [
-                                                  const Text(
-                                                    'Total',
-                                                    style: TextStyle(
-                                                      fontSize: 25,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    real.format(totalCashPayments +
-                                                        totalDeferredPayments),
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 20),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  : const Center(
-                                      child: Text('Sem registros'),
-                                    ),
-                            ),
-                            const SizedBox(
-                              height: 50,
-                            ),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
+                        StreamBuilder<List<double>>(
+                          stream: CombineLatestStream.combine2(
+                            CashPaymentRepository()
+                                .getTotalCashPaymentsByMonth(_selectedDate),
+                            DeferredPaymentRepository()
+                                .getTotalDeferredPaymentsByMonth(_selectedDate),
+                            (double cashPayments, double deferredPayments) {
+                              return [cashPayments, deferredPayments];
+                            },
+                          ),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<List<double>> snapshot) {
+                            final List<double> totals =
+                                snapshot.data ?? [0.0, 0.0];
+                            final totalCashPayments = totals[0];
+                            final totalDeferredPayments = totals[1];
+                            final totalPayments =
+                                totalCashPayments + totalDeferredPayments;
+                            return Column(
                               children: [
-                                const SizedBox(width: 4),
-                                Column(
-                                  children: [
-                                    const Text(
-                                      'Pendentes',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.blue,
-                                        fontWeight: FontWeight.bold,
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 8),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      IconButton(
+                                        icon: const FaIcon(
+                                            FontAwesomeIcons.caretLeft),
+                                        onPressed: () => _changeMonth(false),
                                       ),
-                                    ),
-                                    Text(
-                                      '${real.format(totalDeferredPayments)}',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.blue,
-                                        fontWeight: FontWeight.bold,
+                                      Text(
+                                        DateFormat.yMMMM('pt_BR')
+                                            .format(_selectedDate),
+                                        style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
                                       ),
-                                    )
-                                  ],
+                                      IconButton(
+                                        icon: const FaIcon(
+                                            FontAwesomeIcons.caretRight),
+                                        onPressed: () => _changeMonth(true),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                const SizedBox(width: 70),
                                 const SizedBox(
-                                  width: 4,
+                                  height: 25,
                                 ),
-                                Column(
+                                SizedBox(
+                                  width: 250,
+                                  height: 250,
+                                  child: totalPayments >
+                                      0
+                                      ? Stack(
+                                    children: [
+                                      PieChart(
+                                        PieChartData(
+                                          sections: [
+                                            PieChartSectionData(
+                                              showTitle: false,
+                                              color: Colors.green,
+                                              value: totalCashPayments,
+                                            ),
+                                            PieChartSectionData(
+                                              showTitle: false,
+                                              color: Colors.blue,
+                                              value: totalDeferredPayments,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Center(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Column(
+                                              children: [
+                                                const Text(
+                                                  'Total',
+                                                  style: TextStyle(
+                                                    fontSize: 25,
+                                                    fontWeight:
+                                                    FontWeight.bold,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  real.format(totalCashPayments +
+                                                      totalDeferredPayments),
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                      FontWeight.bold,
+                                                      fontSize: 20),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                      : const Center(
+                                    child: Text('Sem registros'),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 50,
+                                ),
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    const Text(
-                                      'Pagos',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.green,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                    const SizedBox(width: 4),
+                                    Column(
+                                      children: [
+                                        const Text(
+                                          'Pendentes',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.blue,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          '${real.format(totalDeferredPayments)}',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.blue,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        )
+                                      ],
                                     ),
-                                    Text(
-                                      '${real.format(totalCashPayments)}',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.green,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )
+                                    const SizedBox(width: 70),
+                                    const SizedBox(
+                                      width: 4,
+                                    ),
+                                    Column(
+                                      children: [
+                                        const Text(
+                                          'Pagos',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          '${real.format(totalCashPayments)}',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ],
-                                ),
+                                )
                               ],
-                            )
-                          ],
+                            );
+                          },
                         ),
+
                         Column(
                           children: [
                             Padding(
@@ -458,8 +480,8 @@ class _DashboardState extends State<Dashboard> {
                               width: 250,
                               height: 250,
                               child: totalFixedExpenses +
-                                          totalVariableExpense +
-                                          totalCashPayments >
+                                          totalVariableExpense
+                                  >
                                       0
                                   ? Stack(
                                       children: [
@@ -469,7 +491,7 @@ class _DashboardState extends State<Dashboard> {
                                               PieChartSectionData(
                                                 showTitle: false,
                                                 color: Colors.green,
-                                                value: totalCashPayments,
+                                                value: totalFixedExpenses,
                                               ),
                                               PieChartSectionData(
                                                 showTitle: false,
@@ -495,7 +517,7 @@ class _DashboardState extends State<Dashboard> {
                                                     ),
                                                   ),
                                                   Text(
-                                                    real.format((totalCashPayments) -
+                                                    real.format((totalFixedExpenses) -
                                                         (totalFixedExpenses +
                                                             totalVariableExpense)),
                                                     style: const TextStyle(
@@ -559,7 +581,7 @@ class _DashboardState extends State<Dashboard> {
                                       ),
                                     ),
                                     Text(
-                                      '${real.format(totalCashPayments)}',
+                                      '${real.format(totalFixedExpenses)}',
                                       style: TextStyle(
                                         fontSize: 20,
                                         color: Colors.green,

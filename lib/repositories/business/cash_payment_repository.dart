@@ -57,25 +57,7 @@ class CashPaymentRepository extends ChangeNotifier {
     return cashPayments;
   }
 
-  double getTotalCashPaymentsByMonth(DateTime selectedMonth) {
-    double total = 0.0;
-    firestore
-        .collection('received')
-        .where(
-        'date',
-        isGreaterThanOrEqualTo: DateTime(selectedMonth.year, selectedMonth.month, 1),
-        isLessThan: DateTime(selectedMonth.year, selectedMonth.month + 1, 1))
-        .get()
-        .then((querySnapshot) {
-      for (var doc in querySnapshot.docs) {
-        total += doc['value'];
-      }
-      notifyListeners();
-    });
-    return total;
-  }
-
-  Stream<double> getTotalCashPaymentsByMonthStream(DateTime selectedMonth) {
+  Stream<double> getTotalCashPaymentsByMonth(DateTime selectedMonth) {
     Stream<QuerySnapshot> queryStream = firestore
         .collection('received')
         .where(
@@ -83,6 +65,7 @@ class CashPaymentRepository extends ChangeNotifier {
         isGreaterThanOrEqualTo: DateTime(selectedMonth.year, selectedMonth.month, 1),
         isLessThan: DateTime(selectedMonth.year, selectedMonth.month + 1, 1))
         .snapshots();
+
     return queryStream.map((querySnapshot) {
       double total = 0.0;
       for (var doc in querySnapshot.docs) {

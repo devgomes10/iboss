@@ -9,6 +9,7 @@ import '../../repositories/business/deferred_payment_repository.dart';
 import '../../repositories/business/fixed_expense_repository.dart';
 import '../../repositories/business/variable_expense_repository.dart';
 import 'expense.dart';
+import 'package:rxdart/rxdart.dart';
 
 class Business extends StatefulWidget {
   const Business({super.key});
@@ -18,10 +19,9 @@ class Business extends StatefulWidget {
 }
 
 class _BusinessState extends State<Business> {
-
   // variables
   final DateTime _selectedDate = DateTime.now();
-  double totalCashPayments =0.0;
+  double totalCashPayments = 0.0;
   double totalDeferredPayments = 0.0;
   double totalFixedExpenses = 0.0;
   double totalVariableExpense = 0.0;
@@ -31,28 +31,6 @@ class _BusinessState extends State<Business> {
 
   @override
   Widget build(BuildContext context) {
-    // total cash payments
-    // final cashPaymentRepository = Provider.of<CashPaymentRepository>(context);
-    // Stream<double> totalCashPaymentsStream =
-    // cashPaymentRepository.getTotalCashPaymentsByMonthStream(_selectedDate);
-
-    // // total payments on time
-    // final deferredPaymentRepository =
-    //     Provider.of<DeferredPaymentRepository>(context);
-    // totalDeferredPayments = deferredPaymentRepository
-    //     .getTotalDeferredPaymentsByMonth(_selectedDate);
-
-    // // total fixed expenses
-    // final fixedExpenseRepository = Provider.of<FixedExpenseRepository>(context);
-    // totalFixedExpenses =
-    //     fixedExpenseRepository.getTotalFixedExpensesByMonth(_selectedDate);
-    //
-    // // total variable expenses
-    // final variableExpensesRepository =
-    //     Provider.of<VariableExpenseRepository>(context);
-    // totalVariableExpense = variableExpensesRepository
-    //     .getTotalVariableExpensesByMonth(_selectedDate);
-
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
@@ -115,19 +93,24 @@ class _BusinessState extends State<Business> {
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       StreamBuilder<double>(
-                        // stream: totalCashPaymentsStream,
+                        stream: CombineLatestStream.combine2(
+                          CashPaymentRepository()
+                              .getTotalCashPaymentsByMonth(_selectedDate),
+                          DeferredPaymentRepository()
+                              .getTotalDeferredPaymentsByMonth(_selectedDate),
+                          (double totalCash, double totalDeferred) =>
+                              totalCash + totalDeferred,
+                        ),
                         builder: (context, snapshot) {
                           if (snapshot.hasData && snapshot.data != null) {
-                            final totalCashPaymentsValue = snapshot.data;
+                            final totalValue = snapshot.data;
                             return Text(
-                              real.format(totalCashPaymentsValue! + totalDeferredPayments),
-                              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                              real.format(totalValue!),
                             );
                           } else if (snapshot.hasError) {
                             return const Text('Erro ao carregar dados.');
-                          } else {
-                            return const CircularProgressIndicator();
                           }
+                          return Container();
                         },
                       ),
                       const SizedBox(height: 8),
@@ -140,11 +123,16 @@ class _BusinessState extends State<Business> {
                                 "Pagos",
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
-                              Text(
-                                real.format(totalCashPayments),
-                                style: const TextStyle(
-                                  color: Colors.green,
-                                ),
+                              StreamBuilder<double>(
+                                stream: CashPaymentRepository()
+                                    .getTotalCashPaymentsByMonth(_selectedDate),
+                                builder: (BuildContext,
+                                    AsyncSnapshot<double> snapshot) {
+                                  final totalCashPayments = snapshot.data;
+                                  return Text(
+                                    real.format(totalCashPayments),
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -154,11 +142,17 @@ class _BusinessState extends State<Business> {
                                 "Pendentes",
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
-                              Text(
-                                real.format(totalDeferredPayments),
-                                style: const TextStyle(
-                                  color: Colors.green,
-                                ),
+                              StreamBuilder<double>(
+                                stream: DeferredPaymentRepository()
+                                    .getTotalDeferredPaymentsByMonth(
+                                        _selectedDate),
+                                builder: (BuildContext,
+                                    AsyncSnapshot<double> snapshot) {
+                                  final totalDeferredPayments = snapshot.data;
+                                  return Text(
+                                    real.format(totalDeferredPayments),
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -313,10 +307,13 @@ class _BusinessState extends State<Business> {
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(top: 20.0),
+                                        padding:
+                                            const EdgeInsets.only(top: 20.0),
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           children: [
                                             SizedBox(
                                               width: 100,
@@ -325,7 +322,8 @@ class _BusinessState extends State<Business> {
                                                   Navigator.pop(context);
                                                 },
                                                 style: TextButton.styleFrom(
-                                                  backgroundColor: Colors.grey[200],
+                                                  backgroundColor:
+                                                      Colors.grey[200],
                                                 ),
                                                 child: const Text('Cancelar'),
                                               ),
@@ -337,7 +335,8 @@ class _BusinessState extends State<Business> {
                                                   Navigator.pop(context);
                                                 },
                                                 style: TextButton.styleFrom(
-                                                  backgroundColor: Colors.grey[200],
+                                                  backgroundColor:
+                                                      Colors.grey[200],
                                                 ),
                                                 child: const Text('Confirmar'),
                                               ),
@@ -424,10 +423,13 @@ class _BusinessState extends State<Business> {
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(top: 20.0),
+                                        padding:
+                                            const EdgeInsets.only(top: 20.0),
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           children: [
                                             SizedBox(
                                               width: 100,
@@ -436,7 +438,8 @@ class _BusinessState extends State<Business> {
                                                   Navigator.pop(context);
                                                 },
                                                 style: TextButton.styleFrom(
-                                                  backgroundColor: Colors.grey[200],
+                                                  backgroundColor:
+                                                      Colors.grey[200],
                                                 ),
                                                 child: const Text('Cancelar'),
                                               ),
@@ -448,7 +451,8 @@ class _BusinessState extends State<Business> {
                                                   Navigator.pop(context);
                                                 },
                                                 style: TextButton.styleFrom(
-                                                  backgroundColor: Colors.grey[200],
+                                                  backgroundColor:
+                                                      Colors.grey[200],
                                                 ),
                                                 child: const Text('Confirmar'),
                                               ),
