@@ -168,7 +168,6 @@ class __DialogoNovaReceitaState extends State<_DialogonewRevenue> {
                                     ),
                                   ),
                                 );
-                                print("foi adiconado o $invoicingId");
                                 Navigator.pop(context);
                               }
                             },

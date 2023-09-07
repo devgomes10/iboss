@@ -105,10 +105,14 @@ class _BusinessState extends State<Business> {
                           if (snapshot.hasData && snapshot.data != null) {
                             final totalValue = snapshot.data;
                             return Text(
-                              real.format(totalValue!),
+                              real.format(totalValue!), style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.green,
+                            ),
                             );
                           } else if (snapshot.hasError) {
-                            return const Text('Erro ao carregar dados.');
+                            return const Text('...');
                           }
                           return Container();
                         },
@@ -128,10 +132,17 @@ class _BusinessState extends State<Business> {
                                     .getTotalCashPaymentsByMonth(_selectedDate),
                                 builder: (BuildContext,
                                     AsyncSnapshot<double> snapshot) {
-                                  final totalCashPayments = snapshot.data;
+                                  if (snapshot.hasData && snapshot.data != null) {final totalCashPayments = snapshot.data;
                                   return Text(
                                     real.format(totalCashPayments),
+                                    style: const TextStyle(
+                                      color: Colors.green,
+                                    ),
                                   );
+                                  } else if (snapshot.hasError) {
+                                    return Text("...");
+                                  }
+                                  return Container();
                                 },
                               ),
                             ],
@@ -148,10 +159,18 @@ class _BusinessState extends State<Business> {
                                         _selectedDate),
                                 builder: (BuildContext,
                                     AsyncSnapshot<double> snapshot) {
-                                  final totalDeferredPayments = snapshot.data;
-                                  return Text(
-                                    real.format(totalDeferredPayments),
-                                  );
+                                  if (snapshot.hasData && snapshot.data != null) {
+                                    final totalDeferredPayments = snapshot.data;
+                                    return Text(
+                                      real.format(totalDeferredPayments),
+                                      style: const TextStyle(
+                                        color: Colors.green,
+                                      ),
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    return Text("...");
+                                  }
+                                  return Container();
                                 },
                               ),
                             ],
