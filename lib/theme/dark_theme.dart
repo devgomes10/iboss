@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 ThemeData darkTheme = ThemeData(
-  datePickerTheme: const DatePickerThemeData(),
+  datePickerTheme: const DatePickerThemeData(
+    dayForegroundColor: MaterialStatePropertyAll(Colors.white),
+    todayForegroundColor: MaterialStatePropertyAll(Colors.white),
+  ),
   textTheme: TextTheme(
     bodySmall: GoogleFonts.montserrat(
       fontSize: 15,

@@ -80,6 +80,9 @@ class _ExpenseState extends State<Expense> {
         ),
         body: Column(
           children: [
+            const SizedBox(
+              height: 6,
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Row(
@@ -110,7 +113,7 @@ class _ExpenseState extends State<Expense> {
                     builder: (BuildContext context,
                         AsyncSnapshot<List<FixedExpense>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       }
                       if (snapshot.hasError) {
                         return Text('Erro: ${snapshot.error}');
@@ -127,7 +130,7 @@ class _ExpenseState extends State<Expense> {
                             ),
                             title: Text(
                               fixedExpenses[i].description,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 20,
                               ),
                             ),
@@ -136,14 +139,14 @@ class _ExpenseState extends State<Expense> {
                               children: [
                                 Text(
                                   real.format(fixedExpenses[i].value),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 18,
                                   ),
                                 ),
                                 Text(
                                   DateFormat('dd/MM/yyyy')
                                       .format(fixedExpenses[i].date),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 16,
                                   ),
                                 ),
@@ -222,7 +225,7 @@ class _ExpenseState extends State<Expense> {
                         },
                         separatorBuilder: (_, __) =>
                             const Divider(color: Colors.white),
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.only(top: 14, left: 16, bottom: 80, right: 16,),
                         itemCount: fixedExpenses.length,
                       );
                     },
@@ -233,7 +236,7 @@ class _ExpenseState extends State<Expense> {
                     builder: (BuildContext context,
                         AsyncSnapshot<List<VariableExpense>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       }
                       if (snapshot.hasError) {
                         return Text('Erro: ${snapshot.error}');
@@ -250,7 +253,7 @@ class _ExpenseState extends State<Expense> {
                             ),
                             title: Text(
                               variableExpenses[i].description,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 20,
                               ),
                             ),
@@ -261,14 +264,14 @@ class _ExpenseState extends State<Expense> {
                                   real.format(
                                     variableExpenses[i].value,
                                   ),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 18,
                                   ),
                                 ),
                                 Text(
                                   DateFormat('dd/MM/yyyy')
                                       .format(variableExpenses[i].date),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 16,
                                   ),
                                 ),
@@ -345,7 +348,7 @@ class _ExpenseState extends State<Expense> {
                         },
                         separatorBuilder: (_, __) =>
                             const Divider(color: Colors.white),
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.only(top: 14, left: 16, bottom: 80, right: 16,),
                         itemCount: variableExpenses.length,
                       );
                     },

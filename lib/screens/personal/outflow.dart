@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/forms/personal/outflow_form.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import '../../models/personal/fixed_outflow.dart';
 import '../../models/personal/variable_outflow.dart';
 import '../../repositories/personal/fixed_outflow_repository.dart';
@@ -103,13 +102,16 @@ class _OutflowState extends State<Outflow> {
             Expanded(
               child: TabBarView(
                 children: [
+                  const SizedBox(
+                    height: 6,
+                  ),
                   StreamBuilder<List<FixedOutflow>>(
                     stream: FixedOutflowRepository()
                         .getFixedOutflowByMonth(_selectedDate),
                     builder: (BuildContext context,
                         AsyncSnapshot<List<FixedOutflow>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       }
                       if (snapshot.hasError) {
                         return Text('Erro: ${snapshot.error}');
@@ -127,7 +129,7 @@ class _OutflowState extends State<Outflow> {
                             ),
                             title: Text(
                               fixedOutflow[i].description,
-                              style: TextStyle(fontSize: 20),
+                              style: const TextStyle(fontSize: 20),
                             ),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,12 +138,12 @@ class _OutflowState extends State<Outflow> {
                                   real.format(
                                     fixedOutflow[i].value,
                                   ),
-                                  style: TextStyle(fontSize: 18),
+                                  style: const TextStyle(fontSize: 18),
                                 ),
                                 Text(
                                   DateFormat('dd/MM/yyyy')
                                       .format(fixedOutflow[i].date),
-                                  style: TextStyle(fontSize: 16),
+                                  style: const TextStyle(fontSize: 16),
                                 ),
                               ],
                             ),
@@ -211,7 +213,7 @@ class _OutflowState extends State<Outflow> {
                         separatorBuilder: (_, __) => const Divider(
                           color: Colors.white,
                         ),
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.only(top: 14, left: 16, bottom: 80, right: 16,),
                         itemCount: fixedOutflow.length,
                       );
                     },
@@ -222,7 +224,7 @@ class _OutflowState extends State<Outflow> {
                     builder: (BuildContext context,
                         AsyncSnapshot<List<VariableOutflow>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       }
                       if (snapshot.hasError) {
                         return Text('Erro: ${snapshot.error}');
@@ -240,19 +242,19 @@ class _OutflowState extends State<Outflow> {
                             ),
                             title: Text(
                               variableOutflow[i].description,
-                              style: TextStyle(fontSize: 20),
+                              style: const TextStyle(fontSize: 20),
                             ),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   real.format(variableOutflow[i].value),
-                                  style: TextStyle(fontSize: 18),
+                                  style: const TextStyle(fontSize: 18),
                                 ),
                                 Text(
                                   DateFormat("dd/MM/yyyy")
                                       .format(variableOutflow[i].date),
-                                  style: TextStyle(fontSize: 16),
+                                  style: const TextStyle(fontSize: 16),
                                 ),
                               ],
                             ),
@@ -322,7 +324,7 @@ class _OutflowState extends State<Outflow> {
                         separatorBuilder: (_, __) => const Divider(
                           color: Colors.white,
                         ),
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.only(top: 14, left: 16, bottom: 80, right: 16,),
                         itemCount: variableOutflow.length,
                       );
                     },

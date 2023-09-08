@@ -4,7 +4,6 @@ import 'package:iboss/components/forms/personal/entry_form.dart';
 import 'package:iboss/models/personal/fixed_entry.dart';
 import 'package:iboss/models/personal/variable_entry.dart';
 import 'package:iboss/repositories/personal/fixed_entry_repository.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../../repositories/personal/variable_entry_repository.dart';
 
@@ -80,6 +79,9 @@ class _EntryState extends State<Entry> {
         ),
         body: Column(
           children: [
+            const SizedBox(
+              height: 6,
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Row(
@@ -110,7 +112,7 @@ class _EntryState extends State<Entry> {
                       builder: (BuildContext context,
                           AsyncSnapshot<List<FixedEntry>> snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting) {
-                          return CircularProgressIndicator();
+                          return const CircularProgressIndicator();
                         }
                         if (snapshot.hasError) {
                           return Text('Erro: ${snapshot.error}');
@@ -128,19 +130,19 @@ class _EntryState extends State<Entry> {
                             ),
                             title: Text(
                               fixedEntry[i].description,
-                              style: TextStyle(fontSize: 20),
+                              style: const TextStyle(fontSize: 20),
                             ),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   real.format(fixedEntry[i].value),
-                                  style: TextStyle(fontSize: 18),
+                                  style: const TextStyle(fontSize: 18),
                                 ),
                                 Text(
                                   DateFormat('dd/MM/yyyy')
                                       .format(fixedEntry[i].date),
-                                  style: TextStyle(fontSize: 16),
+                                  style: const TextStyle(fontSize: 16),
                                 ),
                               ],
                             ),
@@ -217,7 +219,7 @@ class _EntryState extends State<Entry> {
                         separatorBuilder: (_, __) => const Divider(
                               color: Colors.white,
                             ),
-                        padding: const EdgeInsets.all(16),
+                            padding: const EdgeInsets.only(top: 14, left: 16, bottom: 80, right: 16,),
                         itemCount: fixedEntry.length);
                   }),
                   StreamBuilder<List<VariableEntry>>(
@@ -226,7 +228,7 @@ class _EntryState extends State<Entry> {
                     builder: (BuildContext context,
                         AsyncSnapshot<List<VariableEntry>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       }
                       if (snapshot.hasError) {
                         return Text('Erro: ${snapshot.error}');
@@ -244,7 +246,7 @@ class _EntryState extends State<Entry> {
                               ),
                               title: Text(
                                 variableEntry[i].description,
-                                style: TextStyle(fontSize: 20),
+                                style: const TextStyle(fontSize: 20),
                               ),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -252,12 +254,12 @@ class _EntryState extends State<Entry> {
                                   Text(
                                     real.format(
                                         variableEntry[i].value),
-                                    style: TextStyle(fontSize: 18),
+                                    style: const TextStyle(fontSize: 18),
                                   ),
                                   Text(
                                     DateFormat('dd/MM/yyyy')
                                         .format(variableEntry[i].date),
-                                    style: TextStyle(fontSize: 16),
+                                    style: const TextStyle(fontSize: 16),
                                   ),
                                 ],
                               ),
@@ -333,7 +335,7 @@ class _EntryState extends State<Entry> {
                           separatorBuilder: (_, __) => const Divider(
                                 color: Colors.white,
                               ),
-                          padding: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.only(top: 14, left: 16, bottom: 80, right: 16,),
                           itemCount: variableEntry.length);
                     },
                   ),

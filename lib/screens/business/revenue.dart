@@ -85,6 +85,9 @@ class _RevenueState extends State<Revenue> {
         ),
         body: Column(
           children: [
+            const SizedBox(
+              height: 6,
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Row(
@@ -236,7 +239,7 @@ class _RevenueState extends State<Revenue> {
                         },
                         separatorBuilder: (_, __) =>
                             const Divider(color: Colors.white),
-                        padding: const EdgeInsets.all(22),
+                        padding: const EdgeInsets.only(top: 14, left: 16, bottom: 80, right: 16,),
                         itemCount: cashPayments.length,
                       );
                     },
@@ -496,7 +499,7 @@ class _RevenueState extends State<Revenue> {
                         },
                         separatorBuilder: (_, __) =>
                             const Divider(color: Colors.white),
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.only(top: 14, left: 16, bottom: 80, right: 16,),
                         itemCount: deferredPayments.length,
                       );
                     },

@@ -64,12 +64,8 @@ class _GoalsState extends State<Goals> {
         ),
         body: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: SizedBox(
-                width: 350,
-                height: 50,
-              ),
+           const SizedBox(
+              height: 15,
             ),
             Expanded(
               child: TabBarView(
