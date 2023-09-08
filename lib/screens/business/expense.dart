@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/forms/business/expense_form.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../../models/business/fixed_expense.dart';
 import '../../models/business/variable_expense.dart';
@@ -43,7 +42,7 @@ class _ExpenseState extends State<Expense> {
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
-          title: const Text('Gastos'),
+          title: const Text('Despesas'),
           actions: <Widget>[
             IconButton(
                 onPressed: () {
@@ -64,7 +63,7 @@ class _ExpenseState extends State<Expense> {
             labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             tabs: [
               Tab(
-                text: 'Fixos',
+                text: 'Fixas',
               ),
               Tab(
                 text: 'Variáveis',
@@ -118,7 +117,7 @@ class _ExpenseState extends State<Expense> {
                       }
                       final fixedExpenses = snapshot.data;
                       if (fixedExpenses == null || fixedExpenses.isEmpty) {
-                        return const Text('Nenhum pagamento disponível.');
+                        return const Text('Nenhuma despesa disponível.');
                       } return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
@@ -158,7 +157,7 @@ class _ExpenseState extends State<Expense> {
                                       AlertDialog(
                                     scrollable: true,
                                     title: Text(
-                                      'Deseja mesmo excluir este gasto fixo?',
+                                      'Deseja mesmo excluir esta despesa fixa?',
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium,
@@ -194,7 +193,7 @@ class _ExpenseState extends State<Expense> {
                                                     .showSnackBar(
                                                   const SnackBar(
                                                     content:
-                                                        Text('Gasto deletado'),
+                                                        Text('Despesa deletada'),
                                                   ),
                                                 );
                                               },
@@ -241,7 +240,7 @@ class _ExpenseState extends State<Expense> {
                       }
                       final variableExpenses = snapshot.data;
                       if (variableExpenses == null || variableExpenses.isEmpty) {
-                        return const Text('Nenhum pagamento disponível.');
+                        return const Text('Nenhuma despesa disponível.');
                       } return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
@@ -283,7 +282,7 @@ class _ExpenseState extends State<Expense> {
                                       AlertDialog(
                                     scrollable: true,
                                     title: Text(
-                                      'Deseja mesmo excluir este gasto variável?',
+                                      'Deseja mesmo excluir esta despesa variável?',
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium,
@@ -319,7 +318,7 @@ class _ExpenseState extends State<Expense> {
                                                     .showSnackBar(
                                                   const SnackBar(
                                                     content:
-                                                        Text('Gasto deletado'),
+                                                        Text('Despesa deletada'),
                                                   ),
                                                 );
                                               },

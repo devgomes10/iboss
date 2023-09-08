@@ -41,7 +41,7 @@ class _EntryState extends State<Entry> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
           title: const Text(
-            'Entradas',
+            'RENDA',
           ),
           actions: <Widget>[
             IconButton(
@@ -117,7 +117,7 @@ class _EntryState extends State<Entry> {
                         }
                         final fixedEntry = snapshot.data;
                         if (fixedEntry == null || fixedEntry.isEmpty) {
-                          return const Text('Nenhum pagamento disponível.');
+                          return const Text('Nenhuma renda disponível.');
                         }
                         return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
@@ -152,7 +152,7 @@ class _EntryState extends State<Entry> {
                                         AlertDialog(
                                       scrollable: true,
                                       title: Text(
-                                        'Deseja exluir esta entrada fixa?',
+                                        'Deseja exluir essa renda fixa?',
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyMedium,
@@ -188,7 +188,7 @@ class _EntryState extends State<Entry> {
                                                       .showSnackBar(
                                                     const SnackBar(
                                                       content: Text(
-                                                          'Entrada deletada'),
+                                                          'Renda deletada'),
                                                     ),
                                                   );
                                                 },
@@ -233,7 +233,7 @@ class _EntryState extends State<Entry> {
                       }
                       final variableEntry = snapshot.data;
                       if (variableEntry == null || variableEntry.isEmpty) {
-                        return const Text('Nenhum pagamento disponível.');
+                        return const Text('Nenhuma renda disponível.');
                       }
                       return ListView.separated(
                           itemBuilder: (BuildContext context, int i) {
@@ -269,7 +269,7 @@ class _EntryState extends State<Entry> {
                                         AlertDialog(
                                       scrollable: true,
                                       title: Text(
-                                        'Deseja exluir esta entrada variável?',
+                                        'Deseja exluir essa renda variável?',
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyMedium,

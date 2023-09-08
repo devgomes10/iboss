@@ -38,7 +38,7 @@ class __DialogoNovaReceitaState extends State<_DialogonewRevenue> {
       ),
       scrollable: true,
       title: Text(
-        'Adicione uma nova receita',
+        'Adicione um novo pagamento',
         style: TextStyle(
           fontSize: 24,
           fontWeight: FontWeight.bold,
@@ -66,8 +66,7 @@ class __DialogoNovaReceitaState extends State<_DialogonewRevenue> {
                   keyboardType: TextInputType.text,
                   controller: descriptionController,
                   decoration: const InputDecoration(
-                    hintText: 'Descrição',
-                    labelText: 'Insira uma descrição...',
+                    labelText: 'Descrição',
                     labelStyle: TextStyle(color: Colors.white),
                     border: OutlineInputBorder(),
                   ),
@@ -83,8 +82,7 @@ class __DialogoNovaReceitaState extends State<_DialogonewRevenue> {
                   keyboardType: TextInputType.number,
                   controller: valueController,
                   decoration: const InputDecoration(
-                    hintText: 'Valor',
-                    labelText: 'Insira o valor...',
+                    labelText: 'Valor',
                     labelStyle: TextStyle(color: Colors.white),
                     border: OutlineInputBorder(),
                   ),
@@ -99,7 +97,7 @@ class __DialogoNovaReceitaState extends State<_DialogonewRevenue> {
           child: Column(
             children: [
               const Text(
-                'Escolha a classificação',
+                'O pagamento foi recebido?',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -127,7 +125,7 @@ class __DialogoNovaReceitaState extends State<_DialogonewRevenue> {
                                 await inCash.addPaymentToFirestore(received);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text('Criando um novo pagamento'),
+                                    content: Text('Adicionado um novo pagamento recebido'),
                                   ),
                                 );
                                 Navigator.pop(context);
@@ -137,7 +135,7 @@ class __DialogoNovaReceitaState extends State<_DialogonewRevenue> {
                               backgroundColor: Colors.grey[200],
                             ),
                             child: const Text(
-                              'Pago',
+                              'Recebido',
                               style: TextStyle(
                                 fontSize: 16,
                               ),
@@ -164,7 +162,7 @@ class __DialogoNovaReceitaState extends State<_DialogonewRevenue> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text(
-                                      'Criando um novo pagamento pendente',
+                                      'Adicionado um novo pagamento pendente',
                                     ),
                                   ),
                                 );

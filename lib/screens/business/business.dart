@@ -3,7 +3,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/screens/business/revenue.dart';
 import 'package:iboss/screens/settings/settings.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import '../../repositories/business/cash_payment_repository.dart';
 import '../../repositories/business/deferred_payment_repository.dart';
 import '../../repositories/business/fixed_expense_repository.dart';
@@ -78,7 +77,7 @@ class _BusinessState extends State<Business> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Receitas',
+                            'Faturamento',
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           const FaIcon(
@@ -125,7 +124,7 @@ class _BusinessState extends State<Business> {
                           Column(
                             children: [
                               Text(
-                                "Pagos",
+                                "Recebidos",
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               StreamBuilder<double>(
@@ -211,7 +210,7 @@ class _BusinessState extends State<Business> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Gastos',
+                            'Despesas',
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           const FaIcon(
@@ -258,7 +257,7 @@ class _BusinessState extends State<Business> {
                           Column(
                             children: [
                               Text(
-                                "Fixos",
+                                "Fixas",
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               StreamBuilder<double>(

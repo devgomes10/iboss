@@ -37,7 +37,7 @@ class __DialogoNovaReceitaState extends State<_DialogNewOutflow> {
       ),
       scrollable: true,
       title: Text(
-        'Adicione uma nova saída',
+        'Adicione uma novo gasto',
         style: TextStyle(
           fontSize: 24,
           fontWeight: FontWeight.bold,
@@ -65,8 +65,7 @@ class __DialogoNovaReceitaState extends State<_DialogNewOutflow> {
                   keyboardType: TextInputType.text,
                   controller: descriptionController,
                   decoration: const InputDecoration(
-                    hintText: 'Descrição',
-                    labelText: 'Insira uma descrição...',
+                    labelText: 'Descrição',
                     labelStyle: TextStyle(color: Colors.white),
                     border: OutlineInputBorder(),
                   ),
@@ -82,8 +81,7 @@ class __DialogoNovaReceitaState extends State<_DialogNewOutflow> {
                   keyboardType: TextInputType.number,
                   controller: valueController,
                   decoration: const InputDecoration(
-                    hintText: 'Valor',
-                    labelText: 'Insira o valor...',
+                    labelText: 'Valor',
                     labelStyle: TextStyle(color: Colors.white),
                     border: OutlineInputBorder(),
                   ),
@@ -98,7 +96,7 @@ class __DialogoNovaReceitaState extends State<_DialogNewOutflow> {
           child: Column(
             children: [
               const Text(
-                'Escolha a classificação',
+                'É um gasto fixo ou variável',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -126,7 +124,7 @@ class __DialogoNovaReceitaState extends State<_DialogNewOutflow> {
                                 FixedOutflowRepository().addOutflowToFirestore(fixed);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text('Criando uma saída fixa'),
+                                    content: Text('Adicionado um novo gasto fixo'),
                                   ),
                                 );
                                 Navigator.pop(context);
@@ -136,7 +134,7 @@ class __DialogoNovaReceitaState extends State<_DialogNewOutflow> {
                               backgroundColor: Colors.grey[200],
                             ),
                             child: const Text(
-                              'Fixa',
+                              'Fixo',
                               style: TextStyle(
                                 fontSize: 16,
                               ),
@@ -162,7 +160,7 @@ class __DialogoNovaReceitaState extends State<_DialogNewOutflow> {
                                 VariableOutflowRepository().addOutflowToFirestore(variable);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text('Criando uma saída variável'),
+                                    content: Text('Adicionado um novo gasto variável'),
                                   ),
                                 );
                                 Navigator.pop(context);

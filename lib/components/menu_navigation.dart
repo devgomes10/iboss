@@ -24,6 +24,7 @@ class MenuNavigation extends StatefulWidget {
 class _MenuNavigationState extends State<MenuNavigation> {
   int currentPage = 0;
   late PageController pc;
+  bool isFABVisible = true;
 
   @override
   void initState() {
@@ -34,6 +35,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
   setCurrentPage(page) {
     setState(() {
       currentPage = page;
+      isFABVisible = currentPage != 2;
     });
   }
 
@@ -51,7 +53,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: SpeedDial(
+      floatingActionButton: isFABVisible ? SpeedDial(
         icon: FontAwesomeIcons.plus,
         overlayColor: Colors.black,
         overlayOpacity: 0.7,
@@ -60,7 +62,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
         children: [
           SpeedDialChild(
             child: const FaIcon(FontAwesomeIcons.industry),
-            label: 'Receitas',
+            label: 'Pagamento',
             backgroundColor: Colors.green,
             onTap: () {
               Navigator.push(
@@ -74,7 +76,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
           ),
           SpeedDialChild(
             child: const FaIcon(FontAwesomeIcons.industry),
-            label: 'Gastos',
+            label: 'Despesa',
             backgroundColor: Colors.red,
             onTap: () {
               Navigator.push(
@@ -88,7 +90,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
           ),
           SpeedDialChild(
             child: const FaIcon(FontAwesomeIcons.userLarge),
-            label: 'Entrada',
+            label: 'Renda',
             backgroundColor: Colors.green,
             onTap: () {
               Navigator.push(
@@ -102,7 +104,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
           ),
           SpeedDialChild(
             child: const FaIcon(FontAwesomeIcons.userLarge),
-            label: 'Saída',
+            label: 'Gasto',
             backgroundColor: Colors.red,
             onTap: () {
               Navigator.push(
@@ -115,7 +117,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
             },
           ),
         ],
-      ),
+      ) : null,
       extendBody: true,
       bottomNavigationBar: BottomAppBar(
         notchMargin: 8,

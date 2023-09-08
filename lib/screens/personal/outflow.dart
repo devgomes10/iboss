@@ -41,7 +41,7 @@ class _OutflowState extends State<Outflow> {
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
-          title: const Text('Saídas'),
+          title: const Text('Gastos'),
           actions: <Widget>[
             IconButton(
                 onPressed: () {
@@ -62,7 +62,7 @@ class _OutflowState extends State<Outflow> {
             labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             tabs: [
               Tab(
-                text: 'Fixas',
+                text: 'Fixos',
               ),
               Tab(
                 text: 'Variáveis',
@@ -116,7 +116,7 @@ class _OutflowState extends State<Outflow> {
                       }
                       final fixedOutflow = snapshot.data;
                       if (fixedOutflow == null || fixedOutflow.isEmpty) {
-                        return const Text('Nenhum pagamento disponível.');
+                        return const Text('Nenhum gasto disponível.');
                       }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
@@ -153,7 +153,7 @@ class _OutflowState extends State<Outflow> {
                                       AlertDialog(
                                     scrollable: true,
                                     title: Text(
-                                        'Deseja mesmo excluir esta saída fixa?', style: Theme.of(context)
+                                        'Deseja mesmo excluir esse gasto fixo?', style: Theme.of(context)
                                         .textTheme
                                         .bodyMedium,),
                                     content: SingleChildScrollView(
@@ -184,11 +184,11 @@ class _OutflowState extends State<Outflow> {
                                                     .showSnackBar(
                                                   const SnackBar(
                                                     content:
-                                                        Text('Saída deletada'),
+                                                        Text('Gasto deletado'),
                                                   ),
                                                 );
                                               },
-                                              child: const Text('Excluir', style: TextStyle(
+                                              child: const Text('EXCLUIR', style: TextStyle(
                                                 color: Colors.red,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 20,
@@ -229,7 +229,7 @@ class _OutflowState extends State<Outflow> {
                       }
                       final variableOutflow = snapshot.data;
                       if (variableOutflow == null || variableOutflow.isEmpty) {
-                        return const Text('Nenhum pagamento disponível.');
+                        return const Text('Nenhum gasto disponível.');
                       }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
@@ -264,7 +264,7 @@ class _OutflowState extends State<Outflow> {
                                       AlertDialog(
                                     scrollable: true,
                                     title: Text(
-                                        'Deseja mesmo excluir esta saída variável?', style: Theme.of(context)
+                                        'Deseja mesmo excluir esse gasto variável?', style: Theme.of(context)
                                         .textTheme
                                         .bodyMedium,),
                                     content: SingleChildScrollView(
@@ -295,7 +295,7 @@ class _OutflowState extends State<Outflow> {
                                                     .showSnackBar(
                                                   const SnackBar(
                                                     content:
-                                                        Text('Saída deletada'),
+                                                        Text('Gasto deletado'),
                                                   ),
                                                 );
                                               },

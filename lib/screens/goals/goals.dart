@@ -106,7 +106,6 @@ class _GoalsState extends State<Goals> {
                                           keyboardType: TextInputType.text,
                                           decoration: const InputDecoration(
                                             labelText: 'Descrição',
-                                            hintText: 'Descrição...',
                                             labelStyle:
                                                 TextStyle(color: Colors.white),
                                           ),
@@ -170,8 +169,7 @@ class _GoalsState extends State<Goals> {
                                                   description:
                                                       descriptionController
                                                           .text,
-                                                  date:
-                                                      "${selectedDate.day} / ${selectedDate.month} / ${selectedDate.year}",
+                                                  date: DateFormat('dd/MM/yyyy').format(selectedDate),
                                                 ),
                                               );
                                               ScaffoldMessenger.of(context)
@@ -213,8 +211,7 @@ class _GoalsState extends State<Goals> {
                                                   description:
                                                       descriptionController
                                                           .text,
-                                                  date:
-                                                      "${selectedDate.day} / ${selectedDate.month} / ${selectedDate.year}"));
+                                                  date: DateFormat('dd/MM/yyyy').format(selectedDate)));
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(
                                                 const SnackBar(
@@ -317,7 +314,7 @@ class _GoalsState extends State<Goals> {
                                                   fontSize: 15,
                                                 ),
                                               ),
-                                              child: const Text('Não'),
+                                              child: const Text('NÃO'),
                                             ),
                                             Consumer<CompanyGoalsRepository>(
                                               builder: (BuildContext context,
@@ -346,7 +343,7 @@ class _GoalsState extends State<Goals> {
                                                     ),
                                                   ),
                                                   child: const Text(
-                                                    'Sim',
+                                                    'EXCLUIR',
                                                   ),
                                                 );
                                               },
@@ -433,7 +430,7 @@ class _GoalsState extends State<Goals> {
                                                   fontSize: 15,
                                                 ),
                                               ),
-                                              child: const Text('Não'),
+                                              child: const Text('NÃO'),
                                             ),
                                             Consumer<PersonalGoalsRepository>(
                                               builder: (BuildContext context,
@@ -462,7 +459,7 @@ class _GoalsState extends State<Goals> {
                                                     ),
                                                   ),
                                                   child: const Text(
-                                                    'Sim',
+                                                    'EXCLUIR',
                                                     style: TextStyle(
                                                       fontSize: 16,
                                                     ),

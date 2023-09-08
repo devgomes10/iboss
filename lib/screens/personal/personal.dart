@@ -93,7 +93,7 @@ class _PersonalState extends State<Personal> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Entradas',
+                            'Renda',
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           const FaIcon(
@@ -227,7 +227,7 @@ class _PersonalState extends State<Personal> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Saídas',
+                            'Gastos',
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           const FaIcon(
@@ -272,7 +272,7 @@ class _PersonalState extends State<Personal> {
                           Column(
                             children: [
                               Text(
-                                "Fixas",
+                                "Fixos",
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               StreamBuilder<double>(

@@ -43,7 +43,7 @@ class _RevenueState extends State<Revenue> {
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
-          title: const Text('Receitas'),
+          title: const Text('Faturamento'),
           actions: <Widget>[
             IconButton(
               onPressed: () {
@@ -68,7 +68,7 @@ class _RevenueState extends State<Revenue> {
             labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             tabs: [
               Tab(
-                text: 'Pagos',
+                text: 'Recebidos',
               ),
               Tab(
                 text: 'Pendentes',
@@ -168,7 +168,7 @@ class _RevenueState extends State<Revenue> {
                                       AlertDialog(
                                     scrollable: true,
                                     title: Text(
-                                      'Deseja mesmo excluir este pagamento?',
+                                      'Deseja mesmo excluir este pagamento recebido?',
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium,

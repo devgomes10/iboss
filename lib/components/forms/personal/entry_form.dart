@@ -37,7 +37,7 @@ class __DialogoNovaReceitaState extends State<_DialogoNewEntry> {
       ),
       scrollable: true,
       title: Text(
-        'Adicione uma nova entrada',
+        'Adicione uma nova renda',
         style: TextStyle(
           fontSize: 24,
           fontWeight: FontWeight.bold,
@@ -65,8 +65,7 @@ class __DialogoNovaReceitaState extends State<_DialogoNewEntry> {
                   keyboardType: TextInputType.text,
                   controller: descriptionController,
                   decoration: const InputDecoration(
-                    hintText: 'Descrição',
-                    labelText: 'Insira uma descrição...',
+                    labelText: 'Descrição',
                     labelStyle: TextStyle(color: Colors.white),
                     border: OutlineInputBorder(),
                   ),
@@ -82,8 +81,7 @@ class __DialogoNovaReceitaState extends State<_DialogoNewEntry> {
                   keyboardType: TextInputType.number,
                   controller: valueController,
                   decoration: const InputDecoration(
-                    hintText: 'Valor',
-                    labelText: 'Insira o valor...',
+                    labelText: 'Valor',
                     labelStyle: TextStyle(color: Colors.white),
                     border: OutlineInputBorder(),
                   ),
@@ -98,7 +96,7 @@ class __DialogoNovaReceitaState extends State<_DialogoNewEntry> {
           child: Column(
             children: [
               const Text(
-                'Escolha a classificação',
+                'É uma renda fixa ou variável?',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -126,7 +124,7 @@ class __DialogoNovaReceitaState extends State<_DialogoNewEntry> {
                                 FixedEntryRepository().addEntryToFirestore(fixed);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text('Criando um pagamento à vista'),
+                                    content: Text('Adicionado uma nova renda fixa'),
                                   ),
                                 );
                                 Navigator.pop(context);
@@ -162,7 +160,7 @@ class __DialogoNovaReceitaState extends State<_DialogoNewEntry> {
                                 VariableEntryRepository().addEntryToFirestore(variable);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text('Criando um pagamento a prazo'),
+                                    content: Text('Adicionado uma nova renda variável'),
                                   ),
                                 );
                                 Navigator.pop(context);

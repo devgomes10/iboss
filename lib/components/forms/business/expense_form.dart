@@ -64,8 +64,7 @@ class __DialogoNovaReceitaState extends State<_DialogoNewExpense> {
                   keyboardType: TextInputType.text,
                   controller: descriptionController,
                   decoration: const InputDecoration(
-                    hintText: 'Descrição',
-                    labelText: 'insira uma descrição...',
+                    labelText: 'Descrição',
                     labelStyle: TextStyle(color: Colors.white),
                     border: OutlineInputBorder(),
                   ),
@@ -81,8 +80,7 @@ class __DialogoNovaReceitaState extends State<_DialogoNewExpense> {
                   keyboardType: TextInputType.number,
                   controller: valueController,
                   decoration: const InputDecoration(
-                    hintText: 'Valor',
-                    labelText: 'Insira o valor...',
+                    labelText: 'Valor',
                     labelStyle: TextStyle(color: Colors.white),
                     border: OutlineInputBorder(),
                   ),
@@ -97,7 +95,7 @@ class __DialogoNovaReceitaState extends State<_DialogoNewExpense> {
           child: Column(
             children: [
               const Text(
-                'Escolha a classificação',
+                'É uma despesa fixa ou variável?',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -125,7 +123,7 @@ class __DialogoNovaReceitaState extends State<_DialogoNewExpense> {
                                 await fixed.addExpenseToFirestore(fixedExpense);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text('Criando um novo gasto fixo'),
+                                    content: Text('Adicionada uma nova despesa fixa'),
                                   ),
                                 );
                                 Navigator.pop(context);
@@ -135,7 +133,7 @@ class __DialogoNovaReceitaState extends State<_DialogoNewExpense> {
                               backgroundColor: Colors.grey[200],
                             ),
                             child: const Text(
-                              'Fixo',
+                              'Fixa',
                               style: TextStyle(
                                 fontSize: 16,
                               ),
@@ -163,7 +161,7 @@ class __DialogoNovaReceitaState extends State<_DialogoNewExpense> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content:
-                                        Text('Criando um novo gasto variável'),
+                                        Text('Adicionada uma nova despesa variável'),
                                   ),
                                 );
                                 Navigator.pop(context);
