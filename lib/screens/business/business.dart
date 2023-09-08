@@ -65,122 +65,125 @@ class _BusinessState extends State<Business> {
                   ),
                 );
               },
-              child: Card(
-                color: Theme.of(context).primaryColor,
-                elevation: 4,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Faturamento',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                          const FaIcon(
-                            FontAwesomeIcons.arrowTrendUp,
-                            color: Colors.green,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        'Total',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      StreamBuilder<double>(
-                        stream: CombineLatestStream.combine2(
-                          CashPaymentRepository()
-                              .getTotalCashPaymentsByMonth(_selectedDate),
-                          DeferredPaymentRepository()
-                              .getTotalDeferredPaymentsByMonth(_selectedDate),
-                          (double totalCash, double totalDeferred) =>
-                              totalCash + totalDeferred,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(40),
+                child: Card(
+                  color: Theme.of(context).primaryColor,
+                  elevation: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Faturamento',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                            const FaIcon(
+                              FontAwesomeIcons.arrowTrendUp,
+                              color: Colors.green,
+                            ),
+                          ],
                         ),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData && snapshot.data != null) {
-                            final totalValue = snapshot.data;
-                            return Text(
-                              real.format(totalValue!),
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.green,
-                              ),
-                            );
-                          } else if (snapshot.hasError) {
-                            return const Text('...');
-                          }
-                          return Container();
-                        },
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Column(
-                            children: [
-                              Text(
-                                "Recebidos",
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                              StreamBuilder<double>(
-                                stream: CashPaymentRepository()
-                                    .getTotalCashPaymentsByMonth(_selectedDate),
-                                builder: (BuildContext,
-                                    AsyncSnapshot<double> snapshot) {
-                                  if (snapshot.hasData &&
-                                      snapshot.data != null) {
-                                    final totalCashPayments = snapshot.data;
-                                    return Text(
-                                      real.format(totalCashPayments),
-                                      style: const TextStyle(
-                                        color: Colors.green,
-                                      ),
-                                    );
-                                  } else if (snapshot.hasError) {
-                                    return Text("...");
-                                  }
-                                  return Container();
-                                },
-                              ),
-                            ],
+                        const SizedBox(height: 10),
+                        Text(
+                          'Total',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        StreamBuilder<double>(
+                          stream: CombineLatestStream.combine2(
+                            CashPaymentRepository()
+                                .getTotalCashPaymentsByMonth(_selectedDate),
+                            DeferredPaymentRepository()
+                                .getTotalDeferredPaymentsByMonth(_selectedDate),
+                            (double totalCash, double totalDeferred) =>
+                                totalCash + totalDeferred,
                           ),
-                          Column(
-                            children: [
-                              Text(
-                                "Pendentes",
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                              StreamBuilder<double>(
-                                stream: DeferredPaymentRepository()
-                                    .getTotalDeferredPaymentsByMonth(
-                                        _selectedDate),
-                                builder: (BuildContext,
-                                    AsyncSnapshot<double> snapshot) {
-                                  if (snapshot.hasData &&
-                                      snapshot.data != null) {
-                                    final totalDeferredPayments = snapshot.data;
-                                    return Text(
-                                      real.format(totalDeferredPayments),
-                                      style: const TextStyle(
-                                        color: Colors.green,
-                                      ),
-                                    );
-                                  } else if (snapshot.hasError) {
-                                    return Text("...");
-                                  }
-                                  return Container();
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      )
-                    ],
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData && snapshot.data != null) {
+                              final totalValue = snapshot.data;
+                              return Text(
+                                real.format(totalValue!),
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green,
+                                ),
+                              );
+                            } else if (snapshot.hasError) {
+                              return const Text('...');
+                            }
+                            return Container();
+                          },
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Column(
+                              children: [
+                                Text(
+                                  "Recebidos",
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                StreamBuilder<double>(
+                                  stream: CashPaymentRepository()
+                                      .getTotalCashPaymentsByMonth(_selectedDate),
+                                  builder: (BuildContext,
+                                      AsyncSnapshot<double> snapshot) {
+                                    if (snapshot.hasData &&
+                                        snapshot.data != null) {
+                                      final totalCashPayments = snapshot.data;
+                                      return Text(
+                                        real.format(totalCashPayments),
+                                        style: const TextStyle(
+                                          color: Colors.green,
+                                        ),
+                                      );
+                                    } else if (snapshot.hasError) {
+                                      return Text("...");
+                                    }
+                                    return Container();
+                                  },
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Text(
+                                  "Pendentes",
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                StreamBuilder<double>(
+                                  stream: DeferredPaymentRepository()
+                                      .getTotalDeferredPaymentsByMonth(
+                                          _selectedDate),
+                                  builder: (BuildContext,
+                                      AsyncSnapshot<double> snapshot) {
+                                    if (snapshot.hasData &&
+                                        snapshot.data != null) {
+                                      final totalDeferredPayments = snapshot.data;
+                                      return Text(
+                                        real.format(totalDeferredPayments),
+                                        style: const TextStyle(
+                                          color: Colors.green,
+                                        ),
+                                      );
+                                    } else if (snapshot.hasError) {
+                                      return Text("...");
+                                    }
+                                    return Container();
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -198,123 +201,126 @@ class _BusinessState extends State<Business> {
                   ),
                 );
               },
-              child: Card(
-                color: Theme.of(context).primaryColor,
-                elevation: 4,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Despesas',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                          const FaIcon(
-                            FontAwesomeIcons.arrowTrendDown,
-                            color: Colors.red,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        'Total',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      StreamBuilder<double>(
-                        stream: CombineLatestStream.combine2(
-                          FixedExpenseRepository()
-                              .getTotalFixedExpensesByMonth(_selectedDate),
-                          VariableExpenseRepository()
-                              .getTotalVariableExpensesByMonth(_selectedDate),
-                          (double totalFixed, double totalVariable) =>
-                              totalFixed + totalVariable,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(40),
+                child: Card(
+                  color: Theme.of(context).primaryColor,
+                  elevation: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Despesas',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                            const FaIcon(
+                              FontAwesomeIcons.arrowTrendDown,
+                              color: Colors.red,
+                            ),
+                          ],
                         ),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData && snapshot.data != null) {
-                            final totalValue = snapshot.data;
-                            return Text(
-                              real.format(totalValue!),
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.red,
-                              ),
-                            );
-                          } else if (snapshot.hasError) {
-                            return const Text('...');
-                          }
-                          return Container();
-                        },
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Column(
-                            children: [
-                              Text(
-                                "Fixas",
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                              StreamBuilder<double>(
-                                stream: FixedExpenseRepository()
-                                    .getTotalFixedExpensesByMonth(
-                                        _selectedDate),
-                                builder: (BuildContext,
-                                    AsyncSnapshot<double> snapshot) {
-                                  if (snapshot.hasData &&
-                                      snapshot.data != null) {
-                                    final totalFixedExpense = snapshot.data;
-                                    return Text(
-                                      real.format(totalFixedExpense),
-                                      style: const TextStyle(
-                                        color: Colors.red,
-                                      ),
-                                    );
-                                  } else if (snapshot.hasError) {
-                                    return Text("...");
-                                  }
-                                  return Container();
-                                },
-                              ),
-                            ],
+                        const SizedBox(height: 10),
+                        Text(
+                          'Total',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        StreamBuilder<double>(
+                          stream: CombineLatestStream.combine2(
+                            FixedExpenseRepository()
+                                .getTotalFixedExpensesByMonth(_selectedDate),
+                            VariableExpenseRepository()
+                                .getTotalVariableExpensesByMonth(_selectedDate),
+                            (double totalFixed, double totalVariable) =>
+                                totalFixed + totalVariable,
                           ),
-                          Column(
-                            children: [
-                              Text(
-                                "Variáveis",
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                              StreamBuilder<double>(
-                                stream: VariableExpenseRepository()
-                                    .getTotalVariableExpensesByMonth(
-                                    _selectedDate),
-                                builder: (BuildContext,
-                                    AsyncSnapshot<double> snapshot) {
-                                  if (snapshot.hasData &&
-                                      snapshot.data != null) {
-                                    final totalVariableExpense = snapshot.data;
-                                    return Text(
-                                      real.format(totalVariableExpense),
-                                      style: const TextStyle(
-                                        color: Colors.red,
-                                      ),
-                                    );
-                                  } else if (snapshot.hasError) {
-                                    return Text("...");
-                                  }
-                                  return Container();
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      )
-                    ],
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData && snapshot.data != null) {
+                              final totalValue = snapshot.data;
+                              return Text(
+                                real.format(totalValue!),
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red,
+                                ),
+                              );
+                            } else if (snapshot.hasError) {
+                              return const Text('...');
+                            }
+                            return Container();
+                          },
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Column(
+                              children: [
+                                Text(
+                                  "Fixas",
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                StreamBuilder<double>(
+                                  stream: FixedExpenseRepository()
+                                      .getTotalFixedExpensesByMonth(
+                                          _selectedDate),
+                                  builder: (BuildContext,
+                                      AsyncSnapshot<double> snapshot) {
+                                    if (snapshot.hasData &&
+                                        snapshot.data != null) {
+                                      final totalFixedExpense = snapshot.data;
+                                      return Text(
+                                        real.format(totalFixedExpense),
+                                        style: const TextStyle(
+                                          color: Colors.red,
+                                        ),
+                                      );
+                                    } else if (snapshot.hasError) {
+                                      return Text("...");
+                                    }
+                                    return Container();
+                                  },
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Text(
+                                  "Variáveis",
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                StreamBuilder<double>(
+                                  stream: VariableExpenseRepository()
+                                      .getTotalVariableExpensesByMonth(
+                                      _selectedDate),
+                                  builder: (BuildContext,
+                                      AsyncSnapshot<double> snapshot) {
+                                    if (snapshot.hasData &&
+                                        snapshot.data != null) {
+                                      final totalVariableExpense = snapshot.data;
+                                      return Text(
+                                        real.format(totalVariableExpense),
+                                        style: const TextStyle(
+                                          color: Colors.red,
+                                        ),
+                                      );
+                                    } else if (snapshot.hasError) {
+                                      return Text("...");
+                                    }
+                                    return Container();
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

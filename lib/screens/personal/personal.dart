@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/screens/settings/settings.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../repositories/personal/fixed_entry_repository.dart';
 import '../../repositories/personal/fixed_outflow_repository.dart';
@@ -30,22 +29,6 @@ class _PersonalState extends State<Personal> {
 
   @override
   Widget build(BuildContext context) {
-    // final fixedEntryRepository = Provider.of<FixedEntryRepository>(context);
-    // totalFixedEntry =
-    //     fixedEntryRepository.getTotalFixedEntryByMonth(_selectedDate);
-    // final variableEntryRepository =
-    //     Provider.of<VariableEntryRepository>(context);
-    // totalVariableEntry =
-    //     variableEntryRepository.getTotalVariableEntryByMonth(_selectedDate);
-    //
-    // final fixedOutflowRepository = Provider.of<FixedOutflowRepository>(context);
-    // totalFixedOutflow =
-    //     fixedOutflowRepository.getTotalFixedOutflowByMonth(_selectedDate);
-    // final variableOutflowRepository =
-    //     Provider.of<VariableOutflowRepository>(context);
-    // totalVariableOutflow =
-    //     variableOutflowRepository.getTotalVariableOutflowByMonth(_selectedDate);
-
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
@@ -81,123 +64,126 @@ class _PersonalState extends State<Personal> {
                   ),
                 );
               },
-              child: Card(
-                color: Theme.of(context).primaryColor,
-                elevation: 4,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Renda',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                          const FaIcon(
-                            FontAwesomeIcons.arrowTrendUp,
-                            color: Colors.green,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        'Total',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      StreamBuilder<double>(
-                        stream: CombineLatestStream.combine2(
-                          FixedEntryRepository()
-                              .getTotalFixedEntryByMonth(_selectedDate),
-                          VariableEntryRepository()
-                              .getTotalVariableEntryByMonth(_selectedDate),
-                              (double totalFixed, double totalVariable) =>
-                          totalFixed + totalVariable,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(40),
+                child: Card(
+                  color: Theme.of(context).primaryColor,
+                  elevation: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Renda',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                            const FaIcon(
+                              FontAwesomeIcons.arrowTrendUp,
+                              color: Colors.green,
+                            ),
+                          ],
                         ),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData && snapshot.data != null) {
-                            final totalValue = snapshot.data;
-                            return Text(
-                              real.format(totalValue!),
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.green,
-                              ),
-                            );
-                          } else if (snapshot.hasError) {
-                            return const Text('...');
-                          }
-                          return Container();
-                        },
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Column(
-                            children: [
-                              Text(
-                                "Fixas",
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                              StreamBuilder<double>(
-                                stream: FixedEntryRepository()
-                                    .getTotalFixedEntryByMonth(
-                                    _selectedDate),
-                                builder: (BuildContext,
-                                    AsyncSnapshot<double> snapshot) {
-                                  if (snapshot.hasData &&
-                                      snapshot.data != null) {
-                                    final totalFixedEntry = snapshot.data;
-                                    return Text(
-                                      real.format(totalFixedEntry),
-                                      style: const TextStyle(
-                                        color: Colors.green,
-                                      ),
-                                    );
-                                  } else if (snapshot.hasError) {
-                                    return Text("...");
-                                  }
-                                  return Container();
-                                },
-                              ),
-                            ],
+                        const SizedBox(height: 10),
+                        Text(
+                          'Total',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        StreamBuilder<double>(
+                          stream: CombineLatestStream.combine2(
+                            FixedEntryRepository()
+                                .getTotalFixedEntryByMonth(_selectedDate),
+                            VariableEntryRepository()
+                                .getTotalVariableEntryByMonth(_selectedDate),
+                                (double totalFixed, double totalVariable) =>
+                            totalFixed + totalVariable,
                           ),
-                          Column(
-                            children: [
-                              Text(
-                                "Variáveis",
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                              StreamBuilder<double>(
-                                stream: VariableEntryRepository()
-                                    .getTotalVariableEntryByMonth(
-                                    _selectedDate),
-                                builder: (BuildContext,
-                                    AsyncSnapshot<double> snapshot) {
-                                  if (snapshot.hasData &&
-                                      snapshot.data != null) {
-                                    final totalVariableEntry = snapshot.data;
-                                    return Text(
-                                      real.format(totalVariableEntry),
-                                      style: const TextStyle(
-                                        color: Colors.green,
-                                      ),
-                                    );
-                                  } else if (snapshot.hasError) {
-                                    return Text("...");
-                                  }
-                                  return Container();
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      )
-                    ],
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData && snapshot.data != null) {
+                              final totalValue = snapshot.data;
+                              return Text(
+                                real.format(totalValue!),
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green,
+                                ),
+                              );
+                            } else if (snapshot.hasError) {
+                              return const Text('...');
+                            }
+                            return Container();
+                          },
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Column(
+                              children: [
+                                Text(
+                                  "Fixas",
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                StreamBuilder<double>(
+                                  stream: FixedEntryRepository()
+                                      .getTotalFixedEntryByMonth(
+                                      _selectedDate),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<double> snapshot) {
+                                    if (snapshot.hasData &&
+                                        snapshot.data != null) {
+                                      final totalFixedEntry = snapshot.data;
+                                      return Text(
+                                        real.format(totalFixedEntry),
+                                        style: const TextStyle(
+                                          color: Colors.green,
+                                        ),
+                                      );
+                                    } else if (snapshot.hasError) {
+                                      return const Text("...");
+                                    }
+                                    return Container();
+                                  },
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Text(
+                                  "Variáveis",
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                StreamBuilder<double>(
+                                  stream: VariableEntryRepository()
+                                      .getTotalVariableEntryByMonth(
+                                      _selectedDate),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<double> snapshot) {
+                                    if (snapshot.hasData &&
+                                        snapshot.data != null) {
+                                      final totalVariableEntry = snapshot.data;
+                                      return Text(
+                                        real.format(totalVariableEntry),
+                                        style: const TextStyle(
+                                          color: Colors.green,
+                                        ),
+                                      );
+                                    } else if (snapshot.hasError) {
+                                      return const Text("...");
+                                    }
+                                    return Container();
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -215,121 +201,124 @@ class _PersonalState extends State<Personal> {
                   ),
                 );
               },
-              child: Card(
-                color: Theme.of(context).primaryColor,
-                elevation: 4,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Gastos',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                          const FaIcon(
-                            FontAwesomeIcons.arrowTrendDown,
-                            color: Colors.red,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      Text('Total',
-                          style: Theme.of(context).textTheme.bodyMedium),
-                      StreamBuilder<double>(
-                        stream: CombineLatestStream.combine2(
-                          FixedOutflowRepository()
-                              .getTotalFixedOutflowByMonth(_selectedDate),
-                          VariableOutflowRepository()
-                              .getTotalVariableOutflowByMonth(_selectedDate),
-                              (double totalFixed, double totalVariable) =>
-                          totalFixed + totalVariable,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(40),
+                child: Card(
+                  color: Theme.of(context).primaryColor,
+                  elevation: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Gastos',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                            const FaIcon(
+                              FontAwesomeIcons.arrowTrendDown,
+                              color: Colors.red,
+                            ),
+                          ],
                         ),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData && snapshot.data != null) {
-                            final totalValue = snapshot.data;
-                            return Text(
-                              real.format(totalValue!),
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.red,
-                              ),
-                            );
-                          } else if (snapshot.hasError) {
-                            return const Text('...');
-                          }
-                          return Container();
-                        },
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Column(
-                            children: [
-                              Text(
-                                "Fixos",
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                              StreamBuilder<double>(
-                                stream: FixedOutflowRepository()
-                                    .getTotalFixedOutflowByMonth(
-                                    _selectedDate),
-                                builder: (BuildContext,
-                                    AsyncSnapshot<double> snapshot) {
-                                  if (snapshot.hasData &&
-                                      snapshot.data != null) {
-                                    final totalFixedOutflow = snapshot.data;
-                                    return Text(
-                                      real.format(totalFixedOutflow),
-                                      style: const TextStyle(
-                                        color: Colors.red,
-                                      ),
-                                    );
-                                  } else if (snapshot.hasError) {
-                                    return Text("...");
-                                  }
-                                  return Container();
-                                },
-                              ),
-                            ],
+                        const SizedBox(height: 8),
+                        Text('Total',
+                            style: Theme.of(context).textTheme.bodyMedium),
+                        StreamBuilder<double>(
+                          stream: CombineLatestStream.combine2(
+                            FixedOutflowRepository()
+                                .getTotalFixedOutflowByMonth(_selectedDate),
+                            VariableOutflowRepository()
+                                .getTotalVariableOutflowByMonth(_selectedDate),
+                                (double totalFixed, double totalVariable) =>
+                            totalFixed + totalVariable,
                           ),
-                          Column(
-                            children: [
-                              Text(
-                                "Variáveis",
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                              StreamBuilder<double>(
-                                stream: VariableOutflowRepository()
-                                    .getTotalVariableOutflowByMonth(
-                                    _selectedDate),
-                                builder: (BuildContext,
-                                    AsyncSnapshot<double> snapshot) {
-                                  if (snapshot.hasData &&
-                                      snapshot.data != null) {
-                                    final totalVariableOutflow = snapshot.data;
-                                    return Text(
-                                      real.format(totalVariableOutflow),
-                                      style: const TextStyle(
-                                        color: Colors.red,
-                                      ),
-                                    );
-                                  } else if (snapshot.hasError) {
-                                    return Text("...");
-                                  }
-                                  return Container();
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      )
-                    ],
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData && snapshot.data != null) {
+                              final totalValue = snapshot.data;
+                              return Text(
+                                real.format(totalValue!),
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red,
+                                ),
+                              );
+                            } else if (snapshot.hasError) {
+                              return const Text('...');
+                            }
+                            return Container();
+                          },
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Column(
+                              children: [
+                                Text(
+                                  "Fixos",
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                StreamBuilder<double>(
+                                  stream: FixedOutflowRepository()
+                                      .getTotalFixedOutflowByMonth(
+                                      _selectedDate),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<double> snapshot) {
+                                    if (snapshot.hasData &&
+                                        snapshot.data != null) {
+                                      final totalFixedOutflow = snapshot.data;
+                                      return Text(
+                                        real.format(totalFixedOutflow),
+                                        style: const TextStyle(
+                                          color: Colors.red,
+                                        ),
+                                      );
+                                    } else if (snapshot.hasError) {
+                                      return const Text("...");
+                                    }
+                                    return Container();
+                                  },
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Text(
+                                  "Variáveis",
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                StreamBuilder<double>(
+                                  stream: VariableOutflowRepository()
+                                      .getTotalVariableOutflowByMonth(
+                                      _selectedDate),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<double> snapshot) {
+                                    if (snapshot.hasData &&
+                                        snapshot.data != null) {
+                                      final totalVariableOutflow = snapshot.data;
+                                      return Text(
+                                        real.format(totalVariableOutflow),
+                                        style: const TextStyle(
+                                          color: Colors.red,
+                                        ),
+                                      );
+                                    } else if (snapshot.hasError) {
+                                      return const Text("...");
+                                    }
+                                    return Container();
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
