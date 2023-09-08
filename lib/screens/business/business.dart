@@ -52,7 +52,7 @@ class _BusinessState extends State<Business> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.only(top: 10, right: 7, bottom: 10, left: 7),
         child: Column(
           children: [
             const SizedBox(height: 5),
@@ -190,7 +190,7 @@ class _BusinessState extends State<Business> {
             ),
             const Divider(
               color: Colors.transparent,
-              height: 25,
+              height: 15,
             ),
             InkWell(
               onTap: () {
@@ -327,7 +327,7 @@ class _BusinessState extends State<Business> {
             ),
             const Divider(
               color: Colors.transparent,
-              height: 20,
+              height: 15,
             ),
             ListTile(
               title: Text(
@@ -357,7 +357,7 @@ class _BusinessState extends State<Business> {
                             ),
                             scrollable: true,
                             title: Text(
-                              'Adicione seu pró-labore atual',
+                              'Qual o seu pró-labore atual',
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
@@ -443,7 +443,7 @@ class _BusinessState extends State<Business> {
             ),
             const Divider(
               color: Colors.transparent,
-              height: 12,
+              height: 15,
             ),
             ListTile(
               title: Text(
@@ -473,7 +473,7 @@ class _BusinessState extends State<Business> {
                             ),
                             scrollable: true,
                             title: Text(
-                              'Adicione sua reserva de emêrgencia atual',
+                              'Qual sua reserva de emêrgencia atual',
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
@@ -556,6 +556,126 @@ class _BusinessState extends State<Business> {
                   ],
                 ),
               ),
+            ),
+            const Divider(
+              color: Colors.transparent,
+              height: 15,
+            ),
+            ListTile(
+              title: Text(
+                'Capital de giro',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              subtitle: Text(
+                'RS 100,00',
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+              trailing: SizedBox(
+                width: 110,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
+                            scrollable: true,
+                            title: Text(
+                              'Qual seu capital de giro atual?',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                            ),
+                            content: SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Form(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      TextFormField(
+                                        keyboardType: TextInputType.text,
+                                        controller: reservationController,
+                                        decoration: const InputDecoration(
+                                          labelText: 'Capital de giro',
+                                          labelStyle:
+                                          TextStyle(color: Colors.white),
+                                          border: OutlineInputBorder(),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                        const EdgeInsets.only(top: 20.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              width: 100,
+                                              child: TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                style: TextButton.styleFrom(
+                                                  backgroundColor:
+                                                  Colors.grey[200],
+                                                ),
+                                                child: const Text('Cancelar'),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 100,
+                                              child: TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                style: TextButton.styleFrom(
+                                                  backgroundColor:
+                                                  Colors.grey[200],
+                                                ),
+                                                child: const Text('Confirmar'),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      icon: const FaIcon(FontAwesomeIcons.penToSquare),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const FaIcon(
+                        FontAwesomeIcons.circleInfo,
+                        color: Colors.yellow,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const Divider(
+              color: Colors.transparent,
+              height: 80,
             ),
           ],
         ),

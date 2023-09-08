@@ -51,7 +51,7 @@ class _PersonalState extends State<Personal> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.only(top: 10, right: 7, bottom: 10, left: 7),
         child: Column(
           children: [
             const SizedBox(height: 5),
@@ -98,8 +98,8 @@ class _PersonalState extends State<Personal> {
                                 .getTotalFixedEntryByMonth(_selectedDate),
                             VariableEntryRepository()
                                 .getTotalVariableEntryByMonth(_selectedDate),
-                                (double totalFixed, double totalVariable) =>
-                            totalFixed + totalVariable,
+                            (double totalFixed, double totalVariable) =>
+                                totalFixed + totalVariable,
                           ),
                           builder: (context, snapshot) {
                             if (snapshot.hasData && snapshot.data != null) {
@@ -130,8 +130,7 @@ class _PersonalState extends State<Personal> {
                                 ),
                                 StreamBuilder<double>(
                                   stream: FixedEntryRepository()
-                                      .getTotalFixedEntryByMonth(
-                                      _selectedDate),
+                                      .getTotalFixedEntryByMonth(_selectedDate),
                                   builder: (BuildContext context,
                                       AsyncSnapshot<double> snapshot) {
                                     if (snapshot.hasData &&
@@ -160,7 +159,7 @@ class _PersonalState extends State<Personal> {
                                 StreamBuilder<double>(
                                   stream: VariableEntryRepository()
                                       .getTotalVariableEntryByMonth(
-                                      _selectedDate),
+                                          _selectedDate),
                                   builder: (BuildContext context,
                                       AsyncSnapshot<double> snapshot) {
                                     if (snapshot.hasData &&
@@ -190,7 +189,7 @@ class _PersonalState extends State<Personal> {
             ),
             const Divider(
               color: Colors.transparent,
-              height: 35,
+              height: 15,
             ),
             InkWell(
               onTap: () {
@@ -233,8 +232,8 @@ class _PersonalState extends State<Personal> {
                                 .getTotalFixedOutflowByMonth(_selectedDate),
                             VariableOutflowRepository()
                                 .getTotalVariableOutflowByMonth(_selectedDate),
-                                (double totalFixed, double totalVariable) =>
-                            totalFixed + totalVariable,
+                            (double totalFixed, double totalVariable) =>
+                                totalFixed + totalVariable,
                           ),
                           builder: (context, snapshot) {
                             if (snapshot.hasData && snapshot.data != null) {
@@ -266,7 +265,7 @@ class _PersonalState extends State<Personal> {
                                 StreamBuilder<double>(
                                   stream: FixedOutflowRepository()
                                       .getTotalFixedOutflowByMonth(
-                                      _selectedDate),
+                                          _selectedDate),
                                   builder: (BuildContext context,
                                       AsyncSnapshot<double> snapshot) {
                                     if (snapshot.hasData &&
@@ -295,12 +294,13 @@ class _PersonalState extends State<Personal> {
                                 StreamBuilder<double>(
                                   stream: VariableOutflowRepository()
                                       .getTotalVariableOutflowByMonth(
-                                      _selectedDate),
+                                          _selectedDate),
                                   builder: (BuildContext context,
                                       AsyncSnapshot<double> snapshot) {
                                     if (snapshot.hasData &&
                                         snapshot.data != null) {
-                                      final totalVariableOutflow = snapshot.data;
+                                      final totalVariableOutflow =
+                                          snapshot.data;
                                       return Text(
                                         real.format(totalVariableOutflow),
                                         style: const TextStyle(
@@ -325,7 +325,7 @@ class _PersonalState extends State<Personal> {
             ),
             const Divider(
               color: Colors.transparent,
-              height: 35,
+              height: 15,
             ),
             ListTile(
               title: Text(
@@ -341,7 +341,7 @@ class _PersonalState extends State<Personal> {
                 ),
               ),
               trailing: SizedBox(
-                width: 110,
+                width: 100,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -355,7 +355,7 @@ class _PersonalState extends State<Personal> {
                             ),
                             scrollable: true,
                             title: Text(
-                              'Adicione sua reserva de emêrgencia atual',
+                              'Qual a sua reserva de emêrgencia atual?',
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
@@ -368,7 +368,7 @@ class _PersonalState extends State<Personal> {
                                 child: Form(
                                   child: Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
                                       TextFormField(
                                         keyboardType: TextInputType.text,
@@ -376,15 +376,18 @@ class _PersonalState extends State<Personal> {
                                         decoration: const InputDecoration(
                                           labelText: 'Reserva de emergência',
                                           labelStyle:
-                                          TextStyle(color: Colors.white),
+                                              TextStyle(color: Colors.white),
                                           border: OutlineInputBorder(),
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(top: 20.0),
+                                        padding:
+                                            const EdgeInsets.only(top: 20.0),
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           children: [
                                             SizedBox(
                                               width: 100,
@@ -393,7 +396,8 @@ class _PersonalState extends State<Personal> {
                                                   Navigator.pop(context);
                                                 },
                                                 style: TextButton.styleFrom(
-                                                  backgroundColor: Colors.grey[200],
+                                                  backgroundColor:
+                                                      Colors.grey[200],
                                                 ),
                                                 child: const Text('Cancelar'),
                                               ),
@@ -405,7 +409,8 @@ class _PersonalState extends State<Personal> {
                                                   Navigator.pop(context);
                                                 },
                                                 style: TextButton.styleFrom(
-                                                  backgroundColor: Colors.grey[200],
+                                                  backgroundColor:
+                                                      Colors.grey[200],
                                                 ),
                                                 child: const Text('Confirmar'),
                                               ),
@@ -433,6 +438,242 @@ class _PersonalState extends State<Personal> {
                   ],
                 ),
               ),
+            ),
+            const Divider(
+              color: Colors.transparent,
+              height: 15,
+            ),
+            ListTile(
+              title: Text(
+                'Reserva de oportunidade',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              subtitle: Text(
+                'R\$ 100,00',
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+              trailing: SizedBox(
+                width: 100,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
+                            scrollable: true,
+                            title: Text(
+                              'Qual a sua reserva de oportunidade atual',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                            ),
+                            content: SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Form(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      TextFormField(
+                                        keyboardType: TextInputType.text,
+                                        // controller: wageController,
+                                        decoration: const InputDecoration(
+                                          labelText: 'Reserva de oportunidade',
+                                          labelStyle:
+                                              TextStyle(color: Colors.white),
+                                          border: OutlineInputBorder(),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 20.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              width: 100,
+                                              child: TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                style: TextButton.styleFrom(
+                                                  backgroundColor:
+                                                      Colors.grey[200],
+                                                ),
+                                                child: const Text('Cancelar'),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 100,
+                                              child: TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                style: TextButton.styleFrom(
+                                                  backgroundColor:
+                                                      Colors.grey[200],
+                                                ),
+                                                child: const Text('Confirmar'),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      icon: const FaIcon(FontAwesomeIcons.penToSquare),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const FaIcon(
+                        FontAwesomeIcons.circleInfo,
+                        color: Colors.yellow,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const Divider(
+              color: Colors.transparent,
+              height: 15,
+            ),
+            ListTile(
+              title: Text(
+                'Dinheiro investido',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              subtitle: Text(
+                'R\$ 100,00',
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+              trailing: SizedBox(
+                width: 100,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
+                            scrollable: true,
+                            title: Text(
+                              'Quanto de dinherio você tem investido atualmente?',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                            ),
+                            content: SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Form(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      TextFormField(
+                                        keyboardType: TextInputType.text,
+                                        // controller: wageController,
+                                        decoration: const InputDecoration(
+                                          labelText: 'Pró-labore',
+                                          labelStyle:
+                                              TextStyle(color: Colors.white),
+                                          border: OutlineInputBorder(),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 20.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              width: 100,
+                                              child: TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                style: TextButton.styleFrom(
+                                                  backgroundColor:
+                                                      Colors.grey[200],
+                                                ),
+                                                child: const Text('Cancelar'),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 100,
+                                              child: TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                style: TextButton.styleFrom(
+                                                  backgroundColor:
+                                                      Colors.grey[200],
+                                                ),
+                                                child: const Text('Confirmar'),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      icon: const FaIcon(FontAwesomeIcons.penToSquare),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const FaIcon(
+                        FontAwesomeIcons.circleInfo,
+                        color: Colors.yellow,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const Divider(
+              color: Colors.transparent,
+              height: 80,
             ),
           ],
         ),
