@@ -108,7 +108,6 @@ class _DashboardState extends State<Dashboard> {
                       children: [
                         Column(
                           children: [
-                            // Parte superior com navegação de meses
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 16,
@@ -139,12 +138,9 @@ class _DashboardState extends State<Dashboard> {
                                 ],
                               ),
                             ),
-
                             const SizedBox(
                               height: 25,
                             ),
-
-                            // Parte central com o gráfico
                             SizedBox(
                               width: 250,
                               height: 250,
@@ -153,9 +149,8 @@ class _DashboardState extends State<Dashboard> {
                                     .getTotalCashPaymentsByMonth(_selectedDate),
                                 builder: (BuildContext context,
                                     AsyncSnapshot<double> cashSnapshot) {
-                                  // Atribuir o valor do StreamBuilder a totalCashPayments
-                                  totalCashPayments = cashSnapshot.data ?? 0.0;
-
+                                  double totalCashPayments =
+                                      cashSnapshot.data ?? 0.0;
                                   return StreamBuilder<double>(
                                     stream: DeferredPaymentRepository()
                                         .getTotalDeferredPaymentsByMonth(
@@ -163,13 +158,11 @@ class _DashboardState extends State<Dashboard> {
                                     builder: (BuildContext context,
                                         AsyncSnapshot<double>
                                             deferredSnapshot) {
-                                      // Atribuir o valor do StreamBuilder a totalDeferredPayments
-                                      totalDeferredPayments =
+                                      double totalDeferredPayments =
                                           deferredSnapshot.data ?? 0.0;
-
-                                      double saldo = totalCashPayments +
+                                      double total = totalCashPayments +
                                           totalDeferredPayments;
-                                      return saldo > 0
+                                      return total > 0
                                           ? Stack(
                                               children: [
                                                 PieChart(
@@ -177,15 +170,15 @@ class _DashboardState extends State<Dashboard> {
                                                     sections: [
                                                       PieChartSectionData(
                                                         showTitle: false,
-                                                        color: Colors.green,
+                                                        color: Colors.yellow,
                                                         value:
-                                                            totalCashPayments,
+                                                            totalDeferredPayments,
                                                       ),
                                                       PieChartSectionData(
                                                         showTitle: false,
-                                                        color: Colors.blue,
+                                                        color: Colors.green,
                                                         value:
-                                                            totalDeferredPayments,
+                                                            totalCashPayments,
                                                       ),
                                                     ],
                                                   ),
@@ -207,7 +200,7 @@ class _DashboardState extends State<Dashboard> {
                                                             ),
                                                           ),
                                                           Text(
-                                                            real.format(saldo),
+                                                            real.format(total),
                                                             style:
                                                                 const TextStyle(
                                                               fontWeight:
@@ -231,59 +224,71 @@ class _DashboardState extends State<Dashboard> {
                                 },
                               ),
                             ),
-
                             const SizedBox(
                               height: 50,
                             ),
-
-                            // Parte inferior com o código Row
                             Row(
-                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const SizedBox(width: 4),
                                 Column(
                                   children: [
                                     const Text(
                                       'Recebidos',
                                       style: TextStyle(
                                         fontSize: 20,
-                                        color: Colors.blue,
+                                        color: Colors.green,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    Text(
-                                      '${real.format(
-                                        totalCashPayments,
-                                      )}',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.blue,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                    StreamBuilder<double>(
+                                      stream: CashPaymentRepository()
+                                          .getTotalCashPaymentsByMonth(
+                                              _selectedDate),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<double> cashSnapshot) {
+                                        double totalCashPayments =
+                                            cashSnapshot.data ?? 0.0;
+                                        return Text(
+                                          '${real.format(totalCashPayments)}',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        );
+                                      },
                                     ),
                                   ],
                                 ),
                                 const SizedBox(width: 70),
-                                const SizedBox(
-                                  width: 4,
-                                ),
                                 Column(
                                   children: [
                                     const Text(
                                       'Pendentes',
                                       style: TextStyle(
                                         fontSize: 20,
-                                        color: Colors.green,
+                                        color: Colors.yellow,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    Text(
-                                      '${real.format(totalDeferredPayments)}',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.green,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                    StreamBuilder<double>(
+                                      stream: DeferredPaymentRepository()
+                                          .getTotalDeferredPaymentsByMonth(
+                                              _selectedDate),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<double>
+                                              deferredSnapshot) {
+                                        double totalDeferredPayments =
+                                            deferredSnapshot.data ?? 0.0;
+                                        return Text(
+                                          '${real.format(totalDeferredPayments)}',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.yellow,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        );
+                                      },
                                     ),
                                   ],
                                 ),
@@ -291,14 +296,19 @@ class _DashboardState extends State<Dashboard> {
                             ),
                           ],
                         ),
+
+                        //DASHBOARD DE GASTOS:
+
                         Column(
                           children: [
                             Padding(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 8),
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
                                     icon: const FaIcon(
@@ -309,8 +319,9 @@ class _DashboardState extends State<Dashboard> {
                                     DateFormat.yMMMM('pt_BR')
                                         .format(_selectedDate),
                                     style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                   IconButton(
                                     icon: const FaIcon(
@@ -326,95 +337,280 @@ class _DashboardState extends State<Dashboard> {
                             SizedBox(
                               width: 250,
                               height: 250,
-                              child:
-                                  totalFixedExpenses + totalVariableExpense > 0
-                                      ? Stack(
-                                          children: [
-                                            PieChart(
-                                              PieChartData(
-                                                sections: [
-                                                  PieChartSectionData(
-                                                    showTitle: false,
-                                                    color: Colors.green,
-                                                    value: totalFixedExpenses,
-                                                  ),
-                                                  PieChartSectionData(
-                                                    showTitle: false,
-                                                    color: Colors.blue,
-                                                    value: totalFixedExpenses +
-                                                        totalVariableExpense,
-                                                  ),
-                                                ],
-                                              ),
+                              child: StreamBuilder<double>(
+                                stream: FixedExpenseRepository()
+                                    .getTotalFixedExpensesByMonth(_selectedDate),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<double> fixedSnapshot) {
+                                  double totalFixedExpenses =
+                                      fixedSnapshot.data ?? 0.0;
+                                  return StreamBuilder<double>(
+                                    stream: VariableExpenseRepository()
+                                        .getTotalVariableExpensesByMonth(
+                                        _selectedDate),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<double>
+                                        variableSnapshot) {
+                                      double totalVariableExpenses =
+                                          variableSnapshot.data ?? 0.0;
+                                      double total = totalFixedExpenses +
+                                          totalVariableExpenses;
+                                      return total > 0
+                                          ? Stack(
+                                        children: [
+                                          PieChart(
+                                            PieChartData(
+                                              sections: [
+                                                PieChartSectionData(
+                                                  showTitle: false,
+                                                  color: Colors.yellow,
+                                                  value:
+                                                  totalVariableExpenses,
+                                                ),
+                                                PieChartSectionData(
+                                                  showTitle: false,
+                                                  color: Colors.green,
+                                                  value:
+                                                  totalFixedExpenses,
+                                                ),
+                                              ],
                                             ),
-                                            Center(
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  Column(
-                                                    children: [
-                                                      const Text(
-                                                        'Saldo',
-                                                        style: TextStyle(
-                                                          fontSize: 25,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
+                                          ),
+                                          Center(
+                                            child: Column(
+                                              mainAxisSize:
+                                              MainAxisSize.min,
+                                              children: [
+                                                Column(
+                                                  children: [
+                                                    const Text(
+                                                      'Total',
+                                                      style: TextStyle(
+                                                        fontSize: 25,
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .bold,
                                                       ),
-                                                      Text(
-                                                        real.format((totalFixedExpenses) -
-                                                            (totalFixedExpenses +
-                                                                totalVariableExpense)),
-                                                        style: const TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 20),
+                                                    ),
+                                                    Text(
+                                                      real.format(total),
+                                                      style:
+                                                      const TextStyle(
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .bold,
+                                                        fontSize: 20,
                                                       ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
                                             ),
-                                          ],
-                                        )
-                                      : const Center(
-                                          child: Text('Sem registros'),
-                                        ),
+                                          ),
+                                        ],
+                                      )
+                                          : const Center(
+                                        child: Text('Sem registros'),
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
                             ),
                             const SizedBox(
                               height: 50,
                             ),
                             Row(
-                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const SizedBox(width: 4),
                                 Column(
                                   children: [
                                     const Text(
-                                      'Gastos',
+                                      'Fixos',
                                       style: TextStyle(
                                         fontSize: 20,
-                                        color: Colors.blue,
+                                        color: Colors.green,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    Text(
-                                      '${real.format(
-                                        totalFixedExpenses +
-                                            totalVariableExpense,
-                                      )}',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.blue,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                    StreamBuilder<double>(
+                                      stream: FixedExpenseRepository()
+                                          .getTotalFixedExpensesByMonth(_selectedDate),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<double> fixedSnapshot) {
+                                        double totalFixedExpenses =
+                                            fixedSnapshot.data ?? 0.0;
+                                        return Text(
+                                          '${real.format(totalFixedExpenses)}',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        );
+                                      },
                                     ),
                                   ],
                                 ),
                                 const SizedBox(width: 70),
-                                const SizedBox(
-                                  width: 4,
+                                Column(
+                                  children: [
+                                    const Text(
+                                      'Variáveis',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.yellow,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    StreamBuilder<double>(
+                                      stream: VariableExpenseRepository()
+                                          .getTotalVariableExpensesByMonth(
+                                          _selectedDate),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<double>
+                                          variableSnapshot) {
+                                        double totalVariableExpenses =
+                                            variableSnapshot.data ?? 0.0;
+                                        return Text(
+                                          '${real.format(totalVariableExpenses)}',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.yellow,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ],
                                 ),
+                              ],
+                            ),
+                          ],
+                        ),
+
+                        // ABA DE SALDO
+
+                        Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  IconButton(
+                                    icon: const FaIcon(
+                                        FontAwesomeIcons.caretLeft),
+                                    onPressed: () => _changeMonth(false),
+                                  ),
+                                  Text(
+                                    DateFormat.yMMMM('pt_BR')
+                                        .format(_selectedDate),
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: const FaIcon(
+                                        FontAwesomeIcons.caretRight),
+                                    onPressed: () => _changeMonth(true),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 25,
+                            ),
+                            SizedBox(
+                              width: 250,
+                              height: 250,
+                              child: StreamBuilder<double>(
+                                stream: CombineLatestStream.combine2(
+                                  FixedExpenseRepository().getTotalFixedExpensesByMonth(_selectedDate),
+                                  VariableExpenseRepository().getTotalVariableExpensesByMonth(_selectedDate),
+                                      (double totalFixed, double totalVariable) => totalFixed + totalVariable,
+                                ),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData && snapshot.data != null) {
+                                    final totalExpenses = snapshot.data;
+                                    return SizedBox(
+                                      width: 250,
+                                      height: 250,
+                                      child: StreamBuilder<double>(
+                                        stream: CashPaymentRepository().getTotalCashPaymentsByMonth(_selectedDate),
+                                        builder: (BuildContext context, AsyncSnapshot<double> cashSnapshot) {
+                                          double totalCashPayments = cashSnapshot.data ?? 0.0;
+                                          return totalCashPayments > 0
+                                              ? Stack(
+                                            children: [
+                                              PieChart(
+                                                PieChartData(
+                                                  sections: [
+                                                    PieChartSectionData(
+                                                      showTitle: false,
+                                                      color: Colors.yellow,
+                                                      value: totalExpenses,
+                                                    ),
+                                                    PieChartSectionData(
+                                                      showTitle: false,
+                                                      color: Colors.green,
+                                                      value: totalCashPayments,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Center(
+                                                child: Column(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    Column(
+                                                      children: [
+                                                        const Text(
+                                                          'Total',
+                                                          style: TextStyle(
+                                                            fontSize: 25,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          real.format(totalCashPayments - totalExpenses!),
+                                                          style: const TextStyle(
+                                                            fontWeight: FontWeight.bold,
+                                                            fontSize: 20,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                              : const Center(
+                                            child: Text('Sem registros'),
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    return const Text('...');
+                                  }
+                                  return Container();
+                                },
+                              ),
+
+                            ),
+                            const SizedBox(
+                              height: 50,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
                                 Column(
                                   children: [
                                     const Text(
@@ -425,18 +621,67 @@ class _DashboardState extends State<Dashboard> {
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    Text(
-                                      '${real.format(totalFixedExpenses)}',
+                                    StreamBuilder<double>(
+                                      stream: CashPaymentRepository()
+                                          .getTotalCashPaymentsByMonth(
+                                          _selectedDate),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<double> cashSnapshot) {
+                                        double totalCashPayments =
+                                            cashSnapshot.data ?? 0.0;
+                                        return Text(
+                                          '${real.format(totalCashPayments)}',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(width: 70),
+                                Column(
+                                  children: [
+                                    const Text(
+                                      'Despezas',
                                       style: TextStyle(
                                         fontSize: 20,
-                                        color: Colors.green,
+                                        color: Colors.yellow,
                                         fontWeight: FontWeight.bold,
                                       ),
+                                    ),
+                                    StreamBuilder<double>(
+                                      stream: CombineLatestStream.combine2(
+                                        FixedExpenseRepository()
+                                            .getTotalFixedExpensesByMonth(_selectedDate),
+                                        VariableExpenseRepository()
+                                            .getTotalVariableExpensesByMonth(_selectedDate),
+                                            (double totalFixed, double totalVariable) =>
+                                        totalFixed + totalVariable,
+                                      ),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasData && snapshot.data != null) {
+                                          final totalValue = snapshot.data;
+                                          return Text(
+                                            real.format(totalValue!),
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.yellow,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          );
+                                        } else if (snapshot.hasError) {
+                                          return const Text('...');
+                                        }
+                                        return Container();
+                                      },
                                     ),
                                   ],
                                 ),
                               ],
-                            )
+                            ),
                           ],
                         ),
                       ],
