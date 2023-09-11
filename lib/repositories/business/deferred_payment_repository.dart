@@ -1,12 +1,20 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../models/business/deferred_payment.dart';
 
 class DeferredPaymentRepository extends ChangeNotifier {
+  late String uidPending;
+  late CollectionReference deferredPaymentCollection;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+  DeferredPaymentRepository() {
+    uidPending = FirebaseAuth.instance.currentUser!.uid;
+    deferredPaymentCollection = FirebaseFirestore.instance.collection('deferredPayments_$uidPending');
+  }
+
   Stream<List<DeferredPayment>> getDeferredPaymentsStream() {
-    return firestore.collection('pending').snapshots().map(
+    return deferredPaymentCollection.snapshots().map(
           (snapshot) {
         return snapshot.docs.map((doc) {
           return DeferredPayment(
@@ -22,7 +30,7 @@ class DeferredPaymentRepository extends ChangeNotifier {
 
   Future<void> addPaymentToFirestore(DeferredPayment payment) async {
     try {
-      await firestore.collection('pending').doc(payment.id).set(
+      await deferredPaymentCollection.doc(payment.id).set(
         payment.toMap(),
       );
     } catch (error) {
@@ -33,7 +41,7 @@ class DeferredPaymentRepository extends ChangeNotifier {
 
   Future<void> removePaymentFromFirestore(String paymentId) async {
     try {
-      await firestore.collection('pending').doc(paymentId).delete();
+      await deferredPaymentCollection.doc(paymentId).delete();
     } catch (error) {
       print('Erro ao remover pagamento do Firestore: $error');
     }
@@ -44,11 +52,10 @@ class DeferredPaymentRepository extends ChangeNotifier {
     List<DeferredPayment> deferredPayments = [];
     try {
       QuerySnapshot querySnapshot =
-      await firestore.collection('pending').get();
+      await deferredPaymentCollection.get();
       deferredPayments = querySnapshot.docs
           .map((doc) =>
-          DeferredPayment.fromMap(
-              doc.data() as Map<String, dynamic>))
+          DeferredPayment.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
     } catch (error) {
       print('Erro ao obter pagamentos do Firestore: $error');
@@ -58,12 +65,13 @@ class DeferredPaymentRepository extends ChangeNotifier {
   }
 
   Stream<double> getTotalDeferredPaymentsByMonth(DateTime selectedMonth) {
-    Stream<QuerySnapshot> queryStream = firestore
-        .collection('pending')
+    Stream<QuerySnapshot> queryStream = deferredPaymentCollection
         .where(
         'date',
-        isGreaterThanOrEqualTo: DateTime(selectedMonth.year, selectedMonth.month, 1),
-        isLessThan: DateTime(selectedMonth.year, selectedMonth.month + 1, 1))
+        isGreaterThanOrEqualTo:
+        DateTime(selectedMonth.year, selectedMonth.month, 1),
+        isLessThan: DateTime(
+            selectedMonth.year, selectedMonth.month + 1, 1))
         .snapshots();
 
     return queryStream.map((querySnapshot) {
@@ -75,12 +83,14 @@ class DeferredPaymentRepository extends ChangeNotifier {
     });
   }
 
-  Stream<List<DeferredPayment>> getDeferredPaymentsByMonth(DateTime selectedMonth) {
-    return firestore
-        .collection('pending')
+  Stream<List<DeferredPayment>> getDeferredPaymentsByMonth(
+      DateTime selectedMonth) {
+    return deferredPaymentCollection
         .where('date',
-        isGreaterThanOrEqualTo: DateTime(selectedMonth.year, selectedMonth.month, 1),
-        isLessThan: DateTime(selectedMonth.year, selectedMonth.month + 1, 1))
+        isGreaterThanOrEqualTo:
+        DateTime(selectedMonth.year, selectedMonth.month, 1),
+        isLessThan: DateTime(
+            selectedMonth.year, selectedMonth.month + 1, 1))
         .snapshots()
         .map((querySnapshot) {
       return querySnapshot.docs.map((doc) {

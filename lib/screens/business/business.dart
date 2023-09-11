@@ -132,7 +132,7 @@ class _BusinessState extends State<Business> {
                                 StreamBuilder<double>(
                                   stream: CashPaymentRepository()
                                       .getTotalCashPaymentsByMonth(_selectedDate),
-                                  builder: (BuildContext,
+                                  builder: (BuildContext context,
                                       AsyncSnapshot<double> snapshot) {
                                     if (snapshot.hasData &&
                                         snapshot.data != null) {
@@ -144,7 +144,7 @@ class _BusinessState extends State<Business> {
                                         ),
                                       );
                                     } else if (snapshot.hasError) {
-                                      return Text("...");
+                                      return const Text("...");
                                     }
                                     return Container();
                                   },
@@ -161,7 +161,7 @@ class _BusinessState extends State<Business> {
                                   stream: DeferredPaymentRepository()
                                       .getTotalDeferredPaymentsByMonth(
                                           _selectedDate),
-                                  builder: (BuildContext,
+                                  builder: (BuildContext context,
                                       AsyncSnapshot<double> snapshot) {
                                     if (snapshot.hasData &&
                                         snapshot.data != null) {
@@ -173,7 +173,7 @@ class _BusinessState extends State<Business> {
                                         ),
                                       );
                                     } else if (snapshot.hasError) {
-                                      return Text("...");
+                                      return const Text("...");
                                     }
                                     return Container();
                                   },
@@ -269,7 +269,7 @@ class _BusinessState extends State<Business> {
                                   stream: FixedExpenseRepository()
                                       .getTotalFixedExpensesByMonth(
                                           _selectedDate),
-                                  builder: (BuildContext,
+                                  builder: (BuildContext context,
                                       AsyncSnapshot<double> snapshot) {
                                     if (snapshot.hasData &&
                                         snapshot.data != null) {
@@ -281,7 +281,7 @@ class _BusinessState extends State<Business> {
                                         ),
                                       );
                                     } else if (snapshot.hasError) {
-                                      return Text("...");
+                                      return const Text("...");
                                     }
                                     return Container();
                                   },
@@ -298,7 +298,7 @@ class _BusinessState extends State<Business> {
                                   stream: VariableExpenseRepository()
                                       .getTotalVariableExpensesByMonth(
                                       _selectedDate),
-                                  builder: (BuildContext,
+                                  builder: (BuildContext context,
                                       AsyncSnapshot<double> snapshot) {
                                     if (snapshot.hasData &&
                                         snapshot.data != null) {
@@ -310,7 +310,7 @@ class _BusinessState extends State<Business> {
                                         ),
                                       );
                                     } else if (snapshot.hasError) {
-                                      return Text("...");
+                                      return const Text("...");
                                     }
                                     return Container();
                                   },

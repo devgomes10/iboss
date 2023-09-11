@@ -129,7 +129,6 @@ class _RevenueState extends State<Revenue> {
                       }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
-                          print("deve adicionar agora o mesmo $invoicingId");
                           return ListTile(
                             shape: const RoundedRectangleBorder(
                               borderRadius:
@@ -149,7 +148,9 @@ class _RevenueState extends State<Revenue> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  real.format(cashPayments[i].value),
+                                  real.format(
+                                    cashPayments[i].value,
+                                  ),
                                   style: const TextStyle(
                                     fontSize: 18,
                                   ),
@@ -239,7 +240,12 @@ class _RevenueState extends State<Revenue> {
                         },
                         separatorBuilder: (_, __) =>
                             const Divider(color: Colors.white),
-                        padding: const EdgeInsets.only(top: 14, left: 16, bottom: 80, right: 16,),
+                        padding: const EdgeInsets.only(
+                          top: 14,
+                          left: 16,
+                          bottom: 80,
+                          right: 16,
+                        ),
                         itemCount: cashPayments.length,
                       );
                     },
@@ -252,13 +258,10 @@ class _RevenueState extends State<Revenue> {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return CircularProgressIndicator();
                       }
-
                       if (snapshot.hasError) {
                         return Text('Erro: ${snapshot.error}');
                       }
-
                       final deferredPayments = snapshot.data;
-
                       if (deferredPayments == null ||
                           deferredPayments.isEmpty) {
                         return const Text('Nenhum pagamento disponível.');
@@ -499,7 +502,12 @@ class _RevenueState extends State<Revenue> {
                         },
                         separatorBuilder: (_, __) =>
                             const Divider(color: Colors.white),
-                        padding: const EdgeInsets.only(top: 14, left: 16, bottom: 80, right: 16,),
+                        padding: const EdgeInsets.only(
+                          top: 14,
+                          left: 16,
+                          bottom: 80,
+                          right: 16,
+                        ),
                         itemCount: deferredPayments.length,
                       );
                     },

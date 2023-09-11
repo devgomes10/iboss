@@ -4,7 +4,7 @@ class VariableOutflow {
   DateTime date;
   String id;
 
-  VariableOutflow ({
+  VariableOutflow({
     required this.description,
     required this.value,
     required this.date,

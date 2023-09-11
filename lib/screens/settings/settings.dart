@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:iboss/components/show_confirmation_password.dart';
+import 'package:iboss/repositories/authentication/auth_service.dart';
 import 'package:iboss/screens/login/login.dart';
 
 class Settings extends StatelessWidget {
@@ -68,12 +70,7 @@ class Settings extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Login(),
-                                    ),
-                                  );
+                                  AuthService().logOut();
                                 },
                                 child: Text('SIM'),
                               ),
@@ -89,11 +86,10 @@ class Settings extends StatelessWidget {
             Container(
               width: 350,
               child: _buildButton(
-                'Cancelar plano',
+                'Remover Conta',
                 Icons.cancel,
                 () {
-                  // Lógica para cancelar o plano premium
-                  print('Cancelar plano premium');
+                  showConfirmationPassword(context: context, email: "email");
                 },
               ),
             ),

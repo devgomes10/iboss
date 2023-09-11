@@ -1,12 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../models/personal/variable_entry.dart';
 
 class VariableEntryRepository extends ChangeNotifier {
+  late String uid;
+  late CollectionReference variableEntryCollection;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+  VariableEntryRepository() {
+    uid = FirebaseAuth.instance.currentUser!.uid;
+    variableEntryCollection =
+        FirebaseFirestore.instance.collection('variableEntries_$uid');
+  }
+
   Stream<List<VariableEntry>> getVariableEntryStream() {
-    return firestore.collection('variable_entry').snapshots().map(
+    return variableEntryCollection.snapshots().map(
           (snapshot) {
         return snapshot.docs.map((doc) {
           return VariableEntry(
@@ -22,20 +31,20 @@ class VariableEntryRepository extends ChangeNotifier {
 
   Future<void> addEntryToFirestore(VariableEntry entry) async {
     try {
-      await firestore.collection('variable_entry').doc(entry.id).set(
+      await variableEntryCollection.doc(entry.id).set(
         entry.toMap(),
       );
     } catch (error) {
-      print('Erro ao adicionar pagamento ao Firestore: $error');
+      print('Erro ao adicionar entrada ao Firestore: $error');
     }
     notifyListeners();
   }
 
   Future<void> removeEntryFromFirestore(String entryId) async {
     try {
-      await firestore.collection('variable_entry').doc(entryId).delete();
+      await variableEntryCollection.doc(entryId).delete();
     } catch (error) {
-      print('Erro ao remover pagamento do Firestore: $error');
+      print('Erro ao remover entrada do Firestore: $error');
     }
     notifyListeners();
   }
@@ -44,26 +53,26 @@ class VariableEntryRepository extends ChangeNotifier {
     List<VariableEntry> variableEntry = [];
     try {
       QuerySnapshot querySnapshot =
-      await firestore.collection('variable_entry').get();
+      await variableEntryCollection.get();
       variableEntry = querySnapshot.docs
           .map((doc) =>
-          VariableEntry.fromMap(
-              doc.data() as Map<String, dynamic>))
+          VariableEntry.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
     } catch (error) {
-      print('Erro ao obter pagamentos do Firestore: $error');
+      print('Erro ao obter entradas do Firestore: $error');
     }
     notifyListeners();
     return variableEntry;
   }
 
   Stream<double> getTotalVariableEntryByMonth(DateTime selectedMonth) {
-    Stream<QuerySnapshot> queryStream = firestore
-        .collection('variable_entry')
+    Stream<QuerySnapshot> queryStream = variableEntryCollection
         .where(
         'date',
-        isGreaterThanOrEqualTo: DateTime(selectedMonth.year, selectedMonth.month, 1),
-        isLessThan: DateTime(selectedMonth.year, selectedMonth.month + 1, 1))
+        isGreaterThanOrEqualTo:
+        DateTime(selectedMonth.year, selectedMonth.month, 1),
+        isLessThan: DateTime(
+            selectedMonth.year, selectedMonth.month + 1, 1))
         .snapshots();
 
     return queryStream.map((querySnapshot) {
@@ -76,11 +85,12 @@ class VariableEntryRepository extends ChangeNotifier {
   }
 
   Stream<List<VariableEntry>> getVariableEntryByMonth(DateTime selectedMonth) {
-    return firestore
-        .collection('variable_entry')
+    return variableEntryCollection
         .where('date',
-        isGreaterThanOrEqualTo: DateTime(selectedMonth.year, selectedMonth.month, 1),
-        isLessThan: DateTime(selectedMonth.year, selectedMonth.month + 1, 1))
+        isGreaterThanOrEqualTo:
+        DateTime(selectedMonth.year, selectedMonth.month, 1),
+        isLessThan: DateTime(
+            selectedMonth.year, selectedMonth.month + 1, 1))
         .snapshots()
         .map((querySnapshot) {
       return querySnapshot.docs.map((doc) {

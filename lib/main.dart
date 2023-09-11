@@ -1,5 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:iboss/authentication/screens/auth_screen.dart';
+import 'package:iboss/screens/authentication/auth_screen.dart';
 import 'package:iboss/components/menu_navigation.dart';
 import 'package:iboss/repositories/business/deferred_payment_repository.dart';
 import 'package:iboss/repositories/business/fixed_expense_repository.dart';
@@ -44,14 +45,17 @@ void main() async {
           create: (context) => VariableExpenseRepository(),
         ),
         ChangeNotifierProvider(
-            create: (context) => FixedEntryRepository(),),
+          create: (context) => FixedEntryRepository(),
+        ),
         ChangeNotifierProvider(
-            create: (context) => VariableEntryRepository(),),
+          create: (context) => VariableEntryRepository(),
+        ),
         ChangeNotifierProvider(
-            create: (context) => FixedOutflowRepository(),),
+          create: (context) => FixedOutflowRepository(),
+        ),
         ChangeNotifierProvider(
-            create: (context) =>
-                VariableOutflowRepository(),),
+          create: (context) => VariableOutflowRepository(),
+        ),
         ChangeNotifierProvider(
             create: (context) => PersonalGoalsRepository(personalGoals: [])),
         ChangeNotifierProvider(create: (context) => WageRepository(salary: [])),
@@ -80,7 +84,29 @@ class MyApp extends StatelessWidget {
       title: 'evolve',
       debugShowCheckedModeBanner: false,
       theme: darkTheme,
-      home: const MenuNavigation(),
+      home: const ScreenRouter(),
+    );
+  }
+}
+
+class ScreenRouter extends StatelessWidget {
+  const ScreenRouter({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: FirebaseAuth.instance.userChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else {
+          if (snapshot.hasData) {
+            return const MenuNavigation();
+          } else {
+            return const AuthScreen();
+          }
+        }
+      },
     );
   }
 }

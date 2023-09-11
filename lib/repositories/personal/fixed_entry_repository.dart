@@ -1,12 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iboss/models/personal/fixed_entry.dart';
 
 class FixedEntryRepository extends ChangeNotifier {
+  late String uid;
+  late CollectionReference fixedEntryCollection;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+  FixedEntryRepository() {
+    uid = FirebaseAuth.instance.currentUser!.uid;
+    fixedEntryCollection = FirebaseFirestore.instance.collection('fixedEntries_$uid');
+  }
+
   Stream<List<FixedEntry>> getFixedEntryStream() {
-    return firestore.collection('fixed_entry').snapshots().map(
+    return fixedEntryCollection.snapshots().map(
           (snapshot) {
         return snapshot.docs.map((doc) {
           return FixedEntry(
@@ -22,20 +30,20 @@ class FixedEntryRepository extends ChangeNotifier {
 
   Future<void> addEntryToFirestore(FixedEntry entry) async {
     try {
-      await firestore.collection('fixed_entry').doc(entry.id).set(
+      await fixedEntryCollection.doc(entry.id).set(
         entry.toMap(),
       );
     } catch (error) {
-      print('Erro ao adicionar pagamento ao Firestore: $error');
+      print('Erro ao adicionar entrada ao Firestore: $error');
     }
     notifyListeners();
   }
 
   Future<void> removeEntryFromFirestore(String entryId) async {
     try {
-      await firestore.collection('fixed_entry').doc(entryId).delete();
+      await fixedEntryCollection.doc(entryId).delete();
     } catch (error) {
-      print('Erro ao remover pagamento do Firestore: $error');
+      print('Erro ao remover entrada do Firestore: $error');
     }
     notifyListeners();
   }
@@ -44,26 +52,26 @@ class FixedEntryRepository extends ChangeNotifier {
     List<FixedEntry> fixedEntry = [];
     try {
       QuerySnapshot querySnapshot =
-      await firestore.collection('fixed_entry').get();
+      await fixedEntryCollection.get();
       fixedEntry = querySnapshot.docs
           .map((doc) =>
-          FixedEntry.fromMap(
-              doc.data() as Map<String, dynamic>))
+          FixedEntry.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
     } catch (error) {
-      print('Erro ao obter pagamentos do Firestore: $error');
+      print('Erro ao obter entradas do Firestore: $error');
     }
     notifyListeners();
     return fixedEntry;
   }
 
   Stream<double> getTotalFixedEntryByMonth(DateTime selectedMonth) {
-    Stream<QuerySnapshot> queryStream = firestore
-        .collection('fixed_entry')
+    Stream<QuerySnapshot> queryStream = fixedEntryCollection
         .where(
         'date',
-        isGreaterThanOrEqualTo: DateTime(selectedMonth.year, selectedMonth.month, 1),
-        isLessThan: DateTime(selectedMonth.year, selectedMonth.month + 1, 1))
+        isGreaterThanOrEqualTo:
+        DateTime(selectedMonth.year, selectedMonth.month, 1),
+        isLessThan: DateTime(
+            selectedMonth.year, selectedMonth.month + 1, 1))
         .snapshots();
 
     return queryStream.map((querySnapshot) {
@@ -76,11 +84,12 @@ class FixedEntryRepository extends ChangeNotifier {
   }
 
   Stream<List<FixedEntry>> getFixedEntryByMonth(DateTime selectedMonth) {
-    return firestore
-        .collection('fixed_entry')
+    return fixedEntryCollection
         .where('date',
-        isGreaterThanOrEqualTo: DateTime(selectedMonth.year, selectedMonth.month, 1),
-        isLessThan: DateTime(selectedMonth.year, selectedMonth.month + 1, 1))
+        isGreaterThanOrEqualTo:
+        DateTime(selectedMonth.year, selectedMonth.month, 1),
+        isLessThan: DateTime(
+            selectedMonth.year, selectedMonth.month + 1, 1))
         .snapshots()
         .map((querySnapshot) {
       return querySnapshot.docs.map((doc) {

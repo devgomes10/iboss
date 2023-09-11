@@ -1,13 +1,22 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../models/business/cash_payment.dart';
 
 class CashPaymentRepository extends ChangeNotifier {
+  late String uidReceived;
+  late CollectionReference cashPaymentCollection;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+  CashPaymentRepository() {
+    uidReceived = FirebaseAuth.instance.currentUser!.uid;
+    cashPaymentCollection =
+        FirebaseFirestore.instance.collection('cashPayments_$uidReceived');
+  }
+
   Stream<List<CashPayment>> getCashPaymentsStream() {
-    return firestore.collection('received').snapshots().map(
-          (snapshot) {
+    return cashPaymentCollection.snapshots().map(
+      (snapshot) {
         return snapshot.docs.map((doc) {
           return CashPayment(
             description: doc['description'],
@@ -22,9 +31,9 @@ class CashPaymentRepository extends ChangeNotifier {
 
   Future<void> addPaymentToFirestore(CashPayment payment) async {
     try {
-      await firestore.collection('received').doc(payment.id).set(
-        payment.toMap(),
-      );
+      await cashPaymentCollection.doc(payment.id).set(
+            payment.toMap(),
+          );
     } catch (error) {
       print('Erro ao adicionar pagamento ao Firestore: $error');
     }
@@ -33,7 +42,7 @@ class CashPaymentRepository extends ChangeNotifier {
 
   Future<void> removePaymentFromFirestore(String paymentId) async {
     try {
-      await firestore.collection('received').doc(paymentId).delete();
+      await cashPaymentCollection.doc(paymentId).delete();
     } catch (error) {
       print('Erro ao remover pagamento do Firestore: $error');
     }
@@ -43,12 +52,9 @@ class CashPaymentRepository extends ChangeNotifier {
   Future<List<CashPayment>> getCashPaymentsFromFirestore() async {
     List<CashPayment> cashPayments = [];
     try {
-      QuerySnapshot querySnapshot =
-      await firestore.collection('received').get();
+      QuerySnapshot querySnapshot = await cashPaymentCollection.get();
       cashPayments = querySnapshot.docs
-          .map((doc) =>
-          CashPayment.fromMap(
-              doc.data() as Map<String, dynamic>))
+          .map((doc) => CashPayment.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
     } catch (error) {
       print('Erro ao obter pagamentos do Firestore: $error');
@@ -58,12 +64,12 @@ class CashPaymentRepository extends ChangeNotifier {
   }
 
   Stream<double> getTotalCashPaymentsByMonth(DateTime selectedMonth) {
-    Stream<QuerySnapshot> queryStream = firestore
-        .collection('received')
-        .where(
-        'date',
-        isGreaterThanOrEqualTo: DateTime(selectedMonth.year, selectedMonth.month, 1),
-        isLessThan: DateTime(selectedMonth.year, selectedMonth.month + 1, 1))
+    Stream<QuerySnapshot> queryStream = cashPaymentCollection
+        .where('date',
+            isGreaterThanOrEqualTo:
+                DateTime(selectedMonth.year, selectedMonth.month, 1),
+            isLessThan:
+                DateTime(selectedMonth.year, selectedMonth.month + 1, 1))
         .snapshots();
 
     return queryStream.map((querySnapshot) {
@@ -76,11 +82,12 @@ class CashPaymentRepository extends ChangeNotifier {
   }
 
   Stream<List<CashPayment>> getCashPaymentsByMonth(DateTime selectedMonth) {
-    return firestore
-        .collection('received')
+    return cashPaymentCollection
         .where('date',
-        isGreaterThanOrEqualTo: DateTime(selectedMonth.year, selectedMonth.month, 1),
-        isLessThan: DateTime(selectedMonth.year, selectedMonth.month + 1, 1))
+            isGreaterThanOrEqualTo:
+                DateTime(selectedMonth.year, selectedMonth.month, 1),
+            isLessThan:
+                DateTime(selectedMonth.year, selectedMonth.month + 1, 1))
         .snapshots()
         .map((querySnapshot) {
       return querySnapshot.docs.map((doc) {

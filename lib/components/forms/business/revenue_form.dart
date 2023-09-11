@@ -125,7 +125,8 @@ class __DialogoNovaReceitaState extends State<_DialogonewRevenue> {
                                 await inCash.addPaymentToFirestore(received);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text('Adicionado um novo pagamento recebido'),
+                                    content: Text(
+                                        'Adicionado um novo pagamento recebido'),
                                   ),
                                 );
                                 Navigator.pop(context);
@@ -152,13 +153,13 @@ class __DialogoNovaReceitaState extends State<_DialogonewRevenue> {
                           child: TextButton(
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                  DeferredPayment pending = DeferredPayment(
-                                    description: descriptionController.text,
-                                    value: double.parse(valueController.text),
-                                    date: DateTime.now(),
-                                    id: invoicingId,
-                                  );
-                                  await inTerm.addPaymentToFirestore(pending);
+                                DeferredPayment pending = DeferredPayment(
+                                  description: descriptionController.text,
+                                  value: double.parse(valueController.text),
+                                  date: DateTime.now(),
+                                  id: invoicingId,
+                                );
+                                await inTerm.addPaymentToFirestore(pending);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text(

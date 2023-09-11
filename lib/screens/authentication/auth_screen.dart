@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:iboss/components/snackbar/show_snackbar.dart';
+import 'package:iboss/repositories/authentication/auth_service.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -17,10 +19,12 @@ class _AuthScreenState extends State<AuthScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
+  AuthService authService = AuthService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff003060),
+      backgroundColor: const Color(0xff003060),
       body: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 32,
@@ -46,9 +50,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        (isEntering)
-                            ? "Bem vindo a Evolve!"
-                            : "Vamos começar?",
+                        (isEntering) ? "Bem vindo a Evolve!" : "Vamos começar?",
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           color: Color(0xff003060),
@@ -62,20 +64,21 @@ class _AuthScreenState extends State<AuthScreen> {
                           ? "Faça login para evoluir suas finanças."
                           : "Faça seu cadastro para cuidar das suas finanças adequadamente.",
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.black,
                       ),
                     ),
                     TextFormField(
                       controller: _emailController,
-                      style: TextStyle(color: Colors.black),
+                      style: const TextStyle(color: Colors.black),
                       decoration: const InputDecoration(
                         label: Text("E-mail"),
                         labelStyle: TextStyle(
                           color: Colors.black,
                         ),
                         enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black), // Cor da borda inferior
+                          borderSide: BorderSide(
+                              color: Colors.black), // Cor da borda inferior
                         ),
                       ),
                       validator: (value) {
@@ -93,14 +96,15 @@ class _AuthScreenState extends State<AuthScreen> {
                     TextFormField(
                       controller: _passwordController,
                       obscureText: true,
-                      style: TextStyle(color: Colors.black),
+                      style: const TextStyle(color: Colors.black),
                       decoration: const InputDecoration(
                         label: Text("Senha"),
                         labelStyle: TextStyle(
                           color: Colors.black,
                         ),
                         enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black), // Cor da borda inferior
+                          borderSide: BorderSide(
+                              color: Colors.black), // Cor da borda inferior
                         ),
                       ),
                       validator: (value) {
@@ -109,6 +113,15 @@ class _AuthScreenState extends State<AuthScreen> {
                         }
                         return null;
                       },
+                    ),
+                    Visibility(
+                      visible: isEntering,
+                      child: TextButton(
+                        onPressed: () {
+                          forgotMyPasswordClicked();
+                        },
+                        child: Text("Esqueci minha senha"),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -119,14 +132,16 @@ class _AuthScreenState extends State<AuthScreen> {
                             TextFormField(
                               controller: _confirmController,
                               obscureText: true,
-                              style: TextStyle(color: Colors.black),
+                              style: const TextStyle(color: Colors.black),
                               decoration: const InputDecoration(
                                 label: Text("Confirme a senha"),
                                 labelStyle: TextStyle(
                                   color: Colors.black,
                                 ),
                                 enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black), // Cor da borda inferior
+                                  borderSide: BorderSide(
+                                      color: Colors
+                                          .black), // Cor da borda inferior
                                 ),
                               ),
                               validator: (value) {
@@ -141,14 +156,16 @@ class _AuthScreenState extends State<AuthScreen> {
                             ),
                             TextFormField(
                               controller: _nameController,
-                              style: TextStyle(color: Colors.black),
+                              style: const TextStyle(color: Colors.black),
                               decoration: const InputDecoration(
                                 label: Text("Nome"),
                                 labelStyle: TextStyle(
                                   color: Colors.black,
                                 ),
                                 enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black), // Cor da borda inferior
+                                  borderSide: BorderSide(
+                                      color: Colors
+                                          .black), // Cor da borda inferior
                                 ),
                               ),
                               validator: (value) {
@@ -167,17 +184,17 @@ class _AuthScreenState extends State<AuthScreen> {
                       onPressed: () {
                         botaoEnviarClicado();
                       },
+                      style: TextButton.styleFrom(
+                        elevation: 4,
+                        backgroundColor: const Color(0xFF003060),
+                      ),
                       child: Text(
                         (isEntering) ? "Entrar" : "Cadastrar",
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                           fontSize: 20,
                         ),
-                      ),
-                      style: TextButton.styleFrom(
-                        elevation: 4,
-                        backgroundColor: Color(0xFF003060),
                       ),
                     ),
                     Padding(
@@ -188,6 +205,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             isEntering = !isEntering;
                           });
                         },
+                        style: TextButton.styleFrom(),
                         child: Text(
                           (isEntering)
                               ? "Ainda não tem conta?\nClique aqui para cadastrar."
@@ -197,8 +215,6 @@ class _AuthScreenState extends State<AuthScreen> {
                             color: Colors.blue,
                             fontWeight: FontWeight.bold,
                           ),
-                        ),
-                        style: TextButton.styleFrom(
                         ),
                       ),
                     )
@@ -214,24 +230,86 @@ class _AuthScreenState extends State<AuthScreen> {
 
   botaoEnviarClicado() {
     String email = _emailController.text;
-    String senha = _passwordController.text;
-    String nome = _nameController.text;
+    String password = _passwordController.text;
+    String name = _nameController.text;
 
     if (_formKey.currentState!.validate()) {
       if (isEntering) {
-        _entrarUsuario(email: email, senha: senha);
+        _enterUser(email: email, password: password);
       } else {
-        _criarUsuario(email: email, senha: senha, nome: nome);
+        _registerUser(email: email, password: password, name: name);
       }
     }
   }
 
-  _entrarUsuario({required String email, required String senha}) {
-    print("Entrar usuário $email, $senha");
+  _enterUser({required String email, required String password}) {
+    authService
+        .enterUser(email: email, password: password)
+        .then((String? error) {
+      if (error != null) {
+        showSnackbar(context: context, menssager: error, isError: true);
+      }
+    });
   }
 
-  _criarUsuario(
-      {required String email, required String senha, required String nome}) {
-    print("Criar usuário $email, $senha, $nome");
+  _registerUser(
+      {required String email, required String password, required String name}) {
+    authService
+        .registerUser(
+      email: email,
+      password: password,
+      name: name,
+    )
+        .then(
+      (String? error) {
+        if (error != null) {
+          showSnackbar(context: context, menssager: error, isError: true);
+        }
+      },
+    );
+  }
+
+  forgotMyPasswordClicked() {
+    String email = _emailController.text;
+    showDialog(
+      context: context,
+      builder: (context) {
+        TextEditingController passwordResetController =
+            TextEditingController(text: email);
+        return AlertDialog(
+          title: const Text("Confirme o e-mail para redefinição de senha"),
+          content: TextFormField(
+            controller: passwordResetController,
+            decoration: const InputDecoration(
+              label: Text("Confirme o email"),
+            ),
+          ),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(32)),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                authService
+                    .passwordReset(email: passwordResetController.text)
+                    .then((String? error) {
+                  if (error == null) {
+                    showSnackbar(
+                      context: context,
+                      menssager: "E-mail de redefinição enviado",
+                      isError: false,
+                    );
+                  } else {
+                    showSnackbar(context: context, menssager: error);
+                  }
+                  Navigator.pop(context);
+                });
+              },
+              child: Text("Redefinir senha"),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

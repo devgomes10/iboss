@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/forms/personal/outflow_form.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 import '../../models/personal/fixed_outflow.dart';
 import '../../models/personal/variable_outflow.dart';
 import '../../repositories/personal/fixed_outflow_repository.dart';
@@ -19,6 +20,7 @@ class _OutflowState extends State<Outflow> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController valueController = TextEditingController();
   NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
+  String invoicingId = const Uuid().v1();
 
   void _changeMonth(bool increment) {
     setState(() {
@@ -102,9 +104,6 @@ class _OutflowState extends State<Outflow> {
             Expanded(
               child: TabBarView(
                 children: [
-                  const SizedBox(
-                    height: 6,
-                  ),
                   StreamBuilder<List<FixedOutflow>>(
                     stream: FixedOutflowRepository()
                         .getFixedOutflowByMonth(_selectedDate),
@@ -116,19 +115,23 @@ class _OutflowState extends State<Outflow> {
                       if (snapshot.hasError) {
                         return Text('Erro: ${snapshot.error}');
                       }
-                      final fixedOutflow = snapshot.data;
-                      if (fixedOutflow == null || fixedOutflow.isEmpty) {
+                      final fixedOutflows = snapshot.data;
+                      if (fixedOutflows == null || fixedOutflows.isEmpty) {
                         return const Text('Nenhum gasto disponível.');
                       }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(12)),
+                            ),
                             leading: const FaIcon(
                               FontAwesomeIcons.arrowTrendDown,
                               color: Colors.red,
                             ),
                             title: Text(
-                              fixedOutflow[i].description,
+                              fixedOutflows[i].description,
                               style: const TextStyle(fontSize: 20),
                             ),
                             subtitle: Column(
@@ -136,13 +139,13 @@ class _OutflowState extends State<Outflow> {
                               children: [
                                 Text(
                                   real.format(
-                                    fixedOutflow[i].value,
+                                    fixedOutflows[i].value,
                                   ),
                                   style: const TextStyle(fontSize: 18),
                                 ),
                                 Text(
                                   DateFormat('dd/MM/yyyy')
-                                      .format(fixedOutflow[i].date),
+                                      .format(fixedOutflows[i].date),
                                   style: const TextStyle(fontSize: 16),
                                 ),
                               ],
@@ -155,9 +158,11 @@ class _OutflowState extends State<Outflow> {
                                       AlertDialog(
                                     scrollable: true,
                                     title: Text(
-                                        'Deseja mesmo excluir esse gasto fixo?', style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium,),
+                                      'Deseja mesmo excluir esse gasto fixo?',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
                                     content: SingleChildScrollView(
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
@@ -171,16 +176,22 @@ class _OutflowState extends State<Outflow> {
                                               onPressed: () {
                                                 Navigator.pop(context);
                                               },
-                                              child: const Text('NÃO', style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20,
-                                              ),),
+                                              child: const Text(
+                                                'NÃO',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20,
+                                                ),
+                                              ),
                                             ),
                                             TextButton(
                                               onPressed: () {
-                                                final fixedId = fixedOutflow[i].id;
-                                                FixedOutflowRepository().removeOutflowFromFirestore(fixedId);
+                                                final fixedId =
+                                                    fixedOutflows[i].id;
+                                                FixedOutflowRepository()
+                                                    .removeOutflowFromFirestore(
+                                                        fixedId);
                                                 Navigator.pop(context);
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(
@@ -190,11 +201,14 @@ class _OutflowState extends State<Outflow> {
                                                   ),
                                                 );
                                               },
-                                              child: const Text('EXCLUIR', style: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20,
-                                              ),),
+                                              child: const Text(
+                                                'EXCLUIR',
+                                                style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20,
+                                                ),
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -213,8 +227,13 @@ class _OutflowState extends State<Outflow> {
                         separatorBuilder: (_, __) => const Divider(
                           color: Colors.white,
                         ),
-                        padding: const EdgeInsets.only(top: 14, left: 16, bottom: 80, right: 16,),
-                        itemCount: fixedOutflow.length,
+                        padding: const EdgeInsets.only(
+                          top: 14,
+                          left: 16,
+                          bottom: 80,
+                          right: 16,
+                        ),
+                        itemCount: fixedOutflows.length,
                       );
                     },
                   ),
@@ -266,9 +285,11 @@ class _OutflowState extends State<Outflow> {
                                       AlertDialog(
                                     scrollable: true,
                                     title: Text(
-                                        'Deseja mesmo excluir esse gasto variável?', style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium,),
+                                      'Deseja mesmo excluir esse gasto variável?',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
                                     content: SingleChildScrollView(
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
@@ -282,16 +303,22 @@ class _OutflowState extends State<Outflow> {
                                               onPressed: () {
                                                 Navigator.pop(context);
                                               },
-                                              child: const Text('NÃO', style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20,
-                                              ),),
+                                              child: const Text(
+                                                'NÃO',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20,
+                                                ),
+                                              ),
                                             ),
                                             TextButton(
                                               onPressed: () {
-                                                final variableId = variableOutflow[i].id;
-                                                VariableOutflowRepository().removeOutflowFromFirestore(variableId);
+                                                final variableId =
+                                                    variableOutflow[i].id;
+                                                VariableOutflowRepository()
+                                                    .removeOutflowFromFirestore(
+                                                        variableId);
                                                 Navigator.pop(context);
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(
@@ -301,11 +328,14 @@ class _OutflowState extends State<Outflow> {
                                                   ),
                                                 );
                                               },
-                                              child: const Text('EXCLUIR', style: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20,
-                                              ),),
+                                              child: const Text(
+                                                'EXCLUIR',
+                                                style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20,
+                                                ),
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -324,7 +354,12 @@ class _OutflowState extends State<Outflow> {
                         separatorBuilder: (_, __) => const Divider(
                           color: Colors.white,
                         ),
-                        padding: const EdgeInsets.only(top: 14, left: 16, bottom: 80, right: 16,),
+                        padding: const EdgeInsets.only(
+                          top: 14,
+                          left: 16,
+                          bottom: 80,
+                          right: 16,
+                        ),
                         itemCount: variableOutflow.length,
                       );
                     },

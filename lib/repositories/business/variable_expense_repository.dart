@@ -1,13 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import '../../models/business/variable_expense.dart';
 
 class VariableExpenseRepository extends ChangeNotifier {
+  late String uid;
+  late CollectionReference variableExpenseCollection;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+  VariableExpenseRepository() {
+    uid = FirebaseAuth.instance.currentUser!.uid;
+    variableExpenseCollection = FirebaseFirestore.instance.collection('variableExpenses_$uid');
+  }
+
   Stream<List<VariableExpense>> getVariableExpensesStream() {
-    return firestore.collection('variable_expenses').snapshots().map(
+    return variableExpenseCollection.snapshots().map(
           (snapshot) {
         return snapshot.docs.map((doc) {
           return VariableExpense(
@@ -23,20 +30,20 @@ class VariableExpenseRepository extends ChangeNotifier {
 
   Future<void> addExpenseToFirestore(VariableExpense expense) async {
     try {
-      await firestore.collection('variable_expenses').doc(expense.id).set(
+      await variableExpenseCollection.doc(expense.id).set(
         expense.toMap(),
       );
     } catch (error) {
-      print('Erro ao adicionar pagamento ao Firestore: $error');
+      print('Erro ao adicionar despesa ao Firestore: $error');
     }
     notifyListeners();
   }
 
   Future<void> removeExpenseFromFirestore(String expenseId) async {
     try {
-      await firestore.collection('variable_expenses').doc(expenseId).delete();
+      await variableExpenseCollection.doc(expenseId).delete();
     } catch (error) {
-      print('Erro ao remover pagamento do Firestore: $error');
+      print('Erro ao remover despesa do Firestore: $error');
     }
     notifyListeners();
   }
@@ -45,26 +52,26 @@ class VariableExpenseRepository extends ChangeNotifier {
     List<VariableExpense> variableExpenses = [];
     try {
       QuerySnapshot querySnapshot =
-      await firestore.collection('variable_expenses').get();
+      await variableExpenseCollection.get();
       variableExpenses = querySnapshot.docs
           .map((doc) =>
-          VariableExpense.fromMap(
-              doc.data() as Map<String, dynamic>))
+          VariableExpense.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
     } catch (error) {
-      print('Erro ao obter pagamentos do Firestore: $error');
+      print('Erro ao obter despesas do Firestore: $error');
     }
     notifyListeners();
     return variableExpenses;
   }
 
   Stream<double> getTotalVariableExpensesByMonth(DateTime selectedMonth) {
-    Stream<QuerySnapshot> queryStream = firestore
-        .collection('variable_expenses')
+    Stream<QuerySnapshot> queryStream = variableExpenseCollection
         .where(
         'date',
-        isGreaterThanOrEqualTo: DateTime(selectedMonth.year, selectedMonth.month, 1),
-        isLessThan: DateTime(selectedMonth.year, selectedMonth.month + 1, 1))
+        isGreaterThanOrEqualTo:
+        DateTime(selectedMonth.year, selectedMonth.month, 1),
+        isLessThan: DateTime(
+            selectedMonth.year, selectedMonth.month + 1, 1))
         .snapshots();
 
     return queryStream.map((querySnapshot) {
@@ -77,11 +84,12 @@ class VariableExpenseRepository extends ChangeNotifier {
   }
 
   Stream<List<VariableExpense>> getVariableExpensesByMonth(DateTime selectedMonth) {
-    return firestore
-        .collection('variable_expenses')
+    return variableExpenseCollection
         .where('date',
-        isGreaterThanOrEqualTo: DateTime(selectedMonth.year, selectedMonth.month, 1),
-        isLessThan: DateTime(selectedMonth.year, selectedMonth.month + 1, 1))
+        isGreaterThanOrEqualTo:
+        DateTime(selectedMonth.year, selectedMonth.month, 1),
+        isLessThan: DateTime(
+            selectedMonth.year, selectedMonth.month + 1, 1))
         .snapshots()
         .map((querySnapshot) {
       return querySnapshot.docs.map((doc) {

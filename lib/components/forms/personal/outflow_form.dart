@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -27,6 +28,7 @@ class __DialogoNovaReceitaState extends State<_DialogNewOutflow> {
   final descriptionController = TextEditingController();
   final valueController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  FirebaseFirestore db = FirebaseFirestore.instance;
   String invoicingId = const Uuid().v1();
 
   @override
@@ -115,16 +117,17 @@ class __DialogoNovaReceitaState extends State<_DialogNewOutflow> {
                           child: TextButton(
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                FixedOutflow fixed = FixedOutflow(
-                                    description: descriptionController.text,
-                                    value: double.parse(valueController.text),
-                                    date: DateTime.now(),
-                                id: invoicingId,
+                                FixedOutflow fixedOuflow = FixedOutflow(
+                                  description: descriptionController.text,
+                                  value: double.parse(valueController.text),
+                                  date: DateTime.now(),
+                                  id: invoicingId,
                                 );
-                                FixedOutflowRepository().addOutflowToFirestore(fixed);
+                                await fixed.addOutflowToFirestore(fixedOuflow);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text('Adicionado um novo gasto fixo'),
+                                    content:
+                                        Text('Adicionado um novo gasto fixo'),
                                   ),
                                 );
                                 Navigator.pop(context);
@@ -151,16 +154,18 @@ class __DialogoNovaReceitaState extends State<_DialogNewOutflow> {
                           child: TextButton(
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                VariableOutflow variable = VariableOutflow(
-                                    description: descriptionController.text,
-                                    value: double.parse(valueController.text),
-                                    date: DateTime.now(),
-                                id: invoicingId,
+                                VariableOutflow variableOutflow = VariableOutflow(
+                                  description: descriptionController.text,
+                                  value: double.parse(valueController.text),
+                                  date: DateTime.now(),
+                                  id: invoicingId,
                                 );
-                                VariableOutflowRepository().addOutflowToFirestore(variable);
+                                await variable
+                                    .addOutflowToFirestore(variableOutflow);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text('Adicionado um novo gasto variável'),
+                                    content: Text(
+                                        'Adicionado um novo gasto variável'),
                                   ),
                                 );
                                 Navigator.pop(context);

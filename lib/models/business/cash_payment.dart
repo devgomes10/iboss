@@ -4,7 +4,7 @@ class CashPayment {
   DateTime date;
   String id;
 
-  CashPayment ({
+  CashPayment({
     required this.description,
     required this.value,
     required this.date,
@@ -12,10 +12,10 @@ class CashPayment {
   });
 
   CashPayment.fromMap(Map<String, dynamic> map)
-    : id = map["id"],
-      description = map["description"],
-      value = map["value"],
-      date = map["date"];
+      : id = map["id"],
+        description = map["description"],
+        value = map["value"],
+        date = map["date"];
 
   Map<String, dynamic> toMap() {
     return {
