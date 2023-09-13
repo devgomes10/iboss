@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -15,8 +16,10 @@ import 'package:iboss/screens/personal/outflow.dart';
 import 'package:iboss/screens/personal/personal.dart';
 import '../screens/business/revenue.dart';
 
+
 class MenuNavigation extends StatefulWidget {
-  const MenuNavigation({super.key});
+  final User transaction;
+  const MenuNavigation({super.key, required this.transaction});
 
   @override
   State<MenuNavigation> createState() => _MenuNavigationState();
@@ -44,11 +47,11 @@ class _MenuNavigationState extends State<MenuNavigation> {
       body: PageView(
         controller: pc,
         onPageChanged: setCurrentPage,
-        children: const [
-          Business(),
-          Personal(),
-          Goals(),
-          Dashboard(),
+        children:  [
+          Business(user: widget.transaction),
+          const Personal(),
+          const Goals(),
+          const Dashboard(),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -69,6 +72,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
         overlayOpacity: 0.7,
         spacing: 12,
         spaceBetweenChildren: 12,
+        curve: Curves.easeInOutCirc,
         children: [
           SpeedDialChild(
             child: const FaIcon(FontAwesomeIcons.industry),

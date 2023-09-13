@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:iboss/components/show_confirmation_password.dart';
+import 'package:iboss/repositories/authentication/auth_service.dart';
 import 'package:iboss/screens/business/revenue.dart';
 import 'package:iboss/screens/settings/settings.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../repositories/business/cash_payment_repository.dart';
@@ -11,9 +15,12 @@ import '../../repositories/business/variable_expense_repository.dart';
 import 'expense.dart';
 import 'package:provider/provider.dart';
 import '../../repositories/business/wage_repository.dart';
+import 'dart:io';
 
 class Business extends StatefulWidget {
-  const Business({super.key});
+  final User user;
+
+  const Business({super.key, required this.user});
 
   @override
   State<Business> createState() => _BusinessState();
@@ -22,6 +29,7 @@ class Business extends StatefulWidget {
 class _BusinessState extends State<Business> {
   // variables
   final DateTime _selectedDate = DateTime.now();
+  XFile? _userImage;
   double totalCashPayments = 0.0;
   double totalDeferredPayments = 0.0;
   double totalFixedExpenses = 0.0;
@@ -30,10 +38,70 @@ class _BusinessState extends State<Business> {
   TextEditingController reservationController = TextEditingController();
   NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
 
+  Future<void> _getImageFromGallery() async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.pickImage(
+      source: ImageSource.gallery, // Abre a galeria de fotos
+      imageQuality: 50, // Qualidade da imagem (0 a 100)
+    );
+
+    if (pickedImage != null) {
+      setState(() {
+        _userImage = pickedImage;
+      });
+    }
+  }
+
+  ImageProvider<Object>? _getUserImageProvider() {
+    if (_userImage != null) {
+      return FileImage(File(_userImage!.path));
+    } else {
+      return NetworkImage('https://s2-techtudo.glbimg.com/SSAPhiaAy_zLTOu3Tr3ZKu2H5vg=/0x0:1024x609/888x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2022/c/u/15eppqSmeTdHkoAKM0Uw/dall-e-2.jpg');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final wageRepository = Provider.of<WageRepository>(context);
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            UserAccountsDrawerHeader(
+              currentAccountPicture: GestureDetector(
+                onTap: () {
+                  _getImageFromGallery();
+                },
+                child: CircleAvatar(
+                  backgroundColor: Colors.white,
+                  backgroundImage: _getUserImageProvider(),
+                  radius: 50,
+                ),
+      ),
+        accountName: Text(
+                (widget.user.displayName != null)
+                    ? widget.user.displayName!
+                    : "",
+              ),
+              accountEmail: Text(widget.user.email!),
+            ),
+            ListTile(
+              leading: const FaIcon(FontAwesomeIcons.rightFromBracket),
+              title: const Text("Sair"),
+              onTap: () {
+                AuthService().logOut();
+              },
+            ),
+            ListTile(
+              leading: const FaIcon(FontAwesomeIcons.trash),
+              title: const Text("Remover conta"),
+              onTap: () {
+                showConfirmationPassword(context: context, email: "");
+              },
+            ),
+          ],
+        ),
+      ),
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         title: const Text('Empresa'),
@@ -717,3 +785,5 @@ class _BusinessState extends State<Business> {
     );
   }
 }
+
+

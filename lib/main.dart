@@ -103,7 +103,7 @@ class ScreenRouter extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         } else {
           if (snapshot.hasData) {
-            return const MenuNavigation();
+            return MenuNavigation(transaction: snapshot.data!,);
           } else {
             return const AuthScreen();
           }
