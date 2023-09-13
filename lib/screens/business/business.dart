@@ -3,12 +3,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/screens/business/revenue.dart';
 import 'package:iboss/screens/settings/settings.dart';
 import 'package:intl/intl.dart';
+import 'package:rxdart/rxdart.dart';
 import '../../repositories/business/cash_payment_repository.dart';
 import '../../repositories/business/deferred_payment_repository.dart';
 import '../../repositories/business/fixed_expense_repository.dart';
 import '../../repositories/business/variable_expense_repository.dart';
 import 'expense.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:provider/provider.dart';
+import '../../repositories/business/wage_repository.dart';
 
 class Business extends StatefulWidget {
   const Business({super.key});
@@ -30,6 +32,7 @@ class _BusinessState extends State<Business> {
 
   @override
   Widget build(BuildContext context) {
+    final wageRepository = Provider.of<WageRepository>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
@@ -131,7 +134,8 @@ class _BusinessState extends State<Business> {
                                 ),
                                 StreamBuilder<double>(
                                   stream: CashPaymentRepository()
-                                      .getTotalCashPaymentsByMonth(_selectedDate),
+                                      .getTotalCashPaymentsByMonth(
+                                          _selectedDate),
                                   builder: (BuildContext context,
                                       AsyncSnapshot<double> snapshot) {
                                     if (snapshot.hasData &&
@@ -165,7 +169,8 @@ class _BusinessState extends State<Business> {
                                       AsyncSnapshot<double> snapshot) {
                                     if (snapshot.hasData &&
                                         snapshot.data != null) {
-                                      final totalDeferredPayments = snapshot.data;
+                                      final totalDeferredPayments =
+                                          snapshot.data;
                                       return Text(
                                         real.format(totalDeferredPayments),
                                         style: const TextStyle(
@@ -297,12 +302,13 @@ class _BusinessState extends State<Business> {
                                 StreamBuilder<double>(
                                   stream: VariableExpenseRepository()
                                       .getTotalVariableExpensesByMonth(
-                                      _selectedDate),
+                                          _selectedDate),
                                   builder: (BuildContext context,
                                       AsyncSnapshot<double> snapshot) {
                                     if (snapshot.hasData &&
                                         snapshot.data != null) {
-                                      final totalVariableExpense = snapshot.data;
+                                      final totalVariableExpense =
+                                          snapshot.data;
                                       return Text(
                                         real.format(totalVariableExpense),
                                         style: const TextStyle(
@@ -334,13 +340,32 @@ class _BusinessState extends State<Business> {
                 'Pró-labore',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              subtitle: Text(
-                'R\$ 100,00',
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
+              subtitle: FutureBuilder<double?>(
+                future: wageRepository.getCurrentWage(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError || !snapshot.hasData) {
+                    return Text(
+                      'Valor não encontrado',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    );
+                  } else {
+                    final wageValue = snapshot.data!;
+                    return Text(
+                      real.format(wageValue),
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    );
+                  }
+                },
               ),
               trailing: SizedBox(
                 width: 110,
@@ -408,6 +433,15 @@ class _BusinessState extends State<Business> {
                                               width: 100,
                                               child: TextButton(
                                                 onPressed: () {
+                                                  // Aqui você pode atualizar o pró-labore no Firebase Firestore
+                                                  final newWage =
+                                                      double.tryParse(
+                                                              wageController
+                                                                  .text) ??
+                                                          0.0;
+                                                  wageRepository
+                                                      .updateWage(newWage);
+
                                                   Navigator.pop(context);
                                                 },
                                                 style: TextButton.styleFrom(
@@ -602,7 +636,7 @@ class _BusinessState extends State<Business> {
                                 child: Form(
                                   child: Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
                                       TextFormField(
                                         keyboardType: TextInputType.text,
@@ -610,18 +644,18 @@ class _BusinessState extends State<Business> {
                                         decoration: const InputDecoration(
                                           labelText: 'Capital de giro',
                                           labelStyle:
-                                          TextStyle(color: Colors.white),
+                                              TextStyle(color: Colors.white),
                                           border: OutlineInputBorder(),
                                         ),
                                       ),
                                       Padding(
                                         padding:
-                                        const EdgeInsets.only(top: 20.0),
+                                            const EdgeInsets.only(top: 20.0),
                                         child: Row(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                              MainAxisAlignment.spaceBetween,
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                              CrossAxisAlignment.center,
                                           children: [
                                             SizedBox(
                                               width: 100,
@@ -631,7 +665,7 @@ class _BusinessState extends State<Business> {
                                                 },
                                                 style: TextButton.styleFrom(
                                                   backgroundColor:
-                                                  Colors.grey[200],
+                                                      Colors.grey[200],
                                                 ),
                                                 child: const Text('Cancelar'),
                                               ),
@@ -644,7 +678,7 @@ class _BusinessState extends State<Business> {
                                                 },
                                                 style: TextButton.styleFrom(
                                                   backgroundColor:
-                                                  Colors.grey[200],
+                                                      Colors.grey[200],
                                                 ),
                                                 child: const Text('Confirmar'),
                                               ),

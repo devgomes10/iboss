@@ -58,7 +58,7 @@ void main() async {
         ),
         ChangeNotifierProvider(
             create: (context) => PersonalGoalsRepository(personalGoals: [])),
-        ChangeNotifierProvider(create: (context) => WageRepository(salary: [])),
+        ChangeNotifierProvider(create: (context) => WageRepository()),
         ChangeNotifierProvider(
             create: (context) =>
                 PersonalReservationRepository(personalReservations: [])),
@@ -68,12 +68,14 @@ void main() async {
   );
 }
 
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting('pt_BR', null);
+
 
     return MaterialApp(
       localizationsDelegates: const [GlobalMaterialLocalizations.delegate],

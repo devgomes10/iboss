@@ -1,21 +1,33 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:iboss/models/business/wage.dart';
-
 
 class WageRepository extends ChangeNotifier {
-  List<Wage> salary = [];
+  late String uidWage;
+  late CollectionReference wageCollection;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  WageRepository ({
-    required this.salary
-  });
+  WageRepository() {
+    uidWage = FirebaseAuth.instance.currentUser!.uid;
+    wageCollection =
+        FirebaseFirestore.instance.collection('wage_$uidWage');
+  }
 
-  void add(Wage bossSalary) {
-    salary.add(bossSalary);
+  Future<void> updateWage(double newWage) async {
+    await wageCollection.doc('currentWage').set({'value': newWage});
+
     notifyListeners();
   }
 
-  void remove(int i) {
-    salary.removeAt(i);
-    notifyListeners();
+  Future<double?> getCurrentWage() async {
+    // Obtém o valor atual do pró-labore do Firebase Firestore
+    final doc = await wageCollection.doc('currentWage').get();
+    if (doc.exists) {
+      final data = doc.data() as Map<String, dynamic>;
+      final wageValue = data['value'] as double?;
+      return wageValue;
+    }
+    return null;
   }
+
 }
