@@ -4,8 +4,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/show_confirmation_password.dart';
 import 'package:iboss/repositories/authentication/auth_service.dart';
 import 'package:iboss/screens/business/revenue.dart';
-import 'package:iboss/screens/settings/settings.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../repositories/business/cash_payment_repository.dart';
@@ -15,7 +13,6 @@ import '../../repositories/business/variable_expense_repository.dart';
 import 'expense.dart';
 import 'package:provider/provider.dart';
 import '../../repositories/business/wage_repository.dart';
-import 'dart:io';
 
 class Business extends StatefulWidget {
   final User user;
@@ -29,7 +26,6 @@ class Business extends StatefulWidget {
 class _BusinessState extends State<Business> {
   // variables
   final DateTime _selectedDate = DateTime.now();
-  XFile? _userImage;
   double totalCashPayments = 0.0;
   double totalDeferredPayments = 0.0;
   double totalFixedExpenses = 0.0;
@@ -37,28 +33,6 @@ class _BusinessState extends State<Business> {
   TextEditingController wageController = TextEditingController();
   TextEditingController reservationController = TextEditingController();
   NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
-
-  Future<void> _getImageFromGallery() async {
-    final picker = ImagePicker();
-    final pickedImage = await picker.pickImage(
-      source: ImageSource.gallery, // Abre a galeria de fotos
-      imageQuality: 50, // Qualidade da imagem (0 a 100)
-    );
-
-    if (pickedImage != null) {
-      setState(() {
-        _userImage = pickedImage;
-      });
-    }
-  }
-
-  ImageProvider<Object>? _getUserImageProvider() {
-    if (_userImage != null) {
-      return FileImage(File(_userImage!.path));
-    } else {
-      return NetworkImage('https://s2-techtudo.glbimg.com/SSAPhiaAy_zLTOu3Tr3ZKu2H5vg=/0x0:1024x609/888x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2022/c/u/15eppqSmeTdHkoAKM0Uw/dall-e-2.jpg');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,17 +42,7 @@ class _BusinessState extends State<Business> {
         child: ListView(
           children: [
             UserAccountsDrawerHeader(
-              currentAccountPicture: GestureDetector(
-                onTap: () {
-                  _getImageFromGallery();
-                },
-                child: CircleAvatar(
-                  backgroundColor: Colors.white,
-                  backgroundImage: _getUserImageProvider(),
-                  radius: 50,
-                ),
-      ),
-        accountName: Text(
+              accountName: Text(
                 (widget.user.displayName != null)
                     ? widget.user.displayName!
                     : "",
@@ -104,23 +68,8 @@ class _BusinessState extends State<Business> {
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        title: const Text('Empresa'),
+        title: const Text('Empreendimento'),
         centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Settings(),
-                ),
-              );
-            },
-            icon: const FaIcon(
-              FontAwesomeIcons.gear,
-            ),
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(top: 10, right: 7, bottom: 10, left: 7),
@@ -412,7 +361,7 @@ class _BusinessState extends State<Business> {
                 future: wageRepository.getCurrentWage(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   } else if (snapshot.hasError || !snapshot.hasData) {
                     return Text(
                       'Valor não encontrado',
@@ -661,122 +610,6 @@ class _BusinessState extends State<Business> {
             ),
             const Divider(
               color: Colors.transparent,
-              height: 15,
-            ),
-            ListTile(
-              title: Text(
-                'Capital de giro',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              subtitle: Text(
-                'RS 100,00',
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-              trailing: SizedBox(
-                width: 110,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16.0),
-                            ),
-                            scrollable: true,
-                            title: Text(
-                              'Qual seu capital de giro atual?',
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
-                            ),
-                            content: SingleChildScrollView(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Form(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      TextFormField(
-                                        keyboardType: TextInputType.text,
-                                        controller: reservationController,
-                                        decoration: const InputDecoration(
-                                          labelText: 'Capital de giro',
-                                          labelStyle:
-                                              TextStyle(color: Colors.white),
-                                          border: OutlineInputBorder(),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 20.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            SizedBox(
-                                              width: 100,
-                                              child: TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                style: TextButton.styleFrom(
-                                                  backgroundColor:
-                                                      Colors.grey[200],
-                                                ),
-                                                child: const Text('Cancelar'),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 100,
-                                              child: TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                style: TextButton.styleFrom(
-                                                  backgroundColor:
-                                                      Colors.grey[200],
-                                                ),
-                                                child: const Text('Confirmar'),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                      icon: const FaIcon(FontAwesomeIcons.penToSquare),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const FaIcon(
-                        FontAwesomeIcons.circleInfo,
-                        color: Colors.yellow,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const Divider(
-              color: Colors.transparent,
               height: 80,
             ),
           ],
@@ -785,5 +618,3 @@ class _BusinessState extends State<Business> {
     );
   }
 }
-
-

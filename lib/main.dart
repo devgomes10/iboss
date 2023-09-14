@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:iboss/repositories/business/enterprise_reserve_repository.dart';
+import 'package:iboss/repositories/personal/opportunity_reserve_repository.dart';
 import 'package:iboss/screens/authentication/auth_screen.dart';
 import 'package:iboss/components/menu_navigation.dart';
 import 'package:iboss/repositories/business/deferred_payment_repository.dart';
@@ -60,14 +62,16 @@ void main() async {
             create: (context) => PersonalGoalsRepository(personalGoals: [])),
         ChangeNotifierProvider(create: (context) => WageRepository()),
         ChangeNotifierProvider(
-            create: (context) =>
-                PersonalReservationRepository(personalReservations: [])),
+            create: (context) => PersonalReservationRepository()),
+        ChangeNotifierProvider(
+            create: (context) => OpportunityReserveRepository()),
+        ChangeNotifierProvider(
+            create: (context) => EnterpriseReserveRepository()),
       ],
       child: const MyApp(),
     ),
   );
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -75,7 +79,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting('pt_BR', null);
-
 
     return MaterialApp(
       localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
@@ -103,7 +106,9 @@ class ScreenRouter extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         } else {
           if (snapshot.hasData) {
-            return MenuNavigation(transaction: snapshot.data!,);
+            return MenuNavigation(
+              transaction: snapshot.data!,
+            );
           } else {
             return const AuthScreen();
           }

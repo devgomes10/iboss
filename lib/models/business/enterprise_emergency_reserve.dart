@@ -1,13 +1,13 @@
-class PersonalReservation {
+class EnterpriseEmergencyReserve {
   double value;
   String id;
 
-  PersonalReservation ({
+  EnterpriseEmergencyReserve ({
     required this.value,
     required this.id,
   });
 
-  PersonalReservation.fromMap(Map<String, dynamic> map)
+  EnterpriseEmergencyReserve.fromMap(Map<String, dynamic> map)
       : id = map["id"],
         value = map["value"];
 

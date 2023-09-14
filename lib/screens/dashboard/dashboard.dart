@@ -3,16 +3,10 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/screens/settings/settings.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-import 'package:rxdart/rxdart.dart';
 import '../../repositories/business/cash_payment_repository.dart';
 import '../../repositories/business/deferred_payment_repository.dart';
 import '../../repositories/business/fixed_expense_repository.dart';
 import '../../repositories/business/variable_expense_repository.dart';
-import '../../repositories/personal/fixed_entry_repository.dart';
-import '../../repositories/personal/fixed_outflow_repository.dart';
-import '../../repositories/personal/variable_entry_repository.dart';
-import '../../repositories/personal/variable_outflow_repository.dart';
 import 'business_dash.dart';
 
 class Dashboard extends StatefulWidget {
@@ -92,7 +86,7 @@ class _DashboardState extends State<Dashboard> {
           children: [
             const BusinessDash(),
             DefaultTabController(
-              length: 3,
+              length: 2,
               child: Column(
                 children: [
                   const TabBar(
@@ -101,7 +95,6 @@ class _DashboardState extends State<Dashboard> {
                     tabs: [
                       Tab(text: 'Entradas'),
                       Tab(text: 'Saídas'),
-                      Tab(text: 'Saldo'),
                     ],
                   ),
                   Expanded(
@@ -111,26 +104,25 @@ class _DashboardState extends State<Dashboard> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 8),
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
-                                    icon: const FaIcon(
-                                        FontAwesomeIcons.caretLeft),
+                                    icon: const FaIcon(FontAwesomeIcons.caretLeft),
                                     onPressed: () => _changeMonth(false),
                                   ),
                                   Text(
-                                    DateFormat.yMMMM('pt_BR')
-                                        .format(_selectedDate),
+                                    DateFormat.yMMMM('pt_BR').format(_selectedDate),
                                     style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                   IconButton(
-                                    icon: const FaIcon(
-                                        FontAwesomeIcons.caretRight),
+                                    icon: const FaIcon(FontAwesomeIcons.caretRight),
                                     onPressed: () => _changeMonth(true),
                                   ),
                                 ],
@@ -142,113 +134,174 @@ class _DashboardState extends State<Dashboard> {
                             SizedBox(
                               width: 250,
                               height: 250,
-                              child: totalFixedEntry + totalVariableEntry > 0
-                                  ? Stack(
-                                      children: [
-                                        PieChart(
-                                          PieChartData(
-                                            sections: [
-                                              PieChartSectionData(
-                                                showTitle: false,
-                                                color: Colors.green,
-                                                value: totalFixedEntry,
-                                              ),
-                                              PieChartSectionData(
-                                                showTitle: false,
-                                                color: Colors.blue,
-                                                value: totalVariableEntry,
-                                              ),
-                                            ],
+                              child: StreamBuilder<double>(
+                                stream: CashPaymentRepository()
+                                    .getTotalCashPaymentsByMonth(_selectedDate),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<double> cashSnapshot) {
+                                  double totalCashPayments = cashSnapshot.data ?? 0.0;
+                                  return StreamBuilder<double>(
+                                    stream: DeferredPaymentRepository()
+                                        .getTotalDeferredPaymentsByMonth(_selectedDate),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<double> deferredSnapshot) {
+                                      double totalDeferredPayments =
+                                          deferredSnapshot.data ?? 0.0;
+                                      double total =
+                                          totalCashPayments + totalDeferredPayments;
+                                      return total > 0
+                                          ? Stack(
+                                        children: [
+                                          PieChart(
+                                            PieChartData(
+                                              sections: [
+                                                PieChartSectionData(
+                                                  showTitle: false,
+                                                  color: Colors.yellow,
+                                                  value: totalDeferredPayments,
+                                                ),
+                                                PieChartSectionData(
+                                                  showTitle: false,
+                                                  color: Colors.green,
+                                                  value: totalCashPayments,
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        Center(
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Column(
-                                                children: [
-                                                  const Text(
-                                                    'Total',
-                                                    style: TextStyle(
-                                                      fontSize: 25,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    real.format(
-                                                      (totalFixedEntry +
-                                                          totalVariableEntry),
-                                                    ),
-                                                    style: const TextStyle(
+                                          Center(
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Column(
+                                                  children: [
+                                                    const Text(
+                                                      'Total',
+                                                      style: TextStyle(
+                                                        fontSize: 25,
                                                         fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 20),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
+                                                        FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      real.format(total),
+                                                      style: const TextStyle(
+                                                        fontWeight:
+                                                        FontWeight.bold,
+                                                        fontSize: 20,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    )
-                                  : const Center(
-                                      child: Text('Sem registros'),
-                                    ),
+                                        ],
+                                      )
+                                          : const Center(
+                                        child: Text('Sem registros'),
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
                             ),
                             const SizedBox(
                               height: 50,
                             ),
                             Row(
-                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const SizedBox(width: 4),
                                 Column(
                                   children: [
                                     const Text(
-                                      'Variável',
+                                      'Recebidos',
                                       style: TextStyle(
                                         fontSize: 20,
-                                        color: Colors.blue,
+                                        color: Colors.green,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    Text(
-                                      '${real.format(totalVariableEntry)}',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.blue,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                    StreamBuilder<double>(
+                                      stream: CashPaymentRepository()
+                                          .getTotalCashPaymentsByMonth(_selectedDate),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<double> cashSnapshot) {
+                                        double totalCashPayments =
+                                            cashSnapshot.data ?? 0.0;
+                                        return StreamBuilder<double>(
+                                          stream: FixedExpenseRepository()
+                                              .getTotalFixedExpensesByMonth(_selectedDate),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<double> fixedSnapshot) {
+                                            double totalFixedExpenses =
+                                                fixedSnapshot.data ?? 0.0;
+                                            return StreamBuilder<double>(
+                                              stream: VariableExpenseRepository()
+                                                  .getTotalVariableExpensesByMonth(
+                                                  _selectedDate),
+                                              builder: (BuildContext context,
+                                                  AsyncSnapshot<double> variableSnapshot) {
+                                                double totalVariableExpenses =
+                                                    variableSnapshot.data ?? 0.0;
+                                                double total =
+                                                    totalFixedExpenses + totalVariableExpenses;
+                                                return Text(
+                                                  '${real.format(total)}',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    color: Colors.yellow,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                          },
+                                        );
+                                        //   Text(
+                                        //   '${real.format(totalCashPayments)}',
+                                        //   style: TextStyle(
+                                        //     fontSize: 20,
+                                        //     color: Colors.green,
+                                        //     fontWeight: FontWeight.bold,
+                                        //   ),
+                                        // );
+                                      },
                                     ),
                                   ],
                                 ),
                                 const SizedBox(width: 70),
-                                const SizedBox(
-                                  width: 4,
-                                ),
                                 Column(
                                   children: [
                                     const Text(
-                                      'Fixo',
+                                      'Pendentes',
                                       style: TextStyle(
                                         fontSize: 20,
-                                        color: Colors.green,
+                                        color: Colors.yellow,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    Text(
-                                      '${real.format(totalFixedEntry)}',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.green,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )
+                                    StreamBuilder<double>(
+                                      stream: DeferredPaymentRepository()
+                                          .getTotalDeferredPaymentsByMonth(
+                                          _selectedDate),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<double> deferredSnapshot) {
+                                        double totalDeferredPayments =
+                                            deferredSnapshot.data ?? 0.0;
+                                        return Text(
+                                          '${real.format(totalDeferredPayments)}',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.yellow,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        );
+                                      },
+                                    ),
                                   ],
                                 ),
                               ],
-                            )
+                            ),
                           ],
                         ),
                         Column(

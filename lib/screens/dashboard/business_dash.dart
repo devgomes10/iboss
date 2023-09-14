@@ -2,7 +2,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:rxdart/rxdart.dart';
 import '../../repositories/business/cash_payment_repository.dart';
 import '../../repositories/business/deferred_payment_repository.dart';
 import '../../repositories/business/fixed_expense_repository.dart';
@@ -17,18 +16,6 @@ class BusinessDash extends StatefulWidget {
 
 class _BusinessDasState extends State<BusinessDash> {
   Stream<double>? combinedStream;
-
-
-  @override
-  void initState() {
-    super.initState();
-    combinedStream = CombineLatestStream.combine2(
-      FixedExpenseRepository().getTotalFixedExpensesByMonth(_selectedDate),
-      VariableExpenseRepository()
-          .getTotalVariableExpensesByMonth(_selectedDate),
-      (double totalFixed, double totalVariable) => totalFixed + totalVariable,
-    );
-  }
 
   DateTime _selectedDate = DateTime.now();
   final NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
@@ -54,7 +41,7 @@ class _BusinessDasState extends State<BusinessDash> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Column(
         children: [
           const TabBar(
@@ -62,6 +49,7 @@ class _BusinessDasState extends State<BusinessDash> {
             tabs: [
               Tab(text: 'Receitas'),
               Tab(text: 'Gastos'),
+              Tab(text: 'Saldo'),
             ],
           ),
           Expanded(
@@ -411,6 +399,202 @@ class _BusinessDasState extends State<BusinessDash> {
                                     color: Colors.yellow,
                                     fontWeight: FontWeight.bold,
                                   ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+
+                Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            icon: const FaIcon(FontAwesomeIcons.caretLeft),
+                            onPressed: () => _changeMonth(false),
+                          ),
+                          Text(
+                            DateFormat.yMMMM('pt_BR').format(_selectedDate),
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          IconButton(
+                            icon: const FaIcon(FontAwesomeIcons.caretRight),
+                            onPressed: () => _changeMonth(true),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    SizedBox(
+                      width: 250,
+                      height: 250,
+                      child: StreamBuilder<double>(
+                        stream: FixedExpenseRepository()
+                            .getTotalFixedExpensesByMonth(_selectedDate),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<double> fixedSnapshot) {
+                          double totalFixedExpenses = fixedSnapshot.data ?? 0.0;
+                          return StreamBuilder<double>(
+                            stream: VariableExpenseRepository()
+                                .getTotalVariableExpensesByMonth(_selectedDate),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<double> variableSnapshot) {
+                              double totalVariableExpenses =
+                                  variableSnapshot.data ?? 0.0;
+                              double total =
+                                  totalFixedExpenses + totalVariableExpenses;
+                              return StreamBuilder<double>(
+                                stream: CashPaymentRepository()
+                                    .getTotalCashPaymentsByMonth(_selectedDate),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<double> cashSnapshot) {
+                                  double totalCashPayments =
+                                      cashSnapshot.data ?? 0.0;
+                                  return total > 0
+                                      ? Stack(
+                                          children: [
+                                            PieChart(
+                                              PieChartData(
+                                                sections: [
+                                                  PieChartSectionData(
+                                                    showTitle: false,
+                                                    color: Colors.yellow,
+                                                    value: total,
+                                                  ),
+                                                  PieChartSectionData(
+                                                    showTitle: false,
+                                                    color: Colors.green,
+                                                    value: totalCashPayments,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Center(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Column(
+                                                    children: [
+                                                      const Text(
+                                                        'Saldo',
+                                                        style: TextStyle(
+                                                          fontSize: 25,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        real.format(
+                                                            totalCashPayments -
+                                                                total),
+                                                        style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 20,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      : const Center(
+                                          child: Text('Sem registros'),
+                                        );
+                                },
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          children: [
+                            const Text(
+                              'Recebidos',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            StreamBuilder<double>(
+                              stream: CashPaymentRepository()
+                                  .getTotalCashPaymentsByMonth(_selectedDate),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<double> cashSnapshot) {
+                                double totalCashPayments =
+                                    cashSnapshot.data ?? 0.0;
+                                return Text(
+                                  '${real.format(totalCashPayments)}',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                        const SizedBox(width: 70),
+                        Column(
+                          children: [
+                            const Text(
+                              'Despesas',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.yellow,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            StreamBuilder<double>(
+                              stream: FixedExpenseRepository()
+                                  .getTotalFixedExpensesByMonth(_selectedDate),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<double> fixedSnapshot) {
+                                double totalFixedExpenses =
+                                    fixedSnapshot.data ?? 0.0;
+                                return StreamBuilder<double>(
+                                  stream: VariableExpenseRepository()
+                                      .getTotalVariableExpensesByMonth(
+                                          _selectedDate),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<double> variableSnapshot) {
+                                    double totalVariableExpenses =
+                                        variableSnapshot.data ?? 0.0;
+                                    return Text(
+                                      '${real.format(totalFixedExpenses + totalVariableExpenses)}',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.yellow,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    );
+                                  },
                                 );
                               },
                             ),

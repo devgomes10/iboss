@@ -1,13 +1,13 @@
-class PersonalReservation {
+class OpportunityReserve {
   double value;
   String id;
 
-  PersonalReservation ({
+  OpportunityReserve ({
     required this.value,
     required this.id,
   });
 
-  PersonalReservation.fromMap(Map<String, dynamic> map)
+  OpportunityReserve.fromMap(Map<String, dynamic> map)
       : id = map["id"],
         value = map["value"];
 
