@@ -1,8 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:iboss/screens/settings/settings.dart';
+import 'package:iboss/repositories/personal/opportunity_reserve_repository.dart';
+import 'package:iboss/repositories/personal/personal_reservation_repository.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
+import '../../components/show_confirmation_password.dart';
+import '../../repositories/authentication/auth_service.dart';
 import '../../repositories/personal/fixed_entry_repository.dart';
 import '../../repositories/personal/fixed_outflow_repository.dart';
 import '../../repositories/personal/variable_entry_repository.dart';
@@ -11,7 +16,9 @@ import 'entry.dart';
 import 'outflow.dart';
 
 class Personal extends StatefulWidget {
-  const Personal({super.key});
+  final User user;
+
+  const Personal({super.key, required this.user});
 
   @override
   State<Personal> createState() => _PersonalState();
@@ -19,7 +26,8 @@ class Personal extends StatefulWidget {
 
 class _PersonalState extends State<Personal> {
   // variables
-  TextEditingController reservationController = TextEditingController();
+  TextEditingController emergencyController = TextEditingController();
+  TextEditingController opportunityController = TextEditingController();
   final DateTime _selectedDate = DateTime.now();
   NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
   double totalFixedEntry = 0.0;
@@ -29,26 +37,43 @@ class _PersonalState extends State<Personal> {
 
   @override
   Widget build(BuildContext context) {
+    final opportunityReserve =
+        Provider.of<OpportunityReserveRepository>(context);
+    final emergencyReserve =
+        Provider.of<PersonalReservationRepository>(context);
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            UserAccountsDrawerHeader(
+              accountName: Text(
+                (widget.user.displayName != null)
+                    ? widget.user.displayName!
+                    : "",
+              ),
+              accountEmail: Text(widget.user.email!),
+            ),
+            ListTile(
+              leading: const FaIcon(FontAwesomeIcons.rightFromBracket),
+              title: const Text("Sair"),
+              onTap: () {
+                AuthService().logOut();
+              },
+            ),
+            ListTile(
+              leading: const FaIcon(FontAwesomeIcons.trash),
+              title: const Text("Remover conta"),
+              onTap: () {
+                showConfirmationPassword(context: context, email: "");
+              },
+            ),
+          ],
+        ),
+      ),
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         title: const Text('Pessoal'),
         centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Settings(),
-                ),
-              );
-            },
-            icon: const FaIcon(
-              FontAwesomeIcons.gear,
-            ),
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(top: 10, right: 7, bottom: 10, left: 7),
@@ -332,16 +357,44 @@ class _PersonalState extends State<Personal> {
                 'Reserva de emergência',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              subtitle: Text(
-                'RS 100,00',
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
+              subtitle: FutureBuilder<double?>(
+                future: emergencyReserve.getCurrentPersonalReservation(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text(
+                      'Valor não encontrado',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    );
+                  } else if (!snapshot.hasData) {
+                    return Text(
+                      'Adicione um valor',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    );
+                  } else {
+                    final emergencyValue = snapshot.data!;
+                    return Text(
+                      real.format(emergencyValue),
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    );
+                  }
+                },
               ),
               trailing: SizedBox(
-                width: 100,
+                width: 96,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -355,7 +408,7 @@ class _PersonalState extends State<Personal> {
                             ),
                             scrollable: true,
                             title: Text(
-                              'Qual a sua reserva de emêrgencia atual?',
+                              'Qual a sua reserva de emergência atual?',
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
@@ -371,8 +424,8 @@ class _PersonalState extends State<Personal> {
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       TextFormField(
-                                        keyboardType: TextInputType.text,
-                                        controller: reservationController,
+                                        keyboardType: TextInputType.number,
+                                        controller: emergencyController,
                                         decoration: const InputDecoration(
                                           labelText: 'Reserva de emergência',
                                           labelStyle:
@@ -406,6 +459,15 @@ class _PersonalState extends State<Personal> {
                                               width: 100,
                                               child: TextButton(
                                                 onPressed: () {
+                                                  final newEmergency =
+                                                      double.tryParse(
+                                                              emergencyController
+                                                                  .text) ??
+                                                          0.0;
+                                                  emergencyReserve
+                                                      .updatePersonalReservation(
+                                                          newEmergency);
+
                                                   Navigator.pop(context);
                                                 },
                                                 style: TextButton.styleFrom(
@@ -445,19 +507,47 @@ class _PersonalState extends State<Personal> {
             ),
             ListTile(
               title: Text(
-                'Reserva de oportunidade',
+                'Reserva de Oportunidade',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              subtitle: Text(
-                'R\$ 100,00',
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
+              subtitle: FutureBuilder<double?>(
+                future: opportunityReserve.getCurrentOpportunityReserve(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text(
+                      'Valor não encontrado',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    );
+                  } else if (!snapshot.hasData) {
+                    return Text(
+                      'Adicione um valor',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    );
+                  } else {
+                    final opportunityValue = snapshot.data!;
+                    return Text(
+                      real.format(opportunityValue),
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    );
+                  }
+                },
               ),
               trailing: SizedBox(
-                width: 100,
+                width: 96,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -471,7 +561,7 @@ class _PersonalState extends State<Personal> {
                             ),
                             scrollable: true,
                             title: Text(
-                              'Qual a sua reserva de oportunidade atual',
+                              'Qual é sua reserva de oportunidade atual?',
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
@@ -484,26 +574,26 @@ class _PersonalState extends State<Personal> {
                                 child: Form(
                                   child: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: <Widget>[
                                       TextFormField(
-                                        keyboardType: TextInputType.text,
-                                        // controller: wageController,
+                                        keyboardType: TextInputType.number,
+                                        controller: opportunityController,
                                         decoration: const InputDecoration(
                                           labelText: 'Reserva de oportunidade',
                                           labelStyle:
-                                              TextStyle(color: Colors.white),
+                                          TextStyle(color: Colors.white),
                                           border: OutlineInputBorder(),
                                         ),
                                       ),
                                       Padding(
                                         padding:
-                                            const EdgeInsets.only(top: 20.0),
+                                        const EdgeInsets.only(top: 20.0),
                                         child: Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                          CrossAxisAlignment.center,
                                           children: [
                                             SizedBox(
                                               width: 100,
@@ -513,7 +603,7 @@ class _PersonalState extends State<Personal> {
                                                 },
                                                 style: TextButton.styleFrom(
                                                   backgroundColor:
-                                                      Colors.grey[200],
+                                                  Colors.grey[200],
                                                 ),
                                                 child: const Text('Cancelar'),
                                               ),
@@ -522,11 +612,19 @@ class _PersonalState extends State<Personal> {
                                               width: 100,
                                               child: TextButton(
                                                 onPressed: () {
+                                                  final newOpportunity =
+                                                      double.tryParse(
+                                                          opportunityController
+                                                              .text) ??
+                                                          0.0;
+                                                  opportunityReserve
+                                                      .updateOpportunityReserve(newOpportunity);
+
                                                   Navigator.pop(context);
                                                 },
                                                 style: TextButton.styleFrom(
                                                   backgroundColor:
-                                                      Colors.grey[200],
+                                                  Colors.grey[200],
                                                 ),
                                                 child: const Text('Confirmar'),
                                               ),

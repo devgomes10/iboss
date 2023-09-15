@@ -39,7 +39,8 @@ void main() async {
           create: (context) => DeferredPaymentRepository(),
         ),
         ChangeNotifierProvider(
-            create: (context) => CompanyGoalsRepository(companyGoals: [])),
+          create: (context) => CompanyGoalsRepository(),
+        ),
         ChangeNotifierProvider(
           create: (context) => FixedExpenseRepository(),
         ),

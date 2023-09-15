@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/show_confirmation_password.dart';
 import 'package:iboss/repositories/authentication/auth_service.dart';
+import 'package:iboss/repositories/business/enterprise_reserve_repository.dart';
 import 'package:iboss/screens/business/revenue.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
@@ -37,6 +38,7 @@ class _BusinessState extends State<Business> {
   @override
   Widget build(BuildContext context) {
     final wageRepository = Provider.of<WageRepository>(context);
+    final enterpriseReserve = Provider.of<EnterpriseReserveRepository>(context);
     return Scaffold(
       drawer: Drawer(
         child: ListView(
@@ -362,11 +364,20 @@ class _BusinessState extends State<Business> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator();
-                  } else if (snapshot.hasError || !snapshot.hasData) {
+                  } else if (snapshot.hasError) {
                     return Text(
                       'Valor não encontrado',
                       style: TextStyle(
-                        fontSize: 25,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    );
+                  } else if (!snapshot.hasData) {
+                    return Text(
+                      'Adicione um valor',
+                      style: TextStyle(
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).colorScheme.secondary,
                       ),
@@ -385,7 +396,7 @@ class _BusinessState extends State<Business> {
                 },
               ),
               trailing: SizedBox(
-                width: 110,
+                width: 96,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -415,7 +426,7 @@ class _BusinessState extends State<Business> {
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       TextFormField(
-                                        keyboardType: TextInputType.text,
+                                        keyboardType: TextInputType.number,
                                         controller: wageController,
                                         decoration: const InputDecoration(
                                           labelText: 'Pró-labore',
@@ -450,7 +461,6 @@ class _BusinessState extends State<Business> {
                                               width: 100,
                                               child: TextButton(
                                                 onPressed: () {
-                                                  // Aqui você pode atualizar o pró-labore no Firebase Firestore
                                                   final newWage =
                                                       double.tryParse(
                                                               wageController
@@ -501,16 +511,44 @@ class _BusinessState extends State<Business> {
                 'Reserva de emergência',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              subtitle: Text(
-                'RS 100,00',
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
+              subtitle: FutureBuilder<double?>(
+                future: enterpriseReserve.getCurrentReserveEnterprise(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text(
+                      'Valor não encontrado',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    );
+                  } else if (!snapshot.hasData) {
+                    return Text(
+                      'Adicione um valor',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    );
+                  } else {
+                    final reservationValue = snapshot.data!;
+                    return Text(
+                      real.format(reservationValue),
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    );
+                  }
+                },
               ),
               trailing: SizedBox(
-                width: 110,
+                width: 96,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -524,7 +562,7 @@ class _BusinessState extends State<Business> {
                             ),
                             scrollable: true,
                             title: Text(
-                              'Qual sua reserva de emêrgencia atual',
+                              'Qual sua reserva de emergência atual?',
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
@@ -540,7 +578,7 @@ class _BusinessState extends State<Business> {
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       TextFormField(
-                                        keyboardType: TextInputType.text,
+                                        keyboardType: TextInputType.number,
                                         controller: reservationController,
                                         decoration: const InputDecoration(
                                           labelText: 'Reserva de emergência',
@@ -575,6 +613,15 @@ class _BusinessState extends State<Business> {
                                               width: 100,
                                               child: TextButton(
                                                 onPressed: () {
+                                                  final newReserve =
+                                                      double.tryParse(
+                                                              reservationController
+                                                                  .text) ??
+                                                          0.0;
+                                                  enterpriseReserve
+                                                      .updateReserveEnterprise(
+                                                          newReserve);
+
                                                   Navigator.pop(context);
                                                 },
                                                 style: TextButton.styleFrom(

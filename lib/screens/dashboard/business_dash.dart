@@ -15,8 +15,6 @@ class BusinessDash extends StatefulWidget {
 }
 
 class _BusinessDasState extends State<BusinessDash> {
-  Stream<double>? combinedStream;
-
   DateTime _selectedDate = DateTime.now();
   final NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
 
@@ -184,8 +182,8 @@ class _BusinessDasState extends State<BusinessDash> {
                                 double totalCashPayments =
                                     cashSnapshot.data ?? 0.0;
                                 return Text(
-                                  '${real.format(totalCashPayments)}',
-                                  style: TextStyle(
+                                  real.format(totalCashPayments),
+                                  style: const TextStyle(
                                     fontSize: 20,
                                     color: Colors.green,
                                     fontWeight: FontWeight.bold,
@@ -215,8 +213,8 @@ class _BusinessDasState extends State<BusinessDash> {
                                 double totalDeferredPayments =
                                     deferredSnapshot.data ?? 0.0;
                                 return Text(
-                                  '${real.format(totalDeferredPayments)}',
-                                  style: TextStyle(
+                                  real.format(totalDeferredPayments),
+                                  style: const TextStyle(
                                     fontSize: 20,
                                     color: Colors.yellow,
                                     fontWeight: FontWeight.bold,
@@ -362,8 +360,8 @@ class _BusinessDasState extends State<BusinessDash> {
                                 double totalFixedExpenses =
                                     fixedSnapshot.data ?? 0.0;
                                 return Text(
-                                  '${real.format(totalFixedExpenses)}',
-                                  style: TextStyle(
+                                  real.format(totalFixedExpenses),
+                                  style: const TextStyle(
                                     fontSize: 20,
                                     color: Colors.green,
                                     fontWeight: FontWeight.bold,
@@ -393,8 +391,8 @@ class _BusinessDasState extends State<BusinessDash> {
                                 double totalVariableExpenses =
                                     variableSnapshot.data ?? 0.0;
                                 return Text(
-                                  '${real.format(totalVariableExpenses)}',
-                                  style: TextStyle(
+                                  real.format(totalVariableExpenses),
+                                  style: const TextStyle(
                                     fontSize: 20,
                                     color: Colors.yellow,
                                     fontWeight: FontWeight.bold,
@@ -549,8 +547,8 @@ class _BusinessDasState extends State<BusinessDash> {
                                 double totalCashPayments =
                                     cashSnapshot.data ?? 0.0;
                                 return Text(
-                                  '${real.format(totalCashPayments)}',
-                                  style: TextStyle(
+                                  real.format(totalCashPayments),
+                                  style: const TextStyle(
                                     fontSize: 20,
                                     color: Colors.green,
                                     fontWeight: FontWeight.bold,
@@ -587,8 +585,9 @@ class _BusinessDasState extends State<BusinessDash> {
                                     double totalVariableExpenses =
                                         variableSnapshot.data ?? 0.0;
                                     return Text(
-                                      '${real.format(totalFixedExpenses + totalVariableExpenses)}',
-                                      style: TextStyle(
+                                      real.format(totalFixedExpenses +
+                                          totalVariableExpenses),
+                                      style: const TextStyle(
                                         fontSize: 20,
                                         color: Colors.yellow,
                                         fontWeight: FontWeight.bold,

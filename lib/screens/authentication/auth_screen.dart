@@ -43,26 +43,22 @@ class _AuthScreenState extends State<AuthScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Image.network(
-                      "https://github.com/ricarthlima/listin_assetws/raw/main/logo-icon.png",
-                      height: 64,
-                    ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        (isEntering) ? "Bem vindo a Evolve!" : "Vamos começar?",
+                        (isEntering) ? "Bem vindo a Bossover!" : "Vamos começar?",
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           color: Color(0xff003060),
-                          fontSize: 24,
+                          fontSize: 26,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                     Text(
                       (isEntering)
-                          ? "Faça login para evoluir suas finanças."
-                          : "Faça seu cadastro para cuidar das suas finanças adequadamente.",
+                          ? "Você no controle financeiro"
+                          : "Separe e organize suas finanças do jeito certo",
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: Colors.black,
@@ -120,7 +116,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         onPressed: () {
                           forgotMyPasswordClicked();
                         },
-                        child: Text("Esqueci minha senha"),
+                        child: const Text("Esqueci minha senha"),
                       ),
                     ),
                     Padding(
@@ -305,7 +301,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   Navigator.pop(context);
                 });
               },
-              child: Text("Redefinir senha"),
+              child: const Text("Redefinir senha"),
             ),
           ],
         );

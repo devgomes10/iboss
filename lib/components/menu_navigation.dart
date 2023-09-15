@@ -49,9 +49,9 @@ class _MenuNavigationState extends State<MenuNavigation> {
         onPageChanged: setCurrentPage,
         children:  [
           Business(user: widget.transaction),
-          const Personal(),
-          const Goals(),
-          const Dashboard(),
+          Personal(user: widget.transaction),
+          Goals(user: widget.transaction),
+          Dashboard(user: widget.transaction),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

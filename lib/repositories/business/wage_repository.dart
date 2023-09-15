@@ -14,14 +14,13 @@ class WageRepository extends ChangeNotifier {
   }
 
   Future<void> updateWage(double newWage) async {
-    await wageCollection.doc('currentWage').set({'value': newWage});
+    await wageCollection.doc().set({'value': newWage});
 
     notifyListeners();
   }
 
   Future<double?> getCurrentWage() async {
-    // Obtém o valor atual do pró-labore do Firebase Firestore
-    final doc = await wageCollection.doc('currentWage').get();
+    final doc = await wageCollection.doc().get();
     if (doc.exists) {
       final data = doc.data() as Map<String, dynamic>;
       final wageValue = data['value'] as double?;

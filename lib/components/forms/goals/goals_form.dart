@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 import '../../../models/goals/company_goals.dart';
 import '../../../models/goals/personal_goals.dart';
 import '../../../repositories/goals/company_goals_repository.dart';
@@ -33,6 +34,7 @@ class ___DialogNewGoalState extends State<_DialogNewGoal> {
   List<bool> companyCheckedList = [];
   List<bool> personalCheckedList = [];
   final ptBr = const Locale('pt', 'BR');
+  String goalsId = const Uuid().v1();
 
 
   @override
@@ -121,17 +123,14 @@ class ___DialogNewGoalState extends State<_DialogNewGoal> {
                       width: 85,
                       height: 45,
                       child: TextButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (_formKey.currentState!
                               .validate()) {
-                            forCompany.add(
-                              CompanyGoals(
-                                description:
-                                descriptionController
-                                    .text,
-                                date: DateFormat('dd/MM/yyyy').format(selectedDate),
-                              ),
-                            );
+                            CompanyGoals company = CompanyGoals(
+                                description: descriptionController.text,
+                                date: DateTime.now(),
+                                id: goalsId,);
+                            await forCompany.addCompanyGoalsToFirestore(company);
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(
                               const SnackBar(
@@ -165,23 +164,24 @@ class ___DialogNewGoalState extends State<_DialogNewGoal> {
                       height: 45,
                       child: TextButton(
                         onPressed: () {
-                          if (_formKey.currentState!
-                              .validate()) {
-                            forPersonal.add(PersonalGoals(
-                                description:
-                                descriptionController
-                                    .text,
-                                date: DateFormat('dd/MM/yyyy').format(selectedDate)));
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  'Criando uma nova Meta',
-                                ),
-                              ),
-                            );
-                            Navigator.pop(context);
-                          }
+                          // if (_formKey.currentState!
+                          //     .validate()) {
+                          //   forPersonal.add(PersonalGoals(
+                          //       description:
+                          //       descriptionController
+                          //           .text,
+                          //       date: DateFormat('dd/MM/yyyy').format(
+                          //           selectedDate)));
+                          //   ScaffoldMessenger.of(context)
+                          //       .showSnackBar(
+                          //     const SnackBar(
+                          //       content: Text(
+                          //         'Criando uma nova Meta',
+                          //       ),
+                          //     ),
+                          //   );
+                          //   Navigator.pop(context);
+                          // }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.grey[400],
