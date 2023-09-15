@@ -29,7 +29,7 @@ class CashPaymentRepository extends ChangeNotifier {
     );
   }
 
-  Future<void> addPaymentToFirestore(CashPayment payment) async {
+  Future<void> addPaymentToFirestore (CashPayment payment) async {
     try {
       await cashPaymentCollection.doc(payment.id).set(
             payment.toMap(),

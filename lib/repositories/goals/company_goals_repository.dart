@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:iboss/models/goals/company_goals.dart';
 
 class CompanyGoalsRepository extends ChangeNotifier {
-  late String uid;
+  late String uidCompany;
   late CollectionReference companyCollection;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   CompanyGoalsRepository() {
-    uid = FirebaseAuth.instance.currentUser!.uid;
+    uidCompany = FirebaseAuth.instance.currentUser!.uid;
     companyCollection =
-        FirebaseFirestore.instance.collection('companyGoals_$uid');
+        FirebaseFirestore.instance.collection('companyGoals_$uidCompany');
   }
 
   Stream<List<CompanyGoals>> getCompanyGoalsStream() {

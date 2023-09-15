@@ -1,7 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:iboss/repositories/business/enterprise_reserve_repository.dart';
-import 'package:iboss/repositories/personal/opportunity_reserve_repository.dart';
 import 'package:iboss/screens/authentication/auth_screen.dart';
 import 'package:iboss/components/menu_navigation.dart';
 import 'package:iboss/repositories/business/deferred_payment_repository.dart';
@@ -15,8 +13,6 @@ import 'package:iboss/theme/dark_theme.dart';
 import 'package:iboss/repositories/business/cash_payment_repository.dart';
 import 'package:iboss/repositories/personal/fixed_entry_repository.dart';
 import 'package:iboss/repositories/goals/personal_goals_repository.dart';
-import 'package:iboss/repositories/personal/personal_reservation_repository.dart';
-import 'package:iboss/repositories/business/wage_repository.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -32,42 +28,16 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (context) => CashPaymentRepository(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => DeferredPaymentRepository(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => CompanyGoalsRepository(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => FixedExpenseRepository(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => VariableExpenseRepository(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => FixedEntryRepository(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => VariableEntryRepository(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => FixedOutflowRepository(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => VariableOutflowRepository(),
-        ),
-        ChangeNotifierProvider(
-            create: (context) => PersonalGoalsRepository(personalGoals: [])),
-        ChangeNotifierProvider(create: (context) => WageRepository()),
-        ChangeNotifierProvider(
-            create: (context) => PersonalReservationRepository()),
-        ChangeNotifierProvider(
-            create: (context) => OpportunityReserveRepository()),
-        ChangeNotifierProvider(
-            create: (context) => EnterpriseReserveRepository()),
+        ChangeNotifierProvider(create: (context) => CashPaymentRepository()),
+        ChangeNotifierProvider(create: (context) => DeferredPaymentRepository()),
+        ChangeNotifierProvider(create: (context) => CompanyGoalsRepository()),
+        ChangeNotifierProvider(create: (context) => FixedExpenseRepository()),
+        ChangeNotifierProvider(create: (context) => VariableExpenseRepository()),
+        ChangeNotifierProvider(create: (context) => FixedEntryRepository()),
+        ChangeNotifierProvider(create: (context) => VariableEntryRepository()),
+        ChangeNotifierProvider(create: (context) => FixedOutflowRepository()),
+        ChangeNotifierProvider(create: (context) => VariableOutflowRepository()),
+        ChangeNotifierProvider(create: (context) => PersonalGoalsRepository()),
       ],
       child: const MyApp(),
     ),

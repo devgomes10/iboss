@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iboss/models/goals/personal_goals.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import '../../../models/goals/company_goals.dart';
-import '../../../models/goals/personal_goals.dart';
 import '../../../repositories/goals/company_goals_repository.dart';
 import '../../../repositories/goals/personal_goals_repository.dart';
 
@@ -35,7 +35,6 @@ class ___DialogNewGoalState extends State<_DialogNewGoal> {
   List<bool> personalCheckedList = [];
   final ptBr = const Locale('pt', 'BR');
   String goalsId = const Uuid().v1();
-
 
   @override
   Widget build(BuildContext context) {
@@ -68,15 +67,13 @@ class ___DialogNewGoalState extends State<_DialogNewGoal> {
                         keyboardType: TextInputType.text,
                         decoration: const InputDecoration(
                           labelText: 'Descrição',
-                          labelStyle:
-                          TextStyle(color: Colors.white),
+                          labelStyle: TextStyle(color: Colors.white),
                         ),
                       ),
                     ),
                     IconButton(
                       onPressed: () async {
-                        final DateTime? dateTime =
-                        await showDatePicker(
+                        final DateTime? dateTime = await showDatePicker(
                           context: context,
                           locale: ptBr,
                           initialDate: selectedDate,
@@ -86,14 +83,13 @@ class ___DialogNewGoalState extends State<_DialogNewGoal> {
                         if (dateTime != null) {
                           setState(() {
                             selectedDate = dateTime;
-                            dateController.text = DateFormat(
-                                'dd/MM/yyyy', 'pt_BR')
-                                .format(selectedDate);
+                            dateController.text =
+                                DateFormat('dd/MM/yyyy', 'pt_BR')
+                                    .format(selectedDate);
                           });
                         }
                       },
-                      icon: const FaIcon(
-                          FontAwesomeIcons.calendar),
+                      icon: const FaIcon(FontAwesomeIcons.calendar),
                     ),
                   ],
                 ),
@@ -109,30 +105,27 @@ class ___DialogNewGoalState extends State<_DialogNewGoal> {
               'É uma meta para a empresa ou pessoal?',
             ),
             Padding(
-              padding:
-              const EdgeInsets.only(top: 25, bottom: 15),
+              padding: const EdgeInsets.only(top: 25, bottom: 15),
               child: Row(
-                mainAxisAlignment:
-                MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Consumer<CompanyGoalsRepository>(builder:
-                      (BuildContext context,
-                      CompanyGoalsRepository forCompany,
-                      Widget? widget) {
+                      (BuildContext context, CompanyGoalsRepository forCompany,
+                          Widget? widget) {
                     return SizedBox(
                       width: 85,
                       height: 45,
                       child: TextButton(
                         onPressed: () async {
-                          if (_formKey.currentState!
-                              .validate()) {
+                          if (_formKey.currentState!.validate()) {
                             CompanyGoals company = CompanyGoals(
-                                description: descriptionController.text,
-                                date: DateTime.now(),
-                                id: goalsId,);
-                            await forCompany.addCompanyGoalsToFirestore(company);
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(
+                              description: descriptionController.text,
+                              date: DateTime.now(),
+                              id: goalsId,
+                            );
+                            await forCompany
+                                .addCompanyGoalsToFirestore(company);
+                            ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
                                   'Criando uma nova Meta',
@@ -157,31 +150,28 @@ class ___DialogNewGoalState extends State<_DialogNewGoal> {
                   }),
                   Consumer<PersonalGoalsRepository>(builder:
                       (BuildContext context,
-                      PersonalGoalsRepository forPersonal,
-                      Widget? widget) {
+                          PersonalGoalsRepository forPersonal, Widget? widget) {
                     return SizedBox(
                       width: 85,
                       height: 45,
                       child: TextButton(
-                        onPressed: () {
-                          // if (_formKey.currentState!
-                          //     .validate()) {
-                          //   forPersonal.add(PersonalGoals(
-                          //       description:
-                          //       descriptionController
-                          //           .text,
-                          //       date: DateFormat('dd/MM/yyyy').format(
-                          //           selectedDate)));
-                          //   ScaffoldMessenger.of(context)
-                          //       .showSnackBar(
-                          //     const SnackBar(
-                          //       content: Text(
-                          //         'Criando uma nova Meta',
-                          //       ),
-                          //     ),
-                          //   );
-                          //   Navigator.pop(context);
-                          // }
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            PersonalGoals personal = PersonalGoals(
+                              description: descriptionController.text,
+                              date: DateTime.now(),
+                              id: goalsId,
+                            );
+                            await forPersonal.addPersonalGoalsToFirestore(personal);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'Criando uma nova Meta',
+                                ),
+                              ),
+                            );
+                            Navigator.pop(context);
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.grey[400],
