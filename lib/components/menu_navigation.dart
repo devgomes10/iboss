@@ -7,6 +7,7 @@ import 'package:iboss/components/forms/business/revenue_form.dart';
 import 'package:iboss/components/forms/goals/goals_form.dart';
 import 'package:iboss/components/forms/personal/entry_form.dart';
 import 'package:iboss/components/forms/personal/outflow_form.dart';
+import 'package:iboss/components/show_bottom_sheet.dart';
 import 'package:iboss/screens/business/business.dart';
 import 'package:iboss/screens/business/expense.dart';
 import 'package:iboss/screens/dashboard/dashboard.dart';
@@ -85,7 +86,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
                   builder: (context) => const Revenue(),
                 ),
               );
-              NewRevenueDialog.show(context);
+              NewRevenueBottomSheet.show(context);
             },
           ),
           SpeedDialChild(
