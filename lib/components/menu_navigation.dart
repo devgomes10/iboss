@@ -72,7 +72,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
         overlayColor: Colors.black,
         overlayOpacity: 0.7,
         spacing: 12,
-        spaceBetweenChildren: 12,
+        spaceBetweenChildren: 15,
         curve: Curves.easeInOutCirc,
         children: [
           SpeedDialChild(

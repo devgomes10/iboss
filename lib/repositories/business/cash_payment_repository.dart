@@ -35,7 +35,7 @@ class CashPaymentRepository extends ChangeNotifier {
             payment.toMap(),
           );
     } catch (error) {
-      print('Erro ao adicionar pagamento ao Firestore: $error');
+      const Text("erro ao adicionar pagamento", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
   }
@@ -44,7 +44,7 @@ class CashPaymentRepository extends ChangeNotifier {
     try {
       await cashPaymentCollection.doc(paymentId).delete();
     } catch (error) {
-      print('Erro ao remover pagamento do Firestore: $error');
+      const Text("erro ao remover pagamento", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
   }
@@ -57,7 +57,7 @@ class CashPaymentRepository extends ChangeNotifier {
           .map((doc) => CashPayment.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
     } catch (error) {
-      print('Erro ao obter pagamentos do Firestore: $error');
+      const Text("erro ao carregar dados pagamento", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
     return cashPayments;

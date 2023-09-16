@@ -9,6 +9,8 @@ import '../../../repositories/business/deferred_payment_repository.dart';
 class NewRevenueBottomSheet {
   static void show(BuildContext context) {
     showModalBottomSheet(
+      useSafeArea: true,
+      isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(24),
@@ -46,8 +48,7 @@ class __BottomSheetNewRevenueState extends State<_BottomSheetNewRevenue> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      // Adicione SingleChildScrollView para fazer o modal rolável
-      reverse: true, // Inverta a rolagem para evitar que o teclado cubra os campos de texto
+      reverse: true,
       child: Container(
         padding: EdgeInsets.all(16),
         child: Form(

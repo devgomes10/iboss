@@ -35,7 +35,7 @@ class VariableEntryRepository extends ChangeNotifier {
         entry.toMap(),
       );
     } catch (error) {
-      print('Erro ao adicionar entrada ao Firestore: $error');
+      const Text("Erro ao adicionar renda", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
   }
@@ -44,7 +44,7 @@ class VariableEntryRepository extends ChangeNotifier {
     try {
       await variableEntryCollection.doc(entryId).delete();
     } catch (error) {
-      print('Erro ao remover entrada do Firestore: $error');
+      const Text("Erro ao remover renda", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
   }
@@ -59,7 +59,7 @@ class VariableEntryRepository extends ChangeNotifier {
           VariableEntry.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
     } catch (error) {
-      print('Erro ao obter entradas do Firestore: $error');
+      const Text("Erro ao carregar dados", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
     return variableEntry;

@@ -70,7 +70,7 @@ class _BusinessState extends State<Business> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.only(top: 10, right: 7, bottom: 10, left: 7),
+        padding: const EdgeInsets.only(top: 20, right: 7, bottom: 10, left: 7),
         child: Column(
           children: [
             const SizedBox(height: 5),
@@ -210,7 +210,7 @@ class _BusinessState extends State<Business> {
             ),
             const Divider(
               color: Colors.transparent,
-              height: 15,
+              height: 20,
             ),
             InkWell(
               onTap: () {

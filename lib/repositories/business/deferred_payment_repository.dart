@@ -35,7 +35,7 @@ class DeferredPaymentRepository extends ChangeNotifier {
             payment.toMap(),
           );
     } catch (error) {
-      print('Erro ao adicionar pagamento ao Firestore: $error');
+      Text("Erro ao adicionar pagamento", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
   }
@@ -44,7 +44,7 @@ class DeferredPaymentRepository extends ChangeNotifier {
     try {
       await deferredPaymentCollection.doc(paymentId).delete();
     } catch (error) {
-      print('Erro ao remover pagamento do Firestore: $error');
+      Text("Erro ao remover pagamento", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
   }
@@ -58,7 +58,7 @@ class DeferredPaymentRepository extends ChangeNotifier {
               DeferredPayment.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
     } catch (error) {
-      print('Erro ao obter pagamentos do Firestore: $error');
+      Text("Erro ao carregar dados", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
     return deferredPayments;

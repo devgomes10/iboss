@@ -34,7 +34,7 @@ class FixedExpenseRepository extends ChangeNotifier {
         expense.toMap(),
       );
     } catch (error) {
-      print('Erro ao adicionar despesa ao Firestore: $error');
+      const Text("Erro ao adicionar despesa", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
   }
@@ -43,7 +43,7 @@ class FixedExpenseRepository extends ChangeNotifier {
     try {
       await fixedExpenseCollection.doc(expenseId).delete();
     } catch (error) {
-      print('Erro ao remover despesa do Firestore: $error');
+      const Text("Erro ao remover despesa", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
   }
@@ -58,7 +58,7 @@ class FixedExpenseRepository extends ChangeNotifier {
           FixedExpense.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
     } catch (error) {
-      print('Erro ao obter despesas do Firestore: $error');
+      const Text("Erro ao carregar dados", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
     return fixedExpenses;

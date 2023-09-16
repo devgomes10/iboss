@@ -35,7 +35,7 @@ class FixedOutflowRepository extends ChangeNotifier {
             outflow.toMap(),
           );
     } catch (error) {
-      print('Erro ao adicionar saída ao Firestore: $error');
+      const Text("Erro ao adicionar gasto", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
   }
@@ -44,7 +44,7 @@ class FixedOutflowRepository extends ChangeNotifier {
     try {
       await fixedOutflowCollection.doc(outflowId).delete();
     } catch (error) {
-      print('Erro ao remover saída do Firestore: $error');
+      const Text("Erro ao remover gasto", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
   }
@@ -58,7 +58,7 @@ class FixedOutflowRepository extends ChangeNotifier {
               (doc) => FixedOutflow.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
     } catch (error) {
-      print('Erro ao obter saídas do Firestore: $error');
+      const Text("Erro ao carregar dados", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
     return fixedOutflow;

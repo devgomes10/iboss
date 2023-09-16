@@ -35,7 +35,7 @@ class VariableOutflowRepository extends ChangeNotifier {
             outflow.toMap(),
           );
     } catch (error) {
-      print('Erro ao adicionar saída ao Firestore: $error');
+      Text("Erro ao adicionar gasto", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
   }
@@ -44,7 +44,7 @@ class VariableOutflowRepository extends ChangeNotifier {
     try {
       await variableOutflowCollection.doc(outflowId).delete();
     } catch (error) {
-      print('Erro ao remover saída do Firestore: $error');
+      Text("Erro ao remover gasto", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
   }
@@ -58,7 +58,7 @@ class VariableOutflowRepository extends ChangeNotifier {
               VariableOutflow.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
     } catch (error) {
-      print('Erro ao obter saídas do Firestore: $error');
+      Text("Erro ao carregar dados", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
     return variableOutflow;

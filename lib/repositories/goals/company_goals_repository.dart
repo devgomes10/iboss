@@ -34,7 +34,7 @@ class CompanyGoalsRepository extends ChangeNotifier {
         goals.toMap(),
       );
     } catch (error) {
-      print('Erro ao adicionar pagamento ao Firestore: $error');
+      const Text("Erro ao adicionar meta", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
   }
@@ -43,7 +43,7 @@ class CompanyGoalsRepository extends ChangeNotifier {
     try {
       await companyCollection.doc(goalId).delete();
     } catch (error) {
-      print('Erro ao remover pagamento do Firestore: $error');
+      const Text("Erro ao remover meta", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
   }

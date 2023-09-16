@@ -69,10 +69,9 @@ class _PersonalState extends State<Personal> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.only(top: 10, right: 7, bottom: 10, left: 7),
+        padding: const EdgeInsets.only(top: 20, right: 7, bottom: 10, left: 7),
         child: Column(
           children: [
-            const SizedBox(height: 5),
             InkWell(
               onTap: () {
                 Navigator.push(
@@ -207,7 +206,7 @@ class _PersonalState extends State<Personal> {
             ),
             const Divider(
               color: Colors.transparent,
-              height: 15,
+              height: 20,
             ),
             InkWell(
               onTap: () {

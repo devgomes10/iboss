@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iboss/components/snackbar/show_snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import '../../../models/business/fixed_expense.dart';
@@ -121,11 +122,7 @@ class __DialogoNovaReceitaState extends State<_DialogoNewExpense> {
                                   id: invoicingId,
                                 );
                                 await fixed.addExpenseToFirestore(fixedExpense);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Adicionada uma nova despesa fixa'),
-                                  ),
-                                );
+                                showSnackbar(context: context,isError: false, menssager: "Despesa adicionada");
                                 Navigator.pop(context);
                               }
                             },
@@ -158,12 +155,8 @@ class __DialogoNovaReceitaState extends State<_DialogoNewExpense> {
                                 );
 
                                 await variable.addExpenseToFirestore(variableExpense);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content:
-                                        Text('Adicionada uma nova despesa variável'),
-                                  ),
-                                );
+                                showSnackbar(context: context,isError: false, menssager: "Despesa adicionada");
+
                                 Navigator.pop(context);
                               }
                             },

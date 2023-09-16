@@ -6,6 +6,7 @@ import '../../../models/business/cash_payment.dart';
 import '../../../models/business/deferred_payment.dart';
 import '../../../repositories/business/cash_payment_repository.dart';
 import '../../../repositories/business/deferred_payment_repository.dart';
+import '../../snackbar/show_snackbar.dart';
 
 class NewRevenueDialog {
   static void show(BuildContext context) {
@@ -123,12 +124,7 @@ class __DialogoNovaReceitaState extends State<_DialogonewRevenue> {
                                   id: invoicingId,
                                 );
                                 await inCash.addPaymentToFirestore(received);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                        'Adicionado um novo pagamento recebido'),
-                                  ),
-                                );
+                                showSnackbar(context: context,isError: false, menssager: "Pagamento adicionado");
                                 Navigator.pop(context);
                               }
                             },
@@ -160,13 +156,7 @@ class __DialogoNovaReceitaState extends State<_DialogonewRevenue> {
                                   id: invoicingId,
                                 );
                                 await inTerm.addPaymentToFirestore(pending);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      'Adicionado um novo pagamento pendente',
-                                    ),
-                                  ),
-                                );
+                                showSnackbar(context: context,isError: false, menssager: "Pagamento adicionado");
                                 Navigator.pop(context);
                               }
                             },
