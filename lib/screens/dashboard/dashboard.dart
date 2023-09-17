@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/screens/dashboard/personal_dash.dart';
 import '../../components/show_confirmation_password.dart';
 import '../../repositories/authentication/auth_service.dart';
+import '../financial_education/financial_education.dart';
 import 'business_dash.dart';
 
 class Dashboard extends StatefulWidget {
@@ -58,7 +59,7 @@ class _DashboardState extends State<Dashboard> {
             tabs: [
               Tab(
                 icon: FaIcon(FontAwesomeIcons.industry),
-                text: 'Empresa',
+                text: 'Empreendimento',
               ),
               Tab(
                 icon: FaIcon(FontAwesomeIcons.userLarge),
@@ -67,6 +68,18 @@ class _DashboardState extends State<Dashboard> {
             ],
             indicatorColor: Colors.white,
           ),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const FinancialEducation(),
+                    ),
+                  );
+                },
+                icon: const FaIcon(FontAwesomeIcons.graduationCap)),
+          ],
         ),
         body: const TabBarView(
           children: [

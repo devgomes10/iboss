@@ -41,7 +41,7 @@ class ___DialogNewGoalState extends State<_DialogNewGoal> {
     return AlertDialog(
       scrollable: true,
       title: Text(
-        'Adicione uma nova meta',
+        'Crie uma meta e adicione uma data de conclusão',
         style: GoogleFonts.montserrat(
           fontSize: 25,
         ),
@@ -102,7 +102,7 @@ class ___DialogNewGoalState extends State<_DialogNewGoal> {
         Column(
           children: [
             const Text(
-              'É uma meta para a empresa ou pessoal?',
+              'É uma meta para o empreendimento ou pessoal?',
             ),
             Padding(
               padding: const EdgeInsets.only(top: 25, bottom: 15),
@@ -113,7 +113,7 @@ class ___DialogNewGoalState extends State<_DialogNewGoal> {
                       (BuildContext context, CompanyGoalsRepository forCompany,
                           Widget? widget) {
                     return SizedBox(
-                      width: 85,
+                      width: 140,
                       height: 45,
                       child: TextButton(
                         onPressed: () async {
@@ -135,15 +135,11 @@ class ___DialogNewGoalState extends State<_DialogNewGoal> {
                             Navigator.pop(context);
                           }
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey[400],
-                          textStyle: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 15,
-                          ),
-                        ),
                         child: const Text(
-                          'Empresa',
+                          'Empreendimento',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     );
@@ -152,7 +148,7 @@ class ___DialogNewGoalState extends State<_DialogNewGoal> {
                       (BuildContext context,
                           PersonalGoalsRepository forPersonal, Widget? widget) {
                     return SizedBox(
-                      width: 85,
+                      width: 140,
                       height: 45,
                       child: TextButton(
                         onPressed: () async {
@@ -162,7 +158,8 @@ class ___DialogNewGoalState extends State<_DialogNewGoal> {
                               date: DateTime.now(),
                               id: goalsId,
                             );
-                            await forPersonal.addPersonalGoalsToFirestore(personal);
+                            await forPersonal
+                                .addPersonalGoalsToFirestore(personal);
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
@@ -173,15 +170,11 @@ class ___DialogNewGoalState extends State<_DialogNewGoal> {
                             Navigator.pop(context);
                           }
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey[400],
-                          textStyle: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 15,
-                          ),
-                        ),
                         child: const Text(
                           'Pessoal',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     );

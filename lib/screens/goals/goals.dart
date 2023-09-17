@@ -4,11 +4,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iboss/models/goals/personal_goals.dart';
 import 'package:iboss/repositories/goals/personal_goals_repository.dart';
-import 'package:iboss/screens/settings/settings.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import '../../components/show_confirmation_password.dart';
 import '../../models/goals/company_goals.dart';
+import '../../repositories/authentication/auth_service.dart';
 import '../../repositories/goals/company_goals_repository.dart';
+import '../financial_education/financial_education.dart';
 
 class Goals extends StatefulWidget {
   final User user;
@@ -33,32 +35,45 @@ class _GoalsState extends State<Goals> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        drawer: Drawer(
+          child: ListView(
+            children: [
+              UserAccountsDrawerHeader(
+                accountName: Text(
+                  (widget.user.displayName != null)
+                      ? widget.user.displayName!
+                      : "",
+                ),
+                accountEmail: Text(widget.user.email!),
+              ),
+              ListTile(
+                leading: const FaIcon(FontAwesomeIcons.rightFromBracket),
+                title: const Text("Sair"),
+                onTap: () {
+                  AuthService().logOut();
+                },
+              ),
+              ListTile(
+                leading: const FaIcon(FontAwesomeIcons.trash),
+                title: const Text("Remover conta"),
+                onTap: () {
+                  showConfirmationPassword(context: context, email: "");
+                },
+              ),
+            ],
+          ),
+        ),
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
           title: const Text(
-            'Metas financeiras',
+            'Metas',
           ),
-          actions: <Widget>[
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const Settings(),
-                  ),
-                );
-              },
-              icon: const FaIcon(
-                FontAwesomeIcons.gear,
-              ),
-            ),
-          ],
           bottom: const TabBar(
             tabs: [
               Tab(
                 icon: FaIcon(FontAwesomeIcons.industry),
-                text: 'Empresa',
+                text: 'Empreendimento',
               ),
               Tab(
                 icon: FaIcon(FontAwesomeIcons.userLarge),
@@ -67,6 +82,11 @@ class _GoalsState extends State<Goals> {
             ],
             indicatorColor: Colors.white,
           ),
+          actions: [
+            IconButton(onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const FinancialEducation(),),);
+            }, icon: const FaIcon(FontAwesomeIcons.graduationCap)),
+          ],
         ),
         body: Column(
           children: [
@@ -81,11 +101,11 @@ class _GoalsState extends State<Goals> {
                     builder: (BuildContext context,
                         AsyncSnapshot<List<CompanyGoals>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator(); // Você pode usar um indicador de carregamento enquanto os dados são carregados.
+                        return const CircularProgressIndicator();
                       } else if (snapshot.hasError) {
-                        return Text('Erro: ${snapshot.error}');
+                        return const Center(child: Text('Erro ao carregar as metas da empresa'),);
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return Center(
+                        return const Center(
                           child: Text('Nenhuma meta disponível.'),
                         );
                       } else {
@@ -211,11 +231,11 @@ class _GoalsState extends State<Goals> {
                     builder: (BuildContext context,
                         AsyncSnapshot<List<PersonalGoals>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator(); // Você pode usar um indicador de carregamento enquanto os dados são carregados.
+                        return const CircularProgressIndicator(); // Você pode usar um indicador de carregamento enquanto os dados são carregados.
                       } else if (snapshot.hasError) {
-                        return Text('Erro: ${snapshot.error}');
+                        return const Center(child: Text('Erro ao carregar as metas pessoais'),);
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return Center(
+                        return const Center(
                           child: Text('Nenhuma meta disponível.'),
                         );
                       } else {

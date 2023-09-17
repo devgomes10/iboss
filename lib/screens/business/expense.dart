@@ -43,22 +43,6 @@ class _ExpenseState extends State<Expense> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
           title: const Text('Despesas'),
-          actions: <Widget>[
-            IconButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (BuildContext context) {
-                      return const AlertDialog(
-                        title: Text('Informação sobre os Gastos'),
-                        content: Text('Texto passando as informações'),
-                      );
-                    },
-                  );
-                },
-                icon: const FaIcon(FontAwesomeIcons.circleInfo))
-          ],
           bottom: const TabBar(
             labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             tabs: [
@@ -74,7 +58,7 @@ class _ExpenseState extends State<Expense> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            NewExpenseDialog.show(context);
+            NewExpenseBottomSheet.show(context);
           },
           child: const FaIcon(FontAwesomeIcons.plus),
         ),
@@ -116,7 +100,7 @@ class _ExpenseState extends State<Expense> {
                         return const CircularProgressIndicator();
                       }
                       if (snapshot.hasError) {
-                        return Text('Erro: ${snapshot.error}');
+                        return const Center(child: Text('Erro ao carregar as despesas fixas'),);
                       }
                       final fixedExpenses = snapshot.data;
                       if (fixedExpenses == null || fixedExpenses.isEmpty) {
@@ -239,7 +223,7 @@ class _ExpenseState extends State<Expense> {
                         return const CircularProgressIndicator();
                       }
                       if (snapshot.hasError) {
-                        return Text('Erro: ${snapshot.error}');
+                        return const Center(child: Text('Erro ao carregar as despesas variáveis'),);
                       }
                       final variableExpenses = snapshot.data;
                       if (variableExpenses == null || variableExpenses.isEmpty) {

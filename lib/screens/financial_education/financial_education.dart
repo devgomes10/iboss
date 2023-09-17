@@ -35,7 +35,29 @@ class _FinancialEducationState extends State<FinancialEducation> {
           children: [
             ListView(
               children: [
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
+                ListTile(
+                  title: Text(
+                    "Pró-labore",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  onTap: () {
+                    AlertEducation.show(
+                        context,
+                        "Pró-labore",
+                        "O pró-labore é uma remuneração que um sócio ou proprietário"
+                            " de uma empresa recebe por seu trabalho na empresa. "
+                            "É um valor retirado mensalmente ou periodicamente para "
+                            "compensar o trabalho e a administração do negócio. É importante"
+                            " diferenciar o pró-labore dos lucros da empresa, pois o pró-labore"
+                            " é uma retirada que não está diretamente relacionada aos resultados "
+                            "financeiros da empresa, enquanto os lucros são distribuídos aos "
+                            "sócios de acordo com o desempenho do negócio. É uma maneira de o "
+                            "proprietário receber um salário pelos seus esforços, assim como "
+                            "qualquer funcionário, mesmo que a empresa não tenha lucro.");
+                  },
+                ),
+                const Divider(color: Colors.white, height: 15),
                 ListTile(
                   title: Text(
                     "Orçamento Empresarial",
@@ -56,7 +78,7 @@ class _FinancialEducationState extends State<FinancialEducation> {
                             " do seu negócio.");
                   },
                 ),
-                Divider(color: Colors.white, height: 15),
+                const Divider(color: Colors.white, height: 15),
                 ListTile(
                   title: Text(
                     "Gestão de Fluxo de Caixa",
@@ -74,7 +96,7 @@ class _FinancialEducationState extends State<FinancialEducation> {
                             "e a tomada de decisões informadas sobre seu empreendimento.");
                   },
                 ),
-                Divider(color: Colors.white, height: 15),
+                const Divider(color: Colors.white, height: 15),
                 ListTile(
                   title: Text(
                     "Contabilidade Básica",
@@ -93,7 +115,7 @@ class _FinancialEducationState extends State<FinancialEducation> {
                             "manter o controle do dinheiro que entra e sai do seu negócio.");
                   },
                 ),
-                Divider(color: Colors.white, height: 15),
+                const Divider(color: Colors.white, height: 15),
                 ListTile(
                   title: Text(
                     "Impostos",
@@ -110,7 +132,7 @@ class _FinancialEducationState extends State<FinancialEducation> {
                             "Retenção na Fonte \n");
                   },
                 ),
-                Divider(color: Colors.white, height: 15),
+                const Divider(color: Colors.white, height: 15),
                 ListTile(
                   title: Text(
                     "Investimentos no Negócio",
@@ -132,7 +154,7 @@ class _FinancialEducationState extends State<FinancialEducation> {
                         " e buscar orientação, se necessário, para tomar decisões informadas e bem-sucedidas.");
                   },
                 ),
-                Divider(color: Colors.white, height: 15),
+                const Divider(color: Colors.white, height: 15),
                 ListTile(
                   title: Text(
                     "Planejamento Financeiro a Longo Prazo",
@@ -147,7 +169,7 @@ class _FinancialEducationState extends State<FinancialEducation> {
                             "Prepare-se para Emergências\n\n- Pense na Aposentadoria");
                   },
                 ),
-                Divider(color: Colors.white, height: 15),
+                const Divider(color: Colors.white, height: 15),
                 ListTile(
                   title: Text(
                     "Crédito e Financiamento",
@@ -171,54 +193,110 @@ class _FinancialEducationState extends State<FinancialEducation> {
             ),
             ListView(
               children: [
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ListTile(
                   title: Text(
                     "Orçamento Pessoal",
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
+                  onTap: () {
+                    AlertEducation.show(context, "Orçamento Pessoal", "Um orçamento pessoal é "
+                        "um plano que você cria para gerenciar seu dinheiro. Ele envolve "
+                        "listar suas rendas (dinheiro que entra) e gastos (dinheiro que sai) para "
+                        "um período de tempo, geralmente mensal. O objetivo é garantir que você"
+                        " gaste seu dinheiro de forma consciente, economize e alcance seus objetivos"
+                        " financeiros. Um orçamento ajuda a controlar seus gastos, evitar dívidas "
+                        "desnecessárias e garantir que seu dinheiro seja usado da melhor maneira "
+                        "possível para atender às suas necessidades e metas financeiras.");
+                  },
                 ),
-                Divider(color: Colors.white, height: 15),
+                const Divider(color: Colors.white, height: 15),
                 ListTile(
                   title: Text(
                     "Gestão de Dívidas Pessoais",
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
+                  onTap: () {
+                    AlertEducation.show(context, "Gestão de Dívidas Pessoais", "A "
+                        "gestão de dívidas pessoais envolve tomar medidas para controlar e "
+                        "pagar suas dívidas de forma eficaz. Aqui estão os passos simples:\n\n- "
+                        "Priorize as dívidas: Classifique as dívidas com base nas taxas de juros. "
+                        "Dê prioridade às dívidas com as taxas mais altas, pois elas custam mais ao "
+                        "longo do tempo.\n\n- Reduza gastos: Identifique áreas onde pode cortar "
+                        "gastos para liberar mais dinheiro para pagar as dívidas.\n\n- Pague"
+                        " mais que o mínimo: Sempre que possível, faça pagamentos maiores"
+                        " do que o mínimo exigido em suas dívidas de maior interesse. Isso"
+                        " acelera o pagamento e economiza dinheiro.\n\n- Evite contrair mais"
+                        " dívidas: Enquanto estiver pagando suas dívidas, evite contrair novas,"
+                        " a menos que seja estritamente necessário.");
+                  },
                 ),
-                Divider(color: Colors.white, height: 15),
+                const Divider(color: Colors.white, height: 15),
                 ListTile(
                   title: Text(
-                    "Poupança e Investimentos Pessoais",
+                    "Investimentos Pessoais",
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
+                  onTap: () {
+                    AlertEducation.show(context, "Investimentos Pessoais", "- Poupança: Guardar dinheiro "
+                        "em uma conta poupança ou conta corrente para ganhar juros, embora geralmente com"
+                        " taxas baixas.\n- Ações: Comprar ações de empresas na bolsa de valores, com a"
+                        " esperança de que seu valor aumente e você possa vender com lucro.\n- Títulos: "
+                        "Investir em títulos do governo ou corporativos, que pagam juros ao longo do tempo."
+                        "\n- Fundos de Investimento: Colocar seu dinheiro em fundos geridos por profissionais "
+                        "que investem em ações, títulos ou outros ativos.\n- Imóveis: Comprar propriedades"
+                        " para alugar ou vender com lucro.\n- Previdência Privada: Contribuir para planos"
+                        " de previdência privada para garantir uma renda futura na aposentadoria.");
+                  },
                 ),
-                Divider(color: Colors.white, height: 15),
+                const Divider(color: Colors.white, height: 15),
                 ListTile(
                   title: Text(
                     "Planejamento para a Aposentadoria",
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
+                  onTap: () {
+                    AlertEducation.show(context, "Planejamento para a aposentadoria", "-Defina suas"
+                        " metas de aposentadoria: Determine quanto dinheiro você deseja ter "
+                        "disponível quando se aposentar, considerando seu estilo de vida desejado."
+                        "\n- Calcule suas necessidades financeiras: Avalie suas despesas estimadas "
+                        "na aposentadoria, incluindo moradia, alimentação, saúde e lazer.\n- Economize"
+                        " consistentemente: Comece a economizar regularmente, de preferência desde cedo. "
+                        "Pode ser através de um plano de previdência privada, investimentos ou outras"
+                        " formas de poupança.\n- Diversifique seus investimentos: Distribua seu "
+                        "dinheiro em diferentes tipos de investimentos para reduzir riscos.\n- "
+                        "Reduza dívidas: Trabalhe para pagar dívidas antes da aposentadoria, para"
+                        " não comprometer sua renda.\n- Estime sua renda na aposentadoria: Calcule"
+                        " sua previdência social e outros recursos que você espera receber na aposentadoria.");
+                  },
                 ),
-                Divider(color: Colors.white, height: 15),
+                const Divider(color: Colors.white, height: 15),
                 ListTile(
                   title: Text(
-                    "Seguro Pessoal e Proteção Financeira",
+                    "Reserva de emergência",
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
+                  onTap: () {
+                    AlertEducation.show(context, "Reserva de emergência", "Uma "
+                        "reserva de emergência é uma quantia de dinheiro guardada para cobrir"
+                        " despesas inesperadas, como emergências médicas ou reparos."
+                        " Ela deve ser facilmente acessível e equivalente a 3-6 meses de"
+                        " despesas essenciais. É uma proteção financeira importante contra imprevistos.");
+                  },
                 ),
-                Divider(color: Colors.white, height: 15),
+                const Divider(color: Colors.white, height: 15),
                 ListTile(
                   title: Text(
-                    "Impostos",
+                    "Reserva de Oportunidade",
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                ),
-                Divider(color: Colors.white, height: 15),
-                ListTile(
-                  title: Text(
-                    "Objetivos Financeiros de Curto e Longo Prazo",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
+                  onTap: () {
+                    AlertEducation.show(context, "Reserva de Oportunidade", "A reserva de oportunidade "
+                        "é uma quantia de dinheiro separada para aproveitar oportunidades financeiras "
+                        "inesperadas, como investimentos ou compras vantajosas. Ela é mais "
+                        "flexível do que a reserva de emergência e usada para crescimento "
+                        "financeiro, não apenas para emergências.");
+                  },
                 ),
               ],
             ),

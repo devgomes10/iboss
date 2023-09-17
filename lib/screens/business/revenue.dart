@@ -44,26 +44,6 @@ class _RevenueState extends State<Revenue> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
           title: const Text('Faturamento'),
-          actions: <Widget>[
-            IconButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  barrierDismissible: true,
-                  builder: (BuildContext context) {
-                    return const AlertDialog(
-                      title: Text('Mesada da empresa'),
-                      content: Text('... '),
-                    );
-                  },
-                );
-              },
-              icon: const FaIcon(
-                FontAwesomeIcons.circleInfo,
-                color: Colors.yellow,
-              ),
-            ),
-          ],
           bottom: const TabBar(
             labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             tabs: [
@@ -79,7 +59,7 @@ class _RevenueState extends State<Revenue> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            NewRevenueDialog.show(context);
+            NewRevenueBottomSheet.show(context);
           },
           child: const FaIcon(FontAwesomeIcons.plus),
         ),
@@ -118,10 +98,10 @@ class _RevenueState extends State<Revenue> {
                     builder: (BuildContext context,
                         AsyncSnapshot<List<CashPayment>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       }
                       if (snapshot.hasError) {
-                        return Text('Erro: ${snapshot.error}');
+                        return const Center(child: Text('Erro ao carregar os pagamentos recebidos'),);
                       }
                       final cashPayments = snapshot.data;
                       if (cashPayments == null || cashPayments.isEmpty) {
@@ -130,6 +110,9 @@ class _RevenueState extends State<Revenue> {
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
+                            onTap: () {
+                              NewRevenueBottomSheet.show(context);
+                            },
                             shape: const RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(12)),
@@ -256,10 +239,10 @@ class _RevenueState extends State<Revenue> {
                     builder: (BuildContext context,
                         AsyncSnapshot<List<DeferredPayment>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       }
                       if (snapshot.hasError) {
-                        return Text('Erro: ${snapshot.error}');
+                        return const Center(child: Text('Erro ao carregar os pagamentos pendentes'),);
                       }
                       final deferredPayments = snapshot.data;
                       if (deferredPayments == null ||

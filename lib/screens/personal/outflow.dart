@@ -43,22 +43,6 @@ class _OutflowState extends State<Outflow> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
           title: const Text('Gastos'),
-          actions: <Widget>[
-            IconButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (BuildContext context) {
-                      return const AlertDialog(
-                        title: Text('Informação sobre a saída'),
-                        content: Text('Texto passando as informações'),
-                      );
-                    },
-                  );
-                },
-                icon: const FaIcon(FontAwesomeIcons.circleInfo))
-          ],
           bottom: const TabBar(
             labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             tabs: [
@@ -74,7 +58,7 @@ class _OutflowState extends State<Outflow> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            NewOutflowDialog.show(context);
+            NewOutflowBottomSheet.show(context);
           },
           child: const FaIcon(FontAwesomeIcons.plus),
         ),
@@ -113,7 +97,9 @@ class _OutflowState extends State<Outflow> {
                         return const CircularProgressIndicator();
                       }
                       if (snapshot.hasError) {
-                        return Text('Erro: ${snapshot.error}');
+                        return const Center(
+                          child: Text('Erro ao carregar os gastos fixos'),
+                        );
                       }
                       final fixedOutflows = snapshot.data;
                       if (fixedOutflows == null || fixedOutflows.isEmpty) {
@@ -124,7 +110,7 @@ class _OutflowState extends State<Outflow> {
                           return ListTile(
                             shape: const RoundedRectangleBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(12)),
+                                  BorderRadius.all(Radius.circular(12)),
                             ),
                             leading: const FaIcon(
                               FontAwesomeIcons.arrowTrendDown,
@@ -246,7 +232,9 @@ class _OutflowState extends State<Outflow> {
                         return const CircularProgressIndicator();
                       }
                       if (snapshot.hasError) {
-                        return Text('Erro: ${snapshot.error}');
+                        return const Center(
+                          child: Text('Erro ao carregar os gastos variáveis'),
+                        );
                       }
                       final variableOutflow = snapshot.data;
                       if (variableOutflow == null || variableOutflow.isEmpty) {

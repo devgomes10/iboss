@@ -54,10 +54,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
       supportedLocales: const [
-        Locale('pt'),
-        Locale('BR'),
+        Locale('pt', 'BR'),
       ],
-      title: 'evolve',
+      title: 'bossover',
       debugShowCheckedModeBanner: false,
       theme: darkTheme,
       home: const ScreenRouter(),

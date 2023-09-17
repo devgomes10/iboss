@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/show_confirmation_password.dart';
 import 'package:iboss/repositories/authentication/auth_service.dart';
 import 'package:iboss/screens/business/revenue.dart';
+import 'package:iboss/screens/financial_education/financial_education.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../repositories/business/cash_payment_repository.dart';
@@ -11,7 +12,6 @@ import '../../repositories/business/deferred_payment_repository.dart';
 import '../../repositories/business/fixed_expense_repository.dart';
 import '../../repositories/business/variable_expense_repository.dart';
 import 'expense.dart';
-import 'package:provider/provider.dart';
 
 class Business extends StatefulWidget {
   final User user;
@@ -68,6 +68,18 @@ class _BusinessState extends State<Business> {
       appBar: AppBar(
         title: const Text('Empreendimento'),
         centerTitle: true,
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const FinancialEducation(),
+                  ),
+                );
+              },
+              icon: const FaIcon(FontAwesomeIcons.graduationCap)),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(top: 20, right: 7, bottom: 10, left: 7),
@@ -132,7 +144,7 @@ class _BusinessState extends State<Business> {
                                 ),
                               );
                             } else if (snapshot.hasError) {
-                              return const Text('...');
+                              return const Text('erro...');
                             }
                             return Container();
                           },
@@ -163,7 +175,7 @@ class _BusinessState extends State<Business> {
                                         ),
                                       );
                                     } else if (snapshot.hasError) {
-                                      return const Text("...");
+                                      return const Text("erro...");
                                     }
                                     return Container();
                                   },
@@ -193,7 +205,7 @@ class _BusinessState extends State<Business> {
                                         ),
                                       );
                                     } else if (snapshot.hasError) {
-                                      return const Text("...");
+                                      return const Text("erro...");
                                     }
                                     return Container();
                                   },
@@ -270,7 +282,7 @@ class _BusinessState extends State<Business> {
                                 ),
                               );
                             } else if (snapshot.hasError) {
-                              return const Text('...');
+                              return const Text('erro...');
                             }
                             return Container();
                           },
@@ -301,7 +313,7 @@ class _BusinessState extends State<Business> {
                                         ),
                                       );
                                     } else if (snapshot.hasError) {
-                                      return const Text("...");
+                                      return const Text("erro...");
                                     }
                                     return Container();
                                   },
@@ -331,7 +343,7 @@ class _BusinessState extends State<Business> {
                                         ),
                                       );
                                     } else if (snapshot.hasError) {
-                                      return const Text("...");
+                                      return const Text("erro...");
                                     }
                                     return Container();
                                   },
