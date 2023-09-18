@@ -8,6 +8,7 @@ import 'package:uuid/uuid.dart';
 import '../../../models/goals/company_goals.dart';
 import '../../../repositories/goals/company_goals_repository.dart';
 import '../../../repositories/goals/personal_goals_repository.dart';
+import '../../snackbar/show_snackbar.dart';
 
 class NewGoal {
   static void show(BuildContext context) {
@@ -125,13 +126,10 @@ class ___DialogNewGoalState extends State<_DialogNewGoal> {
                             );
                             await forCompany
                                 .addCompanyGoalsToFirestore(company);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  'Criando uma nova Meta',
-                                ),
-                              ),
-                            );
+                            showSnackbar(
+                                context: context,
+                                isError: false,
+                                menssager: "Meta adicionada");
                             Navigator.pop(context);
                           }
                         },
@@ -160,13 +158,10 @@ class ___DialogNewGoalState extends State<_DialogNewGoal> {
                             );
                             await forPersonal
                                 .addPersonalGoalsToFirestore(personal);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  'Criando uma nova Meta',
-                                ),
-                              ),
-                            );
+                            showSnackbar(
+                                context: context,
+                                isError: false,
+                                menssager: "Meta adicionada");
                             Navigator.pop(context);
                           }
                         },

@@ -179,7 +179,6 @@ class __BottomSheetNewExpenseState extends State<_BottomSheetNewExpense> {
                                 date: DateTime.now(),
                                 id: invoicingId,
                               );
-
                               await variable
                                   .addExpenseToFirestore(variableExpense);
                               showSnackbar(

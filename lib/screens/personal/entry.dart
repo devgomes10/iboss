@@ -39,7 +39,7 @@ class _EntryState extends State<Entry> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
           title: const Text(
-            'RENDA',
+            'Renda',
           ),
           bottom: const TabBar(
             labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),

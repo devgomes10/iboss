@@ -5,6 +5,7 @@ import '../../../models/personal/fixed_entry.dart';
 import '../../../models/personal/variable_entry.dart';
 import '../../../repositories/personal/fixed_entry_repository.dart';
 import '../../../repositories/personal/variable_entry_repository.dart';
+import '../../snackbar/show_snackbar.dart';
 
 class NewEntryBottomSheet {
   static void show(BuildContext context) {
@@ -150,12 +151,10 @@ class __BottomSheetNewEntryState extends State<_BottomSheetNewEntry> {
                                 id: invoicingId,
                               );
                               await FixedEntryRepository().addEntryToFirestore(fixed);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content:
-                                  Text('Adicionado uma nova renda fixa'),
-                                ),
-                              );
+                              showSnackbar(
+                                  context: context,
+                                  isError: false,
+                                  menssager: "Renda adicionada");
                               Navigator.pop(context);
                             }
                           },
@@ -188,12 +187,10 @@ class __BottomSheetNewEntryState extends State<_BottomSheetNewEntry> {
                               );
                               await VariableEntryRepository()
                                   .addEntryToFirestore(variable);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                      'Adicionado uma nova renda variável'),
-                                ),
-                              );
+                              showSnackbar(
+                                  context: context,
+                                  isError: false,
+                                  menssager: "Renda adicionada");
                               Navigator.pop(context);
                             }
                           },
