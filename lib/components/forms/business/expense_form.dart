@@ -35,7 +35,6 @@ class __BottomSheetNewExpenseState extends State<_BottomSheetNewExpense> {
   final descriptionController = TextEditingController();
   final valueController = TextEditingController();
   String invoicingId = const Uuid().v1();
-
   final descriptionFocusNode = FocusNode();
   final valueFocusNode = FocusNode();
 

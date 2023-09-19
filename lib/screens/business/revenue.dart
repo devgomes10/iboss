@@ -59,7 +59,7 @@ class _RevenueState extends State<Revenue> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            showModelForm(context);
+            NewRevenueBottomSheet.show(context);
           },
           child: const FaIcon(FontAwesomeIcons.plus),
         ),
@@ -110,9 +110,6 @@ class _RevenueState extends State<Revenue> {
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
-                            onTap: () {
-                              showModelForm(context);
-                            },
                             shape: const RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(12)),

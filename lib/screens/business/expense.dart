@@ -108,9 +108,6 @@ class _ExpenseState extends State<Expense> {
                       } return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
-                            onTap: () {
-                              NewExpenseBottomSheet.show(context);
-                            },
                             leading: const FaIcon(
                               FontAwesomeIcons.arrowTrendDown,
                               color: Colors.red,
