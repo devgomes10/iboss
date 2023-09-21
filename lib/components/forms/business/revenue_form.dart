@@ -26,7 +26,6 @@ class NewRevenueBottomSheet {
 }
 
 class _BottomSheetNewRevenue extends StatefulWidget {
-
   @override
   __BottomSheetNewRevenueState createState() => __BottomSheetNewRevenueState();
 }
@@ -38,7 +37,6 @@ class __BottomSheetNewRevenueState extends State<_BottomSheetNewRevenue> {
   String invoicingId = const Uuid().v1();
   final descriptionFocusNode = FocusNode();
   final valueFocusNode = FocusNode();
-
 
   @override
   void dispose() {
@@ -145,13 +143,12 @@ class __BottomSheetNewRevenueState extends State<_BottomSheetNewRevenue> {
                                 date: DateTime.now(),
                                 id: invoicingId,
                               );
-                              await inCash.addPaymentToFirestore(received);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  showSnackbar(
-                                      context: context,
-                                      isError: false,
-                                      menssager: "Pagamento adicionado")
-                              );
+                              await CashPaymentRepository()
+                                  .addPaymentToFirestore(received);
+                              showSnackbar(
+                                  context: context,
+                                  isError: false,
+                                  menssager: "Pagamento adicionado");
                               Navigator.pop(context);
                             }
                           },
@@ -182,13 +179,12 @@ class __BottomSheetNewRevenueState extends State<_BottomSheetNewRevenue> {
                                 date: DateTime.now(),
                                 id: invoicingId,
                               );
-                              await inTerm.addPaymentToFirestore(pending);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  showSnackbar(
-                                      context: context,
-                                      isError: false,
-                                      menssager: "Pagamento adicionado")
-                              );
+                              await DeferredPaymentRepository()
+                                  .addPaymentToFirestore(pending);
+                              showSnackbar(
+                                  context: context,
+                                  isError: false,
+                                  menssager: "Pagamento adicionado");
                               Navigator.pop(context);
                             }
                           },

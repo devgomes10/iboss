@@ -143,7 +143,8 @@ class __BottomSheetNewExpenseState extends State<_BottomSheetNewExpense> {
                                 date: DateTime.now(),
                                 id: invoicingId,
                               );
-                              await fixed.addExpenseToFirestore(fixedExpense);
+                              await FixedExpenseRepository()
+                                  .addExpenseToFirestore(fixedExpense);
                               showSnackbar(
                                   context: context,
                                   isError: false,
@@ -178,7 +179,7 @@ class __BottomSheetNewExpenseState extends State<_BottomSheetNewExpense> {
                                 date: DateTime.now(),
                                 id: invoicingId,
                               );
-                              await variable
+                              await VariableExpenseRepository()
                                   .addExpenseToFirestore(variableExpense);
                               showSnackbar(
                                   context: context,

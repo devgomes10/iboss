@@ -257,7 +257,7 @@ class _AuthScreenState extends State<AuthScreen> {
       name: name,
     )
         .then(
-      (String? error) {
+          (String? error) {
         if (error != null) {
           showSnackbar(context: context, menssager: error, isError: true);
         }
@@ -271,7 +271,7 @@ class _AuthScreenState extends State<AuthScreen> {
       context: context,
       builder: (context) {
         TextEditingController passwordResetController =
-            TextEditingController(text: email);
+        TextEditingController(text: email);
         return AlertDialog(
           title: const Text("Confirme o e-mail para redefinição de senha"),
           content: TextFormField(

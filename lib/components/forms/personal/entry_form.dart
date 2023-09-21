@@ -51,10 +51,7 @@ class __BottomSheetNewEntryState extends State<_BottomSheetNewEntry> {
     return SingleChildScrollView(
       reverse: true,
       child: Container(
-        height: MediaQuery
-            .of(context)
-            .size
-            .height * 0.8,
+        height: MediaQuery.of(context).size.height * 0.8,
         padding: const EdgeInsets.all(16),
         child: Form(
           key: _formKey,
@@ -68,10 +65,7 @@ class __BottomSheetNewEntryState extends State<_BottomSheetNewEntry> {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Theme
-                        .of(context)
-                        .colorScheme
-                        .secondary,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
               ),
@@ -150,7 +144,8 @@ class __BottomSheetNewEntryState extends State<_BottomSheetNewEntry> {
                                 date: DateTime.now(),
                                 id: invoicingId,
                               );
-                              await FixedEntryRepository().addEntryToFirestore(fixed);
+                              await FixedEntryRepository()
+                                  .addEntryToFirestore(fixed);
                               showSnackbar(
                                   context: context,
                                   isError: false,
