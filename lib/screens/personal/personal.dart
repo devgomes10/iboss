@@ -9,7 +9,6 @@ import '../../repositories/personal/fixed_entry_repository.dart';
 import '../../repositories/personal/fixed_outflow_repository.dart';
 import '../../repositories/personal/variable_entry_repository.dart';
 import '../../repositories/personal/variable_outflow_repository.dart';
-import '../financial_education/financial_education.dart';
 import 'entry.dart';
 import 'outflow.dart';
 
@@ -68,18 +67,6 @@ class _PersonalState extends State<Personal> {
       appBar: AppBar(
         title: const Text('Pessoal'),
         centerTitle: true,
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const FinancialEducation(),
-                  ),
-                );
-              },
-              icon: const FaIcon(FontAwesomeIcons.graduationCap)),
-        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(top: 20, right: 7, bottom: 10, left: 7),

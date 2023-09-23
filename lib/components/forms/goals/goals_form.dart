@@ -103,7 +103,7 @@ class ___DialogNewGoalState extends State<_DialogNewGoal> {
         Column(
           children: [
             const Text(
-              'É uma meta para o empreendimento ou pessoal?',
+              'É uma meta para o negócio ou pessoal?',
             ),
             Padding(
               padding: const EdgeInsets.only(top: 25, bottom: 15),
@@ -121,7 +121,7 @@ class ___DialogNewGoalState extends State<_DialogNewGoal> {
                           if (_formKey.currentState!.validate()) {
                             CompanyGoals company = CompanyGoals(
                               description: descriptionController.text,
-                              date: DateTime.now(),
+                              date: selectedDate,
                               id: goalsId,
                             );
                             await forCompany
@@ -134,7 +134,7 @@ class ___DialogNewGoalState extends State<_DialogNewGoal> {
                           }
                         },
                         child: const Text(
-                          'Empreendimento',
+                          'negócio',
                           style: TextStyle(
                             color: Colors.white,
                           ),
@@ -153,7 +153,7 @@ class ___DialogNewGoalState extends State<_DialogNewGoal> {
                           if (_formKey.currentState!.validate()) {
                             PersonalGoals personal = PersonalGoals(
                               description: descriptionController.text,
-                              date: DateTime.now(),
+                              date: selectedDate,
                               id: goalsId,
                             );
                             await forPersonal

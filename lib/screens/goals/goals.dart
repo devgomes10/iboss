@@ -10,7 +10,6 @@ import '../../components/show_confirmation_password.dart';
 import '../../models/goals/company_goals.dart';
 import '../../repositories/authentication/auth_service.dart';
 import '../../repositories/goals/company_goals_repository.dart';
-import '../financial_education/financial_education.dart';
 
 class Goals extends StatefulWidget {
   final User user;
@@ -73,7 +72,7 @@ class _GoalsState extends State<Goals> {
             tabs: [
               Tab(
                 icon: FaIcon(FontAwesomeIcons.industry),
-                text: 'Empreendimento',
+                text: 'Negócio',
               ),
               Tab(
                 icon: FaIcon(FontAwesomeIcons.userLarge),
@@ -82,11 +81,6 @@ class _GoalsState extends State<Goals> {
             ],
             indicatorColor: Colors.white,
           ),
-          actions: [
-            IconButton(onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const FinancialEducation(),),);
-            }, icon: const FaIcon(FontAwesomeIcons.graduationCap)),
-          ],
         ),
         body: Column(
           children: [
