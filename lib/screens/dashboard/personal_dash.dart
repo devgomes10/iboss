@@ -81,7 +81,7 @@ class _PersonalDashState extends State<PersonalDash> {
                       ),
                     ),
                     const SizedBox(
-                      height: 25,
+                      height: 15,
                     ),
                     SizedBox(
                       width: 250,
@@ -158,7 +158,7 @@ class _PersonalDashState extends State<PersonalDash> {
                       ),
                     ),
                     const SizedBox(
-                      height: 50,
+                      height: 15,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -256,9 +256,8 @@ class _PersonalDashState extends State<PersonalDash> {
                           ),
                         ],
                       ),
-                    ),
-                    const SizedBox(
-                      height: 25,
+                    ),const SizedBox(
+                      height: 15,
                     ),
                     SizedBox(
                       width: 250,
@@ -335,7 +334,7 @@ class _PersonalDashState extends State<PersonalDash> {
                       ),
                     ),
                     const SizedBox(
-                      height: 50,
+                      height: 15,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -434,7 +433,7 @@ class _PersonalDashState extends State<PersonalDash> {
                       ),
                     ),
                     const SizedBox(
-                      height: 25,
+                      height: 15,
                     ),
                     SizedBox(
                       width: 250,
@@ -472,7 +471,7 @@ class _PersonalDashState extends State<PersonalDash> {
                                           variableSnapshot.data ?? 0.0;
                                       double totalEntry =
                                           totalFixedEntry + totalVariableEntry;
-                                      return totalOutflow > 0
+                                      return totalOutflow + totalEntry > 0
                                           ? Stack(
                                               children: [
                                                 PieChart(
@@ -480,12 +479,12 @@ class _PersonalDashState extends State<PersonalDash> {
                                                     sections: [
                                                       PieChartSectionData(
                                                         showTitle: false,
-                                                        color: Colors.yellow,
+                                                        color: Colors.green,
                                                         value: totalEntry,
                                                       ),
                                                       PieChartSectionData(
                                                         showTitle: false,
-                                                        color: Colors.green,
+                                                        color: Colors.yellow,
                                                         value: totalOutflow,
                                                       ),
                                                     ],
@@ -539,7 +538,7 @@ class _PersonalDashState extends State<PersonalDash> {
                       ),
                     ),
                     const SizedBox(
-                      height: 50,
+                      height: 15,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,

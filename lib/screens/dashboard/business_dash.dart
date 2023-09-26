@@ -45,8 +45,8 @@ class _BusinessDasState extends State<BusinessDash> {
           const TabBar(
             labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             tabs: [
-              Tab(text: 'Receitas'),
-              Tab(text: 'Gastos'),
+              Tab(text: 'Faturamento'),
+              Tab(text: 'Despesas'),
               Tab(text: 'Saldo'),
             ],
           ),
@@ -82,7 +82,7 @@ class _BusinessDasState extends State<BusinessDash> {
                       ),
                     ),
                     const SizedBox(
-                      height: 25,
+                      height: 15,
                     ),
                     SizedBox(
                       width: 250,
@@ -159,7 +159,7 @@ class _BusinessDasState extends State<BusinessDash> {
                       ),
                     ),
                     const SizedBox(
-                      height: 50,
+                      height: 15,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -260,7 +260,7 @@ class _BusinessDasState extends State<BusinessDash> {
                       ),
                     ),
                     const SizedBox(
-                      height: 25,
+                      height: 15,
                     ),
                     SizedBox(
                       width: 250,
@@ -337,7 +337,7 @@ class _BusinessDasState extends State<BusinessDash> {
                       ),
                     ),
                     const SizedBox(
-                      height: 50,
+                      height: 15,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -436,7 +436,7 @@ class _BusinessDasState extends State<BusinessDash> {
                       ),
                     ),
                     const SizedBox(
-                      height: 25,
+                      height: 15,
                     ),
                     SizedBox(
                       width: 250,
@@ -454,7 +454,7 @@ class _BusinessDasState extends State<BusinessDash> {
                                 AsyncSnapshot<double> variableSnapshot) {
                               double totalVariableExpenses =
                                   variableSnapshot.data ?? 0.0;
-                              double total =
+                              double totalExpense =
                                   totalFixedExpenses + totalVariableExpenses;
                               return StreamBuilder<double>(
                                 stream: CashPaymentRepository()
@@ -463,7 +463,7 @@ class _BusinessDasState extends State<BusinessDash> {
                                     AsyncSnapshot<double> cashSnapshot) {
                                   double totalCashPayments =
                                       cashSnapshot.data ?? 0.0;
-                                  return total > 0
+                                  return totalExpense + totalCashPayments > 0
                                       ? Stack(
                                           children: [
                                             PieChart(
@@ -472,7 +472,7 @@ class _BusinessDasState extends State<BusinessDash> {
                                                   PieChartSectionData(
                                                     showTitle: false,
                                                     color: Colors.yellow,
-                                                    value: total,
+                                                    value: totalExpense,
                                                   ),
                                                   PieChartSectionData(
                                                     showTitle: false,
@@ -499,7 +499,7 @@ class _BusinessDasState extends State<BusinessDash> {
                                                       Text(
                                                         real.format(
                                                             totalCashPayments -
-                                                                total),
+                                                                totalExpense),
                                                         style: const TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold,
@@ -524,7 +524,7 @@ class _BusinessDasState extends State<BusinessDash> {
                       ),
                     ),
                     const SizedBox(
-                      height: 50,
+                      height: 15,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,

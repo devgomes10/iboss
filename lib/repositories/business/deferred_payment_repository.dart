@@ -35,7 +35,7 @@ class DeferredPaymentRepository extends ChangeNotifier {
             payment.toMap(),
           );
     } catch (error) {
-      Text("Erro ao adicionar pagamento", style: TextStyle(fontSize: 12),);
+      const Text("Erro ao adicionar pagamento", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
   }
@@ -44,7 +44,7 @@ class DeferredPaymentRepository extends ChangeNotifier {
     try {
       await deferredPaymentCollection.doc(paymentId).delete();
     } catch (error) {
-      Text("Erro ao remover pagamento", style: TextStyle(fontSize: 12),);
+      const Text("Erro ao remover pagamento", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
   }
@@ -58,7 +58,7 @@ class DeferredPaymentRepository extends ChangeNotifier {
               DeferredPayment.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
     } catch (error) {
-      Text("Erro ao carregar dados", style: TextStyle(fontSize: 12),);
+      const Text("Erro ao carregar dados", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
     return deferredPayments;

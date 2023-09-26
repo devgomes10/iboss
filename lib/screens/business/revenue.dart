@@ -48,10 +48,10 @@ class _RevenueState extends State<Revenue> {
             labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             tabs: [
               Tab(
-                text: 'Recebidos',
+                text: 'RECEBIDOS',
               ),
               Tab(
-                text: 'Pendentes',
+                text: 'PENDENTES',
               ),
             ],
             indicatorColor: Colors.white,
@@ -105,7 +105,7 @@ class _RevenueState extends State<Revenue> {
                       }
                       final cashPayments = snapshot.data;
                       if (cashPayments == null || cashPayments.isEmpty) {
-                        return const Text('Nenhum pagamento disponível.');
+                        return const Center(child: Text('Nenhum pagamento disponível.'));
                       }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
@@ -244,7 +244,7 @@ class _RevenueState extends State<Revenue> {
                       final deferredPayments = snapshot.data;
                       if (deferredPayments == null ||
                           deferredPayments.isEmpty) {
-                        return const Text('Nenhum pagamento disponível.');
+                        return const Center(child: Text('Nenhum pagamento disponível.'));
                       }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {

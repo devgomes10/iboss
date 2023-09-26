@@ -47,10 +47,10 @@ class _OutflowState extends State<Outflow> {
             labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             tabs: [
               Tab(
-                text: 'Fixos',
+                text: 'FIXOS',
               ),
               Tab(
-                text: 'Variáveis',
+                text: 'VARIÁVEIS',
               ),
             ],
             indicatorColor: Colors.white,
@@ -103,7 +103,7 @@ class _OutflowState extends State<Outflow> {
                       }
                       final fixedOutflows = snapshot.data;
                       if (fixedOutflows == null || fixedOutflows.isEmpty) {
-                        return const Text('Nenhum gasto disponível.');
+                        return const Center(child: Text('Nenhum gasto disponível.'));
                       }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
@@ -238,7 +238,7 @@ class _OutflowState extends State<Outflow> {
                       }
                       final variableOutflow = snapshot.data;
                       if (variableOutflow == null || variableOutflow.isEmpty) {
-                        return const Text('Nenhum gasto disponível.');
+                        return const Center(child: Text('Nenhum gasto disponível.'));
                       }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {

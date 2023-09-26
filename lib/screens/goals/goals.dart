@@ -69,14 +69,15 @@ class _GoalsState extends State<Goals> {
             'Metas',
           ),
           bottom: const TabBar(
+            labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             tabs: [
               Tab(
                 icon: FaIcon(FontAwesomeIcons.industry),
-                text: 'Negócio',
+                text: 'NEGÓCIO',
               ),
               Tab(
                 icon: FaIcon(FontAwesomeIcons.userLarge),
-                text: 'Pessoal',
+                text: 'PESSOAL',
               ),
             ],
             indicatorColor: Colors.white,

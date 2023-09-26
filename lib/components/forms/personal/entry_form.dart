@@ -61,7 +61,7 @@ class __BottomSheetNewEntryState extends State<_BottomSheetNewEntry> {
             children: <Widget>[
               Center(
                 child: Text(
-                  "Adicione o recebimento da renda",
+                  "Adicione uma nova renda",
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,

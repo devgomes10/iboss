@@ -58,11 +58,11 @@ class _DashboardState extends State<Dashboard> {
             tabs: [
               Tab(
                 icon: FaIcon(FontAwesomeIcons.industry),
-                text: 'Negócio',
+                text: 'NEGÓCIO',
               ),
               Tab(
                 icon: FaIcon(FontAwesomeIcons.userLarge),
-                text: 'Pessoal',
+                text: 'PESSOAL',
               ),
             ],
             indicatorColor: Colors.white,

@@ -35,7 +35,7 @@ class VariableOutflowRepository extends ChangeNotifier {
             outflow.toMap(),
           );
     } catch (error) {
-      Text("Erro ao adicionar gasto", style: TextStyle(fontSize: 12),);
+      const Text("Erro ao adicionar gasto", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
   }
@@ -44,7 +44,7 @@ class VariableOutflowRepository extends ChangeNotifier {
     try {
       await variableOutflowCollection.doc(outflowId).delete();
     } catch (error) {
-      Text("Erro ao remover gasto", style: TextStyle(fontSize: 12),);
+      const Text("Erro ao remover gasto", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
   }
@@ -58,7 +58,7 @@ class VariableOutflowRepository extends ChangeNotifier {
               VariableOutflow.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
     } catch (error) {
-      Text("Erro ao carregar dados", style: TextStyle(fontSize: 12),);
+      const Text("Erro ao carregar dados", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
     return variableOutflow;

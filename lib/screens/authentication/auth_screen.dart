@@ -43,10 +43,11 @@ class _AuthScreenState extends State<AuthScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    Image.asset("assets/auth.png", width: 80, height: 80,),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        (isEntering) ? "Bem vindo a Bossover!" : "Vamos começar?",
+                        (isEntering) ? "Bossover" : "Vamos começar?",
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           color: Color(0xff003060),
@@ -57,8 +58,8 @@ class _AuthScreenState extends State<AuthScreen> {
                     ),
                     Text(
                       (isEntering)
-                          ? "Você no controle financeiro"
-                          : "Separe e organize suas finanças do jeito certo",
+                          ? "Colaborando com a sua Independência"
+                          : "Organize suas finanças do jeito certo",
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: Colors.black,

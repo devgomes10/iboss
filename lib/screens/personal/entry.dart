@@ -45,10 +45,10 @@ class _EntryState extends State<Entry> {
             labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             tabs: [
               Tab(
-                text: 'Fixas',
+                text: 'FIXAS',
               ),
               Tab(
-                text: 'Variáveis',
+                text: 'VARIÁVEIS',
               ),
             ],
             indicatorColor: Colors.white,
@@ -105,7 +105,7 @@ class _EntryState extends State<Entry> {
                         }
                         final fixedEntry = snapshot.data;
                         if (fixedEntry == null || fixedEntry.isEmpty) {
-                          return const Text('Nenhuma renda disponível.');
+                          return const Center(child: Text('Nenhuma renda disponível.'));
                         }
                         return ListView.separated(
                             itemBuilder: (BuildContext context, int i) {
@@ -236,7 +236,7 @@ class _EntryState extends State<Entry> {
                       }
                       final variableEntry = snapshot.data;
                       if (variableEntry == null || variableEntry.isEmpty) {
-                        return const Text('Nenhuma renda disponível.');
+                        return const Center(child: Text('Nenhuma renda disponível.'));
                       }
                       return ListView.separated(
                           itemBuilder: (BuildContext context, int i) {

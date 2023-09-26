@@ -47,10 +47,10 @@ class _ExpenseState extends State<Expense> {
             labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             tabs: [
               Tab(
-                text: 'Fixas',
+                text: 'FIXAS',
               ),
               Tab(
-                text: 'Variáveis',
+                text: 'VARIÁVEIS',
               ),
             ],
             indicatorColor: Colors.white,
@@ -104,7 +104,7 @@ class _ExpenseState extends State<Expense> {
                       }
                       final fixedExpenses = snapshot.data;
                       if (fixedExpenses == null || fixedExpenses.isEmpty) {
-                        return const Text('Nenhuma despesa disponível.');
+                        return const Center(child: Text('Nenhuma despesa disponível.'));
                       } return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
@@ -227,7 +227,7 @@ class _ExpenseState extends State<Expense> {
                       }
                       final variableExpenses = snapshot.data;
                       if (variableExpenses == null || variableExpenses.isEmpty) {
-                        return const Text('Nenhuma despesa disponível.');
+                        return const Center(child: Text('Nenhuma despesa disponível.'));
                       } return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
