@@ -11,15 +11,21 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: const Color(0xff003060),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text("Período gratuito expirado"),
-          TextButton(
+          const Center(
+            child: Text("O periodo de teste gratuito acabou"),
+          ),
+          const SizedBox(height: 15,),
+          ElevatedButton(
             onPressed: () {},
-            child: Text("Assinar plano"),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              textStyle: const TextStyle(color: Color(0xff003060)),
+            ),
+            child: const Text("Assinar plano"),
           ),
         ],
       ),
