@@ -68,6 +68,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
       )
           : SpeedDial(
         icon: FontAwesomeIcons.plus,
+        backgroundColor: const Color(0xFF5CE1E6),
         overlayColor: Colors.black,
         overlayOpacity: 0.7,
         spacing: 12,
@@ -152,7 +153,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
                     pc.jumpToPage(0);
                   },
                   icon: const FaIcon(FontAwesomeIcons.industry),
-                  color: currentPage == 0 ? Colors.white : Colors.grey,
+                  color: currentPage == 0 ? const Color(0xFF5CE1E6) : Colors.grey,
                 ),
                 IconButton(
                   onPressed: () {
@@ -162,7 +163,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
                     pc.jumpToPage(1);
                   },
                   icon: const FaIcon(FontAwesomeIcons.userLarge),
-                  color: currentPage == 1 ? Colors.white : Colors.grey,
+                  color: currentPage == 1 ? const Color(0xFF5CE1E6) : Colors.grey,
                 ),
                 const SizedBox(
                   width: 24,
@@ -175,7 +176,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
                     pc.jumpToPage(2);
                   },
                   icon: const FaIcon(FontAwesomeIcons.solidFlag),
-                  color: currentPage == 2 ? Colors.white : Colors.grey,
+                  color: currentPage == 2 ? const Color(0xFF5CE1E6) : Colors.grey,
                 ),
                 IconButton(
                   onPressed: () {
@@ -185,7 +186,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
                     pc.jumpToPage(3);
                   },
                   icon: const FaIcon(FontAwesomeIcons.chartSimple),
-                  color: currentPage == 3 ? Colors.white : Colors.grey,
+                  color: currentPage == 3 ? const Color(0xFF5CE1E6) : Colors.grey,
                 ),
               ],
             ),

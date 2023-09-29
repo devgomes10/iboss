@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
       title: 'bossover',
       debugShowCheckedModeBanner: false,
       theme: darkTheme,
-      home: const SubscriptionScreen(),
+      home: const ScreenRouter(),
     );
   }
 }
