@@ -3,7 +3,7 @@ description: Business and Personal Financial Management
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: '>=3.0.3 <4.0.0'
@@ -28,7 +28,7 @@ dependencies:
   uuid: ^4.0.0
   rxdart: ^0.27.7
   image_picker: ^1.0.4
-  purchases_flutter: ^5.7.0
+  in_app_purchase: ^3.1.10
 
 flutter_native_splash:
   android: true

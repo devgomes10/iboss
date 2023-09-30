@@ -44,7 +44,7 @@ class _ExpenseState extends State<Expense> {
           backgroundColor: Theme.of(context).colorScheme.primary,
           title: const Text('Despesas'),
           bottom: const TabBar(
-            labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             tabs: [
               Tab(
                 text: 'FIXAS',
@@ -53,7 +53,7 @@ class _ExpenseState extends State<Expense> {
                 text: 'VARIÁVEIS',
               ),
             ],
-            indicatorColor: Colors.white,
+            indicatorColor: Color(0xFF5CE1E6),
           ),
         ),
         floatingActionButton: FloatingActionButton(

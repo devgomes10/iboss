@@ -21,6 +21,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -63,13 +64,13 @@ class MyApp extends StatelessWidget {
       title: 'bossover',
       debugShowCheckedModeBanner: false,
       theme: darkTheme,
-      home: const ScreenRouter(),
+      home: const SubscriptionScreen(),
     );
   }
 }
 
 class ScreenRouter extends StatelessWidget {
-  const ScreenRouter({super.key});
+  const ScreenRouter({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -79,11 +80,23 @@ class ScreenRouter extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else {
-          if (snapshot.hasData) {
-            return MenuNavigation(
-              transaction: snapshot.data!,
-            );
+          final user = FirebaseAuth.instance.currentUser;
+          final currentDate = DateTime.now();
+
+          if (user != null) {
+            // O usuário está conectado.
+            final trialStartDate = user.metadata.creationTime?.toLocal(); // Data de criação da conta.
+            final trialEndDate = trialStartDate?.add(const Duration(days: 15)); // 15 dias de avaliação gratuita.
+
+            if (currentDate.isBefore(trialEndDate!)) {
+              // O usuário ainda está dentro do período de avaliação gratuita.
+              return MenuNavigation(transaction: user);
+            } else {
+              // O período de avaliação gratuita expirou, redirecione para SubscriptionScreen().
+              return SubscriptionScreen();
+            }
           } else {
+            // O usuário não está conectado, exiba a tela de autenticação.
             return const AuthScreen();
           }
         }
@@ -91,7 +104,6 @@ class ScreenRouter extends StatelessWidget {
     );
   }
 }
-
 
 
 

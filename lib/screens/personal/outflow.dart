@@ -44,7 +44,7 @@ class _OutflowState extends State<Outflow> {
           backgroundColor: Theme.of(context).colorScheme.primary,
           title: const Text('Gastos'),
           bottom: const TabBar(
-            labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             tabs: [
               Tab(
                 text: 'FIXOS',
@@ -53,7 +53,7 @@ class _OutflowState extends State<Outflow> {
                 text: 'VARIÁVEIS',
               ),
             ],
-            indicatorColor: Colors.white,
+            indicatorColor: Color(0xFF5CE1E6),
           ),
         ),
         floatingActionButton: FloatingActionButton(

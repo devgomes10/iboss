@@ -45,7 +45,7 @@ class _RevenueState extends State<Revenue> {
           backgroundColor: Theme.of(context).colorScheme.primary,
           title: const Text('Faturamento'),
           bottom: const TabBar(
-            labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             tabs: [
               Tab(
                 text: 'RECEBIDOS',
@@ -54,7 +54,7 @@ class _RevenueState extends State<Revenue> {
                 text: 'PENDENTES',
               ),
             ],
-            indicatorColor: Colors.white,
+            indicatorColor: Color(0xFF5CE1E6),
           ),
         ),
         floatingActionButton: FloatingActionButton(

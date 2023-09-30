@@ -124,8 +124,7 @@ class ___DialogNewGoalState extends State<_DialogNewGoal> {
                               date: selectedDate,
                               id: goalsId,
                             );
-                            await forCompany
-                                .addCompanyGoalsToFirestore(company);
+                            await CompanyGoalsRepository().addCompanyGoalsToFirestore(company);
                             showSnackbar(
                                 context: context,
                                 isError: false,
@@ -134,7 +133,7 @@ class ___DialogNewGoalState extends State<_DialogNewGoal> {
                           }
                         },
                         child: const Text(
-                          'negócio',
+                          'Negócio',
                           style: TextStyle(
                             color: Colors.white,
                           ),
@@ -156,8 +155,7 @@ class ___DialogNewGoalState extends State<_DialogNewGoal> {
                               date: selectedDate,
                               id: goalsId,
                             );
-                            await forPersonal
-                                .addPersonalGoalsToFirestore(personal);
+                            await PersonalGoalsRepository().addPersonalGoalsToFirestore(personal);
                             showSnackbar(
                                 context: context,
                                 isError: false,
