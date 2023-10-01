@@ -45,7 +45,7 @@ class _BusinessDasState extends State<BusinessDash> {
           const TabBar(
             labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             tabs: [
-              Tab(text: 'Faturamento'),
+              Tab(text: 'Receitas'),
               Tab(text: 'Despesas'),
               Tab(text: 'Saldo'),
             ],

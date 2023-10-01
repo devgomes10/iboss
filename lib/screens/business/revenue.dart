@@ -43,7 +43,7 @@ class _RevenueState extends State<Revenue> {
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
-          title: const Text('Faturamento'),
+          title: const Text('Receitas'),
           bottom: const TabBar(
             labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             tabs: [

@@ -96,7 +96,7 @@ class _BusinessState extends State<Business> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Faturamento',
+                              'Receitas',
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                             const FaIcon(
