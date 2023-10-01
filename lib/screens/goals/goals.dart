@@ -98,7 +98,9 @@ class _GoalsState extends State<Goals> {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const CircularProgressIndicator();
                       } else if (snapshot.hasError) {
-                        return const Center(child: Text('Erro ao carregar as metas da empresa'),);
+                        return const Center(
+                          child: Text('Erro ao carregar as metas da empresa'),
+                        );
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                         return const Center(
                           child: Text('Nenhuma meta disponível.'),
@@ -226,9 +228,11 @@ class _GoalsState extends State<Goals> {
                     builder: (BuildContext context,
                         AsyncSnapshot<List<PersonalGoals>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator(); // Você pode usar um indicador de carregamento enquanto os dados são carregados.
+                        return const CircularProgressIndicator();
                       } else if (snapshot.hasError) {
-                        return const Center(child: Text('Erro ao carregar as metas pessoais'),);
+                        return const Center(
+                          child: Text('Erro ao carregar as metas pessoais'),
+                        );
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                         return const Center(
                           child: Text('Nenhuma meta disponível.'),
@@ -261,70 +265,70 @@ class _GoalsState extends State<Goals> {
                                     context: context,
                                     builder: (BuildContext context) =>
                                         AlertDialog(
-                                          scrollable: true,
-                                          title: const Text(
-                                            'Deseja excluir essa meta?',
-                                          ),
-                                          content: SingleChildScrollView(
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Row(
-                                                crossAxisAlignment:
+                                      scrollable: true,
+                                      title: const Text(
+                                        'Deseja excluir essa meta?',
+                                      ),
+                                      content: SingleChildScrollView(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            crossAxisAlignment:
                                                 CrossAxisAlignment.center,
-                                                mainAxisAlignment:
+                                            mainAxisAlignment:
                                                 MainAxisAlignment.spaceAround,
-                                                children: [
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                    style: ElevatedButton.styleFrom(
-                                                      backgroundColor:
+                                            children: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
                                                       Colors.grey[400],
-                                                      textStyle: const TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 15,
-                                                      ),
-                                                    ),
-                                                    child: const Text('NÃO'),
+                                                  textStyle: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 15,
                                                   ),
-                                                  TextButton(
-                                                    onPressed: () async {
-                                                      final personalGoalsRepository =
+                                                ),
+                                                child: const Text('NÃO'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () async {
+                                                  final personalGoalsRepository =
                                                       Provider.of<
-                                                          PersonalGoalsRepository>(
+                                                              PersonalGoalsRepository>(
                                                           context,
                                                           listen: false);
-                                                      await personalGoalsRepository
-                                                          .removeGoalsFromFirestore(
+                                                  await personalGoalsRepository
+                                                      .removeGoalsFromFirestore(
                                                           goal.id);
-                                                      ScaffoldMessenger.of(context)
-                                                          .showSnackBar(
-                                                        const SnackBar(
-                                                          content: Text(
-                                                            'Meta removida',
-                                                          ),
-                                                        ),
-                                                      );
-                                                      Navigator.pop(context);
-                                                    },
-                                                    style: TextButton.styleFrom(
-                                                      backgroundColor:
-                                                      Colors.grey[400],
-                                                      textStyle: const TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 15,
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    const SnackBar(
+                                                      content: Text(
+                                                        'Meta removida',
                                                       ),
                                                     ),
-                                                    child: const Text(
-                                                      'EXCLUIR',
-                                                    ),
+                                                  );
+                                                  Navigator.pop(context);
+                                                },
+                                                style: TextButton.styleFrom(
+                                                  backgroundColor:
+                                                      Colors.grey[400],
+                                                  textStyle: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 15,
                                                   ),
-                                                ],
+                                                ),
+                                                child: const Text(
+                                                  'EXCLUIR',
+                                                ),
                                               ),
-                                            ),
+                                            ],
                                           ),
                                         ),
+                                      ),
+                                    ),
                                   );
                                 },
                                 icon: const FaIcon(

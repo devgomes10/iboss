@@ -24,7 +24,7 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff003060),
+      backgroundColor: Color(0xFF5CE1E6),
       body: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 32,
@@ -33,7 +33,7 @@ class _AuthScreenState extends State<AuthScreen> {
           child: SingleChildScrollView(
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Colors.black,
                 borderRadius: BorderRadius.circular(24),
               ),
               padding: const EdgeInsets.all(32),
@@ -43,18 +43,9 @@ class _AuthScreenState extends State<AuthScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Image.asset("assets/auth.png", width: 80, height: 80,),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        (isEntering) ? "Bossover" : "Vamos começar?",
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Color(0xff003060),
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                    Image.asset("assets/name.png",
+                      width: 80,
+                      height: 80,
                     ),
                     Text(
                       (isEntering)
@@ -62,20 +53,20 @@ class _AuthScreenState extends State<AuthScreen> {
                           : "Organize suas finanças do jeito certo",
                       textAlign: TextAlign.center,
                       style: const TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                       ),
                     ),
                     TextFormField(
                       controller: _emailController,
-                      style: const TextStyle(color: Colors.black),
+                      style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
                         label: Text("E-mail"),
                         labelStyle: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                         ),
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                              color: Colors.black), // Cor da borda inferior
+                              color: Colors.white), // Cor da borda inferior
                         ),
                       ),
                       validator: (value) {
@@ -93,15 +84,15 @@ class _AuthScreenState extends State<AuthScreen> {
                     TextFormField(
                       controller: _passwordController,
                       obscureText: true,
-                      style: const TextStyle(color: Colors.black),
+                      style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
                         label: Text("Senha"),
                         labelStyle: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                         ),
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                              color: Colors.black), // Cor da borda inferior
+                              color: Colors.white),
                         ),
                       ),
                       validator: (value) {
@@ -117,7 +108,10 @@ class _AuthScreenState extends State<AuthScreen> {
                         onPressed: () {
                           forgotMyPasswordClicked();
                         },
-                        child: const Text("Esqueci minha senha"),
+                        child: const Text(
+                          "Esqueci minha senha",
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                     ),
                     Padding(
@@ -129,16 +123,16 @@ class _AuthScreenState extends State<AuthScreen> {
                             TextFormField(
                               controller: _confirmController,
                               obscureText: true,
-                              style: const TextStyle(color: Colors.black),
+                              style: const TextStyle(color: Colors.white),
                               decoration: const InputDecoration(
                                 label: Text("Confirme a senha"),
                                 labelStyle: TextStyle(
-                                  color: Colors.black,
+                                  color: Colors.white,
                                 ),
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Colors
-                                          .black), // Cor da borda inferior
+                                          .white),
                                 ),
                               ),
                               validator: (value) {
@@ -153,16 +147,16 @@ class _AuthScreenState extends State<AuthScreen> {
                             ),
                             TextFormField(
                               controller: _nameController,
-                              style: const TextStyle(color: Colors.black),
+                              style: const TextStyle(color: Colors.white),
                               decoration: const InputDecoration(
                                 label: Text("Nome"),
                                 labelStyle: TextStyle(
-                                  color: Colors.black,
+                                  color: Colors.white,
                                 ),
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Colors
-                                          .black), // Cor da borda inferior
+                                          .white),
                                 ),
                               ),
                               validator: (value) {
@@ -183,13 +177,13 @@ class _AuthScreenState extends State<AuthScreen> {
                       },
                       style: TextButton.styleFrom(
                         elevation: 4,
-                        backgroundColor: const Color(0xFF003060),
+                        backgroundColor: const Color(0xFF5CE1E6),
                       ),
                       child: Text(
                         (isEntering) ? "Entrar" : "Cadastrar",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: Colors.black,
                           fontSize: 20,
                         ),
                       ),
@@ -209,7 +203,7 @@ class _AuthScreenState extends State<AuthScreen> {
                               : "Já tem uma conta?\nClique aqui para entrar",
                           textAlign: TextAlign.center,
                           style: const TextStyle(
-                            color: Colors.blue,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -258,7 +252,7 @@ class _AuthScreenState extends State<AuthScreen> {
       name: name,
     )
         .then(
-          (String? error) {
+      (String? error) {
         if (error != null) {
           showSnackbar(context: context, menssager: error, isError: true);
         }
@@ -272,7 +266,7 @@ class _AuthScreenState extends State<AuthScreen> {
       context: context,
       builder: (context) {
         TextEditingController passwordResetController =
-        TextEditingController(text: email);
+            TextEditingController(text: email);
         return AlertDialog(
           title: const Text("Confirme o e-mail para redefinição de senha"),
           content: TextFormField(

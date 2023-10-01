@@ -41,6 +41,8 @@ class AuthService {
       switch (e.code) {
         case "email-already-in-use":
           return "O e-mail já está em uso.";
+        case "weak-password":
+          return "Senha fraca";
       }
       return e.code;
     }
