@@ -1,32 +1,30 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:iboss/models/goals/personal_goals.dart';
-import 'package:iboss/repositories/goals/personal_goals_repository.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:iboss/models/goals/company_goals.dart';
+import 'package:iboss/models/goals/personal_goals.dart';
+import 'package:iboss/repositories/authentication/auth_service.dart';
+import 'package:iboss/repositories/goals/company_goals_repository.dart';
+import 'package:iboss/repositories/goals/personal_goals_repository.dart';
+
 import '../../components/show_confirmation_password.dart';
-import '../../models/goals/company_goals.dart';
-import '../../repositories/authentication/auth_service.dart';
-import '../../repositories/goals/company_goals_repository.dart';
 
 class Goals extends StatefulWidget {
   final User user;
 
-  const Goals({super.key, required this.user});
+  const Goals({Key? key, required this.user}) : super(key: key);
 
   @override
-  State<Goals> createState() => _GoalsState();
+  _GoalsState createState() => _GoalsState();
 }
 
 class _GoalsState extends State<Goals> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController dateController = TextEditingController();
-  bool checked = false;
   DateTime selectedDate = DateTime.now();
-  List<bool> companyCheckedList = [];
-  List<bool> personalCheckedList = [];
   final ptBr = const Locale('pt', 'BR');
 
   @override
@@ -110,109 +108,118 @@ class _GoalsState extends State<Goals> {
                         return ListView.separated(
                           padding: const EdgeInsets.only(bottom: 100),
                           itemBuilder: (BuildContext context, int i) {
-                            if (i >= companyCheckedList.length) {
-                              companyCheckedList.add(false);
-                            }
                             final goal = companyGoals[i];
-                            return CheckboxListTile(
-                              title: Text(
-                                goal.description,
-                                style: GoogleFonts.montserrat(
-                                  decoration: companyCheckedList[i]
-                                      ? TextDecoration.lineThrough
-                                      : null,
-                                ),
-                              ),
-                              subtitle: Text(
-                                DateFormat('dd/MM/yyyy').format(goal.date),
-                                style: const TextStyle(fontSize: 12),
-                              ),
-                              secondary: IconButton(
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        AlertDialog(
-                                      scrollable: true,
-                                      title: const Text(
-                                        'Deseja excluir essa meta?',
-                                      ),
-                                      content: SingleChildScrollView(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      Colors.grey[400],
-                                                  textStyle: const TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 15,
-                                                  ),
-                                                ),
-                                                child: const Text('NÃO'),
-                                              ),
-                                              TextButton(
-                                                onPressed: () async {
-                                                  final companyGoalsRepository =
-                                                      Provider.of<
-                                                              CompanyGoalsRepository>(
-                                                          context,
-                                                          listen: false);
-                                                  await companyGoalsRepository
-                                                      .removeGoalsFromFirestore(
-                                                          goal.id);
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    const SnackBar(
-                                                      content: Text(
-                                                        'Meta removida',
+                            final ValueNotifier<bool> companyChecked =
+                                ValueNotifier<bool>(false);
+                            return ValueListenableBuilder<bool>(
+                              valueListenable: companyChecked,
+                              builder: (context, value, child) {
+                                return CheckboxListTile(
+                                  title: Text(
+                                    goal.description,
+                                    style: GoogleFonts.montserrat(
+                                      decoration: value
+                                          ? TextDecoration.lineThrough
+                                          : null,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    DateFormat('dd/MM/yyyy').format(goal.date),
+                                    style: const TextStyle(fontSize: 12),
+                                  ),
+                                  secondary: IconButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            AlertDialog(
+                                          scrollable: true,
+                                          title: const Text(
+                                            'Deseja excluir essa meta?',
+                                          ),
+                                          content: SingleChildScrollView(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      backgroundColor:
+                                                          Colors.grey[400],
+                                                      textStyle:
+                                                          const TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 15,
                                                       ),
                                                     ),
-                                                  );
-                                                  Navigator.pop(context);
-                                                },
-                                                style: TextButton.styleFrom(
-                                                  backgroundColor:
-                                                      Colors.grey[400],
-                                                  textStyle: const TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 15,
+                                                    child: const Text('NÃO'),
                                                   ),
-                                                ),
-                                                child: const Text(
-                                                  'EXCLUIR',
-                                                ),
+                                                  TextButton(
+                                                    onPressed: () async {
+                                                      final companyGoalsRepository =
+                                                          Provider.of<
+                                                                  CompanyGoalsRepository>(
+                                                              context,
+                                                              listen: false);
+                                                      await companyGoalsRepository
+                                                          .removeGoalsFromFirestore(
+                                                              goal.id);
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        const SnackBar(
+                                                          content: Text(
+                                                            'Meta removida',
+                                                          ),
+                                                        ),
+                                                      );
+                                                      Navigator.pop(context);
+                                                    },
+                                                    style: TextButton.styleFrom(
+                                                      backgroundColor:
+                                                          Colors.grey[400],
+                                                      textStyle:
+                                                          const TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 15,
+                                                      ),
+                                                    ),
+                                                    child: const Text(
+                                                      'EXCLUIR',
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ],
+                                            ),
                                           ),
                                         ),
-                                      ),
+                                      );
+                                    },
+                                    icon: const FaIcon(
+                                      FontAwesomeIcons.trash,
+                                      color: Colors.red,
                                     ),
-                                  );
-                                },
-                                icon: const FaIcon(
-                                  FontAwesomeIcons.trash,
-                                  color: Colors.red,
-                                ),
-                              ),
-                              controlAffinity: ListTileControlAffinity.leading,
-                              value: companyCheckedList[i],
-                              onChanged: (value) {
-                                setState(() {
-                                  companyCheckedList[i] = value!;
-                                });
+                                  ),
+                                  controlAffinity:
+                                      ListTileControlAffinity.leading,
+                                  value: value,
+                                  onChanged: (newValue) {
+                                    companyChecked.value = newValue!;
+                                  },
+                                  activeColor: Colors.green,
+                                  checkColor: Colors.black,
+                                );
                               },
-                              activeColor: Colors.green,
-                              checkColor: Colors.black,
                             );
                           },
                           separatorBuilder: (_, __) => const Divider(
@@ -242,109 +249,119 @@ class _GoalsState extends State<Goals> {
                         return ListView.separated(
                           padding: const EdgeInsets.only(bottom: 100),
                           itemBuilder: (BuildContext context, int i) {
-                            if (i >= personalCheckedList.length) {
-                              personalCheckedList.add(false);
-                            }
                             final goal = personalGoals[i];
-                            return CheckboxListTile(
-                              title: Text(
-                                goal.description,
-                                style: GoogleFonts.montserrat(
-                                  decoration: personalCheckedList[i]
-                                      ? TextDecoration.lineThrough
-                                      : null,
-                                ),
-                              ),
-                              subtitle: Text(
-                                DateFormat('dd/MM/yyyy').format(goal.date),
-                                style: const TextStyle(fontSize: 12),
-                              ),
-                              secondary: IconButton(
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        AlertDialog(
-                                      scrollable: true,
-                                      title: const Text(
-                                        'Deseja excluir essa meta?',
-                                      ),
-                                      content: SingleChildScrollView(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      Colors.grey[400],
-                                                  textStyle: const TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 15,
-                                                  ),
-                                                ),
-                                                child: const Text('NÃO'),
-                                              ),
-                                              TextButton(
-                                                onPressed: () async {
-                                                  final personalGoalsRepository =
-                                                      Provider.of<
-                                                              PersonalGoalsRepository>(
-                                                          context,
-                                                          listen: false);
-                                                  await personalGoalsRepository
-                                                      .removeGoalsFromFirestore(
-                                                          goal.id);
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    const SnackBar(
-                                                      content: Text(
-                                                        'Meta removida',
+                            final ValueNotifier<bool> personalChecked =
+                                ValueNotifier<bool>(false);
+
+                            return ValueListenableBuilder<bool>(
+                              valueListenable: personalChecked,
+                              builder: (context, value, child) {
+                                return CheckboxListTile(
+                                  title: Text(
+                                    goal.description,
+                                    style: GoogleFonts.montserrat(
+                                      decoration: value
+                                          ? TextDecoration.lineThrough
+                                          : null,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    DateFormat('dd/MM/yyyy').format(goal.date),
+                                    style: const TextStyle(fontSize: 12),
+                                  ),
+                                  secondary: IconButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            AlertDialog(
+                                          scrollable: true,
+                                          title: const Text(
+                                            'Deseja excluir essa meta?',
+                                          ),
+                                          content: SingleChildScrollView(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      backgroundColor:
+                                                          Colors.grey[400],
+                                                      textStyle:
+                                                          const TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 15,
                                                       ),
                                                     ),
-                                                  );
-                                                  Navigator.pop(context);
-                                                },
-                                                style: TextButton.styleFrom(
-                                                  backgroundColor:
-                                                      Colors.grey[400],
-                                                  textStyle: const TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 15,
+                                                    child: const Text('NÃO'),
                                                   ),
-                                                ),
-                                                child: const Text(
-                                                  'EXCLUIR',
-                                                ),
+                                                  TextButton(
+                                                    onPressed: () async {
+                                                      final personalGoalsRepository =
+                                                          Provider.of<
+                                                                  PersonalGoalsRepository>(
+                                                              context,
+                                                              listen: false);
+                                                      await personalGoalsRepository
+                                                          .removeGoalsFromFirestore(
+                                                              goal.id);
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        const SnackBar(
+                                                          content: Text(
+                                                            'Meta removida',
+                                                          ),
+                                                        ),
+                                                      );
+                                                      Navigator.pop(context);
+                                                    },
+                                                    style: TextButton.styleFrom(
+                                                      backgroundColor:
+                                                          Colors.grey[400],
+                                                      textStyle:
+                                                          const TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 15,
+                                                      ),
+                                                    ),
+                                                    child: const Text(
+                                                      'EXCLUIR',
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ],
+                                            ),
                                           ),
                                         ),
-                                      ),
+                                      );
+                                    },
+                                    icon: const FaIcon(
+                                      FontAwesomeIcons.trash,
+                                      color: Colors.red,
                                     ),
-                                  );
-                                },
-                                icon: const FaIcon(
-                                  FontAwesomeIcons.trash,
-                                  color: Colors.red,
-                                ),
-                              ),
-                              controlAffinity: ListTileControlAffinity.leading,
-                              value: personalCheckedList[i],
-                              onChanged: (value) {
-                                setState(() {
-                                  personalCheckedList[i] = value!;
-                                });
+                                  ),
+                                  controlAffinity:
+                                      ListTileControlAffinity.leading,
+                                  value: value,
+                                  onChanged: (newValue) {
+                                    personalChecked.value = newValue!;
+                                  },
+                                  activeColor: Colors.green,
+                                  checkColor: Colors.black,
+                                );
                               },
-                              activeColor: Colors.green,
-                              checkColor: Colors.black,
                             );
                           },
                           separatorBuilder: (_, __) => const Divider(
