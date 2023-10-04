@@ -5,7 +5,7 @@ import '../../../models/personal/fixed_outflow.dart';
 import '../../../models/personal/variable_outflow.dart';
 import '../../../repositories/personal/fixed_outflow_repository.dart';
 import '../../../repositories/personal/variable_outflow_repository.dart';
-import '../../snackbar/show_snackbar.dart';
+import '../../show_snackbar.dart';
 
 class NewOutflowBottomSheet {
   static void show(BuildContext context) {

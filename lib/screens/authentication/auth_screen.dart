@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iboss/components/snackbar/show_snackbar.dart';
+import 'package:iboss/components/show_snackbar.dart';
 import 'package:iboss/repositories/authentication/auth_service.dart';
 
 class AuthScreen extends StatefulWidget {

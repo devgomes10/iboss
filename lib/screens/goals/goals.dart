@@ -10,6 +10,7 @@ import 'package:iboss/repositories/authentication/auth_service.dart';
 import 'package:iboss/repositories/goals/company_goals_repository.dart';
 import 'package:iboss/repositories/goals/personal_goals_repository.dart';
 
+import '../../components/drawer_component.dart';
 import '../../components/show_confirmation_password.dart';
 
 class Goals extends StatefulWidget {
@@ -32,34 +33,7 @@ class _GoalsState extends State<Goals> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        drawer: Drawer(
-          child: ListView(
-            children: [
-              UserAccountsDrawerHeader(
-                accountName: Text(
-                  (widget.user.displayName != null)
-                      ? widget.user.displayName!
-                      : "",
-                ),
-                accountEmail: Text(widget.user.email!),
-              ),
-              ListTile(
-                leading: const FaIcon(FontAwesomeIcons.rightFromBracket),
-                title: const Text("Sair"),
-                onTap: () {
-                  AuthService().logOut();
-                },
-              ),
-              ListTile(
-                leading: const FaIcon(FontAwesomeIcons.trash),
-                title: const Text("Remover conta"),
-                onTap: () {
-                  showConfirmationPassword(context: context, email: "");
-                },
-              ),
-            ],
-          ),
-        ),
+        drawer: DrawerComponent(user: widget.user),
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,

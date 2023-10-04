@@ -5,7 +5,7 @@ import '../../../models/business/fixed_expense.dart';
 import '../../../models/business/variable_expense.dart';
 import '../../../repositories/business/fixed_expense_repository.dart';
 import '../../../repositories/business/variable_expense_repository.dart';
-import '../../snackbar/show_snackbar.dart';
+import '../../show_snackbar.dart';
 
 class NewExpenseBottomSheet {
   static void show(BuildContext context) {

@@ -5,7 +5,7 @@ import '../../../models/business/cash_payment.dart';
 import '../../../models/business/deferred_payment.dart';
 import '../../../repositories/business/cash_payment_repository.dart';
 import '../../../repositories/business/deferred_payment_repository.dart';
-import '../../snackbar/show_snackbar.dart';
+import '../../show_snackbar.dart';
 
 class NewRevenueBottomSheet {
   static void show(BuildContext context) {

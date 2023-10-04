@@ -5,7 +5,7 @@ import '../../../models/personal/fixed_entry.dart';
 import '../../../models/personal/variable_entry.dart';
 import '../../../repositories/personal/fixed_entry_repository.dart';
 import '../../../repositories/personal/variable_entry_repository.dart';
-import '../../snackbar/show_snackbar.dart';
+import '../../show_snackbar.dart';
 
 class NewEntryBottomSheet {
   static void show(BuildContext context) {
