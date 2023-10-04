@@ -43,24 +43,31 @@ void main() async {
             create: (context) => VariableOutflowRepository()),
         ChangeNotifierProvider(create: (context) => PersonalGoalsRepository()),
       ],
-      child: const MyApp(),
+      child: const Bossover(),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key});
+class Bossover extends StatelessWidget {
+  const Bossover({super.key});
 
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting('pt_BR', null);
 
     return MaterialApp(
-      localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
+      localeResolutionCallback: (locale, supported) {
+        return const Locale('pt', 'BR');
+      },
+      localizationsDelegates: const [
+        GlobalWidgetsLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       supportedLocales: const [
         Locale('pt', 'BR'),
       ],
-      title: 'bossover',
+      title: 'Bossover',
       debugShowCheckedModeBanner: false,
       theme: darkTheme,
       home: const ScreenRouter(),
