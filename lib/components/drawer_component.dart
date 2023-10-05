@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:iboss/components/show_confirmation.dart';
 import 'package:iboss/components/show_confirmation_password.dart';
 import '../repositories/authentication/auth_service.dart';
 
@@ -24,7 +25,13 @@ class DrawerComponent extends StatelessWidget {
             leading: const FaIcon(FontAwesomeIcons.rightFromBracket),
             title: const Text("Sair"),
             onTap: () {
-              AuthService().logOut();
+              showConfirmation(context: context,
+                  title: "Deseja mesmo sair da sua conta?",
+                  onPressed: () {
+                    AuthService().logOut();
+                  },
+                  messegerSnack: "Saiu com sucesso",
+                  isError: false);
             },
           ),
           ListTile(

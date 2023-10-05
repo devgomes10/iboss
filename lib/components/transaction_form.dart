@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:iboss/components/show_snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
-import '../models/business/fixed_expense.dart';
-import '../models/business/variable_expense.dart';
-import '../repositories/business/fixed_expense_repository.dart';
-import '../repositories/business/variable_expense_repository.dart';
-
-class TransactionForm<T> {
+class TransactionForm {
   final String title;
   final String classification;
-  final T repository;
+  final Consumer consumer1;
+  final Consumer consumer2;
 
   TransactionForm({
     required this.title,
     required this.classification,
-    required this.repository,
+    required this.consumer1,
+    required this.consumer2,
   });
 
   static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -112,124 +108,9 @@ class TransactionForm<T> {
                   const SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Consumer<T>(
-                        builder: (BuildContext context, T repository,
-                            Widget? widget) {
-                          return SizedBox(
-                            width: 100,
-                            child: TextButton(
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  if (repository is FixedExpenseRepository) {
-                                    FixedExpense fixedExpense =
-                                    FixedExpense(
-                                      description:
-                                      descriptionController.text,
-                                      value: double.parse(
-                                          valueController.text),
-                                      date: DateTime.now(),
-                                      id: invoicingId,
-                                    );
-                                    await repository
-                                        .addExpenseToFirestore(
-                                        fixedExpense);
-                                  } else if (repository
-                                  is VariableExpenseRepository) {
-                                    VariableExpense variableExpense =
-                                    VariableExpense(
-                                      description:
-                                      descriptionController.text,
-                                      value: double.parse(
-                                          valueController.text),
-                                      date: DateTime.now(),
-                                      id: invoicingId,
-                                    );
-                                    await repository
-                                        .addExpenseToFirestore(
-                                        variableExpense);
-                                  }
-
-                                  showSnackbar(
-                                    context: context,
-                                    isError: false,
-                                    menssager: "Despesa adicionada",
-                                  );
-                                  Navigator.pop(context);
-                                }
-                              },
-                              style: TextButton.styleFrom(
-                                backgroundColor: Colors.grey[200],
-                              ),
-                              child: const Text(
-                                'Fixa',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                      Consumer<T>(
-                        builder: (BuildContext context, T repository,
-                            Widget? widget) {
-                          return SizedBox(
-                            width: 100,
-                            child: TextButton(
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  if (repository is FixedExpenseRepository) {
-                                    FixedExpense fixedExpense =
-                                    FixedExpense(
-                                      description:
-                                      descriptionController.text,
-                                      value: double.parse(
-                                          valueController.text),
-                                      date: DateTime.now(),
-                                      id: invoicingId,
-                                    );
-                                    await repository
-                                        .addExpenseToFirestore(
-                                        fixedExpense);
-                                  } else if (repository
-                                  is VariableExpenseRepository) {
-                                    VariableExpense variableExpense =
-                                    VariableExpense(
-                                      description:
-                                      descriptionController.text,
-                                      value: double.parse(
-                                          valueController.text),
-                                      date: DateTime.now(),
-                                      id: invoicingId,
-                                    );
-                                    await repository
-                                        .addExpenseToFirestore(
-                                        variableExpense);
-                                  }
-
-                                  showSnackbar(
-                                    context: context,
-                                    isError: false,
-                                    menssager: "Despesa adicionada",
-                                  );
-
-                                  Navigator.pop(context);
-                                }
-                              },
-                              style: TextButton.styleFrom(
-                                backgroundColor: Colors.grey[100],
-                              ),
-                              child: const Text(
-                                'Variável',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
+                    children: <Consumer> [
+                      consumer1,
+                      consumer2,
                     ],
                   ),
                 ],

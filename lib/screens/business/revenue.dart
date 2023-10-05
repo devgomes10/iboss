@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/forms/business/revenue_form.dart';
+import 'package:iboss/components/show_confirmation.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -40,9 +41,15 @@ class _RevenueState extends State<Revenue> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme
+            .of(context)
+            .colorScheme
+            .background,
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: Theme
+              .of(context)
+              .colorScheme
+              .primary,
           title: const Text('Receitas'),
           bottom: const TabBar(
             labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -101,18 +108,22 @@ class _RevenueState extends State<Revenue> {
                         return const CircularProgressIndicator();
                       }
                       if (snapshot.hasError) {
-                        return const Center(child: Text('Erro ao carregar os pagamentos recebidos'),);
+                        return const Center(
+                          child:
+                          Text('Erro ao carregar os pagamentos recebidos'),
+                        );
                       }
                       final cashPayments = snapshot.data;
                       if (cashPayments == null || cashPayments.isEmpty) {
-                        return const Center(child: Text('Nenhum pagamento disponível.'));
+                        return const Center(
+                            child: Text('Nenhum pagamento disponível.'));
                       }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
                             shape: const RoundedRectangleBorder(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(12)),
+                              BorderRadius.all(Radius.circular(12)),
                             ),
                             leading: const FaIcon(
                               FontAwesomeIcons.arrowTrendUp,
@@ -146,70 +157,17 @@ class _RevenueState extends State<Revenue> {
                             ),
                             trailing: IconButton(
                               onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                    scrollable: true,
-                                    title: Text(
-                                      'Deseja mesmo excluir este pagamento recebido?',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium,
-                                    ),
-                                    content: SingleChildScrollView(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text(
-                                                'NÃO',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20,
-                                                ),
-                                              ),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                final paymentId =
-                                                    cashPayments[i].id;
-                                                CashPaymentRepository()
-                                                    .removePaymentFromFirestore(
-                                                        paymentId);
-                                                Navigator.pop(context);
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  const SnackBar(
-                                                    content: Text(
-                                                        'Pagamento deletado'),
-                                                  ),
-                                                );
-                                              },
-                                              child: const Text(
-                                                'EXCLUIR',
-                                                style: TextStyle(
-                                                  color: Colors.red,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                );
+                                showConfirmation(
+                                    context: context,
+                                    title: "Deseja mesmo remover esse pagamento recebido?",
+                                    onPressed: () {
+                                      final paymentId = cashPayments[i].id;
+                                      CashPaymentRepository()
+                                          .removePaymentFromFirestore(
+                                          paymentId);
+                                    },
+                                    messegerSnack: "Pagamento removido",
+                                    isError: false);
                               },
                               icon: const FaIcon(
                                 FontAwesomeIcons.trash,
@@ -219,7 +177,7 @@ class _RevenueState extends State<Revenue> {
                           );
                         },
                         separatorBuilder: (_, __) =>
-                            const Divider(color: Colors.white),
+                        const Divider(color: Colors.white),
                         padding: const EdgeInsets.only(
                           top: 14,
                           left: 16,
@@ -239,19 +197,23 @@ class _RevenueState extends State<Revenue> {
                         return const CircularProgressIndicator();
                       }
                       if (snapshot.hasError) {
-                        return const Center(child: Text('Erro ao carregar os pagamentos pendentes'),);
+                        return const Center(
+                          child:
+                          Text('Erro ao carregar os pagamentos pendentes'),
+                        );
                       }
                       final deferredPayments = snapshot.data;
                       if (deferredPayments == null ||
                           deferredPayments.isEmpty) {
-                        return const Center(child: Text('Nenhum pagamento disponível.'));
+                        return const Center(
+                            child: Text('Nenhum pagamento disponível.'));
                       }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
                             shape: const RoundedRectangleBorder(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(12)),
+                              BorderRadius.all(Radius.circular(12)),
                             ),
                             leading: const FaIcon(
                               FontAwesomeIcons.arrowTrendUp,
@@ -285,190 +247,62 @@ class _RevenueState extends State<Revenue> {
                               width: 100,
                               child: Row(
                                 children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) =>
-                                            AlertDialog(
-                                          scrollable: true,
-                                          title: Text(
-                                            'Você recebeu o dinheiro?',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium,
-                                          ),
-                                          content: SingleChildScrollView(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
-                                                children: [
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: const Text(
-                                                      'NÃO',
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 20,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Consumer<
-                                                      CashPaymentRepository>(
-                                                    builder: (BuildContext
-                                                            context,
-                                                        CashPaymentRepository
-                                                            inCash,
-                                                        Widget? widget) {
-                                                      return TextButton(
-                                                        onPressed: () async {
-                                                          final paymentId =
-                                                              deferredPayments[
-                                                                      i]
-                                                                  .id;
-                                                          final description =
-                                                              deferredPayments[
-                                                                      i]
-                                                                  .description;
-                                                          final value =
-                                                              deferredPayments[
-                                                                      i]
-                                                                  .value;
-                                                          final date =
-                                                              deferredPayments[
-                                                                      i]
-                                                                  .date;
-                                                          CashPayment received =
-                                                              CashPayment(
-                                                                  description:
-                                                                      description,
-                                                                  value: value,
-                                                                  date: date,
-                                                                  id: paymentId);
-                                                          await inCash
-                                                              .addPaymentToFirestore(
-                                                                  received);
-                                                          DeferredPaymentRepository()
-                                                              .removePaymentFromFirestore(
-                                                                  paymentId);
-                                                          ScaffoldMessenger.of(
-                                                                  context)
-                                                              .showSnackBar(
-                                                            const SnackBar(
-                                                              content: Text(
-                                                                  'Pagamento Recebido'),
-                                                            ),
-                                                          );
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
-                                                        style: TextButton
-                                                            .styleFrom(),
-                                                        child: const Text(
-                                                          'RECEBI',
-                                                          style: TextStyle(
-                                                            color: Colors.green,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 20,
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
+                                  Consumer<CashPaymentRepository>(
+                                    builder: (BuildContext context,
+                                        CashPaymentRepository inCash,
+                                        Widget? widget) {
+                                      return IconButton(
+                                        onPressed: () {
+                                          showConfirmation(
+                                              context: context,
+                                              title: "Você recebeu esse pagamento?",
+                                              onPressed: () async {
+                                                final paymentId =
+                                                    deferredPayments[i].id;
+                                                final description =
+                                                    deferredPayments[i]
+                                                        .description;
+                                                final value =
+                                                    deferredPayments[i].value;
+                                                final date =
+                                                    deferredPayments[i].date;
+                                                CashPayment received =
+                                                CashPayment(
+                                                    description:
+                                                    description,
+                                                    value: value,
+                                                    date: date,
+                                                    id: paymentId);
+                                                await inCash
+                                                    .addPaymentToFirestore(
+                                                    received);
+                                                DeferredPaymentRepository()
+                                                    .removePaymentFromFirestore(
+                                                    paymentId);
+                                              },
+                                              messegerSnack: "Pagamento recebido",
+                                              isError: false);
+                                        },
+                                        icon: const FaIcon(
+                                          FontAwesomeIcons.check,
                                         ),
                                       );
                                     },
-                                    icon: const FaIcon(
-                                      FontAwesomeIcons.check,
-                                    ),
                                   ),
                                   IconButton(
                                     onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) =>
-                                            AlertDialog(
-                                          scrollable: true,
-                                          title: Text(
-                                            'Deseja mesmo excluir este pagamento pendente?',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium,
-                                          ),
-                                          content: SingleChildScrollView(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
-                                                children: [
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: const Text(
-                                                      'NÃO',
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 20,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      final paymentId =
-                                                          deferredPayments[i]
-                                                              .id;
-                                                      DeferredPaymentRepository()
-                                                          .removePaymentFromFirestore(
-                                                              paymentId);
-                                                      Navigator.pop(context);
-                                                      ScaffoldMessenger.of(
-                                                        context,
-                                                      ).showSnackBar(
-                                                        const SnackBar(
-                                                          content: Text(
-                                                              'Pagamento deletado'),
-                                                        ),
-                                                      );
-                                                    },
-                                                    child: const Text(
-                                                      'EXCLUIR',
-                                                      style: TextStyle(
-                                                        color: Colors.red,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 20,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      );
+                                      showConfirmation(context: context,
+                                          title: "Deseja mesmo remover esse pagamento pendente?",
+                                          onPressed: () {
+                                            final paymentId =
+                                                deferredPayments[i]
+                                                    .id;
+                                            DeferredPaymentRepository()
+                                                .removePaymentFromFirestore(
+                                                paymentId);
+                                          },
+                                          messegerSnack: "Pagamento removido",
+                                          isError: false);
                                     },
                                     icon: const FaIcon(
                                       FontAwesomeIcons.trash,
@@ -481,7 +315,7 @@ class _RevenueState extends State<Revenue> {
                           );
                         },
                         separatorBuilder: (_, __) =>
-                            const Divider(color: Colors.white),
+                        const Divider(color: Colors.white),
                         padding: const EdgeInsets.only(
                           top: 14,
                           left: 16,

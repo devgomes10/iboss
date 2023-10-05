@@ -100,7 +100,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
                   builder: (context) => const Expense(),
                 ),
               );
-              NewExpenseBottomSheet.show(context);
+              // NewExpenseBottomSheet.show(context);
             },
           ),
           SpeedDialChild(

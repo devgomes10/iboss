@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/forms/business/expense_form.dart';
+import 'package:iboss/components/show_confirmation.dart';
+import 'package:iboss/components/size_box_form.dart';
+import 'package:iboss/components/transaction_form.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 import '../../models/business/fixed_expense.dart';
 import '../../models/business/variable_expense.dart';
 import '../../repositories/business/fixed_expense_repository.dart';
@@ -19,6 +24,7 @@ class _ExpenseState extends State<Expense> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController valueController = TextEditingController();
   NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
+  String invoicingId = const Uuid().v1();
 
   void _changeMonth(bool increment) {
     setState(() {
@@ -39,9 +45,15 @@ class _ExpenseState extends State<Expense> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme
+            .of(context)
+            .colorScheme
+            .background,
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: Theme
+              .of(context)
+              .colorScheme
+              .primary,
           title: const Text('Despesas'),
           bottom: const TabBar(
             labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -56,11 +68,14 @@ class _ExpenseState extends State<Expense> {
             indicatorColor: Color(0xFF5CE1E6),
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            NewExpenseBottomSheet.show(context);
-          },
-          child: const FaIcon(FontAwesomeIcons.plus),
+        floatingActionButton: SingleChildScrollView(
+          child: FloatingActionButton(
+            onPressed: () {
+              transactionForm.show(context);
+              // NewExpenseBottomSheet.show(context);
+            },
+            child: const FaIcon(FontAwesomeIcons.plus),
+          ),
         ),
         body: Column(
           children: [
@@ -100,12 +115,16 @@ class _ExpenseState extends State<Expense> {
                         return const CircularProgressIndicator();
                       }
                       if (snapshot.hasError) {
-                        return const Center(child: Text('Erro ao carregar as despesas fixas'),);
+                        return const Center(
+                          child: Text('Erro ao carregar as despesas fixas'),
+                        );
                       }
                       final fixedExpenses = snapshot.data;
                       if (fixedExpenses == null || fixedExpenses.isEmpty) {
-                        return const Center(child: Text('Nenhuma despesa disponível.'));
-                      } return ListView.separated(
+                        return const Center(
+                            child: Text('Nenhuma despesa disponível.'));
+                      }
+                      return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
                             leading: const FaIcon(
@@ -138,67 +157,17 @@ class _ExpenseState extends State<Expense> {
                             ),
                             trailing: IconButton(
                               onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                    scrollable: true,
-                                    title: Text(
-                                      'Deseja mesmo excluir esta despesa fixa?',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium,
-                                    ),
-                                    content: SingleChildScrollView(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text(
-                                                'NÃO',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20,
-                                                ),
-                                              ),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                final expenseId = fixedExpenses[i].id;
-                                                FixedExpenseRepository().removeExpenseFromFirestore(expenseId);
-                                                Navigator.pop(context);
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  const SnackBar(
-                                                    content:
-                                                        Text('Despesa deletada'),
-                                                  ),
-                                                );
-                                              },
-                                              child: const Text(
-                                                'EXCLUIR',
-                                                style: TextStyle(
-                                                  color: Colors.red,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                );
+                                showConfirmation(context: context,
+                                    title: "Deseja mesmo remover essa despesa fixa?",
+                                    onPressed: () {
+                                      final expenseId =
+                                          fixedExpenses[i].id;
+                                      FixedExpenseRepository()
+                                          .removeExpenseFromFirestore(
+                                          expenseId);
+                                    },
+                                    messegerSnack: "Despesa removida",
+                                    isError: false);
                               },
                               icon: const FaIcon(
                                 FontAwesomeIcons.trash,
@@ -208,8 +177,13 @@ class _ExpenseState extends State<Expense> {
                           );
                         },
                         separatorBuilder: (_, __) =>
-                            const Divider(color: Colors.white),
-                        padding: const EdgeInsets.only(top: 14, left: 16, bottom: 80, right: 16,),
+                        const Divider(color: Colors.white),
+                        padding: const EdgeInsets.only(
+                          top: 14,
+                          left: 16,
+                          bottom: 80,
+                          right: 16,
+                        ),
                         itemCount: fixedExpenses.length,
                       );
                     },
@@ -223,12 +197,17 @@ class _ExpenseState extends State<Expense> {
                         return const CircularProgressIndicator();
                       }
                       if (snapshot.hasError) {
-                        return const Center(child: Text('Erro ao carregar as despesas variáveis'),);
+                        return const Center(
+                          child: Text('Erro ao carregar as despesas variáveis'),
+                        );
                       }
                       final variableExpenses = snapshot.data;
-                      if (variableExpenses == null || variableExpenses.isEmpty) {
-                        return const Center(child: Text('Nenhuma despesa disponível.'));
-                      } return ListView.separated(
+                      if (variableExpenses == null ||
+                          variableExpenses.isEmpty) {
+                        return const Center(
+                            child: Text('Nenhuma despesa disponível.'));
+                      }
+                      return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
                             leading: const FaIcon(
@@ -263,67 +242,17 @@ class _ExpenseState extends State<Expense> {
                             ),
                             trailing: IconButton(
                               onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                    scrollable: true,
-                                    title: Text(
-                                      'Deseja mesmo excluir esta despesa variável?',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium,
-                                    ),
-                                    content: SingleChildScrollView(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text(
-                                                'NÃO',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20,
-                                                ),
-                                              ),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                final expenseId = variableExpenses[i].id;
-                                                VariableExpenseRepository().removeExpenseFromFirestore(expenseId);
-                                                Navigator.pop(context);
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  const SnackBar(
-                                                    content:
-                                                        Text('Despesa deletada'),
-                                                  ),
-                                                );
-                                              },
-                                              child: const Text(
-                                                'EXCLUIR',
-                                                style: TextStyle(
-                                                  color: Colors.red,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                );
+                                showConfirmation(context: context,
+                                    title: "Deseja mesmo remover essa despesa variável?",
+                                    onPressed: () {
+                                      final expenseId =
+                                          variableExpenses[i].id;
+                                      VariableExpenseRepository()
+                                          .removeExpenseFromFirestore(
+                                          expenseId);
+                                    },
+                                    messegerSnack: "Despesa removida",
+                                    isError: false);
                               },
                               icon: const FaIcon(FontAwesomeIcons.trash),
                               color: Colors.red,
@@ -331,8 +260,13 @@ class _ExpenseState extends State<Expense> {
                           );
                         },
                         separatorBuilder: (_, __) =>
-                            const Divider(color: Colors.white),
-                        padding: const EdgeInsets.only(top: 14, left: 16, bottom: 80, right: 16,),
+                        const Divider(color: Colors.white),
+                        padding: const EdgeInsets.only(
+                          top: 14,
+                          left: 16,
+                          bottom: 80,
+                          right: 16,
+                        ),
                         itemCount: variableExpenses.length,
                       );
                     },

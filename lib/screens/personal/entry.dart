@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/forms/personal/entry_form.dart';
+import 'package:iboss/components/show_confirmation.dart';
 import 'package:iboss/models/personal/fixed_entry.dart';
 import 'package:iboss/models/personal/variable_entry.dart';
 import 'package:iboss/repositories/personal/fixed_entry_repository.dart';
@@ -35,9 +36,15 @@ class _EntryState extends State<Entry> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme
+            .of(context)
+            .colorScheme
+            .background,
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: Theme
+              .of(context)
+              .colorScheme
+              .primary,
           title: const Text(
             'Renda',
           ),
@@ -105,7 +112,8 @@ class _EntryState extends State<Entry> {
                         }
                         final fixedEntry = snapshot.data;
                         if (fixedEntry == null || fixedEntry.isEmpty) {
-                          return const Center(child: Text('Nenhuma renda disponível.'));
+                          return const Center(child: Text(
+                              'Nenhuma renda disponível.'));
                         }
                         return ListView.separated(
                             itemBuilder: (BuildContext context, int i) {
@@ -134,75 +142,17 @@ class _EntryState extends State<Entry> {
                                 ),
                                 trailing: IconButton(
                                     onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) =>
-                                            AlertDialog(
-                                          scrollable: true,
-                                          title: Text(
-                                            'Deseja exluir essa renda fixa?',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium,
-                                          ),
-                                          content: SingleChildScrollView(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
-                                                children: [
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: const Text(
-                                                      'NÃO',
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 20,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      final fixedId =
-                                                          fixedEntry[i].id;
-                                                      FixedEntryRepository()
-                                                          .removeEntryFromFirestore(
-                                                              fixedId);
-                                                      Navigator.pop(context);
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
-                                                        const SnackBar(
-                                                          content: Text(
-                                                              'Renda deletada'),
-                                                        ),
-                                                      );
-                                                    },
-                                                    child: const Text(
-                                                      'EXCLUIR',
-                                                      style: TextStyle(
-                                                        color: Colors.red,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 20,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      );
+                                      showConfirmation(context: context,
+                                          title: "Deseja mesmo remover essa renda fixa?",
+                                          onPressed: () {
+                                            final fixedId =
+                                                fixedEntry[i].id;
+                                            FixedEntryRepository()
+                                                .removeEntryFromFirestore(
+                                                fixedId);
+                                          },
+                                          messegerSnack: "Renda removida",
+                                          isError: false);
                                     },
                                     icon: const FaIcon(
                                       FontAwesomeIcons.trash,
@@ -210,9 +160,10 @@ class _EntryState extends State<Entry> {
                                     )),
                               );
                             },
-                            separatorBuilder: (_, __) => const Divider(
-                                  color: Colors.white,
-                                ),
+                            separatorBuilder: (_, __) =>
+                            const Divider(
+                              color: Colors.white,
+                            ),
                             padding: const EdgeInsets.only(
                               top: 14,
                               left: 16,
@@ -236,7 +187,8 @@ class _EntryState extends State<Entry> {
                       }
                       final variableEntry = snapshot.data;
                       if (variableEntry == null || variableEntry.isEmpty) {
-                        return const Center(child: Text('Nenhuma renda disponível.'));
+                        return const Center(child: Text(
+                            'Nenhuma renda disponível.'));
                       }
                       return ListView.separated(
                           itemBuilder: (BuildContext context, int i) {
@@ -265,79 +217,27 @@ class _EntryState extends State<Entry> {
                               ),
                               trailing: IconButton(
                                 onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        AlertDialog(
-                                      scrollable: true,
-                                      title: Text(
-                                        'Deseja exluir essa renda variável?',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium,
-                                      ),
-                                      content: SingleChildScrollView(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: const Text(
-                                                  'NÃO',
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 20,
-                                                  ),
-                                                ),
-                                              ),
-                                              TextButton(
-                                                onPressed: () {
-                                                  final variableId =
-                                                      variableEntry[i].id;
-                                                  VariableEntryRepository()
-                                                      .removeEntryFromFirestore(
-                                                          variableId);
-                                                  Navigator.pop(context);
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    const SnackBar(
-                                                      content: Text(
-                                                          'Entrada deletada'),
-                                                    ),
-                                                  );
-                                                },
-                                                child: const Text(
-                                                  'EXCLUIR',
-                                                  style: TextStyle(
-                                                    color: Colors.red,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 20,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  );
+                                  showConfirmation(context: context,
+                                      title: "Deseja mesmo remover essa renda variável?",
+                                      onPressed: () {
+                                        final variableId =
+                                            variableEntry[i].id;
+                                        VariableEntryRepository()
+                                            .removeEntryFromFirestore(
+                                            variableId);
+                                      },
+                                      messegerSnack: "Renda removida",
+                                      isError: false);
                                 },
                                 icon: const FaIcon(FontAwesomeIcons.trash),
                                 color: Colors.red,
                               ),
                             );
                           },
-                          separatorBuilder: (_, __) => const Divider(
-                                color: Colors.white,
-                              ),
+                          separatorBuilder: (_, __) =>
+                          const Divider(
+                            color: Colors.white,
+                          ),
                           padding: const EdgeInsets.only(
                             top: 14,
                             left: 16,

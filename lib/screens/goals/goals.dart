@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iboss/components/show_confirmation.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -34,9 +35,15 @@ class _GoalsState extends State<Goals> {
       length: 2,
       child: Scaffold(
         drawer: DrawerComponent(user: widget.user),
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme
+            .of(context)
+            .colorScheme
+            .background,
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: Theme
+              .of(context)
+              .colorScheme
+              .primary,
           title: const Text(
             'Metas',
           ),
@@ -84,7 +91,7 @@ class _GoalsState extends State<Goals> {
                           itemBuilder: (BuildContext context, int i) {
                             final goal = companyGoals[i];
                             final ValueNotifier<bool> companyChecked =
-                                ValueNotifier<bool>(false);
+                            ValueNotifier<bool>(false);
                             return ValueListenableBuilder<bool>(
                               valueListenable: companyChecked,
                               builder: (context, value, child) {
@@ -103,81 +110,20 @@ class _GoalsState extends State<Goals> {
                                   ),
                                   secondary: IconButton(
                                     onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) =>
-                                            AlertDialog(
-                                          scrollable: true,
-                                          title: const Text(
-                                            'Deseja excluir essa meta?',
-                                          ),
-                                          content: SingleChildScrollView(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
-                                                children: [
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      backgroundColor:
-                                                          Colors.grey[400],
-                                                      textStyle:
-                                                          const TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 15,
-                                                      ),
-                                                    ),
-                                                    child: const Text('NÃO'),
-                                                  ),
-                                                  TextButton(
-                                                    onPressed: () async {
-                                                      final companyGoalsRepository =
-                                                          Provider.of<
-                                                                  CompanyGoalsRepository>(
-                                                              context,
-                                                              listen: false);
-                                                      await companyGoalsRepository
-                                                          .removeGoalsFromFirestore(
-                                                              goal.id);
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
-                                                        const SnackBar(
-                                                          content: Text(
-                                                            'Meta removida',
-                                                          ),
-                                                        ),
-                                                      );
-                                                      Navigator.pop(context);
-                                                    },
-                                                    style: TextButton.styleFrom(
-                                                      backgroundColor:
-                                                          Colors.grey[400],
-                                                      textStyle:
-                                                          const TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 15,
-                                                      ),
-                                                    ),
-                                                    child: const Text(
-                                                      'EXCLUIR',
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      );
+                                      showConfirmation(context: context,
+                                          title: "Deseja mesmo remover essa meta do negócio?",
+                                          onPressed: () async {
+                                            final companyGoalsRepository =
+                                            Provider.of<
+                                                CompanyGoalsRepository>(
+                                                context,
+                                                listen: false);
+                                            await companyGoalsRepository
+                                                .removeGoalsFromFirestore(
+                                                goal.id);
+                                          },
+                                          messegerSnack: "Meta removida",
+                                          isError: false);
                                     },
                                     icon: const FaIcon(
                                       FontAwesomeIcons.trash,
@@ -185,7 +131,7 @@ class _GoalsState extends State<Goals> {
                                     ),
                                   ),
                                   controlAffinity:
-                                      ListTileControlAffinity.leading,
+                                  ListTileControlAffinity.leading,
                                   value: value,
                                   onChanged: (newValue) {
                                     companyChecked.value = newValue!;
@@ -196,7 +142,8 @@ class _GoalsState extends State<Goals> {
                               },
                             );
                           },
-                          separatorBuilder: (_, __) => const Divider(
+                          separatorBuilder: (_, __) =>
+                          const Divider(
                             color: Colors.white,
                           ),
                           itemCount: companyGoals!.length,
@@ -225,7 +172,7 @@ class _GoalsState extends State<Goals> {
                           itemBuilder: (BuildContext context, int i) {
                             final goal = personalGoals[i];
                             final ValueNotifier<bool> personalChecked =
-                                ValueNotifier<bool>(false);
+                            ValueNotifier<bool>(false);
 
                             return ValueListenableBuilder<bool>(
                               valueListenable: personalChecked,
@@ -245,81 +192,21 @@ class _GoalsState extends State<Goals> {
                                   ),
                                   secondary: IconButton(
                                     onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) =>
-                                            AlertDialog(
-                                          scrollable: true,
-                                          title: const Text(
-                                            'Deseja excluir essa meta?',
-                                          ),
-                                          content: SingleChildScrollView(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
-                                                children: [
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      backgroundColor:
-                                                          Colors.grey[400],
-                                                      textStyle:
-                                                          const TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 15,
-                                                      ),
-                                                    ),
-                                                    child: const Text('NÃO'),
-                                                  ),
-                                                  TextButton(
-                                                    onPressed: () async {
-                                                      final personalGoalsRepository =
-                                                          Provider.of<
-                                                                  PersonalGoalsRepository>(
-                                                              context,
-                                                              listen: false);
-                                                      await personalGoalsRepository
-                                                          .removeGoalsFromFirestore(
-                                                              goal.id);
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
-                                                        const SnackBar(
-                                                          content: Text(
-                                                            'Meta removida',
-                                                          ),
-                                                        ),
-                                                      );
-                                                      Navigator.pop(context);
-                                                    },
-                                                    style: TextButton.styleFrom(
-                                                      backgroundColor:
-                                                          Colors.grey[400],
-                                                      textStyle:
-                                                          const TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 15,
-                                                      ),
-                                                    ),
-                                                    child: const Text(
-                                                      'EXCLUIR',
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      );
+                                      showConfirmation(
+                                          context: context,
+                                          title: "Deseja mesmo remover essa meta pessoal?",
+                                          onPressed: () async {
+                                            final personalGoalsRepository =
+                                            Provider.of<
+                                                PersonalGoalsRepository>(
+                                                context,
+                                                listen: false);
+                                            await personalGoalsRepository
+                                                .removeGoalsFromFirestore(
+                                                goal.id);
+                                          },
+                                          messegerSnack: "Meta removida",
+                                          isError: false);
                                     },
                                     icon: const FaIcon(
                                       FontAwesomeIcons.trash,
@@ -327,7 +214,7 @@ class _GoalsState extends State<Goals> {
                                     ),
                                   ),
                                   controlAffinity:
-                                      ListTileControlAffinity.leading,
+                                  ListTileControlAffinity.leading,
                                   value: value,
                                   onChanged: (newValue) {
                                     personalChecked.value = newValue!;
@@ -338,7 +225,8 @@ class _GoalsState extends State<Goals> {
                               },
                             );
                           },
-                          separatorBuilder: (_, __) => const Divider(
+                          separatorBuilder: (_, __) =>
+                          const Divider(
                             color: Colors.white,
                           ),
                           itemCount: personalGoals!.length,

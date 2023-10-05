@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/forms/personal/outflow_form.dart';
+import 'package:iboss/components/show_confirmation.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 import '../../models/personal/fixed_outflow.dart';
@@ -39,9 +40,15 @@ class _OutflowState extends State<Outflow> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme
+            .of(context)
+            .colorScheme
+            .background,
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: Theme
+              .of(context)
+              .colorScheme
+              .primary,
           title: const Text('Gastos'),
           bottom: const TabBar(
             labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -103,14 +110,15 @@ class _OutflowState extends State<Outflow> {
                       }
                       final fixedOutflows = snapshot.data;
                       if (fixedOutflows == null || fixedOutflows.isEmpty) {
-                        return const Center(child: Text('Nenhum gasto disponível.'));
+                        return const Center(child: Text(
+                            'Nenhum gasto disponível.'));
                       }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
                             shape: const RoundedRectangleBorder(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(12)),
+                              BorderRadius.all(Radius.circular(12)),
                             ),
                             leading: const FaIcon(
                               FontAwesomeIcons.arrowTrendDown,
@@ -138,70 +146,17 @@ class _OutflowState extends State<Outflow> {
                             ),
                             trailing: IconButton(
                               onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                    scrollable: true,
-                                    title: Text(
-                                      'Deseja mesmo excluir esse gasto fixo?',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium,
-                                    ),
-                                    content: SingleChildScrollView(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text(
-                                                'NÃO',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20,
-                                                ),
-                                              ),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                final fixedId =
-                                                    fixedOutflows[i].id;
-                                                FixedOutflowRepository()
-                                                    .removeOutflowFromFirestore(
-                                                        fixedId);
-                                                Navigator.pop(context);
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  const SnackBar(
-                                                    content:
-                                                        Text('Gasto deletado'),
-                                                  ),
-                                                );
-                                              },
-                                              child: const Text(
-                                                'EXCLUIR',
-                                                style: TextStyle(
-                                                  color: Colors.red,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                );
+                                showConfirmation(context: context,
+                                    title: "Deseja mesmo remover esse gasto fixo?",
+                                    onPressed: () {
+                                      final fixedId =
+                                          fixedOutflows[i].id;
+                                      FixedOutflowRepository()
+                                          .removeOutflowFromFirestore(
+                                          fixedId);
+                                    },
+                                    messegerSnack: "Gasto removido",
+                                    isError: false);
                               },
                               icon: const FaIcon(
                                 FontAwesomeIcons.trash,
@@ -210,7 +165,8 @@ class _OutflowState extends State<Outflow> {
                             ),
                           );
                         },
-                        separatorBuilder: (_, __) => const Divider(
+                        separatorBuilder: (_, __) =>
+                        const Divider(
                           color: Colors.white,
                         ),
                         padding: const EdgeInsets.only(
@@ -238,7 +194,8 @@ class _OutflowState extends State<Outflow> {
                       }
                       final variableOutflow = snapshot.data;
                       if (variableOutflow == null || variableOutflow.isEmpty) {
-                        return const Center(child: Text('Nenhum gasto disponível.'));
+                        return const Center(child: Text(
+                            'Nenhum gasto disponível.'));
                       }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
@@ -267,70 +224,17 @@ class _OutflowState extends State<Outflow> {
                             ),
                             trailing: IconButton(
                               onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                    scrollable: true,
-                                    title: Text(
-                                      'Deseja mesmo excluir esse gasto variável?',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium,
-                                    ),
-                                    content: SingleChildScrollView(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text(
-                                                'NÃO',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20,
-                                                ),
-                                              ),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                final variableId =
-                                                    variableOutflow[i].id;
-                                                VariableOutflowRepository()
-                                                    .removeOutflowFromFirestore(
-                                                        variableId);
-                                                Navigator.pop(context);
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  const SnackBar(
-                                                    content:
-                                                        Text('Gasto deletado'),
-                                                  ),
-                                                );
-                                              },
-                                              child: const Text(
-                                                'EXCLUIR',
-                                                style: TextStyle(
-                                                  color: Colors.red,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                );
+                                showConfirmation(context: context,
+                                    title: "Deseja mesmo remover esse gasto variável?",
+                                    onPressed: () {
+                                      final variableId =
+                                          variableOutflow[i].id;
+                                      VariableOutflowRepository()
+                                          .removeOutflowFromFirestore(
+                                          variableId);
+                                    },
+                                    messegerSnack: "Gasto removido",
+                                    isError: false);
                               },
                               icon: const FaIcon(
                                 FontAwesomeIcons.trash,
@@ -339,7 +243,8 @@ class _OutflowState extends State<Outflow> {
                             ),
                           );
                         },
-                        separatorBuilder: (_, __) => const Divider(
+                        separatorBuilder: (_, __) =>
+                        const Divider(
                           color: Colors.white,
                         ),
                         padding: const EdgeInsets.only(
