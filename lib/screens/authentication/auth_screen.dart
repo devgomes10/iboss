@@ -36,16 +36,16 @@ class _AuthScreenState extends State<AuthScreen> {
                 color: Colors.black,
                 borderRadius: BorderRadius.circular(24),
               ),
-              padding: const EdgeInsets.all(32),
+              padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
               child: Form(
                 key: _formKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Image.asset("assets/name.png",
-                      width: 80,
-                      height: 80,
+                    Image.asset("assets/icon2.png",
+                      width: 100,
+                      height: 100,
                     ),
                     Text(
                       (isEntering)
@@ -54,6 +54,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: Colors.white,
+                        fontSize: 22,
                       ),
                     ),
                     TextFormField(

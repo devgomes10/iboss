@@ -12,21 +12,24 @@ showConfirmation({
     context: context,
     builder: (context) {
       return AlertDialog(
+        backgroundColor: Colors.black,
         scrollable: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0),
+          side: BorderSide(
+            width: 2,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+        ),
         title: Text(
           title,
-          style: Theme.of(context)
-              .textTheme
-              .bodyMedium,
         ),
         content: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
-              crossAxisAlignment:
-              CrossAxisAlignment.center,
-              mainAxisAlignment:
-              MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 TextButton(
                   onPressed: () {
@@ -35,7 +38,7 @@ showConfirmation({
                   child: const Text(
                     'NÃO',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: const Color(0xFF5CE1E6),
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
@@ -49,8 +52,8 @@ showConfirmation({
                   },
                   child: const Text(
                     'SIM',
-                    style: TextStyle(
-                      color: Colors.red,
+                    style: const TextStyle(
+                      color: Color(0xFF5CE1E6),
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
@@ -64,3 +67,4 @@ showConfirmation({
     },
   );
 }
+

@@ -7,12 +7,9 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:iboss/models/goals/company_goals.dart';
 import 'package:iboss/models/goals/personal_goals.dart';
-import 'package:iboss/repositories/authentication/auth_service.dart';
 import 'package:iboss/repositories/goals/company_goals_repository.dart';
 import 'package:iboss/repositories/goals/personal_goals_repository.dart';
-
 import '../../components/drawer_component.dart';
-import '../../components/show_confirmation_password.dart';
 
 class Goals extends StatefulWidget {
   final User user;
@@ -34,16 +31,9 @@ class _GoalsState extends State<Goals> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
         drawer: DrawerComponent(user: widget.user),
-        backgroundColor: Theme
-            .of(context)
-            .colorScheme
-            .background,
         appBar: AppBar(
-          backgroundColor: Theme
-              .of(context)
-              .colorScheme
-              .primary,
           title: const Text(
             'Metas',
           ),
@@ -51,15 +41,15 @@ class _GoalsState extends State<Goals> {
             labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             tabs: [
               Tab(
-                icon: FaIcon(FontAwesomeIcons.industry),
+                // icon: FaIcon(FontAwesomeIcons.industry),
                 text: 'NEGÓCIO',
               ),
               Tab(
-                icon: FaIcon(FontAwesomeIcons.userLarge),
+                // icon: FaIcon(FontAwesomeIcons.userLarge),
                 text: 'PESSOAL',
               ),
             ],
-            indicatorColor: Colors.white,
+            indicatorColor: Color(0xFF5CE1E6),
           ),
         ),
         body: Column(
@@ -136,7 +126,7 @@ class _GoalsState extends State<Goals> {
                                   onChanged: (newValue) {
                                     companyChecked.value = newValue!;
                                   },
-                                  activeColor: Colors.green,
+                                  activeColor: Theme.of(context).colorScheme.secondary,
                                   checkColor: Colors.black,
                                 );
                               },

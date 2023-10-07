@@ -37,113 +37,122 @@ class BoxCard extends StatelessWidget {
           ),
         );
       },
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(40),
-        child: Card(
-          color: Theme.of(context).primaryColor,
-          elevation: 4,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      title,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    FaIcon(
-                      FontAwesomeIcons.arrowTrendUp,
-                      color: color,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  "Total",
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                StreamBuilder<double>(
-                  stream: streamTotal,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData && snapshot.data != null) {
-                      final totalValue = snapshot.data;
-                      return Text(
-                        real.format(totalValue!),
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: color,
-                        ),
-                      );
-                    } else if (snapshot.hasError) {
-                      return const Text('erro...');
-                    }
-                    return Container();
-                  },
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Column(
-                      children: [
-                        Text(
-                          subTitle1,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        StreamBuilder<double>(
-                          stream: stream1,
-                          builder: (BuildContext context,
-                              AsyncSnapshot<double> snapshot) {
-                            if (snapshot.hasData && snapshot.data != null) {
-                              final totalStream1 = snapshot.data;
-                              return Text(
-                                real.format(totalStream1),
-                                style: TextStyle(
-                                  color: color,
-                                ),
-                              );
-                            } else if (snapshot.hasError) {
-                              return const Text("erro...");
-                            }
-                            return Container();
-                          },
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Text(
-                          subTitle2,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        StreamBuilder<double>(
-                          stream: stream2,
-                          builder: (BuildContext context,
-                              AsyncSnapshot<double> snapshot) {
-                            if (snapshot.hasData && snapshot.data != null) {
-                              final totalStream2 = snapshot.data;
-                              return Text(
-                                real.format(totalStream2),
-                                style: TextStyle(
-                                  color: color,
-                                ),
-                              );
-                            } else if (snapshot.hasError) {
-                              return const Text("erro...");
-                            }
-                            return Container();
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                )
-              ],
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: Theme.of(context).colorScheme.secondary, width: 2),
+          boxShadow: [
+            BoxShadow(
+              color: Theme.of(context).colorScheme.secondary.withOpacity(0.8),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, 2),
             ),
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  FaIcon(
+                    FontAwesomeIcons.angleRight,
+                    color: color,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                "Total",
+                style: TextStyle(fontSize: 20),
+              ),
+              StreamBuilder<double>(
+                stream: streamTotal,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData && snapshot.data != null) {
+                    final totalValue = snapshot.data;
+                    return Text(
+                      real.format(totalValue!),
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: color,
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return const Text('erro...');
+                  }
+                  return Container();
+                },
+              ),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        subTitle1,
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                      StreamBuilder<double>(
+                        stream: stream1,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<double> snapshot) {
+                          if (snapshot.hasData && snapshot.data != null) {
+                            final totalStream1 = snapshot.data;
+                            return Text(
+                              real.format(totalStream1),
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: color,
+                              ),
+                            );
+                          } else if (snapshot.hasError) {
+                            return const Text("erro...");
+                          }
+                          return Container();
+                        },
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        subTitle2,
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                      StreamBuilder<double>(
+                        stream: stream2,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<double> snapshot) {
+                          if (snapshot.hasData && snapshot.data != null) {
+                            final totalStream2 = snapshot.data;
+                            return Text(
+                              real.format(totalStream2),
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: color,
+                              ),
+                            );
+                          } else if (snapshot.hasError) {
+                            return const Text("erro...");
+                          }
+                          return Container();
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              )
+            ],
           ),
         ),
       ),

@@ -44,10 +44,11 @@ class _PersonalDashState extends State<PersonalDash> {
           const TabBar(
             labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             tabs: [
-              Tab(text: 'Renda'),
-              Tab(text: 'Gastos'),
-              Tab(text: 'Saldo'),
+              Tab(text: 'RENDA'),
+              Tab(text: 'GASTOS'),
+              Tab(text: 'SALDO'),
             ],
+            indicatorColor: Color(0xFF5CE1E6),
           ),
           Expanded(
             child: TabBarView(

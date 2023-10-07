@@ -29,7 +29,6 @@ class _PersonalState extends State<Personal> {
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         title: const Text('Pessoal'),
-        centerTitle: true,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(top: 20, right: 7, bottom: 10, left: 7),
@@ -53,7 +52,7 @@ class _PersonalState extends State<Personal> {
             ),
             const Divider(
               color: Colors.transparent,
-              height: 20,
+              height: 50,
             ),
             BoxCard(
               title: "Gastos",

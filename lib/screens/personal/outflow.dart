@@ -60,7 +60,7 @@ class _OutflowState extends State<Outflow> {
                 text: 'VARIÁVEIS',
               ),
             ],
-            indicatorColor: Color(0xFF5CE1E6),
+            indicatorColor: Colors.red,
           ),
         ),
         floatingActionButton: FloatingActionButton(
@@ -68,6 +68,7 @@ class _OutflowState extends State<Outflow> {
             NewOutflowBottomSheet.show(context);
           },
           child: const FaIcon(FontAwesomeIcons.plus),
+          backgroundColor: Colors.red,
         ),
         body: Column(
           children: [

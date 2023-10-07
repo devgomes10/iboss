@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/box_card.dart';
 import 'package:iboss/components/drawer_component.dart';
-import 'package:iboss/components/show_confirmation_password.dart';
-import 'package:iboss/repositories/authentication/auth_service.dart';
 import 'package:iboss/screens/business/revenue.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../repositories/business/cash_payment_repository.dart';
@@ -32,7 +30,6 @@ class _BusinessState extends State<Business> {
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         title: const Text('Negócio'),
-        centerTitle: true,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(top: 20, right: 7, bottom: 10, left: 7),
@@ -60,7 +57,7 @@ class _BusinessState extends State<Business> {
             ),
             const Divider(
               color: Colors.transparent,
-              height: 20,
+              height: 50,
             ),
             BoxCard(
               title: "Despesas",

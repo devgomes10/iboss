@@ -58,7 +58,7 @@ class _EntryState extends State<Entry> {
                 text: 'VARIÁVEIS',
               ),
             ],
-            indicatorColor: Color(0xFF5CE1E6),
+            indicatorColor: Colors.green,
           ),
         ),
         floatingActionButton: FloatingActionButton(
@@ -66,6 +66,7 @@ class _EntryState extends State<Entry> {
             NewEntryBottomSheet.show(context);
           },
           child: const FaIcon(FontAwesomeIcons.plus),
+          backgroundColor: Colors.green,
         ),
         body: Column(
           children: [

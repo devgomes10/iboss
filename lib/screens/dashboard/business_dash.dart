@@ -45,10 +45,11 @@ class _BusinessDasState extends State<BusinessDash> {
           const TabBar(
             labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             tabs: [
-              Tab(text: 'Receitas'),
-              Tab(text: 'Despesas'),
-              Tab(text: 'Saldo'),
+              Tab(text: 'RECEITAS'),
+              Tab(text: 'DESPESAS'),
+              Tab(text: 'SALDO'),
             ],
+            indicatorColor: Color(0xFF5CE1E6),
           ),
           Expanded(
             child: TabBarView(

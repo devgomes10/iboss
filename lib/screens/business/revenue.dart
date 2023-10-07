@@ -61,7 +61,7 @@ class _RevenueState extends State<Revenue> {
                 text: 'PENDENTES',
               ),
             ],
-            indicatorColor: Color(0xFF5CE1E6),
+            indicatorColor: Colors.green,
           ),
         ),
         floatingActionButton: FloatingActionButton(
@@ -69,6 +69,7 @@ class _RevenueState extends State<Revenue> {
             NewRevenueBottomSheet.show(context);
           },
           child: const FaIcon(FontAwesomeIcons.plus),
+          backgroundColor: Colors.green,
         ),
         body: Column(
           children: [

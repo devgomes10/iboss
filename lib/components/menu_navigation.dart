@@ -16,9 +16,9 @@ import 'package:iboss/screens/personal/outflow.dart';
 import 'package:iboss/screens/personal/personal.dart';
 import '../screens/business/revenue.dart';
 
-
 class MenuNavigation extends StatefulWidget {
   final User transaction;
+
   const MenuNavigation({super.key, required this.transaction});
 
   @override
@@ -47,7 +47,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
       body: PageView(
         controller: pc,
         onPageChanged: setCurrentPage,
-        children:  [
+        children: [
           Business(user: widget.transaction),
           Personal(user: widget.transaction),
           Goals(user: widget.transaction),
@@ -57,138 +57,159 @@ class _MenuNavigationState extends State<MenuNavigation> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: currentPage == 2
           ? FloatingActionButton(
-        backgroundColor: Colors.green,
-        onPressed: () {
-          NewGoal.show(context);
-        },
-        child: const Icon(
-          FontAwesomeIcons.plus,
-          color: Colors.white,
-        ),
-      )
+              backgroundColor: Colors.white,
+              onPressed: () {
+                NewGoal.show(context);
+              },
+              child: const Icon(
+                FontAwesomeIcons.plus,
+              ),
+            )
           : SpeedDial(
-        icon: FontAwesomeIcons.plus,
-        backgroundColor: const Color(0xFF5CE1E6),
-        overlayColor: Colors.black,
-        overlayOpacity: 0.7,
-        spacing: 12,
-        spaceBetweenChildren: 15,
-        curve: Curves.easeInOutCirc,
-        children: [
-          SpeedDialChild(
-            child: const FaIcon(FontAwesomeIcons.industry),
-            label: 'Pagamento',
-            backgroundColor: Colors.green,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Revenue(),
-                ),
-              );
-              NewRevenueBottomSheet.show(context);
-            },
-          ),
-          SpeedDialChild(
-            child: const FaIcon(FontAwesomeIcons.industry),
-            label: 'Despesa',
-            backgroundColor: Colors.red,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Expense(),
-                ),
-              );
-              // NewExpenseBottomSheet.show(context);
-            },
-          ),
-          SpeedDialChild(
-            child: const FaIcon(FontAwesomeIcons.userLarge),
-            label: 'Renda',
-            backgroundColor: Colors.green,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Entry(),
-                ),
-              );
-              NewEntryBottomSheet.show(context);
-            },
-          ),
-          SpeedDialChild(
-            child: const FaIcon(FontAwesomeIcons.userLarge),
-            label: 'Gasto',
-            backgroundColor: Colors.red,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Outflow(),
-                ),
-              );
-              NewOutflowBottomSheet.show(context);
-            },
-          ),
-        ],
-      ),
-      extendBody: true,
-      bottomNavigationBar: BottomAppBar(
-        notchMargin: 8,
-        shape: const CircularNotchedRectangle(),
-        color: Theme.of(context).colorScheme.primary,
-        child: IconTheme(
-          data: IconThemeData(color: Theme.of(context).colorScheme.secondary),
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              icon: FontAwesomeIcons.plus,
+              backgroundColor: const Color(0xFF5CE1E6),
+              overlayColor: Colors.black,
+              overlayOpacity: 0.7,
+              spacing: 12,
+              spaceBetweenChildren: 15,
+              curve: Curves.easeInOutCirc,
               children: [
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      currentPage = 0;
-                    });
-                    pc.jumpToPage(0);
+                SpeedDialChild(
+                  child: const FaIcon(FontAwesomeIcons.solidHandshake),
+                  label: 'Pagamento',
+                  labelStyle: const TextStyle(fontSize: 16),
+                  backgroundColor: Colors.green,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const Revenue(),
+                      ),
+                    );
+                    NewRevenueBottomSheet.show(context);
                   },
-                  icon: const FaIcon(FontAwesomeIcons.industry),
-                  color: currentPage == 0 ? const Color(0xFF5CE1E6) : Colors.grey,
                 ),
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      currentPage = 1;
-                    });
-                    pc.jumpToPage(1);
+                SpeedDialChild(
+                  child: const FaIcon(FontAwesomeIcons.solidHandshake),
+                  label: 'Despesa',
+                  labelStyle: const TextStyle(fontSize: 16),
+                  backgroundColor: Colors.red,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const Expense(),
+                      ),
+                    );
+                    // NewExpenseBottomSheet.show(context);
                   },
-                  icon: const FaIcon(FontAwesomeIcons.userLarge),
-                  color: currentPage == 1 ? const Color(0xFF5CE1E6) : Colors.grey,
                 ),
-                const SizedBox(
-                  width: 24,
-                ),
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      currentPage = 2;
-                    });
-                    pc.jumpToPage(2);
+                SpeedDialChild(
+                  child: const FaIcon(FontAwesomeIcons.userLarge),
+                  label: 'Renda',
+                  labelStyle: const TextStyle(fontSize: 16),
+                  backgroundColor: Colors.green,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const Entry(),
+                      ),
+                    );
+                    NewEntryBottomSheet.show(context);
                   },
-                  icon: const FaIcon(FontAwesomeIcons.solidFlag),
-                  color: currentPage == 2 ? const Color(0xFF5CE1E6) : Colors.grey,
                 ),
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      currentPage = 3;
-                    });
-                    pc.jumpToPage(3);
+                SpeedDialChild(
+                  child: const FaIcon(FontAwesomeIcons.userLarge),
+                  label: 'Gasto',
+                  labelStyle: const TextStyle(fontSize: 16),
+                  backgroundColor: Colors.red,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const Outflow(),
+                      ),
+                    );
+                    NewOutflowBottomSheet.show(context);
                   },
-                  icon: const FaIcon(FontAwesomeIcons.chartSimple),
-                  color: currentPage == 3 ? const Color(0xFF5CE1E6) : Colors.grey,
                 ),
               ],
+            ),
+      extendBody: true,
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              color: Colors.white,
+              width: 2.0,
+            ),
+          ),
+        ),
+        child: BottomAppBar(
+          // notchMargin: 8,
+          // shape: const CircularNotchedRectangle(),
+          color: Theme.of(context).colorScheme.primary,
+          child: IconTheme(
+            data: IconThemeData(color: Theme.of(context).colorScheme.secondary),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        currentPage = 0;
+                      });
+                      pc.jumpToPage(0);
+                    },
+                    icon: const FaIcon(FontAwesomeIcons.handshake),
+                    color: currentPage == 0
+                        ? const Color(0xFF5CE1E6)
+                        : Colors.grey,
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        currentPage = 1;
+                      });
+                      pc.jumpToPage(1);
+                    },
+                    icon: const FaIcon(FontAwesomeIcons.user),
+                    color: currentPage == 1
+                        ? const Color(0xFF5CE1E6)
+                        : Colors.grey,
+                  ),
+                  const SizedBox(
+                    width: 24,
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        currentPage = 2;
+                      });
+                      pc.jumpToPage(2);
+                    },
+                    icon: const FaIcon(FontAwesomeIcons.flag),
+                    color: currentPage == 2
+                        ? const Color(0xFF5CE1E6)
+                        : Colors.grey,
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        currentPage = 3;
+                      });
+                      pc.jumpToPage(3);
+                    },
+                    icon: const FaIcon(FontAwesomeIcons.chartColumn),
+                    color: currentPage == 3
+                        ? const Color(0xFF5CE1E6)
+                        : Colors.grey,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

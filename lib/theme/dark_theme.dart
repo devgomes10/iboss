@@ -7,27 +7,27 @@ ThemeData darkTheme = ThemeData(
     todayForegroundColor: MaterialStatePropertyAll(Colors.white),
   ),
   textTheme: TextTheme(
-    bodySmall: GoogleFonts.montserrat(
-      fontSize: 15,
-    ),
-    bodyMedium: GoogleFonts.montserrat(
+    bodyMedium: GoogleFonts.raleway(
       color: Colors.grey[300],
-      fontSize: 18,
+      // fontSize: 18,
     ),
-    bodyLarge: GoogleFonts.montserrat(fontSize: 23, fontWeight: FontWeight.bold),
   ),
   brightness: Brightness.dark,
   appBarTheme: AppBarTheme(
     backgroundColor: Colors.black,
     centerTitle: true,
-    titleTextStyle: GoogleFonts.concertOne(
-      fontSize: 34,
+    titleTextStyle: GoogleFonts.raleway(
+      fontSize: 30,
+      fontWeight: FontWeight.w600
     ),
   ),
-  colorScheme: ColorScheme.dark(
+  colorScheme: const ColorScheme.dark(
     background: Colors.black,
-    primary: Colors.grey[900]!,
-    secondary: Colors.grey[400]!,
-    tertiary: const Color(0xFF92E3A9),
+    primary: Colors.black,
+    secondary: Color(0xFF5CE1E6),
+    tertiary: Colors.white,
   ),
+  drawerTheme: const DrawerThemeData(
+    backgroundColor: Colors.black,
+  )
 );

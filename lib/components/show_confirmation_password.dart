@@ -11,6 +11,15 @@ showConfirmationPassword({
       TextEditingController confirmationPasswordController =
           TextEditingController();
       return AlertDialog(
+        backgroundColor: Colors.black,
+        scrollable: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0),
+          side: BorderSide(
+            width: 2,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+        ),
         title: Text("Deseja remover a conta com o e-mail $email?"),
         content: SizedBox(
           height: 175,
@@ -20,7 +29,10 @@ showConfirmationPassword({
               TextFormField(
                 controller: confirmationPasswordController,
                 obscureText: true,
-                decoration: const InputDecoration(label: Text("Senha")),
+                decoration: const InputDecoration(
+                  label: Text("Senha"),
+                  labelStyle: TextStyle(color: Colors.grey),
+                ),
               ),
             ],
           ),
@@ -38,7 +50,11 @@ showConfirmationPassword({
             },
             child: const Text(
               "EXCLUIR CONTA",
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(
+                color: const Color(0xFF5CE1E6),
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
             ),
           ),
         ],

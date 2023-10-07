@@ -65,7 +65,7 @@ class _ExpenseState extends State<Expense> {
                 text: 'VARIÁVEIS',
               ),
             ],
-            indicatorColor: Color(0xFF5CE1E6),
+            indicatorColor: Colors.red,
           ),
         ),
         floatingActionButton: SingleChildScrollView(
@@ -75,6 +75,7 @@ class _ExpenseState extends State<Expense> {
               // NewExpenseBottomSheet.show(context);
             },
             child: const FaIcon(FontAwesomeIcons.plus),
+            backgroundColor: Colors.red,
           ),
         ),
         body: Column(
