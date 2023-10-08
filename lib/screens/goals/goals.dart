@@ -81,7 +81,7 @@ class _GoalsState extends State<Goals> {
                           itemBuilder: (BuildContext context, int i) {
                             final goal = companyGoals[i];
                             final ValueNotifier<bool> companyChecked =
-                            ValueNotifier<bool>(false);
+                                ValueNotifier<bool>(false);
                             return ValueListenableBuilder<bool>(
                               valueListenable: companyChecked,
                               builder: (context, value, child) {
@@ -100,17 +100,19 @@ class _GoalsState extends State<Goals> {
                                   ),
                                   secondary: IconButton(
                                     onPressed: () {
-                                      showConfirmation(context: context,
-                                          title: "Deseja mesmo remover essa meta do negócio?",
+                                      showConfirmation(
+                                          context: context,
+                                          title:
+                                              "Deseja mesmo remover essa meta do negócio?",
                                           onPressed: () async {
                                             final companyGoalsRepository =
-                                            Provider.of<
-                                                CompanyGoalsRepository>(
-                                                context,
-                                                listen: false);
+                                                Provider.of<
+                                                        CompanyGoalsRepository>(
+                                                    context,
+                                                    listen: false);
                                             await companyGoalsRepository
                                                 .removeGoalsFromFirestore(
-                                                goal.id);
+                                                    goal.id);
                                           },
                                           messegerSnack: "Meta removida",
                                           isError: false);
@@ -121,19 +123,19 @@ class _GoalsState extends State<Goals> {
                                     ),
                                   ),
                                   controlAffinity:
-                                  ListTileControlAffinity.leading,
+                                      ListTileControlAffinity.leading,
                                   value: value,
                                   onChanged: (newValue) {
                                     companyChecked.value = newValue!;
                                   },
-                                  activeColor: Theme.of(context).colorScheme.secondary,
+                                  activeColor:
+                                      Theme.of(context).colorScheme.secondary,
                                   checkColor: Colors.black,
                                 );
                               },
                             );
                           },
-                          separatorBuilder: (_, __) =>
-                          const Divider(
+                          separatorBuilder: (_, __) => const Divider(
                             color: Colors.white,
                           ),
                           itemCount: companyGoals!.length,
@@ -162,7 +164,7 @@ class _GoalsState extends State<Goals> {
                           itemBuilder: (BuildContext context, int i) {
                             final goal = personalGoals[i];
                             final ValueNotifier<bool> personalChecked =
-                            ValueNotifier<bool>(false);
+                                ValueNotifier<bool>(false);
 
                             return ValueListenableBuilder<bool>(
                               valueListenable: personalChecked,
@@ -184,16 +186,17 @@ class _GoalsState extends State<Goals> {
                                     onPressed: () {
                                       showConfirmation(
                                           context: context,
-                                          title: "Deseja mesmo remover essa meta pessoal?",
+                                          title:
+                                              "Deseja mesmo remover essa meta pessoal?",
                                           onPressed: () async {
                                             final personalGoalsRepository =
-                                            Provider.of<
-                                                PersonalGoalsRepository>(
-                                                context,
-                                                listen: false);
+                                                Provider.of<
+                                                        PersonalGoalsRepository>(
+                                                    context,
+                                                    listen: false);
                                             await personalGoalsRepository
                                                 .removeGoalsFromFirestore(
-                                                goal.id);
+                                                    goal.id);
                                           },
                                           messegerSnack: "Meta removida",
                                           isError: false);
@@ -204,19 +207,19 @@ class _GoalsState extends State<Goals> {
                                     ),
                                   ),
                                   controlAffinity:
-                                  ListTileControlAffinity.leading,
+                                      ListTileControlAffinity.leading,
                                   value: value,
                                   onChanged: (newValue) {
                                     personalChecked.value = newValue!;
                                   },
-                                  activeColor: Colors.green,
+                                  activeColor:
+                                      Theme.of(context).colorScheme.secondary,
                                   checkColor: Colors.black,
                                 );
                               },
                             );
                           },
-                          separatorBuilder: (_, __) =>
-                          const Divider(
+                          separatorBuilder: (_, __) => const Divider(
                             color: Colors.white,
                           ),
                           itemCount: personalGoals!.length,

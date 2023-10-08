@@ -40,15 +40,9 @@ class _OutflowState extends State<Outflow> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: Theme
-            .of(context)
-            .colorScheme
-            .background,
+        backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
-          backgroundColor: Theme
-              .of(context)
-              .colorScheme
-              .primary,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           title: const Text('Gastos'),
           bottom: const TabBar(
             labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -67,8 +61,8 @@ class _OutflowState extends State<Outflow> {
           onPressed: () {
             NewOutflowBottomSheet.show(context);
           },
-          child: const FaIcon(FontAwesomeIcons.plus),
           backgroundColor: Colors.red,
+          child: const FaIcon(FontAwesomeIcons.plus),
         ),
         body: Column(
           children: [
@@ -111,15 +105,15 @@ class _OutflowState extends State<Outflow> {
                       }
                       final fixedOutflows = snapshot.data;
                       if (fixedOutflows == null || fixedOutflows.isEmpty) {
-                        return const Center(child: Text(
-                            'Nenhum gasto disponível.'));
+                        return const Center(
+                            child: Text('Nenhum gasto disponível.'));
                       }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
                           return ListTile(
                             shape: const RoundedRectangleBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(12)),
+                                  BorderRadius.all(Radius.circular(12)),
                             ),
                             leading: const FaIcon(
                               FontAwesomeIcons.arrowTrendDown,
@@ -147,14 +141,14 @@ class _OutflowState extends State<Outflow> {
                             ),
                             trailing: IconButton(
                               onPressed: () {
-                                showConfirmation(context: context,
-                                    title: "Deseja mesmo remover esse gasto fixo?",
+                                showConfirmation(
+                                    context: context,
+                                    title:
+                                        "Deseja mesmo remover esse gasto fixo?",
                                     onPressed: () {
-                                      final fixedId =
-                                          fixedOutflows[i].id;
+                                      final fixedId = fixedOutflows[i].id;
                                       FixedOutflowRepository()
-                                          .removeOutflowFromFirestore(
-                                          fixedId);
+                                          .removeOutflowFromFirestore(fixedId);
                                     },
                                     messegerSnack: "Gasto removido",
                                     isError: false);
@@ -166,8 +160,7 @@ class _OutflowState extends State<Outflow> {
                             ),
                           );
                         },
-                        separatorBuilder: (_, __) =>
-                        const Divider(
+                        separatorBuilder: (_, __) => const Divider(
                           color: Colors.white,
                         ),
                         padding: const EdgeInsets.only(
@@ -195,8 +188,8 @@ class _OutflowState extends State<Outflow> {
                       }
                       final variableOutflow = snapshot.data;
                       if (variableOutflow == null || variableOutflow.isEmpty) {
-                        return const Center(child: Text(
-                            'Nenhum gasto disponível.'));
+                        return const Center(
+                            child: Text('Nenhum gasto disponível.'));
                       }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
@@ -225,14 +218,15 @@ class _OutflowState extends State<Outflow> {
                             ),
                             trailing: IconButton(
                               onPressed: () {
-                                showConfirmation(context: context,
-                                    title: "Deseja mesmo remover esse gasto variável?",
+                                showConfirmation(
+                                    context: context,
+                                    title:
+                                        "Deseja mesmo remover esse gasto variável?",
                                     onPressed: () {
-                                      final variableId =
-                                          variableOutflow[i].id;
+                                      final variableId = variableOutflow[i].id;
                                       VariableOutflowRepository()
                                           .removeOutflowFromFirestore(
-                                          variableId);
+                                              variableId);
                                     },
                                     messegerSnack: "Gasto removido",
                                     isError: false);
@@ -244,8 +238,7 @@ class _OutflowState extends State<Outflow> {
                             ),
                           );
                         },
-                        separatorBuilder: (_, __) =>
-                        const Divider(
+                        separatorBuilder: (_, __) => const Divider(
                           color: Colors.white,
                         ),
                         padding: const EdgeInsets.only(

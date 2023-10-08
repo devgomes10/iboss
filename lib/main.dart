@@ -20,7 +20,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -74,6 +73,7 @@ class Bossover extends StatelessWidget {
     );
   }
 }
+
 class ScreenRouter extends StatelessWidget {
   const ScreenRouter({super.key});
 
@@ -86,7 +86,9 @@ class ScreenRouter extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         } else {
           if (snapshot.hasData) {
-            return MenuNavigation(transaction: snapshot.data!,);
+            return MenuNavigation(
+              transaction: snapshot.data!,
+            );
           } else {
             return const AuthScreen();
           }
@@ -95,6 +97,3 @@ class ScreenRouter extends StatelessWidget {
     );
   }
 }
-
-
-

@@ -34,9 +34,9 @@ class SizeBoxForm extends StatelessWidget {
         style: TextButton.styleFrom(
           backgroundColor: Colors.grey[100],
         ),
-        child: const Text(
-          'Variável',
-          style: TextStyle(
+        child: Text(
+          stringButton,
+          style: const TextStyle(
             fontSize: 16,
           ),
         ),

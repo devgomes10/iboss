@@ -31,9 +31,15 @@ class _PersonalState extends State<Personal> {
         title: const Text('Pessoal'),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.only(top: 20, right: 7, bottom: 10, left: 7),
+        padding: const EdgeInsets.only(
+          top: 20,
+          right: 7,
+          bottom: 10,
+          left: 7,
+        ),
         child: Column(
           children: [
+            const SizedBox(height: 5),
             BoxCard(
               title: "Renda",
               streamTotal: CombineLatestStream.combine2(

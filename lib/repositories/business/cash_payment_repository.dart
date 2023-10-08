@@ -29,13 +29,16 @@ class CashPaymentRepository extends ChangeNotifier {
     );
   }
 
-  Future<void> addPaymentToFirestore (CashPayment payment) async {
+  Future<void> addPaymentToFirestore(CashPayment payment) async {
     try {
       await cashPaymentCollection.doc(payment.id).set(
             payment.toMap(),
           );
     } catch (error) {
-      const Text("erro ao adicionar pagamento", style: TextStyle(fontSize: 12),);
+      const Text(
+        "erro ao adicionar pagamento",
+        style: TextStyle(fontSize: 12),
+      );
     }
     notifyListeners();
   }
@@ -44,7 +47,10 @@ class CashPaymentRepository extends ChangeNotifier {
     try {
       await cashPaymentCollection.doc(paymentId).delete();
     } catch (error) {
-      const Text("erro ao remover pagamento", style: TextStyle(fontSize: 12),);
+      const Text(
+        "erro ao remover pagamento",
+        style: TextStyle(fontSize: 12),
+      );
     }
     notifyListeners();
   }
@@ -57,7 +63,10 @@ class CashPaymentRepository extends ChangeNotifier {
           .map((doc) => CashPayment.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
     } catch (error) {
-      const Text("erro ao carregar dados pagamento", style: TextStyle(fontSize: 12),);
+      const Text(
+        "erro ao carregar dados pagamento",
+        style: TextStyle(fontSize: 12),
+      );
     }
     notifyListeners();
     return cashPayments;

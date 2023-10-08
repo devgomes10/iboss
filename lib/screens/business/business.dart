@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/box_card.dart';
 import 'package:iboss/components/drawer_component.dart';
 import 'package:iboss/screens/business/revenue.dart';

@@ -51,7 +51,7 @@ showConfirmationPassword({
             child: const Text(
               "EXCLUIR CONTA",
               style: TextStyle(
-                color: const Color(0xFF5CE1E6),
+                color: Color(0xFF5CE1E6),
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
               ),

@@ -58,13 +58,12 @@ class __BottomSheetNewRevenueState extends State<_BottomSheetNewRevenue> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Center(
+              const Center(
                 child: Text(
                   "Adicione um novo pagamento",
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
               ),
@@ -153,10 +152,10 @@ class __BottomSheetNewRevenueState extends State<_BottomSheetNewRevenue> {
                             }
                           },
                           style: TextButton.styleFrom(
-                            backgroundColor: Colors.grey[200],
+                            backgroundColor: const Color(0xFF5CE1E6),
                           ),
                           child: const Text(
-                            'Recebido',
+                            'RECEBIDO',
                             style: TextStyle(
                               fontSize: 16,
                             ),
@@ -189,10 +188,10 @@ class __BottomSheetNewRevenueState extends State<_BottomSheetNewRevenue> {
                             }
                           },
                           style: TextButton.styleFrom(
-                            backgroundColor: Colors.grey[200],
+                            backgroundColor: const Color(0xFF5CE1E6),
                           ),
                           child: const Text(
-                            'Pendente',
+                            'PENDENTE',
                             style: TextStyle(
                               fontSize: 16,
                             ),

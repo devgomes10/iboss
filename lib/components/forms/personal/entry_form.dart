@@ -59,13 +59,12 @@ class __BottomSheetNewEntryState extends State<_BottomSheetNewEntry> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Center(
+              const Center(
                 child: Text(
                   "Adicione uma nova renda",
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
               ),
@@ -154,10 +153,10 @@ class __BottomSheetNewEntryState extends State<_BottomSheetNewEntry> {
                             }
                           },
                           style: TextButton.styleFrom(
-                            backgroundColor: Colors.grey[200],
+                            backgroundColor: const Color(0xFF5CE1E6),
                           ),
                           child: const Text(
-                            'Fixa',
+                            'FIXA',
                             style: TextStyle(
                               fontSize: 16,
                             ),
@@ -190,10 +189,10 @@ class __BottomSheetNewEntryState extends State<_BottomSheetNewEntry> {
                             }
                           },
                           style: TextButton.styleFrom(
-                            backgroundColor: Colors.grey[200],
+                            backgroundColor: const Color(0xFF5CE1E6),
                           ),
                           child: const Text(
-                            'Variável',
+                            'VARIÁVEL',
                             style: TextStyle(
                               fontSize: 16,
                             ),

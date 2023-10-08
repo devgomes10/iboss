@@ -41,7 +41,10 @@ class BoxCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.background,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: Theme.of(context).colorScheme.secondary, width: 2),
+          border: Border.all(
+            color: Theme.of(context).colorScheme.secondary,
+            width: 3,
+          ),
           boxShadow: [
             BoxShadow(
               color: Theme.of(context).colorScheme.secondary.withOpacity(0.8),
@@ -61,7 +64,8 @@ class BoxCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   FaIcon(
                     FontAwesomeIcons.angleRight,

@@ -24,7 +24,7 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF5CE1E6),
+      backgroundColor: const Color(0xFF5CE1E6),
       body: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 32,
@@ -43,7 +43,8 @@ class _AuthScreenState extends State<AuthScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Image.asset("assets/icon2.png",
+                    Image.asset(
+                      "assets/icon2.png",
                       width: 100,
                       height: 100,
                     ),
@@ -92,8 +93,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           color: Colors.white,
                         ),
                         enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.white),
+                          borderSide: BorderSide(color: Colors.white),
                         ),
                       ),
                       validator: (value) {
@@ -131,9 +131,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                   color: Colors.white,
                                 ),
                                 enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors
-                                          .white),
+                                  borderSide: BorderSide(color: Colors.white),
                                 ),
                               ),
                               validator: (value) {
@@ -155,9 +153,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                   color: Colors.white,
                                 ),
                                 enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors
-                                          .white),
+                                  borderSide: BorderSide(color: Colors.white),
                                 ),
                               ),
                               validator: (value) {

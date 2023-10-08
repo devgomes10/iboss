@@ -1,32 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:iboss/models/goals/personal_goals.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import '../../../models/goals/company_goals.dart';
+import '../../../models/goals/personal_goals.dart';
 import '../../../repositories/goals/company_goals_repository.dart';
 import '../../../repositories/goals/personal_goals_repository.dart';
 import '../../show_snackbar.dart';
 
-class NewGoal {
+class NewGoalBottomSheet {
   static void show(BuildContext context) {
-    showDialog(
+    showModalBottomSheet(
+      useSafeArea: true,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(24),
+        ),
+      ),
       context: context,
       builder: (BuildContext context) {
-        return _DialogNewGoal();
+        return _BottomSheetNewGoal();
       },
     );
   }
 }
 
-class _DialogNewGoal extends StatefulWidget {
+class _BottomSheetNewGoal extends StatefulWidget {
   @override
-  ___DialogNewGoalState createState() => ___DialogNewGoalState();
+  __BottomSheetNewGoalState createState() => __BottomSheetNewGoalState();
 }
 
-class ___DialogNewGoalState extends State<_DialogNewGoal> {
+class __BottomSheetNewGoalState extends State<_BottomSheetNewGoal> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController dateController = TextEditingController();
@@ -39,145 +45,331 @@ class ___DialogNewGoalState extends State<_DialogNewGoal> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      scrollable: true,
-      title: Text(
-        'Crie uma meta e adicione uma data de conclusão',
-        style: GoogleFonts.montserrat(
-          fontSize: 25,
-        ),
-      ),
-      content: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                Row(
+    return SingleChildScrollView(
+        reverse: true,
+        child: Container(
+            height: MediaQuery.of(context).size.height * 0.8,
+            padding: const EdgeInsets.all(16),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Expanded(
-                      child: TextFormField(
-                        validator: (String? value) {
-                          if (value!.isEmpty) {
-                            return "Insira uma descrição";
-                          }
-                          return null;
-                        },
-                        controller: descriptionController,
-                        keyboardType: TextInputType.text,
-                        decoration: const InputDecoration(
-                          labelText: 'Descrição',
-                          labelStyle: TextStyle(color: Colors.white),
+                    const Center(
+                      child: Text(
+                        "Adicione uma meta e uma data de conclusão",
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                    IconButton(
-                      onPressed: () async {
-                        final DateTime? dateTime = await showDatePicker(
-                          context: context,
-                          locale: ptBr,
-                          initialDate: selectedDate,
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(3000),
-                        );
-                        if (dateTime != null) {
-                          setState(() {
-                            selectedDate = dateTime;
-                            dateController.text =
-                                DateFormat('dd/MM/yyyy', 'pt_BR')
-                                    .format(selectedDate);
-                          });
-                        }
-                      },
-                      icon: const FaIcon(FontAwesomeIcons.calendar),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: TextFormField(
+                            validator: (String? value) {
+                              if (value!.isEmpty) {
+                                return "Insira uma descrição";
+                              }
+                              return null;
+                            },
+                            controller: descriptionController,
+                            keyboardType: TextInputType.text,
+                            decoration: const InputDecoration(
+                              labelText: 'Descrição',
+                              labelStyle: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () async {
+                            final DateTime? dateTime = await showDatePicker(
+                              context: context,
+                              locale: ptBr,
+                              initialDate: selectedDate,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(3000),
+                            );
+                            if (dateTime != null) {
+                              setState(
+                                () {
+                                  selectedDate = dateTime;
+                                  dateController.text =
+                                      DateFormat('dd/MM/yyyy', 'pt_BR')
+                                          .format(selectedDate);
+                                },
+                              );
+                            }
+                          },
+                          icon: const FaIcon(FontAwesomeIcons.calendar),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      actions: [
-        Column(
-          children: [
-            const Text(
-              'É uma meta para o negócio ou pessoal?',
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 25, bottom: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Consumer<CompanyGoalsRepository>(builder:
-                      (BuildContext context, CompanyGoalsRepository forCompany,
-                          Widget? widget) {
-                    return SizedBox(
-                      width: 140,
-                      height: 45,
-                      child: TextButton(
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            CompanyGoals company = CompanyGoals(
-                              description: descriptionController.text,
-                              date: selectedDate,
-                              id: goalsId,
-                            );
-                            await CompanyGoalsRepository().addCompanyGoalsToFirestore(company);
-                            showSnackbar(
-                                context: context,
-                                isError: false,
-                                menssager: "Meta adicionada");
-                            Navigator.pop(context);
-                          }
-                        },
-                        child: const Text(
-                          'Negócio',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
+                    const SizedBox(height: 24),
+                    const Center(
+                      child: Text(
+                        'É uma meta do negócio ou pessoal?',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    );
-                  }),
-                  Consumer<PersonalGoalsRepository>(builder:
-                      (BuildContext context,
-                          PersonalGoalsRepository forPersonal, Widget? widget) {
-                    return SizedBox(
-                      width: 140,
-                      height: 45,
-                      child: TextButton(
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            PersonalGoals personal = PersonalGoals(
-                              description: descriptionController.text,
-                              date: selectedDate,
-                              id: goalsId,
-                            );
-                            await PersonalGoalsRepository().addPersonalGoalsToFirestore(personal);
-                            showSnackbar(
-                                context: context,
-                                isError: false,
-                                menssager: "Meta adicionada");
-                            Navigator.pop(context);
-                          }
-                        },
-                        child: const Text(
-                          'Pessoal',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    );
-                  }),
-                ],
-              ),
-            )
-          ],
-        ),
-      ],
-    );
+                    ),
+                    const SizedBox(height: 22),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Consumer<CompanyGoalsRepository>(builder:
+                            (BuildContext context,
+                                CompanyGoalsRepository forCompany,
+                                Widget? widget) {
+                          return SizedBox(
+                            width: 140,
+                            height: 45,
+                            child: TextButton(
+                              onPressed: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  CompanyGoals company = CompanyGoals(
+                                    description: descriptionController.text,
+                                    date: selectedDate,
+                                    id: goalsId,
+                                  );
+                                  await CompanyGoalsRepository()
+                                      .addCompanyGoalsToFirestore(company);
+                                  showSnackbar(
+                                      context: context,
+                                      isError: false,
+                                      menssager: "Meta adicionada");
+                                  Navigator.pop(context);
+                                }
+                              },
+                              style: TextButton.styleFrom(
+                                backgroundColor: const Color(0xFF5CE1E6),
+                              ),
+                              child: const Text(
+                                'NEGÓCIO',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          );
+                        }),
+                        Consumer<PersonalGoalsRepository>(builder:
+                            (BuildContext context,
+                                PersonalGoalsRepository forPersonal,
+                                Widget? widget) {
+                          return SizedBox(
+                            width: 140,
+                            height: 45,
+                            child: TextButton(
+                              onPressed: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  PersonalGoals personal = PersonalGoals(
+                                    description: descriptionController.text,
+                                    date: selectedDate,
+                                    id: goalsId,
+                                  );
+                                  await PersonalGoalsRepository()
+                                      .addPersonalGoalsToFirestore(personal);
+                                  showSnackbar(
+                                      context: context,
+                                      isError: false,
+                                      menssager: "Meta adicionada");
+                                  Navigator.pop(context);
+                                }
+                              },
+                              style: TextButton.styleFrom(
+                                backgroundColor: const Color(0xFF5CE1E6),
+                              ),
+                              child: const Text(
+                                'PESSOAL',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          );
+                        }),
+                      ],
+                    ),
+                  ]),
+            )));
   }
 }
+
+// class NewGoal {
+//   static void show(BuildContext context) {
+//     showDialog(
+//       context: context,
+//       builder: (BuildContext context) {
+//         return _DialogNewGoal();
+//       },
+//     );
+//   }
+// }
+//
+// class _DialogNewGoal extends StatefulWidget {
+//   @override
+//   ___DialogNewGoalState createState() => ___DialogNewGoalState();
+// }
+//
+// class ___DialogNewGoalState extends State<_DialogNewGoal> {
+//   final _formKey = GlobalKey<FormState>();
+//   TextEditingController descriptionController = TextEditingController();
+//   TextEditingController dateController = TextEditingController();
+//   bool checked = false;
+//   DateTime selectedDate = DateTime.now();
+//   List<bool> companyCheckedList = [];
+//   List<bool> personalCheckedList = [];
+//   final ptBr = const Locale('pt', 'BR');
+//   String goalsId = const Uuid().v1();
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return AlertDialog(
+//       scrollable: true,
+//       title: Text(
+//         'Crie uma meta e adicione uma data de conclusão',
+//         style: GoogleFonts.montserrat(
+//           fontSize: 25,
+//         ),
+//       ),
+//       content: SingleChildScrollView(
+//         child: Padding(
+//           padding: const EdgeInsets.all(8.0),
+//           child: Form(
+//             key: _formKey,
+//             child: Column(
+//               children: [
+//                 Row(
+//                   children: <Widget>[
+//                     Expanded(
+//                       child:
+//                       TextFormField(
+//                         validator: (String? value) {
+//                           if (value!.isEmpty) {
+//                             return "Insira uma descrição";
+//                           }
+//                           return null;
+//                         },
+//                         controller: descriptionController,
+//                         keyboardType: TextInputType.text,
+//                         decoration: const InputDecoration(
+//                           labelText: 'Descrição',
+//                           labelStyle: TextStyle(color: Colors.white),
+//                         ),
+//                       ),
+//                     ),
+//                     IconButton(
+//                       onPressed: () async {
+//                         final DateTime? dateTime = await showDatePicker(
+//                           context: context,
+//                           locale: ptBr,
+//                           initialDate: selectedDate,
+//                           firstDate: DateTime(2000),
+//                           lastDate: DateTime(3000),
+//                         );
+//                         if (dateTime != null) {
+//                           setState(() {
+//                             selectedDate = dateTime;
+//                             dateController.text =
+//                                 DateFormat('dd/MM/yyyy', 'pt_BR')
+//                                     .format(selectedDate);
+//                           });
+//                         }
+//                       },
+//                       icon: const FaIcon(FontAwesomeIcons.calendar),
+//                     ),
+//                   ],
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ),
+//       ),
+//       actions: [
+//         Column(
+//           children: [
+//             const Text(
+//               'É uma meta para o negócio ou pessoal?',
+//             ),
+//             Padding(
+//               padding: const EdgeInsets.only(top: 25, bottom: 15),
+//               child: Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceAround,
+//                 children: [
+//                   Consumer<CompanyGoalsRepository>(builder:
+//                       (BuildContext context, CompanyGoalsRepository forCompany,
+//                           Widget? widget) {
+//                     return SizedBox(
+//                       width: 140,
+//                       height: 45,
+//                       child: TextButton(
+//                         onPressed: () async {
+//                           if (_formKey.currentState!.validate()) {
+//                             CompanyGoals company = CompanyGoals(
+//                               description: descriptionController.text,
+//                               date: selectedDate,
+//                               id: goalsId,
+//                             );
+//                             await CompanyGoalsRepository().addCompanyGoalsToFirestore(company);
+//                             showSnackbar(
+//                                 context: context,
+//                                 isError: false,
+//                                 menssager: "Meta adicionada");
+//                             Navigator.pop(context);
+//                           }
+//                         },
+//                         child: const Text(
+//                           'Negócio',
+//                           style: TextStyle(
+//                             color: Colors.white,
+//                           ),
+//                         ),
+//                       ),
+//                     );
+//                   }),
+//                   Consumer<PersonalGoalsRepository>(builder:
+//                       (BuildContext context,
+//                           PersonalGoalsRepository forPersonal, Widget? widget) {
+//                     return SizedBox(
+//                       width: 140,
+//                       height: 45,
+//                       child: TextButton(
+//                         onPressed: () async {
+//                           if (_formKey.currentState!.validate()) {
+//                             PersonalGoals personal = PersonalGoals(
+//                               description: descriptionController.text,
+//                               date: selectedDate,
+//                               id: goalsId,
+//                             );
+//                             await PersonalGoalsRepository().addPersonalGoalsToFirestore(personal);
+//                             showSnackbar(
+//                                 context: context,
+//                                 isError: false,
+//                                 menssager: "Meta adicionada");
+//                             Navigator.pop(context);
+//                           }
+//                         },
+//                         child: const Text(
+//                           'Pessoal',
+//                           style: TextStyle(
+//                             color: Colors.white,
+//                           ),
+//                         ),
+//                       ),
+//                     );
+//                   }),
+//                 ],
+//               ),
+//             )
+//           ],
+//         ),
+//       ],
+//     );
+//   }
+// }

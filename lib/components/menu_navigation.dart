@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:iboss/components/forms/business/expense_form.dart';
 import 'package:iboss/components/forms/business/revenue_form.dart';
 import 'package:iboss/components/forms/goals/goals_form.dart';
 import 'package:iboss/components/forms/personal/entry_form.dart';
@@ -59,7 +58,8 @@ class _MenuNavigationState extends State<MenuNavigation> {
           ? FloatingActionButton(
               backgroundColor: Colors.white,
               onPressed: () {
-                NewGoal.show(context);
+                NewGoalBottomSheet.show(context);
+                // NewGoal.show(context);
               },
               child: const Icon(
                 FontAwesomeIcons.plus,

@@ -17,7 +17,7 @@ class TransactionForm {
 
   static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   static final TextEditingController descriptionController =
-  TextEditingController();
+      TextEditingController();
   static final TextEditingController valueController = TextEditingController();
   static String invoicingId = const Uuid().v1();
   static final FocusNode descriptionFocusNode = FocusNode();
@@ -108,7 +108,7 @@ class TransactionForm {
                   const SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Consumer> [
+                    children: <Consumer>[
                       consumer1,
                       consumer2,
                     ],

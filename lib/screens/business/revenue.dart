@@ -41,15 +41,9 @@ class _RevenueState extends State<Revenue> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: Theme
-            .of(context)
-            .colorScheme
-            .background,
+        backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
-          backgroundColor: Theme
-              .of(context)
-              .colorScheme
-              .primary,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           title: const Text('Receitas'),
           bottom: const TabBar(
             labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -68,8 +62,8 @@ class _RevenueState extends State<Revenue> {
           onPressed: () {
             NewRevenueBottomSheet.show(context);
           },
-          child: const FaIcon(FontAwesomeIcons.plus),
           backgroundColor: Colors.green,
+          child: const FaIcon(FontAwesomeIcons.plus),
         ),
         body: Column(
           children: [
@@ -111,7 +105,7 @@ class _RevenueState extends State<Revenue> {
                       if (snapshot.hasError) {
                         return const Center(
                           child:
-                          Text('Erro ao carregar os pagamentos recebidos'),
+                              Text('Erro ao carregar os pagamentos recebidos'),
                         );
                       }
                       final cashPayments = snapshot.data;
@@ -124,7 +118,7 @@ class _RevenueState extends State<Revenue> {
                           return ListTile(
                             shape: const RoundedRectangleBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(12)),
+                                  BorderRadius.all(Radius.circular(12)),
                             ),
                             leading: const FaIcon(
                               FontAwesomeIcons.arrowTrendUp,
@@ -160,12 +154,13 @@ class _RevenueState extends State<Revenue> {
                               onPressed: () {
                                 showConfirmation(
                                     context: context,
-                                    title: "Deseja mesmo remover esse pagamento recebido?",
+                                    title:
+                                        "Deseja mesmo remover esse pagamento recebido?",
                                     onPressed: () {
                                       final paymentId = cashPayments[i].id;
                                       CashPaymentRepository()
                                           .removePaymentFromFirestore(
-                                          paymentId);
+                                              paymentId);
                                     },
                                     messegerSnack: "Pagamento removido",
                                     isError: false);
@@ -178,7 +173,7 @@ class _RevenueState extends State<Revenue> {
                           );
                         },
                         separatorBuilder: (_, __) =>
-                        const Divider(color: Colors.white),
+                            const Divider(color: Colors.white),
                         padding: const EdgeInsets.only(
                           top: 14,
                           left: 16,
@@ -200,7 +195,7 @@ class _RevenueState extends State<Revenue> {
                       if (snapshot.hasError) {
                         return const Center(
                           child:
-                          Text('Erro ao carregar os pagamentos pendentes'),
+                              Text('Erro ao carregar os pagamentos pendentes'),
                         );
                       }
                       final deferredPayments = snapshot.data;
@@ -214,7 +209,7 @@ class _RevenueState extends State<Revenue> {
                           return ListTile(
                             shape: const RoundedRectangleBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(12)),
+                                  BorderRadius.all(Radius.circular(12)),
                             ),
                             leading: const FaIcon(
                               FontAwesomeIcons.arrowTrendUp,
@@ -256,7 +251,8 @@ class _RevenueState extends State<Revenue> {
                                         onPressed: () {
                                           showConfirmation(
                                               context: context,
-                                              title: "Você recebeu esse pagamento?",
+                                              title:
+                                                  "Você recebeu esse pagamento?",
                                               onPressed: () async {
                                                 final paymentId =
                                                     deferredPayments[i].id;
@@ -268,20 +264,21 @@ class _RevenueState extends State<Revenue> {
                                                 final date =
                                                     deferredPayments[i].date;
                                                 CashPayment received =
-                                                CashPayment(
-                                                    description:
-                                                    description,
-                                                    value: value,
-                                                    date: date,
-                                                    id: paymentId);
+                                                    CashPayment(
+                                                        description:
+                                                            description,
+                                                        value: value,
+                                                        date: date,
+                                                        id: paymentId);
                                                 await inCash
                                                     .addPaymentToFirestore(
-                                                    received);
+                                                        received);
                                                 DeferredPaymentRepository()
                                                     .removePaymentFromFirestore(
-                                                    paymentId);
+                                                        paymentId);
                                               },
-                                              messegerSnack: "Pagamento recebido",
+                                              messegerSnack:
+                                                  "Pagamento recebido",
                                               isError: false);
                                         },
                                         icon: const FaIcon(
@@ -292,15 +289,16 @@ class _RevenueState extends State<Revenue> {
                                   ),
                                   IconButton(
                                     onPressed: () {
-                                      showConfirmation(context: context,
-                                          title: "Deseja mesmo remover esse pagamento pendente?",
+                                      showConfirmation(
+                                          context: context,
+                                          title:
+                                              "Deseja mesmo remover esse pagamento pendente?",
                                           onPressed: () {
                                             final paymentId =
-                                                deferredPayments[i]
-                                                    .id;
+                                                deferredPayments[i].id;
                                             DeferredPaymentRepository()
                                                 .removePaymentFromFirestore(
-                                                paymentId);
+                                                    paymentId);
                                           },
                                           messegerSnack: "Pagamento removido",
                                           isError: false);
@@ -316,7 +314,7 @@ class _RevenueState extends State<Revenue> {
                           );
                         },
                         separatorBuilder: (_, __) =>
-                        const Divider(color: Colors.white),
+                            const Divider(color: Colors.white),
                         padding: const EdgeInsets.only(
                           top: 14,
                           left: 16,

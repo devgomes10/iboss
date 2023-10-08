@@ -36,15 +36,9 @@ class _EntryState extends State<Entry> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: Theme
-            .of(context)
-            .colorScheme
-            .background,
+        backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
-          backgroundColor: Theme
-              .of(context)
-              .colorScheme
-              .primary,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           title: const Text(
             'Renda',
           ),
@@ -65,8 +59,8 @@ class _EntryState extends State<Entry> {
           onPressed: () {
             NewEntryBottomSheet.show(context);
           },
-          child: const FaIcon(FontAwesomeIcons.plus),
           backgroundColor: Colors.green,
+          child: const FaIcon(FontAwesomeIcons.plus),
         ),
         body: Column(
           children: [
@@ -113,8 +107,8 @@ class _EntryState extends State<Entry> {
                         }
                         final fixedEntry = snapshot.data;
                         if (fixedEntry == null || fixedEntry.isEmpty) {
-                          return const Center(child: Text(
-                              'Nenhuma renda disponível.'));
+                          return const Center(
+                              child: Text('Nenhuma renda disponível.'));
                         }
                         return ListView.separated(
                             itemBuilder: (BuildContext context, int i) {
@@ -143,14 +137,15 @@ class _EntryState extends State<Entry> {
                                 ),
                                 trailing: IconButton(
                                     onPressed: () {
-                                      showConfirmation(context: context,
-                                          title: "Deseja mesmo remover essa renda fixa?",
+                                      showConfirmation(
+                                          context: context,
+                                          title:
+                                              "Deseja mesmo remover essa renda fixa?",
                                           onPressed: () {
-                                            final fixedId =
-                                                fixedEntry[i].id;
+                                            final fixedId = fixedEntry[i].id;
                                             FixedEntryRepository()
                                                 .removeEntryFromFirestore(
-                                                fixedId);
+                                                    fixedId);
                                           },
                                           messegerSnack: "Renda removida",
                                           isError: false);
@@ -161,10 +156,9 @@ class _EntryState extends State<Entry> {
                                     )),
                               );
                             },
-                            separatorBuilder: (_, __) =>
-                            const Divider(
-                              color: Colors.white,
-                            ),
+                            separatorBuilder: (_, __) => const Divider(
+                                  color: Colors.white,
+                                ),
                             padding: const EdgeInsets.only(
                               top: 14,
                               left: 16,
@@ -188,8 +182,8 @@ class _EntryState extends State<Entry> {
                       }
                       final variableEntry = snapshot.data;
                       if (variableEntry == null || variableEntry.isEmpty) {
-                        return const Center(child: Text(
-                            'Nenhuma renda disponível.'));
+                        return const Center(
+                            child: Text('Nenhuma renda disponível.'));
                       }
                       return ListView.separated(
                           itemBuilder: (BuildContext context, int i) {
@@ -218,14 +212,15 @@ class _EntryState extends State<Entry> {
                               ),
                               trailing: IconButton(
                                 onPressed: () {
-                                  showConfirmation(context: context,
-                                      title: "Deseja mesmo remover essa renda variável?",
+                                  showConfirmation(
+                                      context: context,
+                                      title:
+                                          "Deseja mesmo remover essa renda variável?",
                                       onPressed: () {
-                                        final variableId =
-                                            variableEntry[i].id;
+                                        final variableId = variableEntry[i].id;
                                         VariableEntryRepository()
                                             .removeEntryFromFirestore(
-                                            variableId);
+                                                variableId);
                                       },
                                       messegerSnack: "Renda removida",
                                       isError: false);
@@ -235,10 +230,9 @@ class _EntryState extends State<Entry> {
                               ),
                             );
                           },
-                          separatorBuilder: (_, __) =>
-                          const Divider(
-                            color: Colors.white,
-                          ),
+                          separatorBuilder: (_, __) => const Divider(
+                                color: Colors.white,
+                              ),
                           padding: const EdgeInsets.only(
                             top: 14,
                             left: 16,

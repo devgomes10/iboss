@@ -38,7 +38,7 @@ showConfirmation({
                   child: const Text(
                     'NÃO',
                     style: TextStyle(
-                      color: const Color(0xFF5CE1E6),
+                      color: Color(0xFF5CE1E6),
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
@@ -48,11 +48,14 @@ showConfirmation({
                   onPressed: () {
                     onPressed();
                     Navigator.pop(context);
-                    showSnackbar(context: context, menssager: messegerSnack, isError: isError);
+                    showSnackbar(
+                        context: context,
+                        menssager: messegerSnack,
+                        isError: isError);
                   },
                   child: const Text(
                     'SIM',
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Color(0xFF5CE1E6),
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -67,4 +70,3 @@ showConfirmation({
     },
   );
 }
-

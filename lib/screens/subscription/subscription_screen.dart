@@ -16,7 +16,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     final Set<String> productIds = {subscriptionId};
 
     ProductDetailsResponse response =
-    await InAppPurchase.instance.queryProductDetails(productIds);
+        await InAppPurchase.instance.queryProductDetails(productIds);
     if (response.notFoundIDs.isNotEmpty) {
       // Lidar com produtos não encontrados, se necessário
       return;
@@ -35,7 +35,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           title: 'Nome do seu plano',
           description: 'Descrição do seu plano',
           price: 'Preço do plano',
-          currencyCode: 'BRL', // Substitua pelo código de moeda correto
+          currencyCode: 'BRL',
+          // Substitua pelo código de moeda correto
           rawPrice: 1000, // Substitua pelo preço correto em centavos
         ),
       );
@@ -67,7 +68,9 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           const Center(
             child: Text("O período de teste gratuito acabou"),
           ),
-          const SizedBox(height: 15,),
+          const SizedBox(
+            height: 15,
+          ),
           ElevatedButton(
             onPressed: loadProducts, // Agora chama loadProducts()
             style: ElevatedButton.styleFrom(

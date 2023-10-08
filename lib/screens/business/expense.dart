@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/forms/business/expense_form.dart';
 import 'package:iboss/components/show_confirmation.dart';
-import 'package:iboss/components/size_box_form.dart';
-import 'package:iboss/components/transaction_form.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import '../../models/business/fixed_expense.dart';
 import '../../models/business/variable_expense.dart';
@@ -45,15 +42,9 @@ class _ExpenseState extends State<Expense> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: Theme
-            .of(context)
-            .colorScheme
-            .background,
+        backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
-          backgroundColor: Theme
-              .of(context)
-              .colorScheme
-              .primary,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           title: const Text('Despesas'),
           bottom: const TabBar(
             labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -71,11 +62,10 @@ class _ExpenseState extends State<Expense> {
         floatingActionButton: SingleChildScrollView(
           child: FloatingActionButton(
             onPressed: () {
-              transactionForm.show(context);
-              // NewExpenseBottomSheet.show(context);
+              NewExpenseBottomSheet.show(context);
             },
-            child: const FaIcon(FontAwesomeIcons.plus),
             backgroundColor: Colors.red,
+            child: const FaIcon(FontAwesomeIcons.plus),
           ),
         ),
         body: Column(
@@ -158,14 +148,15 @@ class _ExpenseState extends State<Expense> {
                             ),
                             trailing: IconButton(
                               onPressed: () {
-                                showConfirmation(context: context,
-                                    title: "Deseja mesmo remover essa despesa fixa?",
+                                showConfirmation(
+                                    context: context,
+                                    title:
+                                        "Deseja mesmo remover essa despesa fixa?",
                                     onPressed: () {
-                                      final expenseId =
-                                          fixedExpenses[i].id;
+                                      final expenseId = fixedExpenses[i].id;
                                       FixedExpenseRepository()
                                           .removeExpenseFromFirestore(
-                                          expenseId);
+                                              expenseId);
                                     },
                                     messegerSnack: "Despesa removida",
                                     isError: false);
@@ -178,7 +169,7 @@ class _ExpenseState extends State<Expense> {
                           );
                         },
                         separatorBuilder: (_, __) =>
-                        const Divider(color: Colors.white),
+                            const Divider(color: Colors.white),
                         padding: const EdgeInsets.only(
                           top: 14,
                           left: 16,
@@ -243,14 +234,15 @@ class _ExpenseState extends State<Expense> {
                             ),
                             trailing: IconButton(
                               onPressed: () {
-                                showConfirmation(context: context,
-                                    title: "Deseja mesmo remover essa despesa variável?",
+                                showConfirmation(
+                                    context: context,
+                                    title:
+                                        "Deseja mesmo remover essa despesa variável?",
                                     onPressed: () {
-                                      final expenseId =
-                                          variableExpenses[i].id;
+                                      final expenseId = variableExpenses[i].id;
                                       VariableExpenseRepository()
                                           .removeExpenseFromFirestore(
-                                          expenseId);
+                                              expenseId);
                                     },
                                     messegerSnack: "Despesa removida",
                                     isError: false);
@@ -261,7 +253,7 @@ class _ExpenseState extends State<Expense> {
                           );
                         },
                         separatorBuilder: (_, __) =>
-                        const Divider(color: Colors.white),
+                            const Divider(color: Colors.white),
                         padding: const EdgeInsets.only(
                           top: 14,
                           left: 16,
