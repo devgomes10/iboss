@@ -38,7 +38,6 @@ class _ExpenseState extends State<Expense> {
   @override
   Widget build(BuildContext context) {
     NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
-
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -113,7 +112,8 @@ class _ExpenseState extends State<Expense> {
                       final fixedExpenses = snapshot.data;
                       if (fixedExpenses == null || fixedExpenses.isEmpty) {
                         return const Center(
-                            child: Text('Nenhuma despesa disponível.'));
+                          child: Text('Nenhuma despesa disponível.'),
+                        );
                       }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {

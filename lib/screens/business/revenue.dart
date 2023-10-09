@@ -115,7 +115,12 @@ class _RevenueState extends State<Revenue> {
                       }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
+                          CashPayment model1 = cashPayments[i];
                           return ListTile(
+                            onTap: () {
+                              NewRevenueBottomSheet.show(context,
+                                  model1: model1);
+                            },
                             shape: const RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(12)),
@@ -206,7 +211,12 @@ class _RevenueState extends State<Revenue> {
                       }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
+                          DeferredPayment model2 = deferredPayments[i];
                           return ListTile(
+                            onTap: () {
+                              NewRevenueBottomSheet.show(context,
+                                  model2: model2);
+                            },
                             shape: const RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(12)),

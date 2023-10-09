@@ -8,7 +8,7 @@ import '../../../repositories/business/deferred_payment_repository.dart';
 import '../../show_snackbar.dart';
 
 class NewRevenueBottomSheet {
-  static void show(BuildContext context) {
+  static void show(BuildContext context, {CashPayment? model1, DeferredPayment? model2}) {
     showModalBottomSheet(
       useSafeArea: true,
       isScrollControlled: true,
@@ -19,24 +19,46 @@ class NewRevenueBottomSheet {
       ),
       context: context,
       builder: (BuildContext context) {
-        return _BottomSheetNewRevenue();
+        return _BottomSheetNewRevenue(model1: model1, model2: model2,);
       },
     );
   }
 }
 
 class _BottomSheetNewRevenue extends StatefulWidget {
+  final CashPayment? model1;
+  final DeferredPayment? model2;
+
+  const _BottomSheetNewRevenue({this.model1, this.model2});
+
   @override
   __BottomSheetNewRevenueState createState() => __BottomSheetNewRevenueState();
 }
 
 class __BottomSheetNewRevenueState extends State<_BottomSheetNewRevenue> {
+  bool _isEditing1 = false;
   final _formKey = GlobalKey<FormState>();
   final descriptionController = TextEditingController();
   final valueController = TextEditingController();
   String invoicingId = const Uuid().v1();
   final descriptionFocusNode = FocusNode();
   final valueFocusNode = FocusNode();
+  bool _isEditing2 = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.model1 != null) {
+      descriptionController.text = widget.model1!.description;
+      valueController.text = widget.model1!.value.toString();
+      _isEditing1 = true;
+    }
+    if (widget.model2 != null) {
+      descriptionController.text = widget.model2!.description;
+      valueController.text = widget.model2!.value.toString();
+      _isEditing2 = true;
+    }
+  }
 
   @override
   void dispose() {
@@ -47,6 +69,12 @@ class __BottomSheetNewRevenueState extends State<_BottomSheetNewRevenue> {
 
   @override
   Widget build(BuildContext context) {
+    final cashPaymentModel = widget.model1;
+    final deferredPaymentModel = widget.model2;
+    final titleText =
+        _isEditing1 || _isEditing2 ? "Editando pagamento" : "Adicione um novo pagamento";
+    final buttonText1 = _isEditing1 ? "Confirmar" : "RECEBIDO";
+    final buttonText2 = _isEditing2 ? "Confirmar" : "PENDENTE";
     return SingleChildScrollView(
       reverse: true,
       child: Container(
@@ -58,10 +86,10 @@ class __BottomSheetNewRevenueState extends State<_BottomSheetNewRevenue> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              const Center(
+              Center(
                 child: Text(
-                  "Adicione um novo pagamento",
-                  style: TextStyle(
+                  titleText,
+                  style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
@@ -115,20 +143,22 @@ class __BottomSheetNewRevenueState extends State<_BottomSheetNewRevenue> {
                 ),
               ),
               const SizedBox(height: 24),
-              const Center(
-                child: Text(
-                  'O pagamento já foi recebido?',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+              if (!_isEditing1 && !_isEditing2)
+                const Center(
+                  child: Text(
+                    'O pagamento já foi recebido?',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ),
               const SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Consumer<CashPaymentRepository>(
+                  if (!_isEditing2)
+                    Consumer<CashPaymentRepository>(
                     builder: (BuildContext context,
                         CashPaymentRepository inCash, Widget? widget) {
                       return SizedBox(
@@ -142,6 +172,11 @@ class __BottomSheetNewRevenueState extends State<_BottomSheetNewRevenue> {
                                 date: DateTime.now(),
                                 id: invoicingId,
                               );
+
+                              if (cashPaymentModel != null) {
+                                received.id = cashPaymentModel.id;
+                              }
+
                               await CashPaymentRepository()
                                   .addPaymentToFirestore(received);
                               showSnackbar(
@@ -154,9 +189,9 @@ class __BottomSheetNewRevenueState extends State<_BottomSheetNewRevenue> {
                           style: TextButton.styleFrom(
                             backgroundColor: const Color(0xFF5CE1E6),
                           ),
-                          child: const Text(
-                            'RECEBIDO',
-                            style: TextStyle(
+                          child: Text(
+                            buttonText1,
+                            style: const TextStyle(
                               fontSize: 16,
                             ),
                           ),
@@ -164,42 +199,48 @@ class __BottomSheetNewRevenueState extends State<_BottomSheetNewRevenue> {
                       );
                     },
                   ),
-                  Consumer<DeferredPaymentRepository>(
-                    builder: (BuildContext context,
-                        DeferredPaymentRepository inTerm, Widget? widget) {
-                      return SizedBox(
-                        width: 100,
-                        child: TextButton(
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              DeferredPayment pending = DeferredPayment(
-                                description: descriptionController.text,
-                                value: double.parse(valueController.text),
-                                date: DateTime.now(),
-                                id: invoicingId,
-                              );
-                              await DeferredPaymentRepository()
-                                  .addPaymentToFirestore(pending);
-                              showSnackbar(
-                                  context: context,
-                                  isError: false,
-                                  menssager: "Pagamento adicionado");
-                              Navigator.pop(context);
-                            }
-                          },
-                          style: TextButton.styleFrom(
-                            backgroundColor: const Color(0xFF5CE1E6),
-                          ),
-                          child: const Text(
-                            'PENDENTE',
-                            style: TextStyle(
-                              fontSize: 16,
+                  if (!_isEditing1)
+                    Consumer<DeferredPaymentRepository>(
+                      builder: (BuildContext context,
+                          DeferredPaymentRepository inTerm, Widget? widget) {
+                        return SizedBox(
+                          width: 100,
+                          child: TextButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                DeferredPayment pending = DeferredPayment(
+                                  description: descriptionController.text,
+                                  value: double.parse(valueController.text),
+                                  date: DateTime.now(),
+                                  id: invoicingId,
+                                );
+
+                                if (deferredPaymentModel != null) {
+                                  pending.id = deferredPaymentModel.id;
+                                }
+
+                                await DeferredPaymentRepository()
+                                    .addPaymentToFirestore(pending);
+                                showSnackbar(
+                                    context: context,
+                                    isError: false,
+                                    menssager: "Pagamento adicionado");
+                                Navigator.pop(context);
+                              }
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor: const Color(0xFF5CE1E6),
+                            ),
+                            child: Text(
+                              buttonText2,
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
+                        );
+                      },
+                    ),
                 ],
               ),
             ],

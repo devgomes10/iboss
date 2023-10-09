@@ -14,6 +14,7 @@ import 'package:iboss/screens/personal/entry.dart';
 import 'package:iboss/screens/personal/outflow.dart';
 import 'package:iboss/screens/personal/personal.dart';
 import '../screens/business/revenue.dart';
+import 'forms/business/expense_form.dart';
 
 class MenuNavigation extends StatefulWidget {
   final User transaction;
@@ -101,7 +102,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
                         builder: (context) => const Expense(),
                       ),
                     );
-                    // NewExpenseBottomSheet.show(context);
+                    NewExpenseBottomSheet.show(context);
                   },
                 ),
                 SpeedDialChild(
