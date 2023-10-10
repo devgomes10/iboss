@@ -110,7 +110,11 @@ class _OutflowState extends State<Outflow> {
                       }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
+                          FixedOutflow model1 = fixedOutflows[i];
                           return ListTile(
+                            onTap: () {
+                              NewOutflowBottomSheet.show(context, model1: model1);
+                            },
                             shape: const RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(12)),
@@ -193,7 +197,11 @@ class _OutflowState extends State<Outflow> {
                       }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
+                          VariableOutflow model2 = variableOutflow[i];
                           return ListTile(
+                            onTap: () {
+                              NewOutflowBottomSheet.show(context, model2: model2);
+                            },
                             leading: const FaIcon(
                               FontAwesomeIcons.arrowTrendDown,
                               color: Colors.red,

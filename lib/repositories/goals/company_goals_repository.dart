@@ -22,10 +22,19 @@ class CompanyGoalsRepository extends ChangeNotifier {
             description: doc['description'],
             date: doc['date'].toDate(),
             id: doc.id,
+            isChecked: doc['isChecked'] ?? false, // Use o valor do Firestore
           );
         }).toList();
       },
     );
+  }
+
+  Future<void> updateCompanyGoalStatus(String goalId, bool isChecked) async {
+    try {
+      await companyCollection.doc(goalId).update({"isChecked": isChecked});
+    } catch (error) {
+      // Lidar com erros, se necessário
+    }
   }
 
   Future<void> addCompanyGoalsToFirestore(CompanyGoals goals) async {

@@ -117,7 +117,11 @@ class _ExpenseState extends State<Expense> {
                       }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
+                          FixedExpense model1 = fixedExpenses[i];
                           return ListTile(
+                            onTap: () {
+                              NewExpenseBottomSheet.show(context, model1: model1);
+                            },
                             leading: const FaIcon(
                               FontAwesomeIcons.arrowTrendDown,
                               color: Colors.red,
@@ -201,7 +205,11 @@ class _ExpenseState extends State<Expense> {
                       }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
+                          VariableExpense model2 = variableExpenses[i];
                           return ListTile(
+                            onTap: () {
+                              NewExpenseBottomSheet.show(context, model2: model2);
+                            },
                             leading: const FaIcon(
                               FontAwesomeIcons.arrowTrendDown,
                               color: Colors.red,

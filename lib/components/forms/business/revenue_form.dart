@@ -8,7 +8,8 @@ import '../../../repositories/business/deferred_payment_repository.dart';
 import '../../show_snackbar.dart';
 
 class NewRevenueBottomSheet {
-  static void show(BuildContext context, {CashPayment? model1, DeferredPayment? model2}) {
+  static void show(BuildContext context,
+      {CashPayment? model1, DeferredPayment? model2}) {
     showModalBottomSheet(
       useSafeArea: true,
       isScrollControlled: true,
@@ -19,7 +20,10 @@ class NewRevenueBottomSheet {
       ),
       context: context,
       builder: (BuildContext context) {
-        return _BottomSheetNewRevenue(model1: model1, model2: model2,);
+        return _BottomSheetNewRevenue(
+          model1: model1,
+          model2: model2,
+        );
       },
     );
   }
@@ -71,8 +75,9 @@ class __BottomSheetNewRevenueState extends State<_BottomSheetNewRevenue> {
   Widget build(BuildContext context) {
     final cashPaymentModel = widget.model1;
     final deferredPaymentModel = widget.model2;
-    final titleText =
-        _isEditing1 || _isEditing2 ? "Editando pagamento" : "Adicione um novo pagamento";
+    final titleText = _isEditing1 || _isEditing2
+        ? "Editando pagamento"
+        : "Adicione um novo pagamento";
     final buttonText1 = _isEditing1 ? "Confirmar" : "RECEBIDO";
     final buttonText2 = _isEditing2 ? "Confirmar" : "PENDENTE";
     return SingleChildScrollView(
@@ -159,46 +164,46 @@ class __BottomSheetNewRevenueState extends State<_BottomSheetNewRevenue> {
                 children: [
                   if (!_isEditing2)
                     Consumer<CashPaymentRepository>(
-                    builder: (BuildContext context,
-                        CashPaymentRepository inCash, Widget? widget) {
-                      return SizedBox(
-                        width: 100,
-                        child: TextButton(
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              CashPayment received = CashPayment(
-                                description: descriptionController.text,
-                                value: double.parse(valueController.text),
-                                date: DateTime.now(),
-                                id: invoicingId,
-                              );
+                      builder: (BuildContext context,
+                          CashPaymentRepository inCash, Widget? widget) {
+                        return SizedBox(
+                          width: 100,
+                          child: TextButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                CashPayment received = CashPayment(
+                                  description: descriptionController.text,
+                                  value: double.parse(valueController.text),
+                                  date: DateTime.now(),
+                                  id: invoicingId,
+                                );
 
-                              if (cashPaymentModel != null) {
-                                received.id = cashPaymentModel.id;
+                                if (cashPaymentModel != null) {
+                                  received.id = cashPaymentModel.id;
+                                }
+
+                                await CashPaymentRepository()
+                                    .addPaymentToFirestore(received);
+                                showSnackbar(
+                                    context: context,
+                                    isError: false,
+                                    menssager: "Pagamento adicionado");
+                                Navigator.pop(context);
                               }
-
-                              await CashPaymentRepository()
-                                  .addPaymentToFirestore(received);
-                              showSnackbar(
-                                  context: context,
-                                  isError: false,
-                                  menssager: "Pagamento adicionado");
-                              Navigator.pop(context);
-                            }
-                          },
-                          style: TextButton.styleFrom(
-                            backgroundColor: const Color(0xFF5CE1E6),
-                          ),
-                          child: Text(
-                            buttonText1,
-                            style: const TextStyle(
-                              fontSize: 16,
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor: const Color(0xFF5CE1E6),
+                            ),
+                            child: Text(
+                              buttonText1,
+                              style: const TextStyle(
+                                fontSize: 16,
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
+                        );
+                      },
+                    ),
                   if (!_isEditing1)
                     Consumer<DeferredPaymentRepository>(
                       builder: (BuildContext context,

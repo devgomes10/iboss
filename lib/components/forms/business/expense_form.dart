@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:iboss/models/business/fixed_expense.dart';
+import 'package:iboss/models/business/variable_expense.dart';
+import 'package:iboss/repositories/business/fixed_expense_repository.dart';
+import 'package:iboss/repositories/business/variable_expense_repository.dart';
+import 'package:iboss/repositories/personal/variable_entry_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
-import '../../../models/business/fixed_expense.dart';
-import '../../../models/business/variable_expense.dart';
-import '../../../repositories/business/fixed_expense_repository.dart';
-import '../../../repositories/business/variable_expense_repository.dart';
+import '../../../models/business/cash_payment.dart';
+import '../../../models/business/deferred_payment.dart';
+import '../../../repositories/business/cash_payment_repository.dart';
+import '../../../repositories/business/deferred_payment_repository.dart';
 import '../../show_snackbar.dart';
 
 class NewExpenseBottomSheet {
-  static void show(BuildContext context) {
+  static void show(BuildContext context,
+      {FixedExpense? model1, VariableExpense? model2}) {
     showModalBottomSheet(
       useSafeArea: true,
       isScrollControlled: true,
@@ -19,24 +25,49 @@ class NewExpenseBottomSheet {
       ),
       context: context,
       builder: (BuildContext context) {
-        return _BottomSheetNewExpense();
+        return _BottomSheetNewExpense(
+          model1: model1,
+          model2: model2,
+        );
       },
     );
   }
 }
 
 class _BottomSheetNewExpense extends StatefulWidget {
+  final FixedExpense? model1;
+  final VariableExpense? model2;
+
+  const _BottomSheetNewExpense({this.model1, this.model2});
+
   @override
   __BottomSheetNewExpenseState createState() => __BottomSheetNewExpenseState();
 }
 
 class __BottomSheetNewExpenseState extends State<_BottomSheetNewExpense> {
+  bool _isEditing1 = false;
   final _formKey = GlobalKey<FormState>();
   final descriptionController = TextEditingController();
   final valueController = TextEditingController();
   String invoicingId = const Uuid().v1();
   final descriptionFocusNode = FocusNode();
   final valueFocusNode = FocusNode();
+  bool _isEditing2 = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.model1 != null) {
+      descriptionController.text = widget.model1!.description;
+      valueController.text = widget.model1!.value.toString();
+      _isEditing1 = true;
+    }
+    if (widget.model2 != null) {
+      descriptionController.text = widget.model2!.description;
+      valueController.text = widget.model2!.value.toString();
+      _isEditing2 = true;
+    }
+  }
 
   @override
   void dispose() {
@@ -47,6 +78,13 @@ class __BottomSheetNewExpenseState extends State<_BottomSheetNewExpense> {
 
   @override
   Widget build(BuildContext context) {
+    final fixedExpenseModel = widget.model1;
+    final variableExpenseModel = widget.model2;
+    final titleText = _isEditing1 || _isEditing2
+        ? "Editando despesa"
+        : "Adicione uma nova despesa";
+    final buttonText1 = _isEditing1 ? "Confirmar" : "FIXA";
+    final buttonText2 = _isEditing2 ? "Confirmar" : "VARIÁVEL";
     return SingleChildScrollView(
       reverse: true,
       child: Container(
@@ -58,10 +96,10 @@ class __BottomSheetNewExpenseState extends State<_BottomSheetNewExpense> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              const Center(
+              Center(
                 child: Text(
-                  "Adicione uma nova despesa",
-                  style: TextStyle(
+                  titleText,
+                  style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
@@ -115,92 +153,103 @@ class __BottomSheetNewExpenseState extends State<_BottomSheetNewExpense> {
                 ),
               ),
               const SizedBox(height: 24),
-              const Center(
-                child: Text(
-                  'A despesa é fixa ou variável?',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+              if (!_isEditing1 && !_isEditing2)
+                const Center(
+                  child: Text(
+                    'É uma despesa fixa ou variável?',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ),
               const SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Consumer<FixedExpenseRepository>(
-                    builder: (BuildContext context,
-                        FixedExpenseRepository fixed, Widget? widget) {
-                      return SizedBox(
-                        width: 100,
-                        child: TextButton(
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              FixedExpense fixedExpense = FixedExpense(
-                                description: descriptionController.text,
-                                value: double.parse(valueController.text),
-                                date: DateTime.now(),
-                                id: invoicingId,
-                              );
-                              await FixedExpenseRepository()
-                                  .addExpenseToFirestore(fixedExpense);
-                              showSnackbar(
-                                  context: context,
-                                  isError: false,
-                                  menssager: "Despesa adicionada");
-                              Navigator.pop(context);
-                            }
-                          },
-                          style: TextButton.styleFrom(
-                            backgroundColor: const Color(0xFF5CE1E6),
-                          ),
-                          child: const Text(
-                            'FIXA',
-                            style: TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  Consumer<VariableExpenseRepository>(
-                    builder: (BuildContext context,
-                        VariableExpenseRepository variable, Widget? widget) {
-                      return SizedBox(
-                        width: 100,
-                        child: TextButton(
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              VariableExpense variableExpense = VariableExpense(
-                                description: descriptionController.text,
-                                value: double.parse(valueController.text),
-                                date: DateTime.now(),
-                                id: invoicingId,
-                              );
-                              await VariableExpenseRepository()
-                                  .addExpenseToFirestore(variableExpense);
-                              showSnackbar(
-                                  context: context,
-                                  isError: false,
-                                  menssager: "Despesa adicionada");
+                  if (!_isEditing2)
+                    Consumer<FixedExpenseRepository>(
+                      builder: (BuildContext context,
+                          FixedExpenseRepository fixed, Widget? widget) {
+                        return SizedBox(
+                          width: 100,
+                          child: TextButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                FixedExpense fixed = FixedExpense(
+                                  description: descriptionController.text,
+                                  value: double.parse(valueController.text),
+                                  date: DateTime.now(),
+                                  id: invoicingId,
+                                );
 
-                              Navigator.pop(context);
-                            }
-                          },
-                          style: TextButton.styleFrom(
-                            backgroundColor: const Color(0xFF5CE1E6),
-                          ),
-                          child: const Text(
-                            'VARIÁVEL',
-                            style: TextStyle(
-                              fontSize: 16,
+                                if (fixedExpenseModel != null) {
+                                  fixed.id = fixedExpenseModel.id;
+                                }
+                                await FixedExpenseRepository()
+                                    .addExpenseToFirestore(fixed);
+                                showSnackbar(
+                                    context: context,
+                                    isError: false,
+                                    menssager: "Despesa adicionada");
+                                Navigator.pop(context);
+                              }
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor: const Color(0xFF5CE1E6),
+                            ),
+                            child: Text(
+                              buttonText1,
+                              style: const TextStyle(
+                                fontSize: 16,
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
+                        );
+                      },
+                    ),
+                  if (!_isEditing1)
+                    Consumer<VariableEntryRepository>(
+                      builder: (BuildContext context,
+                          VariableEntryRepository variable, Widget? widget) {
+                        return SizedBox(
+                          width: 100,
+                          child: TextButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                VariableExpense variable = VariableExpense(
+                                  description: descriptionController.text,
+                                  value: double.parse(valueController.text),
+                                  date: DateTime.now(),
+                                  id: invoicingId,
+                                );
+
+                                if (variableExpenseModel != null) {
+                                  variable.id = variableExpenseModel.id;
+                                }
+
+                                await VariableExpenseRepository()
+                                    .addExpenseToFirestore(variable);
+                                showSnackbar(
+                                    context: context,
+                                    isError: false,
+                                    menssager: "Despesa adicionada");
+                                Navigator.pop(context);
+                              }
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor: const Color(0xFF5CE1E6),
+                            ),
+                            child: Text(
+                              buttonText2,
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                 ],
               ),
             ],

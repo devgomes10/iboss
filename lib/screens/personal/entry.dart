@@ -112,7 +112,11 @@ class _EntryState extends State<Entry> {
                         }
                         return ListView.separated(
                             itemBuilder: (BuildContext context, int i) {
+                              FixedEntry model1 = fixedEntry[i];
                               return ListTile(
+                                onTap: () {
+                                  NewEntryBottomSheet.show(context, model1: model1);
+                                },
                                 leading: const FaIcon(
                                   FontAwesomeIcons.arrowTrendUp,
                                   color: Colors.green,
@@ -187,7 +191,11 @@ class _EntryState extends State<Entry> {
                       }
                       return ListView.separated(
                           itemBuilder: (BuildContext context, int i) {
+                            VariableEntry model2 = variableEntry[i];
                             return ListTile(
+                              onTap: () {
+                                NewEntryBottomSheet.show(context, model2: model2);
+                              },
                               leading: const FaIcon(
                                 FontAwesomeIcons.arrowTrendUp,
                                 color: Colors.green,

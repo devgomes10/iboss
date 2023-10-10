@@ -25,6 +25,7 @@ class _GoalsState extends State<Goals> {
   TextEditingController dateController = TextEditingController();
   DateTime selectedDate = DateTime.now();
   final ptBr = const Locale('pt', 'BR');
+  late bool newValue;
 
   @override
   Widget build(BuildContext context) {
@@ -89,9 +90,9 @@ class _GoalsState extends State<Goals> {
                                   title: Text(
                                     goal.description,
                                     style: GoogleFonts.montserrat(
-                                      decoration: value
-                                          ? TextDecoration.lineThrough
-                                          : null,
+                                      decoration: goal.isChecked
+                                          ? TextDecoration.lineThrough  // Aplicar tachado se a meta estiver marcada
+                                          : TextDecoration.none,
                                     ),
                                   ),
                                   subtitle: Text(
@@ -124,9 +125,11 @@ class _GoalsState extends State<Goals> {
                                   ),
                                   controlAffinity:
                                       ListTileControlAffinity.leading,
-                                  value: value,
+                                  value: goal.isChecked,
                                   onChanged: (newValue) {
-                                    companyChecked.value = newValue!;
+                                    CompanyGoalsRepository()
+                                        .updateCompanyGoalStatus(
+                                            goal.id, newValue!);
                                   },
                                   activeColor:
                                       Theme.of(context).colorScheme.secondary,
@@ -173,9 +176,9 @@ class _GoalsState extends State<Goals> {
                                   title: Text(
                                     goal.description,
                                     style: GoogleFonts.montserrat(
-                                      decoration: value
-                                          ? TextDecoration.lineThrough
-                                          : null,
+                                      decoration: goal.isChecked
+                                          ? TextDecoration.lineThrough  // Aplicar tachado se a meta estiver marcada
+                                          : TextDecoration.none,
                                     ),
                                   ),
                                   subtitle: Text(
@@ -208,9 +211,11 @@ class _GoalsState extends State<Goals> {
                                   ),
                                   controlAffinity:
                                       ListTileControlAffinity.leading,
-                                  value: value,
+                                  value: goal.isChecked,
                                   onChanged: (newValue) {
-                                    personalChecked.value = newValue!;
+                                    PersonalGoalsRepository()
+                                        .updatePerosnalGoalStatus(
+                                            goal.id, newValue!);
                                   },
                                   activeColor:
                                       Theme.of(context).colorScheme.secondary,

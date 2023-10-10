@@ -22,10 +22,19 @@ class PersonalGoalsRepository extends ChangeNotifier {
             description: doc['description'],
             date: doc['date'].toDate(),
             id: doc.id,
+            isChecked: doc['isChecked'] ?? false, // Use o valor do Firestore
           );
         }).toList();
       },
     );
+  }
+
+  Future<void> updatePerosnalGoalStatus(String goalId, bool isChecked) async {
+    try {
+      await personalCollection.doc(goalId).update({"isChecked": isChecked});
+    } catch (error) {
+      // Lidar com erros, se necessário
+    }
   }
 
   Future<void> addPersonalGoalsToFirestore(PersonalGoals goalsPersonal) async {
