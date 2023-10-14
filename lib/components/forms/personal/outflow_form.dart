@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:iboss/models/personal/fixed_entry.dart';
 import 'package:iboss/models/personal/fixed_outflow.dart';
-import 'package:iboss/models/personal/variable_entry.dart';
 import 'package:iboss/models/personal/variable_outflow.dart';
-import 'package:iboss/repositories/personal/fixed_entry_repository.dart';
 import 'package:iboss/repositories/personal/fixed_outflow_repository.dart';
-import 'package:iboss/repositories/personal/variable_entry_repository.dart';
 import 'package:iboss/repositories/personal/variable_outflow_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -188,10 +184,19 @@ class __BottomSheetNewOutflowState extends State<_BottomSheetNewOutflow> {
 
                                 await FixedOutflowRepository()
                                     .addOutflowToFirestore(fixed);
-                                showSnackbar(
-                                    context: context,
-                                    isError: false,
-                                    menssager: "Gasto adicionado");
+
+                                if (!_isEditing1 && !_isEditing2) {
+                                  showSnackbar(
+                                      context: context,
+                                      isError: false,
+                                      menssager: "Gasto adicionado");
+                                } else {
+                                  showSnackbar(
+                                      context: context,
+                                      isError: false,
+                                      menssager: "Gasto editado");
+                                }
+
                                 Navigator.pop(context);
                               }
                             },
@@ -226,6 +231,18 @@ class __BottomSheetNewOutflowState extends State<_BottomSheetNewOutflow> {
 
                                 if (variableOutflowModel != null) {
                                   variable.id = variableOutflowModel.id;
+                                }
+
+                                if (!_isEditing1 && !_isEditing2) {
+                                  showSnackbar(
+                                      context: context,
+                                      isError: false,
+                                      menssager: "Gasto adicionado");
+                                } else {
+                                  showSnackbar(
+                                      context: context,
+                                      isError: false,
+                                      menssager: "Gasto editado");
                                 }
 
                                 await VariableOutflowRepository()

@@ -50,7 +50,7 @@ class DrawerComponent extends StatelessWidget {
                     onPressed: () {
                       AuthService().logOut();
                     },
-                    messegerSnack: "Saiu com sucesso",
+                    messegerSnack: "",
                     isError: false);
               },
             ),

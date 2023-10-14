@@ -184,10 +184,19 @@ class __BottomSheetNewEntryState extends State<_BottomSheetNewEntry> {
 
                                 await FixedEntryRepository()
                                     .addEntryToFirestore(fixed);
-                                showSnackbar(
-                                    context: context,
-                                    isError: false,
-                                    menssager: "Renda adicionada");
+
+                                if (!_isEditing1 && !_isEditing2) {
+                                  showSnackbar(
+                                      context: context,
+                                      isError: false,
+                                      menssager: "Renda adicionada");
+                                } else {
+                                  showSnackbar(
+                                      context: context,
+                                      isError: false,
+                                      menssager: "Renda editada");
+                                }
+
                                 Navigator.pop(context);
                               }
                             },
@@ -226,10 +235,19 @@ class __BottomSheetNewEntryState extends State<_BottomSheetNewEntry> {
 
                                 await VariableEntryRepository()
                                     .addEntryToFirestore(variable);
-                                showSnackbar(
-                                    context: context,
-                                    isError: false,
-                                    menssager: "Renda adicionada");
+
+                                if (!_isEditing1 && !_isEditing2) {
+                                  showSnackbar(
+                                      context: context,
+                                      isError: false,
+                                      menssager: "Renda adicionada");
+                                } else {
+                                  showSnackbar(
+                                      context: context,
+                                      isError: false,
+                                      menssager: "Renda editada");
+                                }
+
                                 Navigator.pop(context);
                               }
                             },

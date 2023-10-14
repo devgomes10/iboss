@@ -120,7 +120,8 @@ class _ExpenseState extends State<Expense> {
                           FixedExpense model1 = fixedExpenses[i];
                           return ListTile(
                             onTap: () {
-                              NewExpenseBottomSheet.show(context, model1: model1);
+                              NewExpenseBottomSheet.show(context,
+                                  model1: model1);
                             },
                             leading: const FaIcon(
                               FontAwesomeIcons.arrowTrendDown,
@@ -208,7 +209,8 @@ class _ExpenseState extends State<Expense> {
                           VariableExpense model2 = variableExpenses[i];
                           return ListTile(
                             onTap: () {
-                              NewExpenseBottomSheet.show(context, model2: model2);
+                              NewExpenseBottomSheet.show(context,
+                                  model2: model2);
                             },
                             leading: const FaIcon(
                               FontAwesomeIcons.arrowTrendDown,

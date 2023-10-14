@@ -91,7 +91,8 @@ class _GoalsState extends State<Goals> {
                                     goal.description,
                                     style: GoogleFonts.montserrat(
                                       decoration: goal.isChecked
-                                          ? TextDecoration.lineThrough  // Aplicar tachado se a meta estiver marcada
+                                          ? TextDecoration
+                                              .lineThrough // Aplicar tachado se a meta estiver marcada
                                           : TextDecoration.none,
                                     ),
                                   ),
@@ -177,7 +178,8 @@ class _GoalsState extends State<Goals> {
                                     goal.description,
                                     style: GoogleFonts.montserrat(
                                       decoration: goal.isChecked
-                                          ? TextDecoration.lineThrough  // Aplicar tachado se a meta estiver marcada
+                                          ? TextDecoration
+                                              .lineThrough // Aplicar tachado se a meta estiver marcada
                                           : TextDecoration.none,
                                     ),
                                   ),

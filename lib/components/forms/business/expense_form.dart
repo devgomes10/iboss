@@ -6,10 +6,6 @@ import 'package:iboss/repositories/business/variable_expense_repository.dart';
 import 'package:iboss/repositories/personal/variable_entry_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
-import '../../../models/business/cash_payment.dart';
-import '../../../models/business/deferred_payment.dart';
-import '../../../repositories/business/cash_payment_repository.dart';
-import '../../../repositories/business/deferred_payment_repository.dart';
 import '../../show_snackbar.dart';
 
 class NewExpenseBottomSheet {
@@ -188,10 +184,19 @@ class __BottomSheetNewExpenseState extends State<_BottomSheetNewExpense> {
                                 }
                                 await FixedExpenseRepository()
                                     .addExpenseToFirestore(fixed);
-                                showSnackbar(
-                                    context: context,
-                                    isError: false,
-                                    menssager: "Despesa adicionada");
+
+                                if (!_isEditing1 && !_isEditing2) {
+                                  showSnackbar(
+                                      context: context,
+                                      isError: false,
+                                      menssager: "Despesa adicionada");
+                                } else {
+                                  showSnackbar(
+                                      context: context,
+                                      isError: false,
+                                      menssager: "Despesa editada");
+                                }
+
                                 Navigator.pop(context);
                               }
                             },
@@ -230,10 +235,18 @@ class __BottomSheetNewExpenseState extends State<_BottomSheetNewExpense> {
 
                                 await VariableExpenseRepository()
                                     .addExpenseToFirestore(variable);
-                                showSnackbar(
-                                    context: context,
-                                    isError: false,
-                                    menssager: "Despesa adicionada");
+
+                                if (!_isEditing1 && !_isEditing2) {
+                                  showSnackbar(
+                                      context: context,
+                                      isError: false,
+                                      menssager: "Despesa adicionada");
+                                } else {
+                                  showSnackbar(
+                                      context: context,
+                                      isError: false,
+                                      menssager: "Despesa editada");
+                                }
                                 Navigator.pop(context);
                               }
                             },
@@ -242,7 +255,7 @@ class __BottomSheetNewExpenseState extends State<_BottomSheetNewExpense> {
                             ),
                             child: Text(
                               buttonText2,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16,
                               ),
                             ),

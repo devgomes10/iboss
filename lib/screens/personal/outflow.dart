@@ -113,7 +113,8 @@ class _OutflowState extends State<Outflow> {
                           FixedOutflow model1 = fixedOutflows[i];
                           return ListTile(
                             onTap: () {
-                              NewOutflowBottomSheet.show(context, model1: model1);
+                              NewOutflowBottomSheet.show(context,
+                                  model1: model1);
                             },
                             shape: const RoundedRectangleBorder(
                               borderRadius:
@@ -200,7 +201,8 @@ class _OutflowState extends State<Outflow> {
                           VariableOutflow model2 = variableOutflow[i];
                           return ListTile(
                             onTap: () {
-                              NewOutflowBottomSheet.show(context, model2: model2);
+                              NewOutflowBottomSheet.show(context,
+                                  model2: model2);
                             },
                             leading: const FaIcon(
                               FontAwesomeIcons.arrowTrendDown,

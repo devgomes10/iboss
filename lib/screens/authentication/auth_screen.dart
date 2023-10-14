@@ -50,13 +50,16 @@ class _AuthScreenState extends State<AuthScreen> {
                     ),
                     Text(
                       (isEntering)
-                          ? "Colaborando com a sua Independência"
+                          ? "Dois sentidos \nUma solução"
                           : "Organize suas finanças do jeito certo",
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 22,
                       ),
+                    ),
+                    const SizedBox(
+                      height: 15,
                     ),
                     TextFormField(
                       controller: _emailController,

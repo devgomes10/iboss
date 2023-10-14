@@ -184,10 +184,19 @@ class __BottomSheetNewRevenueState extends State<_BottomSheetNewRevenue> {
 
                                 await CashPaymentRepository()
                                     .addPaymentToFirestore(received);
-                                showSnackbar(
-                                    context: context,
-                                    isError: false,
-                                    menssager: "Pagamento adicionado");
+
+                                if (!_isEditing1 && !_isEditing2) {
+                                  showSnackbar(
+                                      context: context,
+                                      isError: false,
+                                      menssager: "Pagamento adicionado");
+                                } else {
+                                  showSnackbar(
+                                      context: context,
+                                      isError: false,
+                                      menssager: "Pagamento editado");
+                                }
+
                                 Navigator.pop(context);
                               }
                             },
@@ -226,10 +235,19 @@ class __BottomSheetNewRevenueState extends State<_BottomSheetNewRevenue> {
 
                                 await DeferredPaymentRepository()
                                     .addPaymentToFirestore(pending);
-                                showSnackbar(
-                                    context: context,
-                                    isError: false,
-                                    menssager: "Pagamento adicionado");
+
+                                if (!_isEditing1 && !_isEditing2) {
+                                  showSnackbar(
+                                      context: context,
+                                      isError: false,
+                                      menssager: "Pagamento adicionado");
+                                } else {
+                                  showSnackbar(
+                                      context: context,
+                                      isError: false,
+                                      menssager: "Pagamento editado");
+                                }
+
                                 Navigator.pop(context);
                               }
                             },
@@ -238,7 +256,7 @@ class __BottomSheetNewRevenueState extends State<_BottomSheetNewRevenue> {
                             ),
                             child: Text(
                               buttonText2,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16,
                               ),
                             ),

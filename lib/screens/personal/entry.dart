@@ -115,7 +115,8 @@ class _EntryState extends State<Entry> {
                               FixedEntry model1 = fixedEntry[i];
                               return ListTile(
                                 onTap: () {
-                                  NewEntryBottomSheet.show(context, model1: model1);
+                                  NewEntryBottomSheet.show(context,
+                                      model1: model1);
                                 },
                                 leading: const FaIcon(
                                   FontAwesomeIcons.arrowTrendUp,
@@ -194,7 +195,8 @@ class _EntryState extends State<Entry> {
                             VariableEntry model2 = variableEntry[i];
                             return ListTile(
                               onTap: () {
-                                NewEntryBottomSheet.show(context, model2: model2);
+                                NewEntryBottomSheet.show(context,
+                                    model2: model2);
                               },
                               leading: const FaIcon(
                                 FontAwesomeIcons.arrowTrendUp,
