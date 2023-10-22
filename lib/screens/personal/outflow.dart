@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/forms/personal/outflow_form.dart';
 import 'package:iboss/components/show_confirmation.dart';
+import 'package:iboss/controllers/personal/fixed_outflow_controller.dart';
+import 'package:iboss/controllers/personal/variable_outflow_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 import '../../models/personal/fixed_outflow.dart';
 import '../../models/personal/variable_outflow.dart';
-import '../../repositories/personal/fixed_outflow_repository.dart';
-import '../../repositories/personal/variable_outflow_repository.dart';
 
 class Outflow extends StatefulWidget {
   const Outflow({super.key});
@@ -91,7 +91,7 @@ class _OutflowState extends State<Outflow> {
               child: TabBarView(
                 children: [
                   StreamBuilder<List<FixedOutflow>>(
-                    stream: FixedOutflowRepository()
+                    stream: FixedOutflowController()
                         .getFixedOutflowByMonth(_selectedDate),
                     builder: (BuildContext context,
                         AsyncSnapshot<List<FixedOutflow>> snapshot) {
@@ -152,7 +152,7 @@ class _OutflowState extends State<Outflow> {
                                         "Deseja mesmo remover esse gasto fixo?",
                                     onPressed: () {
                                       final fixedId = fixedOutflows[i].id;
-                                      FixedOutflowRepository()
+                                      FixedOutflowController()
                                           .removeOutflowFromFirestore(fixedId);
                                     },
                                     messegerSnack: "Gasto removido",
@@ -179,7 +179,7 @@ class _OutflowState extends State<Outflow> {
                     },
                   ),
                   StreamBuilder<List<VariableOutflow>>(
-                    stream: VariableOutflowRepository()
+                    stream: VariableOutflowController()
                         .getVariableOutflowByMonth(_selectedDate),
                     builder: (BuildContext context,
                         AsyncSnapshot<List<VariableOutflow>> snapshot) {
@@ -234,7 +234,7 @@ class _OutflowState extends State<Outflow> {
                                         "Deseja mesmo remover esse gasto variável?",
                                     onPressed: () {
                                       final variableId = variableOutflow[i].id;
-                                      VariableOutflowRepository()
+                                      VariableOutflowController()
                                           .removeOutflowFromFirestore(
                                               variableId);
                                     },

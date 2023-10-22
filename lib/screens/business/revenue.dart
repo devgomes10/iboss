@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/forms/business/revenue_form.dart';
 import 'package:iboss/components/show_confirmation.dart';
+import 'package:iboss/controllers/business/cash_payment_controller.dart';
+import 'package:iboss/controllers/business/deferred_payment_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import '../../models/business/cash_payment.dart';
 import '../../models/business/deferred_payment.dart';
-import '../../repositories/business/cash_payment_repository.dart';
-import '../../repositories/business/deferred_payment_repository.dart';
 
 class Revenue extends StatefulWidget {
   const Revenue({super.key});
@@ -95,7 +95,7 @@ class _RevenueState extends State<Revenue> {
               child: TabBarView(
                 children: [
                   StreamBuilder<List<CashPayment>>(
-                    stream: CashPaymentRepository()
+                    stream: CashPaymentController()
                         .getCashPaymentsByMonth(_selectedDate),
                     builder: (BuildContext context,
                         AsyncSnapshot<List<CashPayment>> snapshot) {
@@ -122,8 +122,9 @@ class _RevenueState extends State<Revenue> {
                                   model1: model1);
                             },
                             shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12)),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(12),
+                              ),
                             ),
                             leading: const FaIcon(
                               FontAwesomeIcons.arrowTrendUp,
@@ -163,7 +164,7 @@ class _RevenueState extends State<Revenue> {
                                         "Deseja mesmo remover esse pagamento recebido?",
                                     onPressed: () {
                                       final paymentId = cashPayments[i].id;
-                                      CashPaymentRepository()
+                                      CashPaymentController()
                                           .removePaymentFromFirestore(
                                               paymentId);
                                     },
@@ -190,7 +191,7 @@ class _RevenueState extends State<Revenue> {
                     },
                   ),
                   StreamBuilder<List<DeferredPayment>>(
-                    stream: DeferredPaymentRepository()
+                    stream: DeferredPaymentController()
                         .getDeferredPaymentsByMonth(_selectedDate),
                     builder: (BuildContext context,
                         AsyncSnapshot<List<DeferredPayment>> snapshot) {
@@ -253,9 +254,9 @@ class _RevenueState extends State<Revenue> {
                               width: 100,
                               child: Row(
                                 children: [
-                                  Consumer<CashPaymentRepository>(
+                                  Consumer<CashPaymentController>(
                                     builder: (BuildContext context,
-                                        CashPaymentRepository inCash,
+                                        CashPaymentController inCash,
                                         Widget? widget) {
                                       return IconButton(
                                         onPressed: () {
@@ -283,7 +284,7 @@ class _RevenueState extends State<Revenue> {
                                                 await inCash
                                                     .addPaymentToFirestore(
                                                         received);
-                                                DeferredPaymentRepository()
+                                                DeferredPaymentController()
                                                     .removePaymentFromFirestore(
                                                         paymentId);
                                               },
@@ -306,7 +307,7 @@ class _RevenueState extends State<Revenue> {
                                           onPressed: () {
                                             final paymentId =
                                                 deferredPayments[i].id;
-                                            DeferredPaymentRepository()
+                                            DeferredPaymentController()
                                                 .removePaymentFromFirestore(
                                                     paymentId);
                                           },

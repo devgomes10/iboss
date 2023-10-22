@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+import '../../../controllers/business/cash_payment_controller.dart';
+import '../../../controllers/business/deferred_payment_controller.dart';
 import '../../../models/business/cash_payment.dart';
 import '../../../models/business/deferred_payment.dart';
-import '../../../repositories/business/cash_payment_repository.dart';
-import '../../../repositories/business/deferred_payment_repository.dart';
 import '../../show_snackbar.dart';
 
 class NewRevenueBottomSheet {
@@ -163,9 +163,9 @@ class __BottomSheetNewRevenueState extends State<_BottomSheetNewRevenue> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   if (!_isEditing2)
-                    Consumer<CashPaymentRepository>(
+                    Consumer<CashPaymentController>(
                       builder: (BuildContext context,
-                          CashPaymentRepository inCash, Widget? widget) {
+                          CashPaymentController inCash, Widget? widget) {
                         return SizedBox(
                           width: 100,
                           child: TextButton(
@@ -182,7 +182,7 @@ class __BottomSheetNewRevenueState extends State<_BottomSheetNewRevenue> {
                                   received.id = cashPaymentModel.id;
                                 }
 
-                                await CashPaymentRepository()
+                                await CashPaymentController()
                                     .addPaymentToFirestore(received);
 
                                 if (!_isEditing1 && !_isEditing2) {
@@ -214,9 +214,9 @@ class __BottomSheetNewRevenueState extends State<_BottomSheetNewRevenue> {
                       },
                     ),
                   if (!_isEditing1)
-                    Consumer<DeferredPaymentRepository>(
+                    Consumer<DeferredPaymentController>(
                       builder: (BuildContext context,
-                          DeferredPaymentRepository inTerm, Widget? widget) {
+                          DeferredPaymentController inTerm, Widget? widget) {
                         return SizedBox(
                           width: 100,
                           child: TextButton(
@@ -233,7 +233,7 @@ class __BottomSheetNewRevenueState extends State<_BottomSheetNewRevenue> {
                                   pending.id = deferredPaymentModel.id;
                                 }
 
-                                await DeferredPaymentRepository()
+                                await DeferredPaymentController()
                                     .addPaymentToFirestore(pending);
 
                                 if (!_isEditing1 && !_isEditing2) {

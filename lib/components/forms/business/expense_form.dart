@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:iboss/controllers/business/variable_expense_controller.dart';
 import 'package:iboss/models/business/fixed_expense.dart';
 import 'package:iboss/models/business/variable_expense.dart';
-import 'package:iboss/repositories/business/fixed_expense_repository.dart';
-import 'package:iboss/repositories/business/variable_expense_repository.dart';
-import 'package:iboss/repositories/personal/variable_entry_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+import '../../../controllers/business/fixed_expense_controller.dart';
 import '../../show_snackbar.dart';
 
 class NewExpenseBottomSheet {
@@ -164,9 +163,9 @@ class __BottomSheetNewExpenseState extends State<_BottomSheetNewExpense> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   if (!_isEditing2)
-                    Consumer<FixedExpenseRepository>(
+                    Consumer<FixedExpenseController>(
                       builder: (BuildContext context,
-                          FixedExpenseRepository fixed, Widget? widget) {
+                          FixedExpenseController fixed, Widget? widget) {
                         return SizedBox(
                           width: 100,
                           child: TextButton(
@@ -182,7 +181,7 @@ class __BottomSheetNewExpenseState extends State<_BottomSheetNewExpense> {
                                 if (fixedExpenseModel != null) {
                                   fixed.id = fixedExpenseModel.id;
                                 }
-                                await FixedExpenseRepository()
+                                await FixedExpenseController()
                                     .addExpenseToFirestore(fixed);
 
                                 if (!_isEditing1 && !_isEditing2) {
@@ -214,9 +213,9 @@ class __BottomSheetNewExpenseState extends State<_BottomSheetNewExpense> {
                       },
                     ),
                   if (!_isEditing1)
-                    Consumer<VariableEntryRepository>(
+                    Consumer<VariableExpenseController>(
                       builder: (BuildContext context,
-                          VariableEntryRepository variable, Widget? widget) {
+                          VariableExpenseController variable, Widget? widget) {
                         return SizedBox(
                           width: 100,
                           child: TextButton(
@@ -233,7 +232,7 @@ class __BottomSheetNewExpenseState extends State<_BottomSheetNewExpense> {
                                   variable.id = variableExpenseModel.id;
                                 }
 
-                                await VariableExpenseRepository()
+                                await VariableExpenseController()
                                     .addExpenseToFirestore(variable);
 
                                 if (!_isEditing1 && !_isEditing2) {

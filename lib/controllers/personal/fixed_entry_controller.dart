@@ -1,23 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../models/business/variable_expense.dart';
+import 'package:iboss/models/personal/fixed_entry.dart';
 
-class VariableExpenseRepository extends ChangeNotifier {
+class FixedEntryController extends ChangeNotifier {
   late String uid;
-  late CollectionReference variableExpenseCollection;
+  late CollectionReference fixedEntryCollection;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  VariableExpenseRepository() {
+  FixedEntryController() {
     uid = FirebaseAuth.instance.currentUser!.uid;
-    variableExpenseCollection = FirebaseFirestore.instance.collection('variableExpenses_$uid');
+    fixedEntryCollection = FirebaseFirestore.instance.collection('fixedEntries_$uid');
   }
 
-  Stream<List<VariableExpense>> getVariableExpensesStream() {
-    return variableExpenseCollection.snapshots().map(
+  Stream<List<FixedEntry>> getFixedEntryStream() {
+    return fixedEntryCollection.snapshots().map(
           (snapshot) {
         return snapshot.docs.map((doc) {
-          return VariableExpense(
+          return FixedEntry(
             description: doc['description'],
             value: doc['value'],
             date: doc['date'].toDate(),
@@ -28,44 +28,44 @@ class VariableExpenseRepository extends ChangeNotifier {
     );
   }
 
-  Future<void> addExpenseToFirestore(VariableExpense expense) async {
+  Future<void> addEntryToFirestore(FixedEntry entry) async {
     try {
-      await variableExpenseCollection.doc(expense.id).set(
-        expense.toMap(),
+      await fixedEntryCollection.doc(entry.id).set(
+        entry.toMap(),
       );
     } catch (error) {
-      const Text("Erro ao adicionar despesa", style: TextStyle(fontSize: 12),);
+      const Text("Erro ao adicionar renda", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
   }
 
-  Future<void> removeExpenseFromFirestore(String expenseId) async {
+  Future<void> removeEntryFromFirestore(String entryId) async {
     try {
-      await variableExpenseCollection.doc(expenseId).delete();
+      await fixedEntryCollection.doc(entryId).delete();
     } catch (error) {
-      const Text("Erro ao remover despesa", style: TextStyle(fontSize: 12),);
+      const Text("Erro ao remover renda", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
   }
 
-  Future<List<VariableExpense>> getVariableExpensesFromFirestore() async {
-    List<VariableExpense> variableExpenses = [];
+  Future<List<FixedEntry>> getFixedEntryFromFirestore() async {
+    List<FixedEntry> fixedEntry = [];
     try {
       QuerySnapshot querySnapshot =
-      await variableExpenseCollection.get();
-      variableExpenses = querySnapshot.docs
+      await fixedEntryCollection.get();
+      fixedEntry = querySnapshot.docs
           .map((doc) =>
-          VariableExpense.fromMap(doc.data() as Map<String, dynamic>))
+          FixedEntry.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
     } catch (error) {
       const Text("Erro ao carregar dados", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
-    return variableExpenses;
+    return fixedEntry;
   }
 
-  Stream<double> getTotalVariableExpensesByMonth(DateTime selectedMonth) {
-    Stream<QuerySnapshot> queryStream = variableExpenseCollection
+  Stream<double> getTotalFixedEntryByMonth(DateTime selectedMonth) {
+    Stream<QuerySnapshot> queryStream = fixedEntryCollection
         .where(
         'date',
         isGreaterThanOrEqualTo:
@@ -83,8 +83,8 @@ class VariableExpenseRepository extends ChangeNotifier {
     });
   }
 
-  Stream<List<VariableExpense>> getVariableExpensesByMonth(DateTime selectedMonth) {
-    return variableExpenseCollection
+  Stream<List<FixedEntry>> getFixedEntryByMonth(DateTime selectedMonth) {
+    return fixedEntryCollection
         .where('date',
         isGreaterThanOrEqualTo:
         DateTime(selectedMonth.year, selectedMonth.month, 1),
@@ -93,7 +93,7 @@ class VariableExpenseRepository extends ChangeNotifier {
         .snapshots()
         .map((querySnapshot) {
       return querySnapshot.docs.map((doc) {
-        return VariableExpense(
+        return FixedEntry(
           description: doc['description'],
           value: doc['value'],
           date: doc['date'].toDate(),

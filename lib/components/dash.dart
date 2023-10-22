@@ -26,15 +26,17 @@ class _DashState extends State<Dash> {
   final NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
 
   void _changeMonth(bool increment) {
-    setState(() {
-      if (increment) {
-        _selectedDate =
-            DateTime(_selectedDate.year, _selectedDate.month + 1, 1);
-      } else {
-        _selectedDate =
-            DateTime(_selectedDate.year, _selectedDate.month - 1, 1);
-      }
-    });
+    setState(
+      () {
+        if (increment) {
+          _selectedDate =
+              DateTime(_selectedDate.year, _selectedDate.month + 1, 1);
+        } else {
+          _selectedDate =
+              DateTime(_selectedDate.year, _selectedDate.month - 1, 1);
+        }
+      },
+    );
   }
 
   @override

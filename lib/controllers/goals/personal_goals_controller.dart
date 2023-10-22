@@ -1,24 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:iboss/models/goals/company_goals.dart';
+import '../../models/goals/personal_goals.dart';
 
-class CompanyGoalsRepository extends ChangeNotifier {
-  late String uidCompany;
-  late CollectionReference companyCollection;
+class PersonalGoalsController extends ChangeNotifier {
+  late String uidPersonal;
+  late CollectionReference personalCollection;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  CompanyGoalsRepository() {
-    uidCompany = FirebaseAuth.instance.currentUser!.uid;
-    companyCollection =
-        FirebaseFirestore.instance.collection('companyGoals_$uidCompany');
+  PersonalGoalsController() {
+    uidPersonal = FirebaseAuth.instance.currentUser!.uid;
+    personalCollection =
+        FirebaseFirestore.instance.collection('personalGoals_$uidPersonal');
   }
 
-  Stream<List<CompanyGoals>> getCompanyGoalsStream() {
-    return companyCollection.snapshots().map(
+  Stream<List<PersonalGoals>> getPersonalGoalsStream() {
+    return personalCollection.snapshots().map(
           (snapshot) {
         return snapshot.docs.map((doc) {
-          return CompanyGoals(
+          return PersonalGoals(
             description: doc['description'],
             date: doc['date'].toDate(),
             id: doc.id,
@@ -29,18 +29,18 @@ class CompanyGoalsRepository extends ChangeNotifier {
     );
   }
 
-  Future<void> updateCompanyGoalStatus(String goalId, bool isChecked) async {
+  Future<void> updatePerosnalGoalStatus(String goalId, bool isChecked) async {
     try {
-      await companyCollection.doc(goalId).update({"isChecked": isChecked});
+      await personalCollection.doc(goalId).update({"isChecked": isChecked});
     } catch (error) {
       // Lidar com erros, se necessário
     }
   }
 
-  Future<void> addCompanyGoalsToFirestore(CompanyGoals goals) async {
+  Future<void> addPersonalGoalsToFirestore(PersonalGoals goalsPersonal) async {
     try {
-      await companyCollection.doc(goals.id).set(
-        goals.toMap(),
+      await personalCollection.doc(goalsPersonal.id).set(
+        goalsPersonal.toMap(),
       );
     } catch (error) {
       const Text("Erro ao adicionar meta", style: TextStyle(fontSize: 12),);
@@ -50,7 +50,7 @@ class CompanyGoalsRepository extends ChangeNotifier {
 
   Future<void> removeGoalsFromFirestore(String goalId) async {
     try {
-      await companyCollection.doc(goalId).delete();
+      await personalCollection.doc(goalId).delete();
     } catch (error) {
       const Text("Erro ao remover meta", style: TextStyle(fontSize: 12),);
     }

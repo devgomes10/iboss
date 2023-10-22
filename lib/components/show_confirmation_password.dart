@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iboss/repositories/authentication/auth_service.dart';
+import '../controllers/authentication/auth_service.dart';
 
 showConfirmationPassword({
   required BuildContext context,

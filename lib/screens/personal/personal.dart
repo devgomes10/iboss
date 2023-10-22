@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iboss/components/box_card.dart';
+import 'package:iboss/controllers/personal/fixed_entry_controller.dart';
+import 'package:iboss/controllers/personal/fixed_outflow_controller.dart';
+import 'package:iboss/controllers/personal/variable_entry_controller.dart';
+import 'package:iboss/controllers/personal/variable_outflow_controller.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../components/drawer_component.dart';
-import '../../repositories/personal/fixed_entry_repository.dart';
-import '../../repositories/personal/fixed_outflow_repository.dart';
-import '../../repositories/personal/variable_entry_repository.dart';
-import '../../repositories/personal/variable_outflow_repository.dart';
 import 'entry.dart';
 import 'outflow.dart';
 
@@ -43,15 +43,15 @@ class _PersonalState extends State<Personal> {
             BoxCard(
               title: "Renda",
               streamTotal: CombineLatestStream.combine2(
-                FixedEntryRepository().getTotalFixedEntryByMonth(_selectedDate),
-                VariableEntryRepository()
+                FixedEntryController().getTotalFixedEntryByMonth(_selectedDate),
+                VariableEntryController()
                     .getTotalVariableEntryByMonth(_selectedDate),
                 (double totalFixed, double totalVariable) =>
                     totalFixed + totalVariable,
               ),
-              stream1: FixedEntryRepository()
+              stream1: FixedEntryController()
                   .getTotalFixedEntryByMonth(_selectedDate),
-              stream2: VariableEntryRepository()
+              stream2: VariableEntryController()
                   .getTotalVariableEntryByMonth(_selectedDate),
               screen: const Entry(),
               color: Colors.green,
@@ -63,16 +63,16 @@ class _PersonalState extends State<Personal> {
             BoxCard(
               title: "Gastos",
               streamTotal: CombineLatestStream.combine2(
-                FixedOutflowRepository()
+                FixedOutflowController()
                     .getTotalFixedOutflowByMonth(_selectedDate),
-                VariableOutflowRepository()
+                VariableOutflowController()
                     .getTotalVariableOutflowByMonth(_selectedDate),
                 (double totalFixed, double totalVariable) =>
                     totalFixed + totalVariable,
               ),
-              stream1: FixedOutflowRepository()
+              stream1: FixedOutflowController()
                   .getTotalFixedOutflowByMonth(_selectedDate),
-              stream2: VariableOutflowRepository()
+              stream2: VariableOutflowController()
                   .getTotalVariableOutflowByMonth(_selectedDate),
               screen: const Outflow(),
               color: Colors.red,

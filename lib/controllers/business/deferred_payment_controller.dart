@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../models/business/deferred_payment.dart';
 
-class DeferredPaymentRepository extends ChangeNotifier {
+class DeferredPaymentController extends ChangeNotifier {
   late String uidPending;
   late CollectionReference deferredPaymentCollection;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  DeferredPaymentRepository() {
+  DeferredPaymentController() {
     uidPending = FirebaseAuth.instance.currentUser!.uid;
     deferredPaymentCollection =
         FirebaseFirestore.instance.collection('deferredPayments_$uidPending');

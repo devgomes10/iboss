@@ -2,12 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iboss/components/box_card.dart';
 import 'package:iboss/components/drawer_component.dart';
+import 'package:iboss/controllers/business/cash_payment_controller.dart';
+import 'package:iboss/controllers/business/deferred_payment_controller.dart';
+import 'package:iboss/controllers/business/fixed_expense_controller.dart';
+import 'package:iboss/controllers/business/variable_expense_controller.dart';
 import 'package:iboss/screens/business/revenue.dart';
 import 'package:rxdart/rxdart.dart';
-import '../../repositories/business/cash_payment_repository.dart';
-import '../../repositories/business/deferred_payment_repository.dart';
-import '../../repositories/business/fixed_expense_repository.dart';
-import '../../repositories/business/variable_expense_repository.dart';
 import 'expense.dart';
 
 class Business extends StatefulWidget {
@@ -40,16 +40,16 @@ class _BusinessState extends State<Business> {
               subTitle1: "Recebidos",
               subTitle2: "Pendentes",
               streamTotal: CombineLatestStream.combine2(
-                CashPaymentRepository()
+                CashPaymentController()
                     .getTotalCashPaymentsByMonth(_selectedDate),
-                DeferredPaymentRepository()
+                DeferredPaymentController()
                     .getTotalDeferredPaymentsByMonth(_selectedDate),
                 (double totalCash, double totalDeferred) =>
                     totalCash + totalDeferred,
               ),
-              stream1: CashPaymentRepository()
+              stream1: CashPaymentController()
                   .getTotalCashPaymentsByMonth(_selectedDate),
-              stream2: DeferredPaymentRepository()
+              stream2: DeferredPaymentController()
                   .getTotalDeferredPaymentsByMonth(_selectedDate),
               screen: const Revenue(),
               color: Colors.green,
@@ -61,16 +61,16 @@ class _BusinessState extends State<Business> {
             BoxCard(
               title: "Despesas",
               streamTotal: CombineLatestStream.combine2(
-                FixedExpenseRepository()
+                FixedExpenseController()
                     .getTotalFixedExpensesByMonth(_selectedDate),
-                VariableExpenseRepository()
+                VariableExpenseController()
                     .getTotalVariableExpensesByMonth(_selectedDate),
                 (double totalFixed, double totalVariable) =>
                     totalFixed + totalVariable,
               ),
-              stream1: FixedExpenseRepository()
+              stream1: FixedExpenseController()
                   .getTotalFixedExpensesByMonth(_selectedDate),
-              stream2: VariableExpenseRepository()
+              stream2: VariableExpenseController()
                   .getTotalVariableExpensesByMonth(_selectedDate),
               screen: const Expense(),
               color: Colors.red,

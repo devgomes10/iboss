@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iboss/components/show_confirmation.dart';
 import 'package:iboss/components/show_confirmation_password.dart';
-import '../repositories/authentication/auth_service.dart';
+import '../controllers/authentication/auth_service.dart';
 
 class DrawerComponent extends StatelessWidget {
   final User user;

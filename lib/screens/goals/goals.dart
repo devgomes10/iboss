@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iboss/components/show_confirmation.dart';
+import 'package:iboss/controllers/goals/company_goals_controller.dart';
+import 'package:iboss/controllers/goals/personal_goals_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:iboss/models/goals/company_goals.dart';
 import 'package:iboss/models/goals/personal_goals.dart';
-import 'package:iboss/repositories/goals/company_goals_repository.dart';
-import 'package:iboss/repositories/goals/personal_goals_repository.dart';
 import '../../components/drawer_component.dart';
 
 class Goals extends StatefulWidget {
@@ -62,7 +62,7 @@ class _GoalsState extends State<Goals> {
               child: TabBarView(
                 children: [
                   StreamBuilder<List<CompanyGoals>>(
-                    stream: CompanyGoalsRepository().getCompanyGoalsStream(),
+                    stream: CompanyGoalsController().getCompanyGoalsStream(),
                     builder: (BuildContext context,
                         AsyncSnapshot<List<CompanyGoals>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -109,7 +109,7 @@ class _GoalsState extends State<Goals> {
                                           onPressed: () async {
                                             final companyGoalsRepository =
                                                 Provider.of<
-                                                        CompanyGoalsRepository>(
+                                                        CompanyGoalsController>(
                                                     context,
                                                     listen: false);
                                             await companyGoalsRepository
@@ -128,7 +128,7 @@ class _GoalsState extends State<Goals> {
                                       ListTileControlAffinity.leading,
                                   value: goal.isChecked,
                                   onChanged: (newValue) {
-                                    CompanyGoalsRepository()
+                                    CompanyGoalsController()
                                         .updateCompanyGoalStatus(
                                             goal.id, newValue!);
                                   },
@@ -148,7 +148,7 @@ class _GoalsState extends State<Goals> {
                     },
                   ),
                   StreamBuilder<List<PersonalGoals>>(
-                    stream: PersonalGoalsRepository().getPersonalGoalsStream(),
+                    stream: PersonalGoalsController().getPersonalGoalsStream(),
                     builder: (BuildContext context,
                         AsyncSnapshot<List<PersonalGoals>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -196,7 +196,7 @@ class _GoalsState extends State<Goals> {
                                           onPressed: () async {
                                             final personalGoalsRepository =
                                                 Provider.of<
-                                                        PersonalGoalsRepository>(
+                                                        PersonalGoalsController>(
                                                     context,
                                                     listen: false);
                                             await personalGoalsRepository
@@ -215,7 +215,7 @@ class _GoalsState extends State<Goals> {
                                       ListTileControlAffinity.leading,
                                   value: goal.isChecked,
                                   onChanged: (newValue) {
-                                    PersonalGoalsRepository()
+                                    PersonalGoalsController()
                                         .updatePerosnalGoalStatus(
                                             goal.id, newValue!);
                                   },

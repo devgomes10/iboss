@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../models/business/cash_payment.dart';
 
-class CashPaymentRepository extends ChangeNotifier {
+class CashPaymentController extends ChangeNotifier {
   late String uidReceived;
   late CollectionReference cashPaymentCollection;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  CashPaymentRepository() {
+  CashPaymentController() {
     uidReceived = FirebaseAuth.instance.currentUser!.uid;
     cashPaymentCollection =
         FirebaseFirestore.instance.collection('cashPayments_$uidReceived');

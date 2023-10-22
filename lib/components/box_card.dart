@@ -45,14 +45,6 @@ class BoxCard extends StatelessWidget {
             color: Theme.of(context).colorScheme.secondary,
             width: 3,
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Theme.of(context).colorScheme.secondary.withOpacity(0.8),
-              spreadRadius: 2,
-              blurRadius: 5,
-              offset: const Offset(0, 2),
-            ),
-          ],
         ),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),

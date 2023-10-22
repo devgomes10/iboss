@@ -1,24 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../models/personal/fixed_outflow.dart';
+import 'package:iboss/models/personal/variable_outflow.dart';
 
-class FixedOutflowRepository extends ChangeNotifier {
-  late String uidFixedOutflow;
-  late CollectionReference fixedOutflowCollection;
+class VariableOutflowController extends ChangeNotifier {
+  late String uidVariableOutflow;
+  late CollectionReference variableOutflowCollection;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  FixedOutflowRepository() {
-    uidFixedOutflow = FirebaseAuth.instance.currentUser!.uid;
-    fixedOutflowCollection =
-        FirebaseFirestore.instance.collection('fixedOutflows_$uidFixedOutflow');
+  VariableOutflowController() {
+    uidVariableOutflow = FirebaseAuth.instance.currentUser!.uid;
+    variableOutflowCollection = FirebaseFirestore.instance
+        .collection('variableOutflows_$uidVariableOutflow');
   }
 
-  Stream<List<FixedOutflow>> getFixedOutflowStream() {
-    return fixedOutflowCollection.snapshots().map(
+  Stream<List<VariableOutflow>> getVariableOutflowStream() {
+    return variableOutflowCollection.snapshots().map(
       (snapshot) {
         return snapshot.docs.map((doc) {
-          return FixedOutflow(
+          return VariableOutflow(
             description: doc['description'],
             value: doc['value'],
             date: doc['date'].toDate(),
@@ -29,9 +29,9 @@ class FixedOutflowRepository extends ChangeNotifier {
     );
   }
 
-  Future<void> addOutflowToFirestore(FixedOutflow outflow) async {
+  Future<void> addOutflowToFirestore(VariableOutflow outflow) async {
     try {
-      await fixedOutflowCollection.doc(outflow.id).set(
+      await variableOutflowCollection.doc(outflow.id).set(
             outflow.toMap(),
           );
     } catch (error) {
@@ -42,30 +42,30 @@ class FixedOutflowRepository extends ChangeNotifier {
 
   Future<void> removeOutflowFromFirestore(String outflowId) async {
     try {
-      await fixedOutflowCollection.doc(outflowId).delete();
+      await variableOutflowCollection.doc(outflowId).delete();
     } catch (error) {
       const Text("Erro ao remover gasto", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
   }
 
-  Future<List<FixedOutflow>> getFixedOutflowFromFirestore() async {
-    List<FixedOutflow> fixedOutflow = [];
+  Future<List<VariableOutflow>> getVariableOutflowFromFirestore() async {
+    List<VariableOutflow> variableOutflow = [];
     try {
-      QuerySnapshot querySnapshot = await fixedOutflowCollection.get();
-      fixedOutflow = querySnapshot.docs
-          .map(
-              (doc) => FixedOutflow.fromMap(doc.data() as Map<String, dynamic>))
+      QuerySnapshot querySnapshot = await variableOutflowCollection.get();
+      variableOutflow = querySnapshot.docs
+          .map((doc) =>
+              VariableOutflow.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
     } catch (error) {
       const Text("Erro ao carregar dados", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
-    return fixedOutflow;
+    return variableOutflow;
   }
 
-  Stream<double> getTotalFixedOutflowByMonth(DateTime selectedMonth) {
-    Stream<QuerySnapshot> queryStream = fixedOutflowCollection
+  Stream<double> getTotalVariableOutflowByMonth(DateTime selectedMonth) {
+    Stream<QuerySnapshot> queryStream = variableOutflowCollection
         .where('date',
             isGreaterThanOrEqualTo:
                 DateTime(selectedMonth.year, selectedMonth.month, 1),
@@ -82,8 +82,9 @@ class FixedOutflowRepository extends ChangeNotifier {
     });
   }
 
-  Stream<List<FixedOutflow>> getFixedOutflowByMonth(DateTime selectedMonth) {
-    return fixedOutflowCollection
+  Stream<List<VariableOutflow>> getVariableOutflowByMonth(
+      DateTime selectedMonth) {
+    return variableOutflowCollection
         .where('date',
             isGreaterThanOrEqualTo:
                 DateTime(selectedMonth.year, selectedMonth.month, 1),
@@ -92,7 +93,7 @@ class FixedOutflowRepository extends ChangeNotifier {
         .snapshots()
         .map((querySnapshot) {
       return querySnapshot.docs.map((doc) {
-        return FixedOutflow(
+        return VariableOutflow(
           description: doc['description'],
           value: doc['value'],
           date: doc['date'].toDate(),

@@ -1,11 +1,11 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:iboss/controllers/business/cash_payment_controller.dart';
+import 'package:iboss/controllers/business/deferred_payment_controller.dart';
+import 'package:iboss/controllers/business/fixed_expense_controller.dart';
+import 'package:iboss/controllers/business/variable_expense_controller.dart';
 import 'package:intl/intl.dart';
-import '../../repositories/business/cash_payment_repository.dart';
-import '../../repositories/business/deferred_payment_repository.dart';
-import '../../repositories/business/fixed_expense_repository.dart';
-import '../../repositories/business/variable_expense_repository.dart';
 
 class BusinessDash extends StatefulWidget {
   const BusinessDash({super.key});
@@ -89,13 +89,13 @@ class _BusinessDasState extends State<BusinessDash> {
                       width: 250,
                       height: 250,
                       child: StreamBuilder<double>(
-                        stream: CashPaymentRepository()
+                        stream: CashPaymentController()
                             .getTotalCashPaymentsByMonth(_selectedDate),
                         builder: (BuildContext context,
                             AsyncSnapshot<double> cashSnapshot) {
                           double totalCashPayments = cashSnapshot.data ?? 0.0;
                           return StreamBuilder<double>(
-                            stream: DeferredPaymentRepository()
+                            stream: DeferredPaymentController()
                                 .getTotalDeferredPaymentsByMonth(_selectedDate),
                             builder: (BuildContext context,
                                 AsyncSnapshot<double> deferredSnapshot) {
@@ -176,7 +176,7 @@ class _BusinessDasState extends State<BusinessDash> {
                               ),
                             ),
                             StreamBuilder<double>(
-                              stream: CashPaymentRepository()
+                              stream: CashPaymentController()
                                   .getTotalCashPaymentsByMonth(_selectedDate),
                               builder: (BuildContext context,
                                   AsyncSnapshot<double> cashSnapshot) {
@@ -206,7 +206,7 @@ class _BusinessDasState extends State<BusinessDash> {
                               ),
                             ),
                             StreamBuilder<double>(
-                              stream: DeferredPaymentRepository()
+                              stream: DeferredPaymentController()
                                   .getTotalDeferredPaymentsByMonth(
                                       _selectedDate),
                               builder: (BuildContext context,
@@ -267,13 +267,13 @@ class _BusinessDasState extends State<BusinessDash> {
                       width: 250,
                       height: 250,
                       child: StreamBuilder<double>(
-                        stream: FixedExpenseRepository()
+                        stream: FixedExpenseController()
                             .getTotalFixedExpensesByMonth(_selectedDate),
                         builder: (BuildContext context,
                             AsyncSnapshot<double> fixedSnapshot) {
                           double totalFixedExpenses = fixedSnapshot.data ?? 0.0;
                           return StreamBuilder<double>(
-                            stream: VariableExpenseRepository()
+                            stream: VariableExpenseController()
                                 .getTotalVariableExpensesByMonth(_selectedDate),
                             builder: (BuildContext context,
                                 AsyncSnapshot<double> variableSnapshot) {
@@ -354,7 +354,7 @@ class _BusinessDasState extends State<BusinessDash> {
                               ),
                             ),
                             StreamBuilder<double>(
-                              stream: FixedExpenseRepository()
+                              stream: FixedExpenseController()
                                   .getTotalFixedExpensesByMonth(_selectedDate),
                               builder: (BuildContext context,
                                   AsyncSnapshot<double> fixedSnapshot) {
@@ -384,7 +384,7 @@ class _BusinessDasState extends State<BusinessDash> {
                               ),
                             ),
                             StreamBuilder<double>(
-                              stream: VariableExpenseRepository()
+                              stream: VariableExpenseController()
                                   .getTotalVariableExpensesByMonth(
                                       _selectedDate),
                               builder: (BuildContext context,
@@ -443,13 +443,13 @@ class _BusinessDasState extends State<BusinessDash> {
                       width: 250,
                       height: 250,
                       child: StreamBuilder<double>(
-                        stream: FixedExpenseRepository()
+                        stream: FixedExpenseController()
                             .getTotalFixedExpensesByMonth(_selectedDate),
                         builder: (BuildContext context,
                             AsyncSnapshot<double> fixedSnapshot) {
                           double totalFixedExpenses = fixedSnapshot.data ?? 0.0;
                           return StreamBuilder<double>(
-                            stream: VariableExpenseRepository()
+                            stream: VariableExpenseController()
                                 .getTotalVariableExpensesByMonth(_selectedDate),
                             builder: (BuildContext context,
                                 AsyncSnapshot<double> variableSnapshot) {
@@ -458,7 +458,7 @@ class _BusinessDasState extends State<BusinessDash> {
                               double totalExpense =
                                   totalFixedExpenses + totalVariableExpenses;
                               return StreamBuilder<double>(
-                                stream: CashPaymentRepository()
+                                stream: CashPaymentController()
                                     .getTotalCashPaymentsByMonth(_selectedDate),
                                 builder: (BuildContext context,
                                     AsyncSnapshot<double> cashSnapshot) {
@@ -541,7 +541,7 @@ class _BusinessDasState extends State<BusinessDash> {
                               ),
                             ),
                             StreamBuilder<double>(
-                              stream: CashPaymentRepository()
+                              stream: CashPaymentController()
                                   .getTotalCashPaymentsByMonth(_selectedDate),
                               builder: (BuildContext context,
                                   AsyncSnapshot<double> cashSnapshot) {
@@ -571,14 +571,14 @@ class _BusinessDasState extends State<BusinessDash> {
                               ),
                             ),
                             StreamBuilder<double>(
-                              stream: FixedExpenseRepository()
+                              stream: FixedExpenseController()
                                   .getTotalFixedExpensesByMonth(_selectedDate),
                               builder: (BuildContext context,
                                   AsyncSnapshot<double> fixedSnapshot) {
                                 double totalFixedExpenses =
                                     fixedSnapshot.data ?? 0.0;
                                 return StreamBuilder<double>(
-                                  stream: VariableExpenseRepository()
+                                  stream: VariableExpenseController()
                                       .getTotalVariableExpensesByMonth(
                                           _selectedDate),
                                   builder: (BuildContext context,

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/forms/business/expense_form.dart';
 import 'package:iboss/components/show_confirmation.dart';
+import 'package:iboss/controllers/business/fixed_expense_controller.dart';
+import 'package:iboss/controllers/business/variable_expense_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 import '../../models/business/fixed_expense.dart';
 import '../../models/business/variable_expense.dart';
-import '../../repositories/business/fixed_expense_repository.dart';
-import '../../repositories/business/variable_expense_repository.dart';
 
 class Expense extends StatefulWidget {
   const Expense({super.key});
@@ -97,7 +97,7 @@ class _ExpenseState extends State<Expense> {
               child: TabBarView(
                 children: [
                   StreamBuilder<List<FixedExpense>>(
-                    stream: FixedExpenseRepository()
+                    stream: FixedExpenseController()
                         .getFixedExpensesByMonth(_selectedDate),
                     builder: (BuildContext context,
                         AsyncSnapshot<List<FixedExpense>> snapshot) {
@@ -159,7 +159,7 @@ class _ExpenseState extends State<Expense> {
                                         "Deseja mesmo remover essa despesa fixa?",
                                     onPressed: () {
                                       final expenseId = fixedExpenses[i].id;
-                                      FixedExpenseRepository()
+                                      FixedExpenseController()
                                           .removeExpenseFromFirestore(
                                               expenseId);
                                     },
@@ -186,7 +186,7 @@ class _ExpenseState extends State<Expense> {
                     },
                   ),
                   StreamBuilder<List<VariableExpense>>(
-                    stream: VariableExpenseRepository()
+                    stream: VariableExpenseController()
                         .getVariableExpensesByMonth(_selectedDate),
                     builder: (BuildContext context,
                         AsyncSnapshot<List<VariableExpense>> snapshot) {
@@ -250,7 +250,7 @@ class _ExpenseState extends State<Expense> {
                                         "Deseja mesmo remover essa despesa variável?",
                                     onPressed: () {
                                       final expenseId = variableExpenses[i].id;
-                                      VariableExpenseRepository()
+                                      VariableExpenseController()
                                           .removeExpenseFromFirestore(
                                               expenseId);
                                     },

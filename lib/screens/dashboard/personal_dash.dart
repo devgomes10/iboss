@@ -1,10 +1,10 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:iboss/repositories/personal/fixed_entry_repository.dart';
-import 'package:iboss/repositories/personal/fixed_outflow_repository.dart';
-import 'package:iboss/repositories/personal/variable_entry_repository.dart';
-import 'package:iboss/repositories/personal/variable_outflow_repository.dart';
+import 'package:iboss/controllers/personal/fixed_entry_controller.dart';
+import 'package:iboss/controllers/personal/fixed_outflow_controller.dart';
+import 'package:iboss/controllers/personal/variable_entry_controller.dart';
+import 'package:iboss/controllers/personal/variable_outflow_controller.dart';
 import 'package:intl/intl.dart';
 
 class PersonalDash extends StatefulWidget {
@@ -88,13 +88,13 @@ class _PersonalDashState extends State<PersonalDash> {
                       width: 250,
                       height: 250,
                       child: StreamBuilder<double>(
-                        stream: FixedEntryRepository()
+                        stream: FixedEntryController()
                             .getTotalFixedEntryByMonth(_selectedDate),
                         builder: (BuildContext context,
                             AsyncSnapshot<double> fixedSnapshot) {
                           double totalFixedEntry = fixedSnapshot.data ?? 0.0;
                           return StreamBuilder<double>(
-                            stream: VariableEntryRepository()
+                            stream: VariableEntryController()
                                 .getTotalVariableEntryByMonth(_selectedDate),
                             builder: (BuildContext context,
                                 AsyncSnapshot<double> variableSnapshot) {
@@ -175,7 +175,7 @@ class _PersonalDashState extends State<PersonalDash> {
                               ),
                             ),
                             StreamBuilder<double>(
-                              stream: FixedEntryRepository()
+                              stream: FixedEntryController()
                                   .getTotalFixedEntryByMonth(_selectedDate),
                               builder: (BuildContext context,
                                   AsyncSnapshot<double> fixedSnapshot) {
@@ -205,7 +205,7 @@ class _PersonalDashState extends State<PersonalDash> {
                               ),
                             ),
                             StreamBuilder<double>(
-                              stream: VariableEntryRepository()
+                              stream: VariableEntryController()
                                   .getTotalVariableEntryByMonth(_selectedDate),
                               builder: (BuildContext context,
                                   AsyncSnapshot<double> variableSnapshot) {
@@ -265,13 +265,13 @@ class _PersonalDashState extends State<PersonalDash> {
                       width: 250,
                       height: 250,
                       child: StreamBuilder<double>(
-                        stream: FixedOutflowRepository()
+                        stream: FixedOutflowController()
                             .getTotalFixedOutflowByMonth(_selectedDate),
                         builder: (BuildContext context,
                             AsyncSnapshot<double> fixedSnapshot) {
                           double totalFixedOutflow = fixedSnapshot.data ?? 0.0;
                           return StreamBuilder<double>(
-                            stream: VariableOutflowRepository()
+                            stream: VariableOutflowController()
                                 .getTotalVariableOutflowByMonth(_selectedDate),
                             builder: (BuildContext context,
                                 AsyncSnapshot<double> variableSnapshot) {
@@ -352,7 +352,7 @@ class _PersonalDashState extends State<PersonalDash> {
                               ),
                             ),
                             StreamBuilder<double>(
-                              stream: FixedOutflowRepository()
+                              stream: FixedOutflowController()
                                   .getTotalFixedOutflowByMonth(_selectedDate),
                               builder: (BuildContext context,
                                   AsyncSnapshot<double> fixedSnapshot) {
@@ -382,7 +382,7 @@ class _PersonalDashState extends State<PersonalDash> {
                               ),
                             ),
                             StreamBuilder<double>(
-                              stream: VariableOutflowRepository()
+                              stream: VariableOutflowController()
                                   .getTotalVariableOutflowByMonth(
                                       _selectedDate),
                               builder: (BuildContext context,
@@ -441,13 +441,13 @@ class _PersonalDashState extends State<PersonalDash> {
                       width: 250,
                       height: 250,
                       child: StreamBuilder<double>(
-                        stream: FixedOutflowRepository()
+                        stream: FixedOutflowController()
                             .getTotalFixedOutflowByMonth(_selectedDate),
                         builder: (BuildContext context,
                             AsyncSnapshot<double> fixedSnapshot) {
                           double totalFixedOutflow = fixedSnapshot.data ?? 0.0;
                           return StreamBuilder<double>(
-                            stream: VariableOutflowRepository()
+                            stream: VariableOutflowController()
                                 .getTotalVariableOutflowByMonth(_selectedDate),
                             builder: (BuildContext context,
                                 AsyncSnapshot<double> variableSnapshot) {
@@ -456,14 +456,14 @@ class _PersonalDashState extends State<PersonalDash> {
                               double totalOutflow =
                                   totalFixedOutflow + totalVariableOutflow;
                               return StreamBuilder<double>(
-                                stream: FixedEntryRepository()
+                                stream: FixedEntryController()
                                     .getTotalFixedEntryByMonth(_selectedDate),
                                 builder: (BuildContext context,
                                     AsyncSnapshot<double> fixedSnapshot) {
                                   double totalFixedEntry =
                                       fixedSnapshot.data ?? 0.0;
                                   return StreamBuilder<double>(
-                                    stream: VariableEntryRepository()
+                                    stream: VariableEntryController()
                                         .getTotalVariableEntryByMonth(
                                             _selectedDate),
                                     builder: (BuildContext context,
@@ -556,14 +556,14 @@ class _PersonalDashState extends State<PersonalDash> {
                               ),
                             ),
                             StreamBuilder<double>(
-                                stream: FixedEntryRepository()
+                                stream: FixedEntryController()
                                     .getTotalFixedEntryByMonth(_selectedDate),
                                 builder: (BuildContext context,
                                     AsyncSnapshot<double> fixedSnapshot) {
                                   double totalFixedEntry =
                                       fixedSnapshot.data ?? 0.0;
                                   return StreamBuilder<double>(
-                                    stream: VariableEntryRepository()
+                                    stream: VariableEntryController()
                                         .getTotalVariableEntryByMonth(
                                             _selectedDate),
                                     builder: (BuildContext context,
@@ -598,14 +598,14 @@ class _PersonalDashState extends State<PersonalDash> {
                               ),
                             ),
                             StreamBuilder<double>(
-                              stream: FixedOutflowRepository()
+                              stream: FixedOutflowController()
                                   .getTotalFixedOutflowByMonth(_selectedDate),
                               builder: (BuildContext context,
                                   AsyncSnapshot<double> fixedSnapshot) {
                                 double totalFixedOutflow =
                                     fixedSnapshot.data ?? 0.0;
                                 return StreamBuilder<double>(
-                                  stream: VariableOutflowRepository()
+                                  stream: VariableOutflowController()
                                       .getTotalVariableOutflowByMonth(
                                           _selectedDate),
                                   builder: (BuildContext context,

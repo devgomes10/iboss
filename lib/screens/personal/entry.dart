@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/forms/personal/entry_form.dart';
 import 'package:iboss/components/show_confirmation.dart';
+import 'package:iboss/controllers/personal/fixed_entry_controller.dart';
+import 'package:iboss/controllers/personal/variable_entry_controller.dart';
 import 'package:iboss/models/personal/fixed_entry.dart';
 import 'package:iboss/models/personal/variable_entry.dart';
-import 'package:iboss/repositories/personal/fixed_entry_repository.dart';
 import 'package:intl/intl.dart';
-import '../../repositories/personal/variable_entry_repository.dart';
 
 class Entry extends StatefulWidget {
   const Entry({super.key});
@@ -92,7 +92,7 @@ class _EntryState extends State<Entry> {
               child: TabBarView(
                 children: [
                   StreamBuilder<List<FixedEntry>>(
-                      stream: FixedEntryRepository()
+                      stream: FixedEntryController()
                           .getFixedEntryByMonth(_selectedDate),
                       builder: (BuildContext context,
                           AsyncSnapshot<List<FixedEntry>> snapshot) {
@@ -148,7 +148,7 @@ class _EntryState extends State<Entry> {
                                               "Deseja mesmo remover essa renda fixa?",
                                           onPressed: () {
                                             final fixedId = fixedEntry[i].id;
-                                            FixedEntryRepository()
+                                            FixedEntryController()
                                                 .removeEntryFromFirestore(
                                                     fixedId);
                                           },
@@ -173,7 +173,7 @@ class _EntryState extends State<Entry> {
                             itemCount: fixedEntry.length);
                       }),
                   StreamBuilder<List<VariableEntry>>(
-                    stream: VariableEntryRepository()
+                    stream: VariableEntryController()
                         .getVariableEntryByMonth(_selectedDate),
                     builder: (BuildContext context,
                         AsyncSnapshot<List<VariableEntry>> snapshot) {
@@ -228,7 +228,7 @@ class _EntryState extends State<Entry> {
                                           "Deseja mesmo remover essa renda variável?",
                                       onPressed: () {
                                         final variableId = variableEntry[i].id;
-                                        VariableEntryRepository()
+                                        VariableEntryController()
                                             .removeEntryFromFirestore(
                                                 variableId);
                                       },

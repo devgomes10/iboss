@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:iboss/controllers/goals/company_goals_controller.dart';
+import 'package:iboss/controllers/goals/personal_goals_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import '../../../models/goals/company_goals.dart';
 import '../../../models/goals/personal_goals.dart';
-import '../../../repositories/goals/company_goals_repository.dart';
-import '../../../repositories/goals/personal_goals_repository.dart';
 import '../../show_snackbar.dart';
 
 class NewGoalBottomSheet {
@@ -122,8 +122,8 @@ class __BottomSheetNewGoalState extends State<_BottomSheetNewGoal> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Consumer<CompanyGoalsRepository>(builder:
-                      (BuildContext context, CompanyGoalsRepository forCompany,
+                  Consumer<CompanyGoalsController>(builder:
+                      (BuildContext context, CompanyGoalsController forCompany,
                           Widget? widget) {
                     return SizedBox(
                       width: 140,
@@ -137,7 +137,7 @@ class __BottomSheetNewGoalState extends State<_BottomSheetNewGoal> {
                               id: goalsId,
                               isChecked: false,
                             );
-                            await CompanyGoalsRepository()
+                            await CompanyGoalsController()
                                 .addCompanyGoalsToFirestore(company);
 
                             // Atualize a lista de metas de negócios
@@ -165,9 +165,9 @@ class __BottomSheetNewGoalState extends State<_BottomSheetNewGoal> {
                       ),
                     );
                   }),
-                  Consumer<PersonalGoalsRepository>(
+                  Consumer<PersonalGoalsController>(
                     builder: (BuildContext context,
-                        PersonalGoalsRepository forPersonal, Widget? widget) {
+                        PersonalGoalsController forPersonal, Widget? widget) {
                       return SizedBox(
                         width: 140,
                         height: 45,
@@ -180,7 +180,7 @@ class __BottomSheetNewGoalState extends State<_BottomSheetNewGoal> {
                                 id: goalsId,
                                 isChecked: false,
                               );
-                              await PersonalGoalsRepository()
+                              await PersonalGoalsController()
                                   .addPersonalGoalsToFirestore(personal);
                               showSnackbar(
                                   context: context,

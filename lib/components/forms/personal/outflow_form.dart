@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:iboss/controllers/personal/fixed_outflow_controller.dart';
+import 'package:iboss/controllers/personal/variable_outflow_controller.dart';
 import 'package:iboss/models/personal/fixed_outflow.dart';
 import 'package:iboss/models/personal/variable_outflow.dart';
-import 'package:iboss/repositories/personal/fixed_outflow_repository.dart';
-import 'package:iboss/repositories/personal/variable_outflow_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import '../../show_snackbar.dart';
@@ -163,9 +163,9 @@ class __BottomSheetNewOutflowState extends State<_BottomSheetNewOutflow> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   if (!_isEditing2)
-                    Consumer<FixedOutflowRepository>(
+                    Consumer<FixedOutflowController>(
                       builder: (BuildContext context,
-                          FixedOutflowRepository fixed, Widget? widget) {
+                          FixedOutflowController fixed, Widget? widget) {
                         return SizedBox(
                           width: 100,
                           child: TextButton(
@@ -182,7 +182,7 @@ class __BottomSheetNewOutflowState extends State<_BottomSheetNewOutflow> {
                                   fixed.id = fixedOutflowModel.id;
                                 }
 
-                                await FixedOutflowRepository()
+                                await FixedOutflowController()
                                     .addOutflowToFirestore(fixed);
 
                                 if (!_isEditing1 && !_isEditing2) {
@@ -214,9 +214,9 @@ class __BottomSheetNewOutflowState extends State<_BottomSheetNewOutflow> {
                       },
                     ),
                   if (!_isEditing1)
-                    Consumer<VariableOutflowRepository>(
+                    Consumer<VariableOutflowController>(
                       builder: (BuildContext context,
-                          VariableOutflowRepository variable, Widget? widget) {
+                          VariableOutflowController variable, Widget? widget) {
                         return SizedBox(
                           width: 100,
                           child: TextButton(
@@ -245,7 +245,7 @@ class __BottomSheetNewOutflowState extends State<_BottomSheetNewOutflow> {
                                       menssager: "Gasto editado");
                                 }
 
-                                await VariableOutflowRepository()
+                                await VariableOutflowController()
                                     .addOutflowToFirestore(variable);
                                 showSnackbar(
                                     context: context,

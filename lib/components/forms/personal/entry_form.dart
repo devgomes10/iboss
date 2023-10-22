@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:iboss/controllers/personal/fixed_entry_controller.dart';
+import 'package:iboss/controllers/personal/variable_entry_controller.dart';
 import 'package:iboss/models/personal/fixed_entry.dart';
 import 'package:iboss/models/personal/variable_entry.dart';
-import 'package:iboss/repositories/personal/fixed_entry_repository.dart';
-import 'package:iboss/repositories/personal/variable_entry_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import '../../show_snackbar.dart';
@@ -163,9 +163,9 @@ class __BottomSheetNewEntryState extends State<_BottomSheetNewEntry> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   if (!_isEditing2)
-                    Consumer<FixedEntryRepository>(
+                    Consumer<FixedEntryController>(
                       builder: (BuildContext context,
-                          FixedEntryRepository fixed, Widget? widget) {
+                          FixedEntryController fixed, Widget? widget) {
                         return SizedBox(
                           width: 100,
                           child: TextButton(
@@ -182,7 +182,7 @@ class __BottomSheetNewEntryState extends State<_BottomSheetNewEntry> {
                                   fixed.id = fixedEntryModel.id;
                                 }
 
-                                await FixedEntryRepository()
+                                await FixedEntryController()
                                     .addEntryToFirestore(fixed);
 
                                 if (!_isEditing1 && !_isEditing2) {
@@ -214,9 +214,9 @@ class __BottomSheetNewEntryState extends State<_BottomSheetNewEntry> {
                       },
                     ),
                   if (!_isEditing1)
-                    Consumer<VariableEntryRepository>(
+                    Consumer<VariableEntryController>(
                       builder: (BuildContext context,
-                          VariableEntryRepository variable, Widget? widget) {
+                          VariableEntryController variable, Widget? widget) {
                         return SizedBox(
                           width: 100,
                           child: TextButton(
@@ -233,7 +233,7 @@ class __BottomSheetNewEntryState extends State<_BottomSheetNewEntry> {
                                   variable.id = variableEntryModel.id;
                                 }
 
-                                await VariableEntryRepository()
+                                await VariableEntryController()
                                     .addEntryToFirestore(variable);
 
                                 if (!_isEditing1 && !_isEditing2) {

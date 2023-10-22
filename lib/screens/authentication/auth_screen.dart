@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iboss/components/show_snackbar.dart';
-import 'package:iboss/repositories/authentication/auth_service.dart';
+import '../../controllers/authentication/auth_service.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
