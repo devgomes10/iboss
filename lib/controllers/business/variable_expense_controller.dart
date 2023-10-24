@@ -22,6 +22,7 @@ class VariableExpenseController extends ChangeNotifier {
             value: doc['value'],
             date: doc['date'].toDate(),
             id: doc.id,
+            isPaid: doc['isPaid'] ?? false,
           );
         }).toList();
       },
@@ -98,8 +99,17 @@ class VariableExpenseController extends ChangeNotifier {
           value: doc['value'],
           date: doc['date'].toDate(),
           id: doc.id,
+          isPaid: doc['isPaid'] ?? false,
         );
       }).toList();
     });
+  }
+
+  Future<void> updateVariableExpenseStatus(String variableId, bool isPaid) async {
+    try {
+      await variableExpenseCollection.doc(variableId).update({"isPaid": isPaid});
+    } catch (error) {
+      // Lidar com erros, se necessário
+    }
   }
 }

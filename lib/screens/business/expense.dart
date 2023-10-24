@@ -24,15 +24,17 @@ class _ExpenseState extends State<Expense> {
   String invoicingId = const Uuid().v1();
 
   void _changeMonth(bool increment) {
-    setState(() {
-      if (increment) {
-        _selectedDate =
-            DateTime(_selectedDate.year, _selectedDate.month + 1, 1);
-      } else {
-        _selectedDate =
-            DateTime(_selectedDate.year, _selectedDate.month - 1, 1);
-      }
-    });
+    setState(
+      () {
+        if (increment) {
+          _selectedDate =
+              DateTime(_selectedDate.year, _selectedDate.month + 1, 1);
+        } else {
+          _selectedDate =
+              DateTime(_selectedDate.year, _selectedDate.month - 1, 1);
+        }
+      },
+    );
   }
 
   @override

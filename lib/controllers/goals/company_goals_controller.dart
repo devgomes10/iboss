@@ -22,7 +22,7 @@ class CompanyGoalsController extends ChangeNotifier {
             description: doc['description'],
             date: doc['date'].toDate(),
             id: doc.id,
-            isChecked: doc['isChecked'] ?? false, // Use o valor do Firestore
+            isChecked: doc['isChecked'] ?? false,
           );
         }).toList();
       },

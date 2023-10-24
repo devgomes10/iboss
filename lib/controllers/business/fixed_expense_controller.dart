@@ -22,6 +22,7 @@ class FixedExpenseController extends ChangeNotifier {
             value: doc['value'],
             date: doc['date'].toDate(),
             id: doc.id,
+            isPaid: doc['isPaid'] ?? false,
           );
         }).toList();
       },
@@ -98,8 +99,17 @@ class FixedExpenseController extends ChangeNotifier {
           value: doc['value'],
           date: doc['date'].toDate(),
           id: doc.id,
+          isPaid: doc['isPaid'] ?? false,
         );
       }).toList();
     });
+  }
+
+  Future<void> updateFixedExpenseStatus(String fixedId, bool isPaid) async {
+    try {
+      await fixedExpenseCollection.doc(fixedId).update({"isPaid": isPaid});
+    } catch (error) {
+      // Lidar com erros, se necessário
+    }
   }
 }

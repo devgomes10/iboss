@@ -17,14 +17,16 @@ class CashPaymentController extends ChangeNotifier {
   Stream<List<CashPayment>> getCashPaymentsStream() {
     return cashPaymentCollection.snapshots().map(
       (snapshot) {
-        return snapshot.docs.map((doc) {
-          return CashPayment(
-            description: doc['description'],
-            value: doc['value'],
-            date: doc['date'].toDate(),
-            id: doc.id,
-          );
-        }).toList();
+        return snapshot.docs.map(
+          (doc) {
+            return CashPayment(
+              description: doc['description'],
+              value: doc['value'],
+              date: doc['date'].toDate(),
+              id: doc.id,
+            );
+          },
+        ).toList();
       },
     );
   }

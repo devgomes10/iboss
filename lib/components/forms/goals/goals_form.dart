@@ -36,7 +36,6 @@ class __BottomSheetNewGoalState extends State<_BottomSheetNewGoal> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController dateController = TextEditingController();
-  bool checked = false;
   DateTime selectedDate = DateTime.now();
   List<bool> companyCheckedList = [];
   List<bool> personalCheckedList = [];

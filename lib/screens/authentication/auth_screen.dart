@@ -65,13 +65,17 @@ class _AuthScreenState extends State<AuthScreen> {
                       controller: _emailController,
                       style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
                         label: Text("E-mail"),
                         labelStyle: TextStyle(
                           color: Colors.white,
                         ),
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                              color: Colors.white), // Cor da borda inferior
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                       validator: (value) {
@@ -91,12 +95,17 @@ class _AuthScreenState extends State<AuthScreen> {
                       obscureText: true,
                       style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
                         label: Text("Senha"),
                         labelStyle: TextStyle(
                           color: Colors.white,
                         ),
                         enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                       validator: (value) {

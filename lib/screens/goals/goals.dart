@@ -25,7 +25,6 @@ class _GoalsState extends State<Goals> {
   TextEditingController dateController = TextEditingController();
   DateTime selectedDate = DateTime.now();
   final ptBr = const Locale('pt', 'BR');
-  late bool newValue;
 
   @override
   Widget build(BuildContext context) {
@@ -42,11 +41,9 @@ class _GoalsState extends State<Goals> {
             labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             tabs: [
               Tab(
-                // icon: FaIcon(FontAwesomeIcons.industry),
                 text: 'NEGÓCIO',
               ),
               Tab(
-                // icon: FaIcon(FontAwesomeIcons.userLarge),
                 text: 'PESSOAL',
               ),
             ],
@@ -91,8 +88,7 @@ class _GoalsState extends State<Goals> {
                                     goal.description,
                                     style: GoogleFonts.montserrat(
                                       decoration: goal.isChecked
-                                          ? TextDecoration
-                                              .lineThrough // Aplicar tachado se a meta estiver marcada
+                                          ? TextDecoration.lineThrough
                                           : TextDecoration.none,
                                     ),
                                   ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:iboss/controllers/business/variable_expense_controller.dart';
 import 'package:iboss/models/business/fixed_expense.dart';
 import 'package:iboss/models/business/variable_expense.dart';
@@ -40,6 +41,7 @@ class _BottomSheetNewExpense extends StatefulWidget {
 }
 
 class __BottomSheetNewExpenseState extends State<_BottomSheetNewExpense> {
+  bool isExpensePaid = false;
   bool _isEditing1 = false;
   final _formKey = GlobalKey<FormState>();
   final descriptionController = TextEditingController();
@@ -48,19 +50,28 @@ class __BottomSheetNewExpenseState extends State<_BottomSheetNewExpense> {
   final descriptionFocusNode = FocusNode();
   final valueFocusNode = FocusNode();
   bool _isEditing2 = false;
+  DateTime date = DateTime.now();
 
   @override
   void initState() {
     super.initState();
     if (widget.model1 != null) {
+      if (widget.model1 is FixedExpense) {
+        isExpensePaid = (widget.model1 as FixedExpense).isPaid;
+      }
       descriptionController.text = widget.model1!.description;
       valueController.text = widget.model1!.value.toString();
       _isEditing1 = true;
+      date = widget.model1!.date;
     }
     if (widget.model2 != null) {
+      if (widget.model2 is VariableExpense) {
+        isExpensePaid = (widget.model2 as VariableExpense).isPaid;
+      }
       descriptionController.text = widget.model2!.description;
       valueController.text = widget.model2!.value.toString();
       _isEditing2 = true;
+      date = widget.model2!.date;
     }
   }
 
@@ -147,8 +158,39 @@ class __BottomSheetNewExpenseState extends State<_BottomSheetNewExpense> {
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
-              if (!_isEditing1 && !_isEditing2)
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text("Está pago?", style: GoogleFonts.raleway(
+                    fontSize: 20,
+                  ),),
+                  Switch(
+                    value: isExpensePaid,
+                    onChanged: (newValue) async {
+                      setState(() {
+                        isExpensePaid = newValue;
+                      });
+                      final fixedExpenses = await FixedExpenseController()
+                          .getFixedExpensesFromFirestore();
+                      final variableExpenses = await VariableExpenseController()
+                          .getVariableExpensesFromFirestore();
+                      if (fixedExpenses.isNotEmpty) {
+                        final firstExpense = fixedExpenses.first;
+                        FixedExpenseController().updateFixedExpenseStatus(
+                            firstExpense.id, newValue);
+                      }
+                      if (variableExpenses.isNotEmpty) {
+                        final firstExpense = variableExpenses.first;
+                        VariableExpenseController().updateVariableExpenseStatus(
+                            firstExpense.id, newValue);
+                      }
+                    },
+                  ),
+                ],
+              ),
+          const SizedBox(height: 16),
+          if (!_isEditing1 && !_isEditing2)
                 const Center(
                   child: Text(
                     'É uma despesa fixa ou variável?',
@@ -174,8 +216,9 @@ class __BottomSheetNewExpenseState extends State<_BottomSheetNewExpense> {
                                 FixedExpense fixed = FixedExpense(
                                   description: descriptionController.text,
                                   value: double.parse(valueController.text),
-                                  date: DateTime.now(),
+                                  date: date,
                                   id: invoicingId,
+                                  isPaid: isExpensePaid,
                                 );
 
                                 if (fixedExpenseModel != null) {
@@ -224,8 +267,9 @@ class __BottomSheetNewExpenseState extends State<_BottomSheetNewExpense> {
                                 VariableExpense variable = VariableExpense(
                                   description: descriptionController.text,
                                   value: double.parse(valueController.text),
-                                  date: DateTime.now(),
+                                  date: date,
                                   id: invoicingId,
+                                  isPaid: isExpensePaid,
                                 );
 
                                 if (variableExpenseModel != null) {
