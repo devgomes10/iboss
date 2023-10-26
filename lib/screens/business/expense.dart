@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/forms/business/expense_form.dart';
 import 'package:iboss/components/show_confirmation.dart';
+import 'package:iboss/components/test.dart';
 import 'package:iboss/controllers/business/fixed_expense_controller.dart';
 import 'package:iboss/controllers/business/variable_expense_controller.dart';
 import 'package:intl/intl.dart';
@@ -63,7 +64,7 @@ class _ExpenseState extends State<Expense> {
         floatingActionButton: SingleChildScrollView(
           child: FloatingActionButton(
             onPressed: () {
-              NewExpenseBottomSheet.show(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Test()));
             },
             backgroundColor: Colors.red,
             child: const FaIcon(FontAwesomeIcons.plus),
@@ -122,8 +123,8 @@ class _ExpenseState extends State<Expense> {
                           FixedExpense model1 = fixedExpenses[i];
                           return ListTile(
                             onTap: () {
-                              NewExpenseBottomSheet.show(context,
-                                  model1: model1);
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => Test(model1: model1,)));
+
                             },
                             leading: const FaIcon(
                               FontAwesomeIcons.arrowTrendDown,
@@ -211,8 +212,8 @@ class _ExpenseState extends State<Expense> {
                           VariableExpense model2 = variableExpenses[i];
                           return ListTile(
                             onTap: () {
-                              NewExpenseBottomSheet.show(context,
-                                  model2: model2);
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => Test(model2: model2,)));
+
                             },
                             leading: const FaIcon(
                               FontAwesomeIcons.arrowTrendDown,
