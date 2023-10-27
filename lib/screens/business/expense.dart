@@ -64,7 +64,7 @@ class _ExpenseState extends State<Expense> {
         floatingActionButton: SingleChildScrollView(
           child: FloatingActionButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Test()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ExpenseForm()));
             },
             backgroundColor: Colors.red,
             child: const FaIcon(FontAwesomeIcons.plus),
@@ -123,7 +123,7 @@ class _ExpenseState extends State<Expense> {
                           FixedExpense model1 = fixedExpenses[i];
                           return ListTile(
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => Test(model1: model1,)));
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => ExpenseForm(model1: model1,)));
 
                             },
                             leading: const FaIcon(
@@ -212,7 +212,7 @@ class _ExpenseState extends State<Expense> {
                           VariableExpense model2 = variableExpenses[i];
                           return ListTile(
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => Test(model2: model2,)));
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => ExpenseForm(model2: model2,)));
 
                             },
                             leading: const FaIcon(

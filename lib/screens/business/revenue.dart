@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/forms/business/revenue_form.dart';
 import 'package:iboss/components/show_confirmation.dart';
+import 'package:iboss/components/test.dart';
 import 'package:iboss/controllers/business/cash_payment_controller.dart';
 import 'package:iboss/controllers/business/deferred_payment_controller.dart';
 import 'package:intl/intl.dart';
@@ -60,7 +61,7 @@ class _RevenueState extends State<Revenue> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            NewRevenueBottomSheet.show(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context) => RevenueForm()));
           },
           backgroundColor: Colors.green,
           child: const FaIcon(FontAwesomeIcons.plus),
@@ -118,8 +119,7 @@ class _RevenueState extends State<Revenue> {
                           CashPayment model1 = cashPayments[i];
                           return ListTile(
                             onTap: () {
-                              NewRevenueBottomSheet.show(context,
-                                  model1: model1);
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => RevenueForm(model1: model1,)));
                             },
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(
@@ -215,8 +215,7 @@ class _RevenueState extends State<Revenue> {
                           DeferredPayment model2 = deferredPayments[i];
                           return ListTile(
                             onTap: () {
-                              NewRevenueBottomSheet.show(context,
-                                  model2: model2);
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => RevenueForm(model2: model2,)));
                             },
                             shape: const RoundedRectangleBorder(
                               borderRadius:
