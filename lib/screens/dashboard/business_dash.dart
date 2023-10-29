@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:iboss/controllers/business/cash_payment_controller.dart';
+import 'package:iboss/controllers/business/revenue_controller.dart';
 import 'package:iboss/controllers/business/deferred_payment_controller.dart';
 import 'package:iboss/controllers/business/fixed_expense_controller.dart';
 import 'package:iboss/controllers/business/variable_expense_controller.dart';
@@ -89,8 +89,8 @@ class _BusinessDasState extends State<BusinessDash> {
                       width: 250,
                       height: 250,
                       child: StreamBuilder<double>(
-                        stream: CashPaymentController()
-                            .getTotalCashPaymentsByMonth(_selectedDate),
+                        stream: RevenueController()
+                            .getTotalRevenueByMonth(_selectedDate),
                         builder: (BuildContext context,
                             AsyncSnapshot<double> cashSnapshot) {
                           double totalCashPayments = cashSnapshot.data ?? 0.0;
@@ -176,8 +176,8 @@ class _BusinessDasState extends State<BusinessDash> {
                               ),
                             ),
                             StreamBuilder<double>(
-                              stream: CashPaymentController()
-                                  .getTotalCashPaymentsByMonth(_selectedDate),
+                              stream: RevenueController()
+                                  .getTotalRevenueByMonth(_selectedDate),
                               builder: (BuildContext context,
                                   AsyncSnapshot<double> cashSnapshot) {
                                 double totalCashPayments =
@@ -458,8 +458,8 @@ class _BusinessDasState extends State<BusinessDash> {
                               double totalExpense =
                                   totalFixedExpenses + totalVariableExpenses;
                               return StreamBuilder<double>(
-                                stream: CashPaymentController()
-                                    .getTotalCashPaymentsByMonth(_selectedDate),
+                                stream: RevenueController()
+                                    .getTotalRevenueByMonth(_selectedDate),
                                 builder: (BuildContext context,
                                     AsyncSnapshot<double> cashSnapshot) {
                                   double totalCashPayments =
@@ -541,8 +541,8 @@ class _BusinessDasState extends State<BusinessDash> {
                               ),
                             ),
                             StreamBuilder<double>(
-                              stream: CashPaymentController()
-                                  .getTotalCashPaymentsByMonth(_selectedDate),
+                              stream: RevenueController()
+                                  .getTotalRevenueByMonth(_selectedDate),
                               builder: (BuildContext context,
                                   AsyncSnapshot<double> cashSnapshot) {
                                 double totalCashPayments =

@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/forms/business/revenue_form.dart';
 import 'package:iboss/components/show_confirmation.dart';
-import 'package:iboss/components/test.dart';
-import 'package:iboss/controllers/business/cash_payment_controller.dart';
+import 'package:iboss/controllers/business/revenue_controller.dart';
 import 'package:iboss/controllers/business/deferred_payment_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
-import '../../models/business/cash_payment.dart';
+import '../../models/business/revenue_model.dart';
 import '../../models/business/deferred_payment.dart';
 
 class Revenue extends StatefulWidget {
@@ -24,6 +23,7 @@ class _RevenueState extends State<Revenue> {
   final valueController = TextEditingController();
   final NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
   String invoicingId = const Uuid().v1();
+  bool teste = false;
 
   void _changeMonth(bool increment) {
     setState(() {
@@ -95,11 +95,11 @@ class _RevenueState extends State<Revenue> {
             Expanded(
               child: TabBarView(
                 children: [
-                  StreamBuilder<List<CashPayment>>(
-                    stream: CashPaymentController()
-                        .getCashPaymentsByMonth(_selectedDate),
+                  StreamBuilder<List<RevenueModel>>(
+                    stream: RevenueController()
+                        .getRevenueByMonth(_selectedDate),
                     builder: (BuildContext context,
-                        AsyncSnapshot<List<CashPayment>> snapshot) {
+                        AsyncSnapshot<List<RevenueModel>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const CircularProgressIndicator();
                       }
@@ -116,7 +116,7 @@ class _RevenueState extends State<Revenue> {
                       }
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int i) {
-                          CashPayment model1 = cashPayments[i];
+                          RevenueModel model1 = cashPayments[i];
                           return ListTile(
                             onTap: () {
                               Navigator.push(context, MaterialPageRoute(builder: (context) => RevenueForm(model1: model1,)));
@@ -149,7 +149,7 @@ class _RevenueState extends State<Revenue> {
                                 ),
                                 Text(
                                   DateFormat('dd/MM/yyyy')
-                                      .format(cashPayments[i].date),
+                                      .format(cashPayments[i].dateNow),
                                   style: const TextStyle(
                                     fontSize: 16,
                                   ),
@@ -164,8 +164,8 @@ class _RevenueState extends State<Revenue> {
                                         "Deseja mesmo remover esse pagamento recebido?",
                                     onPressed: () {
                                       final paymentId = cashPayments[i].id;
-                                      CashPaymentController()
-                                          .removePaymentFromFirestore(
+                                      RevenueController()
+                                          .removeRevenueFromFirestore(
                                               paymentId);
                                     },
                                     messegerSnack: "Pagamento removido",
@@ -253,9 +253,9 @@ class _RevenueState extends State<Revenue> {
                               width: 100,
                               child: Row(
                                 children: [
-                                  Consumer<CashPaymentController>(
+                                  Consumer<RevenueController>(
                                     builder: (BuildContext context,
-                                        CashPaymentController inCash,
+                                        RevenueController inCash,
                                         Widget? widget) {
                                       return IconButton(
                                         onPressed: () {
@@ -273,15 +273,19 @@ class _RevenueState extends State<Revenue> {
                                                     deferredPayments[i].value;
                                                 final date =
                                                     deferredPayments[i].date;
-                                                CashPayment received =
-                                                    CashPayment(
+                                                RevenueModel received =
+                                                    RevenueModel(
                                                         description:
                                                             description,
                                                         value: value,
-                                                        date: date,
-                                                        id: paymentId);
+                                                        dateNow: date,
+                                                        id: paymentId,
+                                                      isReceived: teste,
+                                                      isRepeat: teste,
+                                                      receiptDate: date,
+                                                      );
                                                 await inCash
-                                                    .addPaymentToFirestore(
+                                                    .addRevenueToFirestore(
                                                         received);
                                                 DeferredPaymentController()
                                                     .removePaymentFromFirestore(

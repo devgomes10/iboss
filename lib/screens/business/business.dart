@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iboss/components/box_card.dart';
 import 'package:iboss/components/drawer_component.dart';
-import 'package:iboss/controllers/business/cash_payment_controller.dart';
+import 'package:iboss/controllers/business/revenue_controller.dart';
 import 'package:iboss/controllers/business/deferred_payment_controller.dart';
 import 'package:iboss/controllers/business/fixed_expense_controller.dart';
 import 'package:iboss/controllers/business/variable_expense_controller.dart';
@@ -40,15 +40,15 @@ class _BusinessState extends State<Business> {
               subTitle1: "Recebidos",
               subTitle2: "Pendentes",
               streamTotal: CombineLatestStream.combine2(
-                CashPaymentController()
-                    .getTotalCashPaymentsByMonth(_selectedDate),
+                RevenueController()
+                    .getTotalRevenueByMonth(_selectedDate),
                 DeferredPaymentController()
                     .getTotalDeferredPaymentsByMonth(_selectedDate),
                 (double totalCash, double totalDeferred) =>
                     totalCash + totalDeferred,
               ),
-              stream1: CashPaymentController()
-                  .getTotalCashPaymentsByMonth(_selectedDate),
+              stream1: RevenueController()
+                  .getTotalRevenueByMonth(_selectedDate),
               stream2: DeferredPaymentController()
                   .getTotalDeferredPaymentsByMonth(_selectedDate),
               screen: const Revenue(),

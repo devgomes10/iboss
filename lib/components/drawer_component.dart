@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:iboss/components/forms/business/catalog_form.dart';
 import 'package:iboss/components/show_confirmation.dart';
 import 'package:iboss/components/show_confirmation_password.dart';
+import 'package:iboss/screens/business/catalog_screen.dart';
 import '../controllers/authentication/auth_service.dart';
 
 class DrawerComponent extends StatelessWidget {
@@ -38,7 +41,29 @@ class DrawerComponent extends StatelessWidget {
               ),
             ),
             ListTile(
-              leading: const Icon(Icons.exit_to_app),
+              leading: const FaIcon(
+                FontAwesomeIcons.bookOpen,
+                size: 20,
+              ),
+              title: const Text(
+                "Catálogo",
+                style: TextStyle(fontSize: 18),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CatalogScreen(),
+                  ),
+                );
+              },
+            ),
+            const Divider(height: 12, color: Colors.white),
+            ListTile(
+              leading: const FaIcon(
+                FontAwesomeIcons.rightFromBracket,
+                size: 20,
+              ),
               title: const Text(
                 "Sair",
                 style: TextStyle(fontSize: 18),
@@ -55,7 +80,10 @@ class DrawerComponent extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.delete),
+              leading: const FaIcon(
+                FontAwesomeIcons.trash,
+                size: 20,
+              ),
               title: const Text(
                 "Remover conta",
                 style: TextStyle(fontSize: 18),

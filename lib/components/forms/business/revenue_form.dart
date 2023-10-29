@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:iboss/models/business/cash_payment.dart';
+import 'package:iboss/controllers/business/revenue_controller.dart';
+import 'package:iboss/models/business/revenue_model.dart';
 import 'package:iboss/models/business/deferred_payment.dart';
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../models/business/fixed_expense.dart';
-import '../../../models/business/variable_expense.dart';
-
 class RevenueForm extends StatefulWidget {
-  final CashPayment? model1;
+  final RevenueModel? model1;
   final DeferredPayment? model2;
 
   const RevenueForm({super.key, this.model1, this.model2});
@@ -21,6 +20,7 @@ class RevenueForm extends StatefulWidget {
 class _RevenueFormState extends State<RevenueForm> {
   bool _isEditing1 = false;
   final _formKey = GlobalKey<FormState>();
+  TextEditingController datePickerController = TextEditingController();
   final descriptionController = TextEditingController();
   final valueController = TextEditingController();
   String invoicingId = const Uuid().v1();
@@ -28,6 +28,9 @@ class _RevenueFormState extends State<RevenueForm> {
   final valueFocusNode = FocusNode();
   bool _isEditing2 = false;
   bool isRevenue = false;
+  bool isReceived = false;
+  DateTime selectedPicker = DateTime.now();
+  final ptBr = const Locale('pt', 'BR');
 
   @override
   void initState() {
@@ -58,8 +61,6 @@ class _RevenueFormState extends State<RevenueForm> {
     final titleText = _isEditing1 || _isEditing2
         ? "Editando pagamento"
         : "Nova receita";
-    final buttonText1 = _isEditing1 ? "Confirmar" : "RECEBIDO";
-    final buttonText2 = _isEditing2 ? "Confirmar" : "PENDENTE";
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -130,20 +131,20 @@ class _RevenueFormState extends State<RevenueForm> {
                     ],
                   ),
                   Switch(
-                    value: isRevenue,
+                    value: isReceived,
                     onChanged: (newValue) async {
                       setState(() {
-                        isRevenue = newValue;
+                        isReceived = newValue;
                       });
-                      // final fixedExpenses = await FixedExpenseController()
-                      //     .getFixedExpensesFromFirestore();
+                      final revenue = await RevenueController()
+                          .getRevenueFromFirestore();
                       // final variableExpenses = await VariableExpenseController()
                       //     .getVariableExpensesFromFirestore();
-                      // if (fixedExpenses.isNotEmpty) {
-                      //   final firstExpense = fixedExpenses.first;
-                      //   FixedExpenseController().updateFixedExpenseStatus(
-                      //       firstExpense.id, newValue);
-                      // }
+                      if (revenue.isNotEmpty) {
+                        final firstRevenue = revenue.first;
+                          RevenueController().updateReceivedStatus(
+                              firstRevenue.id, newValue);
+                      }
                       // if (variableExpenses.isNotEmpty) {
                       //   final firstExpense = variableExpenses.first;
                       //   VariableExpenseController().updateVariableExpenseStatus(
@@ -157,25 +158,43 @@ class _RevenueFormState extends State<RevenueForm> {
                 height: 22,
                 color: Colors.grey,
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 12, bottom: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        FaIcon(FontAwesomeIcons.calendar),
-                        SizedBox(width: 15,),
-                        Text(
-                          "Data do recebimento",
-                          style: GoogleFonts.raleway(
-                            fontSize: 20,
+              InkWell(
+               onTap: () async {
+                 final DateTime? picked = await showDatePicker(
+                   context: context,
+                   locale: ptBr,
+                   initialDate: selectedPicker,
+                   firstDate: DateTime(2000),
+                   lastDate: DateTime(3000),
+                 );
+                 if (picked != null) {
+                   setState(
+                         () {
+                       selectedPicker = picked;
+                     },
+                   );
+                 }
+               },
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 12, bottom: 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          FaIcon(FontAwesomeIcons.calendar),
+                          SizedBox(width: 15,),
+                          Text(
+                            DateFormat.yMMMMd('pt_BR').format(selectedPicker),
+                            style: GoogleFonts.raleway(
+                              fontSize: 20,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    FaIcon(FontAwesomeIcons.angleRight),
-                  ],
+                        ],
+                      ),
+                      FaIcon(FontAwesomeIcons.angleRight),
+                    ],
+                  ),
                 ),
               ),
               const Divider(
@@ -228,22 +247,30 @@ class _RevenueFormState extends State<RevenueForm> {
                         setState(() {
                           isRevenue = newValue;
                         });
-                        // final fixedExpenses = await FixedExpenseController()
-                        //     .getFixedExpensesFromFirestore();
+                        final revenue = await RevenueController()
+                            .getRevenueFromFirestore();
                         // final variableExpenses = await VariableExpenseController()
                         //     .getVariableExpensesFromFirestore();
-                        // if (fixedExpenses.isNotEmpty) {
-                        //   final firstExpense = fixedExpenses.first;
-                        //   FixedExpenseController().updateFixedExpenseStatus(
+                        if (revenue.isNotEmpty) {
+                          final firstRevenue = revenue.first;
+                          RevenueController().updateRepeatStatus(
+                              firstRevenue.id, newValue);
+                          // final fixedExpenses = await FixedExpenseController()
+                          //     .getFixedExpensesFromFirestore();
+                          // final variableExpenses = await VariableExpenseController()
+                          //     .getVariableExpensesFromFirestore();
+                          // if (fixedExpenses.isNotEmpty) {
+                          //   final firstExpense = fixedExpenses.first;
+                          //   FixedExpenseController().updateFixedExpenseStatus(
+                          //       firstExpense.id, newValue);
+                        }
+                        // if (variableExpenses.isNotEmpty) {
+                        //   final firstExpense = variableExpenses.first;
+                        //   VariableExpenseController().updateVariableExpenseStatus(
                         //       firstExpense.id, newValue);
-                      }
-                    // if (variableExpenses.isNotEmpty) {
-                    //   final firstExpense = variableExpenses.first;
-                    //   VariableExpenseController().updateVariableExpenseStatus(
-                    //       firstExpense.id, newValue);
-                    // }
-                    // },
-                  ),
+                        // }
+                        // },
+                      }),
                 ],
               ),
               const SizedBox(
@@ -391,9 +418,9 @@ class _RevenueFormState extends State<RevenueForm> {
 // import 'package:flutter/material.dart';
 // import 'package:provider/provider.dart';
 // import 'package:uuid/uuid.dart';
-// import '../../../controllers/business/cash_payment_controller.dart';
+// import '../../../controllers/business/revenue_controller.dart';
 // import '../../../controllers/business/deferred_payment_controller.dart';
-// import '../../../models/business/cash_payment.dart';
+// import '../../../models/business/revenue_model.dart';
 // import '../../../models/business/deferred_payment.dart';
 // import '../../show_snackbar.dart';
 //
