@@ -7,18 +7,29 @@ class CatalogController extends ChangeNotifier {
   late String uidCatalog;
   late CollectionReference catalogCollection;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-
+  int totalSelectedItems = 0;
+  Map<String, int> selectedCatalogItems = {};
   CatalogController() {
     uidCatalog = FirebaseAuth.instance.currentUser!.uid;
     catalogCollection =
         FirebaseFirestore.instance.collection('catalog_$uidCatalog');
   }
 
+  void updateTotalSelectedItems(List<CatalogModel> catalogs) {
+  double total = 0.0;
+  selectedCatalogItems.forEach((id, quantity) {
+  final catalog = catalogs.firstWhere((catalog) => catalog.id == id);
+  total += catalog.price * quantity;
+  });
+  totalSelectedItems = total.toInt();
+  }
+
+
   Stream<List<CatalogModel>> getCatalogStream() {
     return catalogCollection.snapshots().map(
-          (snapshot) {
+      (snapshot) {
         return snapshot.docs.map(
-              (doc) {
+          (doc) {
             return CatalogModel(
               name: doc['name'],
               price: doc['price'],
@@ -33,8 +44,8 @@ class CatalogController extends ChangeNotifier {
   Future<void> addCatalogToFirestore(CatalogModel catalog) async {
     try {
       await catalogCollection.doc(catalog.id).set(
-        catalog.toMap(),
-      );
+            catalog.toMap(),
+          );
     } catch (error) {
       const Text(
         "erro ao adicionar produto/serviço",
@@ -58,9 +69,9 @@ class CatalogController extends ChangeNotifier {
 
   Stream<List<CatalogModel>> getCatalogFromFirestore() {
     return catalogCollection.snapshots().map(
-          (snapshot) {
+      (snapshot) {
         return snapshot.docs.map(
-              (doc) {
+          (doc) {
             return CatalogModel(
               name: doc['name'],
               price: doc['price'].toDouble(),
@@ -71,5 +82,4 @@ class CatalogController extends ChangeNotifier {
       },
     );
   }
-
 }
