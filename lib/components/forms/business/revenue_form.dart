@@ -1,9 +1,12 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iboss/controllers/business/revenue_controller.dart';
 import 'package:iboss/models/business/revenue_model.dart';
 import 'package:iboss/models/business/deferred_payment.dart';
+import 'package:iboss/screens/business/catalog_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
@@ -58,9 +61,8 @@ class _RevenueFormState extends State<RevenueForm> {
   Widget build(BuildContext context) {
     final cashPaymentModel = widget.model1;
     final deferredPaymentModel = widget.model2;
-    final titleText = _isEditing1 || _isEditing2
-        ? "Editando pagamento"
-        : "Nova receita";
+    final titleText =
+        _isEditing1 || _isEditing2 ? "Editando pagamento" : "Nova receita";
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -121,7 +123,9 @@ class _RevenueFormState extends State<RevenueForm> {
                   Row(
                     children: [
                       FaIcon(FontAwesomeIcons.circleCheck),
-                      SizedBox(width: 15,),
+                      SizedBox(
+                        width: 15,
+                      ),
                       Text(
                         "Recebeu?",
                         style: GoogleFonts.raleway(
@@ -136,14 +140,14 @@ class _RevenueFormState extends State<RevenueForm> {
                       setState(() {
                         isReceived = newValue;
                       });
-                      final revenue = await RevenueController()
-                          .getRevenueFromFirestore();
+                      final revenue =
+                          await RevenueController().getRevenueFromFirestore();
                       // final variableExpenses = await VariableExpenseController()
                       //     .getVariableExpensesFromFirestore();
                       if (revenue.isNotEmpty) {
                         final firstRevenue = revenue.first;
-                          RevenueController().updateReceivedStatus(
-                              firstRevenue.id, newValue);
+                        RevenueController()
+                            .updateReceivedStatus(firstRevenue.id, newValue);
                       }
                       // if (variableExpenses.isNotEmpty) {
                       //   final firstExpense = variableExpenses.first;
@@ -159,22 +163,22 @@ class _RevenueFormState extends State<RevenueForm> {
                 color: Colors.grey,
               ),
               InkWell(
-               onTap: () async {
-                 final DateTime? picked = await showDatePicker(
-                   context: context,
-                   locale: ptBr,
-                   initialDate: selectedPicker,
-                   firstDate: DateTime(2000),
-                   lastDate: DateTime(3000),
-                 );
-                 if (picked != null) {
-                   setState(
-                         () {
-                       selectedPicker = picked;
-                     },
-                   );
-                 }
-               },
+                onTap: () async {
+                  final DateTime? picked = await showDatePicker(
+                    context: context,
+                    locale: ptBr,
+                    initialDate: selectedPicker,
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(3000),
+                  );
+                  if (picked != null) {
+                    setState(
+                      () {
+                        selectedPicker = picked;
+                      },
+                    );
+                  }
+                },
                 child: Padding(
                   padding: const EdgeInsets.only(top: 12, bottom: 12),
                   child: Row(
@@ -183,7 +187,9 @@ class _RevenueFormState extends State<RevenueForm> {
                       Row(
                         children: [
                           FaIcon(FontAwesomeIcons.calendar),
-                          SizedBox(width: 15,),
+                          SizedBox(
+                            width: 15,
+                          ),
                           Text(
                             DateFormat.yMMMMd('pt_BR').format(selectedPicker),
                             style: GoogleFonts.raleway(
@@ -201,25 +207,37 @@ class _RevenueFormState extends State<RevenueForm> {
                 height: 22,
                 color: Colors.grey,
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 12, bottom: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        FaIcon(FontAwesomeIcons.tags),
-                        SizedBox(width: 15,),
-                        Text(
-                          "Catálogo",
-                          style: GoogleFonts.raleway(
-                            fontSize: 20,
-                          ),
-                        ),
-                      ],
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CatalogScreen(isSelecting: true),
                     ),
-                    FaIcon(FontAwesomeIcons.angleRight),
-                  ],
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 12, bottom: 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          FaIcon(FontAwesomeIcons.tags),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text(
+                            "Catálogo",
+                            style: GoogleFonts.raleway(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                      FaIcon(FontAwesomeIcons.angleRight),
+                    ],
+                  ),
                 ),
               ),
               const Divider(
@@ -232,7 +250,9 @@ class _RevenueFormState extends State<RevenueForm> {
                   Row(
                     children: [
                       FaIcon(FontAwesomeIcons.rotateRight),
-                      SizedBox(width: 15,),
+                      SizedBox(
+                        width: 15,
+                      ),
                       Text(
                         "Repetir",
                         style: GoogleFonts.raleway(
@@ -247,14 +267,14 @@ class _RevenueFormState extends State<RevenueForm> {
                         setState(() {
                           isRevenue = newValue;
                         });
-                        final revenue = await RevenueController()
-                            .getRevenueFromFirestore();
+                        final revenue =
+                            await RevenueController().getRevenueFromFirestore();
                         // final variableExpenses = await VariableExpenseController()
                         //     .getVariableExpensesFromFirestore();
                         if (revenue.isNotEmpty) {
                           final firstRevenue = revenue.first;
-                          RevenueController().updateRepeatStatus(
-                              firstRevenue.id, newValue);
+                          RevenueController()
+                              .updateRepeatStatus(firstRevenue.id, newValue);
                           // final fixedExpenses = await FixedExpenseController()
                           //     .getFixedExpensesFromFirestore();
                           // final variableExpenses = await VariableExpenseController()
@@ -413,7 +433,6 @@ class _RevenueFormState extends State<RevenueForm> {
     );
   }
 }
-
 
 // import 'package:flutter/material.dart';
 // import 'package:provider/provider.dart';

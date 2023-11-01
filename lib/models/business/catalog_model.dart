@@ -10,8 +10,7 @@ class CatalogModel {
   });
 
   CatalogModel.fromMap(Map<String, dynamic> map)
-      :
-        name = map["name"],
+      : name = map["name"],
         price = map["price"],
         id = map["id"];
 

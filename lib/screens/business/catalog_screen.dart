@@ -7,7 +7,9 @@ import 'package:iboss/models/business/catalog_model.dart';
 import 'package:intl/intl.dart';
 
 class CatalogScreen extends StatefulWidget {
-  const CatalogScreen({Key? key}) : super(key: key);
+  final bool isSelecting;
+
+  const CatalogScreen({super.key, required this.isSelecting});
 
   @override
   State<CatalogScreen> createState() => _CatalogScreenState();
@@ -17,40 +19,30 @@ class _CatalogScreenState extends State<CatalogScreen> {
   final catalogController = CatalogController();
   final NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
   TextEditingController nameController = TextEditingController();
-  bool isSelecting = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme
+          .of(context)
+          .colorScheme
+          .background,
       appBar: AppBar(
         actions: [
-          if (isSelecting == true)
+          if (widget.isSelecting == true)
             IconButton(
               onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text("Produtos Selecionados"),
-                      content: Text(
-                          "Total: ${real.format(catalogController.totalSelectedItems)}"),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text("Fechar"),
-                        ),
-                      ],
-                    );
-                  },
-                );
+                showConfirmation(
+                    context: context,
+                    title: "${catalogController.totalSelectedItems}",
+                    onPressed: () {},
+                    messegerSnack: "",
+                    isError: false);
               },
               icon: FaIcon(FontAwesomeIcons.check),
             ),
         ],
-        title: Text("Catálogo"),
+        title: const Text("Catálogo"),
         centerTitle: true,
       ),
       body: StreamBuilder<List<CatalogModel>>(
@@ -71,7 +63,6 @@ class _CatalogScreenState extends State<CatalogScreen> {
               child: Text('Nenhum produto/serviço disponível.'),
             );
           }
-          catalogController.updateTotalSelectedItems(catalogs);
           return Column(
             children: [
               TextField(
@@ -95,15 +86,22 @@ class _CatalogScreenState extends State<CatalogScreen> {
                           fontSize: 18,
                         ),
                       ),
-                      leading: isSelecting == true
-                          ? Text(
-                        'x ${catalogController.selectedCatalogItems[catalog.id] ?? 0}',
-                        style: const TextStyle(
-                          fontSize: 18,
-                        ),
+                      leading: widget.isSelecting == true
+                          ? StreamBuilder<Map<String, int>>(
+                        stream: catalogController.selectedItemsStream,
+                        initialData: catalogController.selectedCatalogItems,
+                        builder: (context, snapshot) {
+                          final selectedItems = snapshot.data;
+                          return Text(
+                            'x ${selectedItems?[catalog.id] ?? 0}',
+                            style: const TextStyle(
+                              fontSize: 18,
+                            ),
+                          );
+                        },
                       )
                           : null,
-                      trailing: isSelecting == false
+                      trailing: widget.isSelecting == false
                           ? IconButton(
                         icon: const FaIcon(FontAwesomeIcons.trash),
                         onPressed: () {
@@ -122,22 +120,19 @@ class _CatalogScreenState extends State<CatalogScreen> {
                       )
                           : null,
                       onTap: () {
-                        if (isSelecting == true) {
-                          setState(() {
-                            final id = catalog.id;
-                            if (catalogController.selectedCatalogItems
-                                .containsKey(id)) {
-                              catalogController.selectedCatalogItems[id] =
-                                  (catalogController.selectedCatalogItems[id] ??
-                                      0) +
-                                      1;
-                            } else {
-                              catalogController.selectedCatalogItems[id] = 1;
-                            }
-                            // Atualize o total de itens selecionados
-                            catalogController
-                                .updateTotalSelectedItems(catalogs);
-                          });
+                        if (widget.isSelecting == true) {
+                          final id = catalog.id;
+                          if (catalogController.selectedCatalogItems
+                              .containsKey(id)) {
+                            catalogController.selectedCatalogItems[id] =
+                                (catalogController.selectedCatalogItems[id] ??
+                                    0) +
+                                    1;
+                          } else {
+                            catalogController.selectedCatalogItems[id] = 1;
+                          }
+                          catalogController
+                              .updateTotalSelectedItems(catalogs);
                         } else {
                           NewCatalogBottomSheet.show(context, model: catalog);
                         }
@@ -163,12 +158,20 @@ class _CatalogScreenState extends State<CatalogScreen> {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: widget.isSelecting == false
+          ? FloatingActionButton(
         onPressed: () {
           NewCatalogBottomSheet.show(context);
         },
         child: const Icon(Icons.add),
-      ),
+      )
+          : null,
     );
+  }
+
+  @override
+  void dispose() {
+    catalogController.dispose();
+    super.dispose();
   }
 }
