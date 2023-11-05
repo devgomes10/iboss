@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iboss/components/show_snackbar.dart';
-import 'package:iboss/controllers/business/catalog_controller.dart';
 import 'package:iboss/controllers/business/categories_controller.dart';
-import 'package:iboss/models/business/catalog_model.dart';
 import 'package:iboss/models/business/categories_model.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';

@@ -20,14 +20,12 @@ class RevenueController extends ChangeNotifier {
         return snapshot.docs.map(
           (doc) {
             return RevenueModel(
+              id: doc.id,
               description: doc['description'],
               value: doc['value'],
               isReceived: doc["isReceived"],
               receiptDate: doc["receiptDate"].toDate(),
-              // catalog: doc["catalog"],
               isRepeat: doc["isRepeat"],
-              dateNow: doc['dateNow'].toDate(),
-              id: doc.id,
             );
           },
         ).toList();
@@ -108,14 +106,12 @@ class RevenueController extends ChangeNotifier {
         .map((querySnapshot) {
       return querySnapshot.docs.map((doc) {
         return RevenueModel(
+          id: doc.id,
           description: doc['description'],
           value: doc['value'],
           isReceived: doc["isReceived"],
           receiptDate: doc["receiptDate"].toDate(),
-          // catalog: doc["catalog"],
           isRepeat: doc["isRepeat"],
-          dateNow: doc['dateNow'].toDate(),
-          id: doc.id,
         );
       }).toList();
     });

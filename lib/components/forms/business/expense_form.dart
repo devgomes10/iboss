@@ -1,57 +1,49 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:iboss/screens/business/categories_screen.dart';
-import 'package:uuid/Uuid.dart'; // Import UUID corrigido
-import '../../../controllers/business/fixed_expense_controller.dart';
+import 'package:iboss/views/business/categories_view.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:uuid/Uuid.dart';
+import '../../../controllers/business/expense_controller.dart';
 import '../../../controllers/business/variable_expense_controller.dart';
 import '../../../models/business/categories_model.dart';
-import '../../../models/business/fixed_expense.dart';
+import '../../../models/business/expense_model.dart';
 import '../../../models/business/variable_expense.dart';
+import '../../show_snackbar.dart';
 
 class ExpenseForm extends StatefulWidget {
-  final FixedExpense? model1;
-  final VariableExpense? model2;
+  final ExpenseModel? model;
   late CategoriesModel? selectedCategory;
 
-  ExpenseForm({Key? key, this.model1, this.model2, this.selectedCategory}) : super(key: key);
+  ExpenseForm({Key? key, this.model, this.selectedCategory}) : super(key: key);
 
   @override
   State<ExpenseForm> createState() => _ExpenseFormState();
 }
 
 class _ExpenseFormState extends State<ExpenseForm> {
-  bool isExpensePaid = false;
-  bool _isEditing1 = false;
+  bool isPaid = false;
+  bool _isEditing = false;
   final _formKey = GlobalKey<FormState>();
   final descriptionController = TextEditingController();
   final valueController = TextEditingController();
   String invoicingId = const Uuid().v1();
   final descriptionFocusNode = FocusNode();
   final valueFocusNode = FocusNode();
-  bool _isEditing2 = false;
-  DateTime date = DateTime.now();
+  DateTime selectedPicker = DateTime.now();
+  final ptBr = const Locale('pt', 'BR');
+  bool isRepeat = false;
+  int numberOfRepeats = 1;
 
   @override
   void initState() {
     super.initState();
-    if (widget.model1 != null) {
-      if (widget.model1 is FixedExpense) {
-        isExpensePaid = (widget.model1 as FixedExpense).isPaid;
-      }
-      descriptionController.text = widget.model1!.description;
-      valueController.text = widget.model1!.value.toString();
-      _isEditing1 = true;
-      date = widget.model1!.date;
-    }
-    if (widget.model2 != null) {
-      if (widget.model2 is VariableExpense) {
-        isExpensePaid = (widget.model2 as VariableExpense).isPaid;
-      }
-      descriptionController.text = widget.model2!.description;
-      valueController.text = widget.model2!.value.toString();
-      _isEditing2 = true;
-      date = widget.model2!.date;
+    if (widget.model != null) {
+      descriptionController.text = widget.model!.description;
+      valueController.text = widget.model!.value.toString();
+      _isEditing = true;
     }
   }
 
@@ -64,12 +56,8 @@ class _ExpenseFormState extends State<ExpenseForm> {
 
   @override
   Widget build(BuildContext context) {
-    final fixedExpenseModel = widget.model1;
-    final variableExpenseModel = widget.model2;
-    final titleText = _isEditing1 || _isEditing2 ? "Editando despesa" : "Nova despesa";
-    final buttonText1 = _isEditing1 ? "Confirmar" : "FIXA";
-    final buttonText2 = _isEditing2 ? "Confirmar" : "VARIÁVEL";
-
+    final expenseModel = widget.model;
+    final titleText = _isEditing ? "Editando despesa" : "Nova despesa";
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
@@ -77,7 +65,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.only(top: 20, right: 7, bottom: 10, left: 7),
+        padding: const EdgeInsets.fromLTRB(7, 20, 7, 10),
         child: Form(
           key: _formKey,
           child: Column(
@@ -132,8 +120,8 @@ class _ExpenseFormState extends State<ExpenseForm> {
                 children: [
                   Row(
                     children: [
-                      FaIcon(FontAwesomeIcons.circleCheck),
-                      SizedBox(
+                      const FaIcon(FontAwesomeIcons.circleCheck),
+                      const SizedBox(
                         width: 15,
                       ),
                       Text(
@@ -145,20 +133,15 @@ class _ExpenseFormState extends State<ExpenseForm> {
                     ],
                   ),
                   Switch(
-                    value: isExpensePaid,
+                    value: isPaid,
                     onChanged: (newValue) async {
                       setState(() {
-                        isExpensePaid = newValue;
+                        isPaid = newValue;
                       });
-                      final fixedExpenses = await FixedExpenseController().getFixedExpensesFromFirestore();
-                      final variableExpenses = await VariableExpenseController().getVariableExpensesFromFirestore();
-                      if (fixedExpenses.isNotEmpty) {
-                        final firstExpense = fixedExpenses.first;
-                        FixedExpenseController().updateFixedExpenseStatus(firstExpense.id, newValue);
-                      }
-                      if (variableExpenses.isNotEmpty) {
-                        final firstExpense = variableExpenses.first;
-                        VariableExpenseController().updateVariableExpenseStatus(firstExpense.id, newValue);
+                      final expenses = await ExpenseController().getExpenseFromFirestore();
+                      if (expenses.isNotEmpty) {
+                        final firstExpense = expenses.first;
+                        ExpenseController().updateExpenseStatus(firstExpense.id, newValue);
                       }
                     },
                   ),
@@ -168,27 +151,45 @@ class _ExpenseFormState extends State<ExpenseForm> {
                 height: 22,
                 color: Colors.grey,
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 12, bottom: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        FaIcon(FontAwesomeIcons.calendar),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text(
-                          "Data de pagamento",
-                          style: GoogleFonts.raleway(
-                            fontSize: 20,
+              InkWell(
+                onTap: () async {
+                  final DateTime? picked = await showDatePicker(
+                    context: context,
+                    locale: ptBr,
+                    initialDate: selectedPicker,
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(3000),
+                  );
+                  if (picked != null) {
+                    setState(
+                          () {
+                        selectedPicker = picked;
+                      },
+                    );
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 12, bottom: 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          const FaIcon(FontAwesomeIcons.calendar),
+                          const SizedBox(
+                            width: 15,
                           ),
-                        ),
-                      ],
-                    ),
-                    FaIcon(FontAwesomeIcons.angleRight),
-                  ],
+                          Text(
+                            DateFormat.yMMMMd('pt_BR').format(selectedPicker),
+                            style: GoogleFonts.raleway(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const FaIcon(FontAwesomeIcons.angleRight),
+                    ],
+                  ),
                 ),
               ),
               const Divider(
@@ -200,12 +201,12 @@ class _ExpenseFormState extends State<ExpenseForm> {
                   final selectedCategory = await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CategoriesScreen(isSelecting: true),
+                      builder: (context) => CategoriesView(isSelecting: true),
                     ),
                   );
                   if (selectedCategory != null) {
                     setState(() {
-                      this.widget.selectedCategory = selectedCategory;
+                      widget.selectedCategory = selectedCategory;
                     });
                   }
                 },
@@ -216,8 +217,8 @@ class _ExpenseFormState extends State<ExpenseForm> {
                     children: [
                       Row(
                         children: [
-                          FaIcon(FontAwesomeIcons.tags),
-                          SizedBox(
+                          const FaIcon(FontAwesomeIcons.tags),
+                          const SizedBox(
                             width: 15,
                           ),
                           Text(
@@ -230,7 +231,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
                           ),
                         ],
                       ),
-                      FaIcon(FontAwesomeIcons.angleRight),
+                      const FaIcon(FontAwesomeIcons.angleRight),
                     ],
                   ),
                 ),
@@ -239,33 +240,120 @@ class _ExpenseFormState extends State<ExpenseForm> {
                 height: 22,
                 color: Colors.grey,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Column(
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      FaIcon(FontAwesomeIcons.rotateRight),
-                      SizedBox(
-                        width: 15,
+                      Row(
+                        children: [
+                          const FaIcon(FontAwesomeIcons.rotateRight),
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          Text(
+                            "Repetir",
+                            style: GoogleFonts.raleway(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        "Repetir",
-                        style: GoogleFonts.raleway(
-                          fontSize: 20,
-                        ),
+                      Switch(
+                        value: isRepeat,
+                        onChanged: (newValue) async {
+                          setState(() {
+                            isRepeat = newValue;
+                          });
+                          final expense = await ExpenseController()
+                              .getExpenseFromFirestore();
+
+                          if (expense.isNotEmpty) {
+                            final firstExpense = expense.first;
+                            ExpenseController()
+                                .updateExpenseStatus(firstExpense.id, newValue);
+                          }
+                        },
                       ),
                     ],
                   ),
-                  Switch(
-                    value: isExpensePaid,
-                    onChanged: (newValue) async {
-                      setState(() {
-                        isExpensePaid = newValue;
-                      });
-                    },
-                  ),
+                  if (isRepeat)
+                    Column(
+                      children: [
+                        const Text("Quantidade de Repetições:"),
+                        CupertinoPicker(
+                          itemExtent: 32,
+                          onSelectedItemChanged: (int value) {
+                            setState(() {
+                              numberOfRepeats = value + 1;
+                            });
+                          },
+                          children: List.generate(10, (index) {
+                            return Text((index + 1).toString());
+                          }),
+                        ),
+                        const SizedBox(height: 10),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Text("$numberOfRepeats vezes de R\$ 55.000,00"),
+                      ],
+                    ),
                 ],
               ),
+              const SizedBox(
+                height: 26,
+              ),
+              Consumer<ExpenseController>(
+                builder: (BuildContext context, ExpenseController expense,
+                    Widget? widget) {
+                  return ElevatedButton(
+                    onPressed: () async {
+                      if (!_isEditing) {
+                        if (_formKey.currentState!.validate()) {
+                          ExpenseModel expense = ExpenseModel(
+                            id: invoicingId,
+                            description: descriptionController.text,
+                            value: double.parse(valueController.text),
+                            isPaid: isPaid,
+                            payday: selectedPicker,
+                            category: "",
+                            isRepeat: numberOfRepeats,
+                          );
+
+                          if (expenseModel != null) {
+                            expense.id = expenseModel.id;
+                          }
+
+                          await ExpenseController()
+                              .addExpenseToFirestore(expense);
+
+                          if (!_isEditing) {
+                            showSnackbar(
+                              context: context,
+                              menssager: "Despesa adicionada",
+                              isError: false,
+                            );
+                          } else {
+                            showSnackbar(
+                              context: context,
+                              menssager: "Despesa editada",
+                              isError: false,
+                            );
+                          }
+
+                          Navigator.pop(context);
+                        }
+                      }
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
+                      minimumSize: const Size(300, 40),
+                    ),
+                    child: const Text("CONFIRMAR"),
+                  );
+                },
+              )
             ],
           ),
         ),

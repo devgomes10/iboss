@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:iboss/components/show_snackbar.dart';
 import '../../controllers/authentication/auth_service.dart';
 
-class AuthScreen extends StatefulWidget {
-  const AuthScreen({super.key});
+class AuthView extends StatefulWidget {
+  const AuthView({super.key});
 
   @override
-  State<AuthScreen> createState() => _AuthScreenState();
+  State<AuthView> createState() => _AuthViewState();
 }
 
-class _AuthScreenState extends State<AuthScreen> {
+class _AuthViewState extends State<AuthView> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmController = TextEditingController();

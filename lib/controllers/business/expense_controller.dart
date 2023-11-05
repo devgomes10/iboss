@@ -1,38 +1,39 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../models/business/fixed_expense.dart';
+import '../../models/business/expense_model.dart';
 
-class FixedExpenseController extends ChangeNotifier {
+class ExpenseController extends ChangeNotifier {
   late String uid;
-  late CollectionReference fixedExpenseCollection;
+  late CollectionReference expenseCollection;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  FixedExpenseController() {
+  ExpenseController() {
     uid = FirebaseAuth.instance.currentUser!.uid;
-    fixedExpenseCollection = FirebaseFirestore.instance.collection('fixedExpenses_$uid');
+    expenseCollection = FirebaseFirestore.instance.collection('expense_$uid');
   }
 
-  Stream<List<FixedExpense>> getFixedExpensesStream() {
-    return fixedExpenseCollection.snapshots().map(
+  Stream<List<ExpenseModel>> getExpensesStream() {
+    return expenseCollection.snapshots().map(
           (snapshot) {
         return snapshot.docs.map((doc) {
-          return FixedExpense(
+          return ExpenseModel(
+            id: doc.id,
             description: doc['description'],
             value: doc['value'],
-            date: doc['date'].toDate(),
-            id: doc.id,
-            category: doc["category"],
             isPaid: doc['isPaid'] ?? false,
+            payday: doc['payday'],
+            category: doc["category"],
+            isRepeat: doc['isRepeat'],
           );
         }).toList();
       },
     );
   }
 
-  Future<void> addExpenseToFirestore(FixedExpense expense) async {
+  Future<void> addExpenseToFirestore(ExpenseModel expense) async {
     try {
-      await fixedExpenseCollection.doc(expense.id).set(
+      await expenseCollection.doc(expense.id).set(
         expense.toMap(),
       );
     } catch (error) {
@@ -43,31 +44,31 @@ class FixedExpenseController extends ChangeNotifier {
 
   Future<void> removeExpenseFromFirestore(String expenseId) async {
     try {
-      await fixedExpenseCollection.doc(expenseId).delete();
+      await expenseCollection.doc(expenseId).delete();
     } catch (error) {
       const Text("Erro ao remover despesa", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
   }
 
-  Future<List<FixedExpense>> getFixedExpensesFromFirestore() async {
-    List<FixedExpense> fixedExpenses = [];
+  Future<List<ExpenseModel>> getExpenseFromFirestore() async {
+    List<ExpenseModel> expenses = [];
     try {
       QuerySnapshot querySnapshot =
-      await fixedExpenseCollection.get();
-      fixedExpenses = querySnapshot.docs
+      await expenseCollection.get();
+      expenses = querySnapshot.docs
           .map((doc) =>
-          FixedExpense.fromMap(doc.data() as Map<String, dynamic>))
+          ExpenseModel.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
     } catch (error) {
       const Text("Erro ao carregar dados", style: TextStyle(fontSize: 12),);
     }
     notifyListeners();
-    return fixedExpenses;
+    return expenses;
   }
 
-  Stream<double> getTotalFixedExpensesByMonth(DateTime selectedMonth) {
-    Stream<QuerySnapshot> queryStream = fixedExpenseCollection
+  Stream<double> getTotalExpensesByMonth(DateTime selectedMonth) {
+    Stream<QuerySnapshot> queryStream = expenseCollection
         .where(
         'date',
         isGreaterThanOrEqualTo:
@@ -85,8 +86,8 @@ class FixedExpenseController extends ChangeNotifier {
     });
   }
 
-  Stream<List<FixedExpense>> getFixedExpensesByMonth(DateTime selectedMonth) {
-    return fixedExpenseCollection
+  Stream<List<ExpenseModel>> getExpensesByMonth(DateTime selectedMonth) {
+    return expenseCollection
         .where('date',
         isGreaterThanOrEqualTo:
         DateTime(selectedMonth.year, selectedMonth.month, 1),
@@ -95,21 +96,22 @@ class FixedExpenseController extends ChangeNotifier {
         .snapshots()
         .map((querySnapshot) {
       return querySnapshot.docs.map((doc) {
-        return FixedExpense(
+        return ExpenseModel(
+          id: doc.id,
           description: doc['description'],
           value: doc['value'],
-          date: doc['date'].toDate(),
-          category: doc["category"],
-          id: doc.id,
           isPaid: doc['isPaid'] ?? false,
+          payday: doc['payday'],
+          category: doc["category"],
+          isRepeat: doc['isRepeat'],
         );
       }).toList();
     });
   }
 
-  Future<void> updateFixedExpenseStatus(String fixedId, bool isPaid) async {
+  Future<void> updateExpenseStatus(String expenseId, bool isPaid) async {
     try {
-      await fixedExpenseCollection.doc(fixedId).update({"isPaid": isPaid});
+      await expenseCollection.doc(expenseId).update({"isPaid": isPaid});
     } catch (error) {
       // Lidar com erros, se necessário
     }

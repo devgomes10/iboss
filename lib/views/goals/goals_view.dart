@@ -13,16 +13,16 @@ import 'package:iboss/models/goals/company_goals.dart';
 import 'package:iboss/models/goals/personal_goals.dart';
 import '../../components/drawer_component.dart';
 
-class Goals extends StatefulWidget {
+class GoalsView extends StatefulWidget {
   final User user;
 
-  const Goals({Key? key, required this.user}) : super(key: key);
+  const GoalsView({Key? key, required this.user}) : super(key: key);
 
   @override
-  _GoalsState createState() => _GoalsState();
+  _GoalsViewState createState() => _GoalsViewState();
 }
 
-class _GoalsState extends State<Goals> {
+class _GoalsViewState extends State<GoalsView> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   DateTime selectedDate = DateTime.now();

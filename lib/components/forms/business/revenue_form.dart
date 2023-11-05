@@ -2,27 +2,26 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iboss/components/show_snackbar.dart';
 import 'package:iboss/controllers/business/catalog_controller.dart';
 import 'package:iboss/controllers/business/revenue_controller.dart';
 import 'package:iboss/models/business/revenue_model.dart';
-import 'package:iboss/models/business/deferred_payment.dart';
-import 'package:iboss/screens/business/catalog_screen.dart';
+import 'package:iboss/views/business/catalog_view.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class RevenueForm extends StatefulWidget {
-  final RevenueModel? model1;
-  final DeferredPayment? model2;
+  final RevenueModel? model;
 
-  RevenueForm({Key? key, this.model1, this.model2}) : super(key: key);
+  const RevenueForm({Key? key, this.model}) : super(key: key);
 
   @override
   State<RevenueForm> createState() => _RevenueFormState();
 }
 
 class _RevenueFormState extends State<RevenueForm> {
-  bool _isEditing1 = false;
+  bool _isEditing = false;
   final _formKey = GlobalKey<FormState>();
   TextEditingController datePickerController = TextEditingController();
   final descriptionController = TextEditingController();
@@ -30,26 +29,19 @@ class _RevenueFormState extends State<RevenueForm> {
   final descriptionFocusNode = FocusNode();
   final valueController = TextEditingController();
   final valueFocusNode = FocusNode();
-  bool _isEditing2 = false;
-  bool isRevenue = false;
+  bool isRepeat = false;
   bool isReceived = false;
   DateTime selectedPicker = DateTime.now();
   final ptBr = const Locale('pt', 'BR');
-  int numberOfRepeats = 2;
-  bool isMonthly = true; // Inicialize como mensal
+  int numberOfRepeats = 1;
 
   @override
   void initState() {
     super.initState();
-    if (widget.model1 != null) {
-      descriptionController.text = widget.model1!.description;
-      valueController.text = widget.model1!.value.toString();
-      _isEditing1 = true;
-    }
-    if (widget.model2 != null) {
-      descriptionController.text = widget.model2!.description;
-      valueController.text = widget.model2!.value.toString();
-      _isEditing2 = true;
+    if (widget.model != null) {
+      descriptionController.text = widget.model!.description;
+      valueController.text = widget.model!.value.toString();
+      _isEditing = true;
     }
   }
 
@@ -62,18 +54,15 @@ class _RevenueFormState extends State<RevenueForm> {
 
   @override
   Widget build(BuildContext context) {
-    final cashPaymentModel = widget.model1;
-    final deferredPaymentModel = widget.model2;
-    final titleText =
-        _isEditing1 || _isEditing2 ? "Editando pagamento" : "Nova receita";
+    final titleText = _isEditing ? "Editando receita" : "Nova receita";
+    final revenueModel = widget.model;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         title: Text(titleText),
-        centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.only(top: 20, right: 7, bottom: 10, left: 7),
+        padding: const EdgeInsets.fromLTRB(7, 20, 7, 10),
         child: Form(
           key: _formKey,
           child: Column(
@@ -100,30 +89,24 @@ class _RevenueFormState extends State<RevenueForm> {
                 height: 22,
                 color: Colors.grey,
               ),
-              Consumer<CatalogController>(
-                builder: ((context, catalogController, child) {
-                  return TextFormField(
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Insira um valor";
-                      }
-                      double? numericValue = double.tryParse(value);
-                      if (numericValue == null || numericValue <= 0) {
-                        return "Deve ser maior que 0";
-                      }
-                      return null;
-                    },
-                    keyboardType: TextInputType.number,
-                    focusNode: valueFocusNode,
-                    decoration: const InputDecoration(
-                      hintText: "Valor",
-                      border: InputBorder.none,
-                    ),
-                    initialValue:
-                        catalogController.totalSelectedItems.toStringAsFixed(2),
-                    readOnly: true, // Impede a edição do campo.
-                  );
-                }),
+              TextFormField(
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "Insira um valor";
+                  }
+                  double? numericValue = double.tryParse(value);
+                  if (numericValue == null || numericValue <= 0) {
+                    return "Deve ser maior que 0";
+                  }
+                  return null;
+                },
+                keyboardType: TextInputType.number,
+                controller: valueController,
+                focusNode: valueFocusNode,
+                decoration: const InputDecoration(
+                  hintText: "Valor",
+                  border: InputBorder.none,
+                ),
               ),
               const Divider(
                 height: 22,
@@ -134,8 +117,8 @@ class _RevenueFormState extends State<RevenueForm> {
                 children: [
                   Row(
                     children: [
-                      FaIcon(FontAwesomeIcons.circleCheck),
-                      SizedBox(
+                      const FaIcon(FontAwesomeIcons.circleCheck),
+                      const SizedBox(
                         width: 15,
                       ),
                       Text(
@@ -154,18 +137,11 @@ class _RevenueFormState extends State<RevenueForm> {
                       });
                       final revenue =
                           await RevenueController().getRevenueFromFirestore();
-                      // final variableExpenses = await VariableExpenseController()
-                      //     .getVariableExpensesFromFirestore();
                       if (revenue.isNotEmpty) {
                         final firstRevenue = revenue.first;
                         RevenueController()
                             .updateReceivedStatus(firstRevenue.id, newValue);
                       }
-                      // if (variableExpenses.isNotEmpty) {
-                      //   final firstExpense = variableExpenses.first;
-                      //   VariableExpenseController().updateVariableExpenseStatus(
-                      //       firstExpense.id, newValue);
-                      // }
                     },
                   ),
                 ],
@@ -198,8 +174,8 @@ class _RevenueFormState extends State<RevenueForm> {
                     children: [
                       Row(
                         children: [
-                          FaIcon(FontAwesomeIcons.calendar),
-                          SizedBox(
+                          const FaIcon(FontAwesomeIcons.calendar),
+                          const SizedBox(
                             width: 15,
                           ),
                           Text(
@@ -210,7 +186,7 @@ class _RevenueFormState extends State<RevenueForm> {
                           ),
                         ],
                       ),
-                      FaIcon(FontAwesomeIcons.angleRight),
+                      const FaIcon(FontAwesomeIcons.angleRight),
                     ],
                   ),
                 ),
@@ -224,7 +200,8 @@ class _RevenueFormState extends State<RevenueForm> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CatalogScreen(isSelecting: true),
+                      builder: (context) =>
+                          const CatalogView(isSelecting: true),
                     ),
                   );
                 },
@@ -235,8 +212,8 @@ class _RevenueFormState extends State<RevenueForm> {
                     children: [
                       Row(
                         children: [
-                          FaIcon(FontAwesomeIcons.tags),
-                          SizedBox(
+                          const FaIcon(FontAwesomeIcons.tags),
+                          const SizedBox(
                             width: 15,
                           ),
                           Text(
@@ -247,7 +224,7 @@ class _RevenueFormState extends State<RevenueForm> {
                           ),
                         ],
                       ),
-                      FaIcon(FontAwesomeIcons.angleRight),
+                      const FaIcon(FontAwesomeIcons.angleRight),
                     ],
                   ),
                 ),
@@ -263,8 +240,8 @@ class _RevenueFormState extends State<RevenueForm> {
                     children: [
                       Row(
                         children: [
-                          FaIcon(FontAwesomeIcons.rotateRight),
-                          SizedBox(
+                          const FaIcon(FontAwesomeIcons.rotateRight),
+                          const SizedBox(
                             width: 15,
                           ),
                           Text(
@@ -276,12 +253,13 @@ class _RevenueFormState extends State<RevenueForm> {
                         ],
                       ),
                       Switch(
-                        value: isRevenue,
+                        value: isRepeat,
                         onChanged: (newValue) async {
                           setState(() {
-                            isRevenue = newValue;
+                            isRepeat = newValue;
                           });
-                          final revenue = await RevenueController().getRevenueFromFirestore();
+                          final revenue = await RevenueController()
+                              .getRevenueFromFirestore();
 
                           if (revenue.isNotEmpty) {
                             final firstRevenue = revenue.first;
@@ -292,10 +270,10 @@ class _RevenueFormState extends State<RevenueForm> {
                       ),
                     ],
                   ),
-                  if (isRevenue) // Mostrar o picker somente quando o Switch for true
+                  if (isRepeat)
                     Column(
                       children: [
-                        Text("Quantidade de Repetições:"),
+                        const Text("Quantidade de Repetições:"),
                         CupertinoPicker(
                           itemExtent: 32,
                           onSelectedItemChanged: (int value) {
@@ -307,62 +285,68 @@ class _RevenueFormState extends State<RevenueForm> {
                             return Text((index + 1).toString());
                           }),
                         ),
-                        SizedBox(height: 10), // Espaçamento entre o picker e o texto seguinte
+                        const SizedBox(height: 10),
                         const SizedBox(
                           height: 8,
                         ),
                         Text("$numberOfRepeats vezes de R\$ 55.000,00"),
-
                       ],
                     ),
                 ],
               ),
-
-              // ListTile(
-              //   title: Text(
-              //     "Recebeu?",
-              //     style: GoogleFonts.raleway(
-              //       fontSize: 20,
-              //     ),
-              //   ),
-              //   trailing: Switch(
-              //     value: isReceived,
-              //     onChanged: (newValue) async {
-              //       setState(() {
-              //         isReceived = newValue;
-              //       });
-              //       final revenue = await RevenueController().getRevenueFromFirestore();
-              //
-              //       if (revenue.isNotEmpty) {
-              //         final firstRevenue = revenue.first;
-              //         RevenueController().updateReceivedStatus(firstRevenue.id, newValue);
-              //       }
-              //     },
-              //   ),
-              // ),
               const SizedBox(
                 height: 26,
               ),
+              Consumer<RevenueController>(
+                builder: (BuildContext context, RevenueController revenue,
+                    Widget? widget) {
+                  return ElevatedButton(
+                    onPressed: () async {
+                      if (!_isEditing) {
+                        if (_formKey.currentState!.validate()) {
+                          RevenueModel revenue = RevenueModel(
+                            id: invoicingId,
+                            description: descriptionController.text,
+                            value: double.parse(valueController.text),
+                            isReceived: isReceived,
+                            receiptDate: selectedPicker,
+                            isRepeat: numberOfRepeats,
+                          );
 
-              ElevatedButton(
-                onPressed: () {},
-                child: Text("CONFIRMAR"),
-                style: TextButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                  minimumSize: Size(300, 40),
-                ),
-              ),
+                          if (revenueModel != null) {
+                            revenue.id = revenueModel.id;
+                          }
+
+                          await RevenueController()
+                              .addRevenueToFirestore(revenue);
+
+                          if (!_isEditing) {
+                            showSnackbar(
+                              context: context,
+                              menssager: "Receita adicionada",
+                              isError: false,
+                            );
+                          } else {
+                            showSnackbar(
+                              context: context,
+                              menssager: "Receita editada",
+                              isError: false,
+                            );
+                          }
+
+                          Navigator.pop(context);
+                        }
+                      }
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
+                      minimumSize: const Size(300, 40),
+                    ),
+                    child: const Text("CONFIRMAR"),
+                  );
+                },
+              )
             ],
-            //         if (!_isEditing1 && !_isEditing2)
-            //     const Center(
-            //     child: Text(
-            //     'O pagamento já foi recebido?',
-            //     style: TextStyle(
-            //       fontSize: 18,
-            //       fontWeight: FontWeight.bold,
-            //     ),
-            //   ),
-            // ),
             // const SizedBox(height: 12),
             // Row(
             //   mainAxisAlignment: MainAxisAlignment.spaceAround,

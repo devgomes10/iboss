@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/forms/business/catalog_form.dart';
+import 'package:iboss/components/forms/business/revenue_form.dart';
 import 'package:iboss/components/show_confirmation.dart';
 import 'package:iboss/controllers/business/catalog_controller.dart';
 import 'package:iboss/models/business/catalog_model.dart';
 import 'package:intl/intl.dart';
 
-class CatalogScreen extends StatefulWidget {
+class CatalogView extends StatefulWidget {
   final bool? isSelecting;
   final double? catalogTotal;
+  final RevenueForm? revenueForm;
 
-  CatalogScreen({Key? key, this.isSelecting, this.catalogTotal})
+  const CatalogView({Key? key, this.isSelecting, this.catalogTotal, this.revenueForm})
       : super(key: key);
 
   @override
-  State<CatalogScreen> createState() => _CatalogScreenState();
+  State<CatalogView> createState() => _CatalogViewState();
 }
 
-class _CatalogScreenState extends State<CatalogScreen> {
+class _CatalogViewState extends State<CatalogView> {
   final catalogController = CatalogController();
   final NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
   final TextEditingController _searchController = TextEditingController();
@@ -25,19 +27,18 @@ class _CatalogScreenState extends State<CatalogScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme
-          .of(context)
-          .colorScheme
-          .background,
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         actions: [
           if (widget.isSelecting == true)
-            IconButton(
-              onPressed: () {
-                
-              },
-              icon: FaIcon(FontAwesomeIcons.check),
-            ),
+          IconButton(
+            icon: const FaIcon(FontAwesomeIcons.check),
+            onPressed: () {
+              if (widget.revenueForm != null) {
+                // widget.revenueForm!.updateValueControllerWithTotalSelectedItems();
+              }
+            },
+          ),
         ],
         title: const Text("Catálogo"),
         centerTitle: true,

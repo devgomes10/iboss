@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/controllers/business/revenue_controller.dart';
 import 'package:iboss/controllers/business/deferred_payment_controller.dart';
-import 'package:iboss/controllers/business/fixed_expense_controller.dart';
+import 'package:iboss/controllers/business/expense_controller.dart';
 import 'package:iboss/controllers/business/variable_expense_controller.dart';
 import 'package:intl/intl.dart';
 
@@ -267,8 +267,8 @@ class _BusinessDasState extends State<BusinessDash> {
                       width: 250,
                       height: 250,
                       child: StreamBuilder<double>(
-                        stream: FixedExpenseController()
-                            .getTotalFixedExpensesByMonth(_selectedDate),
+                        stream: ExpenseController()
+                            .getTotalExpensesByMonth(_selectedDate),
                         builder: (BuildContext context,
                             AsyncSnapshot<double> fixedSnapshot) {
                           double totalFixedExpenses = fixedSnapshot.data ?? 0.0;
@@ -354,8 +354,8 @@ class _BusinessDasState extends State<BusinessDash> {
                               ),
                             ),
                             StreamBuilder<double>(
-                              stream: FixedExpenseController()
-                                  .getTotalFixedExpensesByMonth(_selectedDate),
+                              stream: ExpenseController()
+                                  .getTotalExpensesByMonth(_selectedDate),
                               builder: (BuildContext context,
                                   AsyncSnapshot<double> fixedSnapshot) {
                                 double totalFixedExpenses =
@@ -443,8 +443,8 @@ class _BusinessDasState extends State<BusinessDash> {
                       width: 250,
                       height: 250,
                       child: StreamBuilder<double>(
-                        stream: FixedExpenseController()
-                            .getTotalFixedExpensesByMonth(_selectedDate),
+                        stream: ExpenseController()
+                            .getTotalExpensesByMonth(_selectedDate),
                         builder: (BuildContext context,
                             AsyncSnapshot<double> fixedSnapshot) {
                           double totalFixedExpenses = fixedSnapshot.data ?? 0.0;
@@ -571,8 +571,8 @@ class _BusinessDasState extends State<BusinessDash> {
                               ),
                             ),
                             StreamBuilder<double>(
-                              stream: FixedExpenseController()
-                                  .getTotalFixedExpensesByMonth(_selectedDate),
+                              stream: ExpenseController()
+                                  .getTotalExpensesByMonth(_selectedDate),
                               builder: (BuildContext context,
                                   AsyncSnapshot<double> fixedSnapshot) {
                                 double totalFixedExpenses =

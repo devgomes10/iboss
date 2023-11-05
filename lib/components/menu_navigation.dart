@@ -2,19 +2,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:iboss/components/forms/business/revenue_form.dart';
 import 'package:iboss/components/forms/goals/goals_form.dart';
 import 'package:iboss/components/forms/personal/entry_form.dart';
 import 'package:iboss/components/forms/personal/outflow_form.dart';
-import 'package:iboss/screens/business/business.dart';
-import 'package:iboss/screens/business/expense.dart';
-import 'package:iboss/screens/dashboard/dashboard.dart';
-import 'package:iboss/screens/goals/goals.dart';
-import 'package:iboss/screens/personal/entry.dart';
-import 'package:iboss/screens/personal/outflow.dart';
-import 'package:iboss/screens/personal/personal.dart';
-import '../screens/business/revenue.dart';
-import 'forms/business/expense_form.dart';
+import 'package:iboss/views/business/business_view.dart';
+import 'package:iboss/views/business/expense_view.dart';
+import 'package:iboss/views/business/revenue_view.dart';
+import 'package:iboss/views/dashboard/dashboard_view.dart';
+import 'package:iboss/views/goals/goals_view.dart';
+import '../views/personal/entry.dart';
+import '../views/personal/outflow.dart';
+import '../views/personal/personal.dart';
 
 class MenuNavigation extends StatefulWidget {
   final User transaction;
@@ -48,10 +46,10 @@ class _MenuNavigationState extends State<MenuNavigation> {
         controller: pc,
         onPageChanged: setCurrentPage,
         children: [
-          Business(user: widget.transaction),
+          BusinessView(user: widget.transaction),
           Personal(user: widget.transaction),
-          Goals(user: widget.transaction),
-          Dashboard(user: widget.transaction),
+          GoalsView(user: widget.transaction),
+          DashboardView(user: widget.transaction),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -84,7 +82,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const Revenue(),
+                        builder: (context) => const RevenueView(),
                       ),
                     );
                     // NewRevenueBottomSheet.show(context);
@@ -99,7 +97,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const Expense(),
+                        builder: (context) => const ExpenseView(),
                       ),
                     );
                   },

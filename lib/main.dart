@@ -4,7 +4,7 @@ import 'package:iboss/controllers/business/catalog_controller.dart';
 import 'package:iboss/controllers/business/categories_controller.dart';
 import 'package:iboss/controllers/business/revenue_controller.dart';
 import 'package:iboss/controllers/business/deferred_payment_controller.dart';
-import 'package:iboss/controllers/business/fixed_expense_controller.dart';
+import 'package:iboss/controllers/business/expense_controller.dart';
 import 'package:iboss/controllers/business/variable_expense_controller.dart';
 import 'package:iboss/controllers/goals/company_goals_controller.dart';
 import 'package:iboss/controllers/goals/personal_goals_controller.dart';
@@ -12,10 +12,9 @@ import 'package:iboss/controllers/personal/fixed_entry_controller.dart';
 import 'package:iboss/controllers/personal/fixed_outflow_controller.dart';
 import 'package:iboss/controllers/personal/variable_entry_controller.dart';
 import 'package:iboss/controllers/personal/variable_outflow_controller.dart';
-import 'package:iboss/screens/authentication/auth_screen.dart';
 import 'package:iboss/components/menu_navigation.dart';
 import 'package:iboss/dark_theme.dart';
-import 'package:iboss/screens/business/categories_screen.dart';
+import 'package:iboss/views/authentication/auth_view.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -37,7 +36,7 @@ void main() async {
         ChangeNotifierProvider(
             create: (context) => DeferredPaymentController()),
         ChangeNotifierProvider(create: (context) => CompanyGoalsController()),
-        ChangeNotifierProvider(create: (context) => FixedExpenseController()),
+        ChangeNotifierProvider(create: (context) => ExpenseController()),
         ChangeNotifierProvider(
             create: (context) => VariableExpenseController()),
         ChangeNotifierProvider(create: (context) => FixedEntryController()),
@@ -95,7 +94,7 @@ class ScreenRouter extends StatelessWidget {
               transaction: snapshot.data!,
             );
           } else {
-            return const AuthScreen();
+            return const AuthView();
           }
         }
       },

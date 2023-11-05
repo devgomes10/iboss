@@ -6,16 +6,16 @@ import 'package:iboss/models/business/categories_model.dart';
 
 import '../../components/forms/business/categories_form.dart';
 
-class CategoriesScreen extends StatefulWidget {
+class CategoriesView extends StatefulWidget {
   final bool isSelecting;
 
-  CategoriesScreen({Key? key, required this.isSelecting}) : super(key: key);
+  const CategoriesView({Key? key, required this.isSelecting}) : super(key: key);
 
   @override
-  State<CategoriesScreen> createState() => _CategoriesScreenState();
+  State<CategoriesView> createState() => _CategoriesViewState();
 }
 
-class _CategoriesScreenState extends State<CategoriesScreen> {
+class _CategoriesViewState extends State<CategoriesView> {
   TextEditingController nameController = TextEditingController();
 
   @override
@@ -23,23 +23,23 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        title: Text("Categorias"),
+        title: const Text("Categorias"),
         centerTitle: true,
       ),
       body: StreamBuilder<List<CategoriesModel>>(
         stream: CategoriesController().getCategoriesFromFirestore(),
         builder: (BuildContext context, AsyncSnapshot<List<CategoriesModel>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
-            return Center(
+            return const Center(
               child: Text('Erro ao carregar as categorias'),
             );
           }
           final categories = snapshot.data;
           if (categories == null || categories.isEmpty) {
-            return Center(
+            return const Center(
               child: Text('Nenhuma categoria disponível'),
             );
           }
@@ -51,17 +51,17 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   itemBuilder: (BuildContext context, int i) {
                     final category = categories[i];
                     return ListTile(
-                      leading: FaIcon(
+                      leading: const FaIcon(
                         FontAwesomeIcons.tag,
                       ),
-                      shape: RoundedRectangleBorder(
+                      shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(
                           Radius.circular(12),
                         ),
                       ),
                       title: Text(
                         category.name,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 20,
                         ),
                       ),
@@ -78,7 +78,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                             isError: false,
                           );
                         },
-                        icon: FaIcon(
+                        icon: const FaIcon(
                           FontAwesomeIcons.trash,
                           color: Colors.red,
                         ),
@@ -94,7 +94,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       },
                     );
                   },
-                  separatorBuilder: (_, __) => Divider(color: Colors.white),
+                  separatorBuilder: (_, __) => const Divider(color: Colors.white),
                   padding: const EdgeInsets.only(
                     top: 14,
                     left: 16,
@@ -112,7 +112,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         onPressed: () {
           NewCategoryBottomSheet.show(context);
         },
-        child: FaIcon(FontAwesomeIcons.plus),
+        child: const FaIcon(FontAwesomeIcons.plus),
       )
           : null,
     );

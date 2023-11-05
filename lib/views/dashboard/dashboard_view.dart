@@ -1,19 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:iboss/screens/dashboard/personal_dash.dart';
+import 'package:iboss/views/dashboard/personal_dash.dart';
 import '../../components/drawer_component.dart';
 import 'business_dash.dart';
 
-class Dashboard extends StatefulWidget {
+class DashboardView extends StatefulWidget {
   final User user;
 
-  const Dashboard({super.key, required this.user});
+  const DashboardView({super.key, required this.user});
 
   @override
-  State<Dashboard> createState() => _DashboardState();
+  State<DashboardView> createState() => _DashboardViewState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _DashboardViewState extends State<DashboardView> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

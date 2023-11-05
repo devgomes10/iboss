@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/show_confirmation.dart';
 import 'package:iboss/components/show_confirmation_password.dart';
-import 'package:iboss/screens/business/catalog_screen.dart';
-import 'package:iboss/screens/business/categories_screen.dart';
+import 'package:iboss/views/business/catalog_view.dart';
+import 'package:iboss/views/business/categories_view.dart';
 import '../controllers/authentication/auth_service.dart';
 
 class DrawerComponent extends StatelessWidget {
@@ -54,7 +54,7 @@ class DrawerComponent extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        CatalogScreen(isSelecting: false),
+                        CatalogView(isSelecting: false),
                   ),
                 );
               },
@@ -73,7 +73,7 @@ class DrawerComponent extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        CategoriesScreen(isSelecting: false),
+                        CategoriesView(isSelecting: false),
                   ),
                 );
               },

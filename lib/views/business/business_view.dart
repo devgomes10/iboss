@@ -4,22 +4,22 @@ import 'package:iboss/components/box_card.dart';
 import 'package:iboss/components/drawer_component.dart';
 import 'package:iboss/controllers/business/revenue_controller.dart';
 import 'package:iboss/controllers/business/deferred_payment_controller.dart';
-import 'package:iboss/controllers/business/fixed_expense_controller.dart';
+import 'package:iboss/controllers/business/expense_controller.dart';
 import 'package:iboss/controllers/business/variable_expense_controller.dart';
-import 'package:iboss/screens/business/revenue.dart';
+import 'package:iboss/views/business/revenue_view.dart';
 import 'package:rxdart/rxdart.dart';
-import 'expense.dart';
+import 'expense_view.dart';
 
-class Business extends StatefulWidget {
+class BusinessView extends StatefulWidget {
   final User user;
 
-  const Business({super.key, required this.user});
+  const BusinessView({super.key, required this.user});
 
   @override
-  State<Business> createState() => _BusinessState();
+  State<BusinessView> createState() => _BusinessViewState();
 }
 
-class _BusinessState extends State<Business> {
+class _BusinessViewState extends State<BusinessView> {
   final DateTime _selectedDate = DateTime.now();
 
   @override
@@ -51,7 +51,7 @@ class _BusinessState extends State<Business> {
                   .getTotalRevenueByMonth(_selectedDate),
               stream2: DeferredPaymentController()
                   .getTotalDeferredPaymentsByMonth(_selectedDate),
-              screen: const Revenue(),
+              screen: const RevenueView(),
               color: Colors.green,
             ),
             const Divider(
@@ -61,18 +61,18 @@ class _BusinessState extends State<Business> {
             BoxCard(
               title: "Despesas",
               streamTotal: CombineLatestStream.combine2(
-                FixedExpenseController()
-                    .getTotalFixedExpensesByMonth(_selectedDate),
+                ExpenseController()
+                    .getTotalExpensesByMonth(_selectedDate),
                 VariableExpenseController()
                     .getTotalVariableExpensesByMonth(_selectedDate),
                 (double totalFixed, double totalVariable) =>
                     totalFixed + totalVariable,
               ),
-              stream1: FixedExpenseController()
-                  .getTotalFixedExpensesByMonth(_selectedDate),
+              stream1: RevenueController()
+                  .getTotalRevenueByMonth(_selectedDate),
               stream2: VariableExpenseController()
                   .getTotalVariableExpensesByMonth(_selectedDate),
-              screen: const Expense(),
+              screen: const ExpenseView(),
               color: Colors.red,
             ),
             const Divider(
