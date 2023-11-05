@@ -7,9 +7,11 @@ import 'package:iboss/models/business/catalog_model.dart';
 import 'package:intl/intl.dart';
 
 class CatalogScreen extends StatefulWidget {
-  final bool isSelecting;
+  final bool? isSelecting;
+  final double? catalogTotal;
 
-  const CatalogScreen({super.key, required this.isSelecting});
+  CatalogScreen({Key? key, this.isSelecting, this.catalogTotal})
+      : super(key: key);
 
   @override
   State<CatalogScreen> createState() => _CatalogScreenState();
@@ -18,7 +20,7 @@ class CatalogScreen extends StatefulWidget {
 class _CatalogScreenState extends State<CatalogScreen> {
   final catalogController = CatalogController();
   final NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
-  TextEditingController nameController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +34,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
           if (widget.isSelecting == true)
             IconButton(
               onPressed: () {
-                showConfirmation(
-                    context: context,
-                    title: "${catalogController.totalSelectedItems}",
-                    onPressed: () {},
-                    messegerSnack: "",
-                    isError: false);
+                
               },
               icon: FaIcon(FontAwesomeIcons.check),
             ),
@@ -57,8 +54,8 @@ class _CatalogScreenState extends State<CatalogScreen> {
               child: Text('Erro ao carregar os produtos/serviços'),
             );
           }
-          final catalogs = snapshot.data;
-          if (catalogs == null || catalogs.isEmpty) {
+          final products = snapshot.data;
+          if (products == null || products.isEmpty) {
             return const Center(
               child: Text('Nenhum produto/serviço disponível.'),
             );
@@ -66,22 +63,25 @@ class _CatalogScreenState extends State<CatalogScreen> {
           return Column(
             children: [
               TextField(
-                controller: nameController,
+                controller: _searchController,
+                onChanged: (query) {
+
+                },
               ),
               Expanded(
                 child: ListView.separated(
-                  itemCount: catalogs.length,
+                  itemCount: products.length,
                   itemBuilder: (BuildContext context, int i) {
-                    final catalog = catalogs[i];
+                    final product = products[i];
                     return ListTile(
                       title: Text(
-                        catalog.name,
+                        product.name,
                         style: const TextStyle(
                           fontSize: 20,
                         ),
                       ),
                       subtitle: Text(
-                        real.format(catalog.price),
+                        real.format(product.price),
                         style: const TextStyle(
                           fontSize: 18,
                         ),
@@ -89,11 +89,12 @@ class _CatalogScreenState extends State<CatalogScreen> {
                       leading: widget.isSelecting == true
                           ? StreamBuilder<Map<String, int>>(
                         stream: catalogController.selectedItemsStream,
-                        initialData: catalogController.selectedCatalogItems,
+                        initialData:
+                        catalogController.selectedCatalogItems,
                         builder: (context, snapshot) {
                           final selectedItems = snapshot.data;
                           return Text(
-                            'x ${selectedItems?[catalog.id] ?? 0}',
+                            'x ${selectedItems?[product.id] ?? 0}',
                             style: const TextStyle(
                               fontSize: 18,
                             ),
@@ -111,7 +112,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                             "Deseja mesmo remover esse produto/serviço?",
                             onPressed: () {
                               catalogController
-                                  .removeCatalogFromFirestore(catalog.id);
+                                  .removeCatalogFromFirestore(product.id);
                             },
                             messegerSnack: "Produto/serviço deletado",
                             isError: false,
@@ -121,7 +122,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                           : null,
                       onTap: () {
                         if (widget.isSelecting == true) {
-                          final id = catalog.id;
+                          final id = product.id;
                           if (catalogController.selectedCatalogItems
                               .containsKey(id)) {
                             catalogController.selectedCatalogItems[id] =
@@ -131,10 +132,9 @@ class _CatalogScreenState extends State<CatalogScreen> {
                           } else {
                             catalogController.selectedCatalogItems[id] = 1;
                           }
-                          catalogController
-                              .updateTotalSelectedItems(catalogs);
+                          catalogController.updateTotalSelectedItems(products);
                         } else {
-                          NewCatalogBottomSheet.show(context, model: catalog);
+                          NewCatalogBottomSheet.show(context, model: product);
                         }
                       },
                       shape: const RoundedRectangleBorder(

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/forms/business/revenue_form.dart';
@@ -24,6 +26,39 @@ class _RevenueState extends State<Revenue> {
   final NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
   String invoicingId = const Uuid().v1();
   bool teste = false;
+  StreamSubscription<List<RevenueModel>>? revenueStreamSubscription;
+  StreamSubscription<List<DeferredPayment>>? deferredPaymentsStreamSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Registrar a inscrição no stream de receitas
+    revenueStreamSubscription = RevenueController()
+        .getRevenueByMonth(_selectedDate)
+        .listen((data) {
+      // Atualizar o estado do widget com os dados
+    });
+
+    // Registrar a inscrição no stream de pagamentos pendentes
+    deferredPaymentsStreamSubscription = DeferredPaymentController()
+        .getDeferredPaymentsByMonth(_selectedDate)
+        .listen((data) {
+      // Atualizar o estado do widget com os dados
+    });
+  }
+
+  @override
+  void dispose() {
+    // Cancelar inscrição no stream de receitas quando a tela for descartada
+    revenueStreamSubscription?.cancel();
+
+    // Cancelar inscrição no stream de pagamentos pendentes quando a tela for descartada
+    deferredPaymentsStreamSubscription?.cancel();
+
+    super.dispose();
+  }
+
 
   void _changeMonth(bool increment) {
     setState(() {

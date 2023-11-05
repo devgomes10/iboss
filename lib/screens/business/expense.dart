@@ -1,8 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/forms/business/expense_form.dart';
 import 'package:iboss/components/show_confirmation.dart';
-import 'package:iboss/components/test.dart';
 import 'package:iboss/controllers/business/fixed_expense_controller.dart';
 import 'package:iboss/controllers/business/variable_expense_controller.dart';
 import 'package:intl/intl.dart';
@@ -23,6 +24,38 @@ class _ExpenseState extends State<Expense> {
   TextEditingController valueController = TextEditingController();
   NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
   String invoicingId = const Uuid().v1();
+  StreamSubscription<List<FixedExpense>>? fixedExpensesStreamSubscription;
+  StreamSubscription<List<VariableExpense>>? variableExpensesStreamSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Registrar a inscrição no stream de despesas fixas
+    fixedExpensesStreamSubscription = FixedExpenseController()
+        .getFixedExpensesByMonth(_selectedDate)
+        .listen((data) {
+      // Atualizar o estado do widget com os dados
+    });
+
+    // Registrar a inscrição no stream de despesas variáveis
+    variableExpensesStreamSubscription = VariableExpenseController()
+        .getVariableExpensesByMonth(_selectedDate)
+        .listen((data) {
+      // Atualizar o estado do widget com os dados
+    });
+  }
+
+  @override
+  void dispose() {
+    // Cancelar inscrição no stream de despesas fixas quando a tela for descartada
+    fixedExpensesStreamSubscription?.cancel();
+
+    // Cancelar inscrição no stream de despesas variáveis quando a tela for descartada
+    variableExpensesStreamSubscription?.cancel();
+
+    super.dispose();
+  }
 
   void _changeMonth(bool increment) {
     setState(

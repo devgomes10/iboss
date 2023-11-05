@@ -21,12 +21,18 @@ class CatalogController extends ChangeNotifier {
 
   void updateTotalSelectedItems(List<CatalogModel> catalogs) {
     double total = 0.0;
+
     selectedCatalogItems.forEach((id, quantity) {
       final catalog = catalogs.firstWhere((catalog) => catalog.id == id);
       total += catalog.price * quantity;
     });
     totalSelectedItems = total;
     _selectedItemsStreamController.add(selectedCatalogItems);
+  }
+
+   upup (double newValue) {
+    totalSelectedItems = newValue;
+    return newValue;
   }
 
   Stream<List<CatalogModel>> getCatalogStream() {

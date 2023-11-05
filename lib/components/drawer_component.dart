@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/show_confirmation.dart';
 import 'package:iboss/components/show_confirmation_password.dart';
 import 'package:iboss/screens/business/catalog_screen.dart';
+import 'package:iboss/screens/business/categories_screen.dart';
 import '../controllers/authentication/auth_service.dart';
 
 class DrawerComponent extends StatelessWidget {
@@ -52,7 +53,27 @@ class DrawerComponent extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CatalogScreen(isSelecting: true),
+                    builder: (context) =>
+                        CatalogScreen(isSelecting: false),
+                  ),
+                );
+              },
+            ),
+            ListTile(
+              leading: const FaIcon(
+                FontAwesomeIcons.tags,
+                size: 20,
+              ),
+              title: const Text(
+                "Categorias",
+                style: TextStyle(fontSize: 18),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        CategoriesScreen(isSelecting: false),
                   ),
                 );
               },

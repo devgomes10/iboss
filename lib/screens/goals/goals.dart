@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -25,6 +27,37 @@ class _GoalsState extends State<Goals> {
   TextEditingController dateController = TextEditingController();
   DateTime selectedDate = DateTime.now();
   final ptBr = const Locale('pt', 'BR');
+  StreamSubscription<List<CompanyGoals>>? companyGoalsStreamSubscription;
+  StreamSubscription<List<PersonalGoals>>? personalGoalsStreamSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Registrar a inscrição no stream de metas da empresa
+    companyGoalsStreamSubscription =
+        CompanyGoalsController().getCompanyGoalsStream().listen((data) {
+          // Atualizar o estado do widget com os dados
+        });
+
+    // Registrar a inscrição no stream de metas pessoais
+    personalGoalsStreamSubscription =
+        PersonalGoalsController().getPersonalGoalsStream().listen((data) {
+          // Atualizar o estado do widget com os dados
+        });
+  }
+
+  @override
+  void dispose() {
+    // Cancelar inscrição no stream de metas da empresa quando a tela for descartada
+    companyGoalsStreamSubscription?.cancel();
+
+    // Cancelar inscrição no stream de metas pessoais quando a tela for descartada
+    personalGoalsStreamSubscription?.cancel();
+
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {

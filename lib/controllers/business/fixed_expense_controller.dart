@@ -22,6 +22,7 @@ class FixedExpenseController extends ChangeNotifier {
             value: doc['value'],
             date: doc['date'].toDate(),
             id: doc.id,
+            category: doc["category"],
             isPaid: doc['isPaid'] ?? false,
           );
         }).toList();
@@ -98,6 +99,7 @@ class FixedExpenseController extends ChangeNotifier {
           description: doc['description'],
           value: doc['value'],
           date: doc['date'].toDate(),
+          category: doc["category"],
           id: doc.id,
           isPaid: doc['isPaid'] ?? false,
         );

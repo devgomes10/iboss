@@ -1,20 +1,21 @@
-import 'dart:html';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iboss/controllers/business/catalog_controller.dart';
 import 'package:iboss/controllers/business/revenue_controller.dart';
 import 'package:iboss/models/business/revenue_model.dart';
 import 'package:iboss/models/business/deferred_payment.dart';
 import 'package:iboss/screens/business/catalog_screen.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class RevenueForm extends StatefulWidget {
   final RevenueModel? model1;
   final DeferredPayment? model2;
 
-  const RevenueForm({super.key, this.model1, this.model2});
+  RevenueForm({Key? key, this.model1, this.model2}) : super(key: key);
 
   @override
   State<RevenueForm> createState() => _RevenueFormState();
@@ -25,15 +26,17 @@ class _RevenueFormState extends State<RevenueForm> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController datePickerController = TextEditingController();
   final descriptionController = TextEditingController();
-  final valueController = TextEditingController();
   String invoicingId = const Uuid().v1();
   final descriptionFocusNode = FocusNode();
+  final valueController = TextEditingController();
   final valueFocusNode = FocusNode();
   bool _isEditing2 = false;
   bool isRevenue = false;
   bool isReceived = false;
   DateTime selectedPicker = DateTime.now();
   final ptBr = const Locale('pt', 'BR');
+  int numberOfRepeats = 2;
+  bool isMonthly = true; // Inicialize como mensal
 
   @override
   void initState() {
@@ -63,7 +66,6 @@ class _RevenueFormState extends State<RevenueForm> {
     final deferredPaymentModel = widget.model2;
     final titleText =
         _isEditing1 || _isEditing2 ? "Editando pagamento" : "Nova receita";
-
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
@@ -98,20 +100,30 @@ class _RevenueFormState extends State<RevenueForm> {
                 height: 22,
                 color: Colors.grey,
               ),
-              TextFormField(
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "Insira um valor";
-                  }
-                  return null;
-                },
-                keyboardType: TextInputType.number,
-                controller: valueController,
-                focusNode: valueFocusNode,
-                decoration: const InputDecoration(
-                  hintText: "Valor",
-                  border: InputBorder.none,
-                ),
+              Consumer<CatalogController>(
+                builder: ((context, catalogController, child) {
+                  return TextFormField(
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Insira um valor";
+                      }
+                      double? numericValue = double.tryParse(value);
+                      if (numericValue == null || numericValue <= 0) {
+                        return "Deve ser maior que 0";
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.number,
+                    focusNode: valueFocusNode,
+                    decoration: const InputDecoration(
+                      hintText: "Valor",
+                      border: InputBorder.none,
+                    ),
+                    initialValue:
+                        catalogController.totalSelectedItems.toStringAsFixed(2),
+                    readOnly: true, // Impede a edição do campo.
+                  );
+                }),
               ),
               const Divider(
                 height: 22,
@@ -244,62 +256,94 @@ class _RevenueFormState extends State<RevenueForm> {
                 height: 22,
                 color: Colors.grey,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Column(
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      FaIcon(FontAwesomeIcons.rotateRight),
-                      SizedBox(
-                        width: 15,
+                      Row(
+                        children: [
+                          FaIcon(FontAwesomeIcons.rotateRight),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text(
+                            "Repetir",
+                            style: GoogleFonts.raleway(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        "Repetir",
-                        style: GoogleFonts.raleway(
-                          fontSize: 20,
-                        ),
+                      Switch(
+                        value: isRevenue,
+                        onChanged: (newValue) async {
+                          setState(() {
+                            isRevenue = newValue;
+                          });
+                          final revenue = await RevenueController().getRevenueFromFirestore();
+
+                          if (revenue.isNotEmpty) {
+                            final firstRevenue = revenue.first;
+                            RevenueController()
+                                .updateRepeatStatus(firstRevenue.id, newValue);
+                          }
+                        },
                       ),
                     ],
                   ),
-                  Switch(
-                      value: isRevenue,
-                      onChanged: (newValue) async {
-                        setState(() {
-                          isRevenue = newValue;
-                        });
-                        final revenue =
-                            await RevenueController().getRevenueFromFirestore();
-                        // final variableExpenses = await VariableExpenseController()
-                        //     .getVariableExpensesFromFirestore();
-                        if (revenue.isNotEmpty) {
-                          final firstRevenue = revenue.first;
-                          RevenueController()
-                              .updateRepeatStatus(firstRevenue.id, newValue);
-                          // final fixedExpenses = await FixedExpenseController()
-                          //     .getFixedExpensesFromFirestore();
-                          // final variableExpenses = await VariableExpenseController()
-                          //     .getVariableExpensesFromFirestore();
-                          // if (fixedExpenses.isNotEmpty) {
-                          //   final firstExpense = fixedExpenses.first;
-                          //   FixedExpenseController().updateFixedExpenseStatus(
-                          //       firstExpense.id, newValue);
-                        }
-                        // if (variableExpenses.isNotEmpty) {
-                        //   final firstExpense = variableExpenses.first;
-                        //   VariableExpenseController().updateVariableExpenseStatus(
-                        //       firstExpense.id, newValue);
-                        // }
-                        // },
-                      }),
+                  if (isRevenue) // Mostrar o picker somente quando o Switch for true
+                    Column(
+                      children: [
+                        Text("Quantidade de Repetições:"),
+                        CupertinoPicker(
+                          itemExtent: 32,
+                          onSelectedItemChanged: (int value) {
+                            setState(() {
+                              numberOfRepeats = value + 1;
+                            });
+                          },
+                          children: List.generate(10, (index) {
+                            return Text((index + 1).toString());
+                          }),
+                        ),
+                        SizedBox(height: 10), // Espaçamento entre o picker e o texto seguinte
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Text("$numberOfRepeats vezes de R\$ 55.000,00"),
+
+                      ],
+                    ),
                 ],
               ),
+
+              // ListTile(
+              //   title: Text(
+              //     "Recebeu?",
+              //     style: GoogleFonts.raleway(
+              //       fontSize: 20,
+              //     ),
+              //   ),
+              //   trailing: Switch(
+              //     value: isReceived,
+              //     onChanged: (newValue) async {
+              //       setState(() {
+              //         isReceived = newValue;
+              //       });
+              //       final revenue = await RevenueController().getRevenueFromFirestore();
+              //
+              //       if (revenue.isNotEmpty) {
+              //         final firstRevenue = revenue.first;
+              //         RevenueController().updateReceivedStatus(firstRevenue.id, newValue);
+              //       }
+              //     },
+              //   ),
+              // ),
               const SizedBox(
-                height: 6,
+                height: 26,
               ),
-              Text("..."),
-              const SizedBox(
-                height: 50,
-              ),
+
               ElevatedButton(
                 onPressed: () {},
                 child: Text("CONFIRMAR"),

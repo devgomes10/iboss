@@ -169,9 +169,10 @@ class __BottomSheetNewCatalogState extends State<_BottomSheetNewCatalog> {
                           backgroundColor: const Color(0xFF5CE1E6),
                         ),
                         child: const Text(
-                          "Confirmar",
+                          "CONFIRMAR",
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 18,
+                            color: Color(0xFF5CE1E6),
                           ),
                         ),
                       ),

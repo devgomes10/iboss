@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iboss/controllers/business/catalog_controller.dart';
+import 'package:iboss/controllers/business/categories_controller.dart';
 import 'package:iboss/controllers/business/revenue_controller.dart';
 import 'package:iboss/controllers/business/deferred_payment_controller.dart';
 import 'package:iboss/controllers/business/fixed_expense_controller.dart';
@@ -14,7 +15,7 @@ import 'package:iboss/controllers/personal/variable_outflow_controller.dart';
 import 'package:iboss/screens/authentication/auth_screen.dart';
 import 'package:iboss/components/menu_navigation.dart';
 import 'package:iboss/dark_theme.dart';
-import 'package:iboss/screens/business/catalog_screen.dart';
+import 'package:iboss/screens/business/categories_screen.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -30,6 +31,7 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (context) => CategoriesController()),
         ChangeNotifierProvider(create: (context) => CatalogController()),
         ChangeNotifierProvider(create: (context) => RevenueController()),
         ChangeNotifierProvider(
