@@ -4,7 +4,8 @@ class RevenueModel {
   double value;
   bool isReceived;
   DateTime receiptDate;
-  int isRepeat;
+  bool isRepeat;
+  int numberOfRepeats;
 
   RevenueModel({
     required this.id,
@@ -13,6 +14,7 @@ class RevenueModel {
     required this.isReceived,
     required this.receiptDate,
     required this.isRepeat,
+    required this.numberOfRepeats,
   });
 
   RevenueModel.fromMap(Map<String, dynamic> map)
@@ -21,7 +23,8 @@ class RevenueModel {
         value = map["value"],
         isReceived = map["isReceived"],
         receiptDate = map["receiptDare"],
-        isRepeat = map["isRepeat"];
+        isRepeat = map["isRepeat"],
+        numberOfRepeats = map["numberOfRepeats"];
 
   Map<String, dynamic> toMap() {
     return {
@@ -31,6 +34,7 @@ class RevenueModel {
       "isReceived": isReceived,
       "receiptDate": receiptDate,
       "isRepeat": isRepeat,
+      "numberOfRepeats": numberOfRepeats,
     };
   }
 }

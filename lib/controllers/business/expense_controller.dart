@@ -15,7 +15,7 @@ class ExpenseController extends ChangeNotifier {
 
   Stream<List<ExpenseModel>> getExpensesStream() {
     return expenseCollection.snapshots().map(
-          (snapshot) {
+      (snapshot) {
         return snapshot.docs.map((doc) {
           return ExpenseModel(
             id: doc.id,
@@ -25,6 +25,7 @@ class ExpenseController extends ChangeNotifier {
             payday: doc['payday'],
             category: doc["category"],
             isRepeat: doc['isRepeat'],
+            numberOfRepeats: doc["numberOfRepeats"],
           );
         }).toList();
       },
@@ -34,10 +35,13 @@ class ExpenseController extends ChangeNotifier {
   Future<void> addExpenseToFirestore(ExpenseModel expense) async {
     try {
       await expenseCollection.doc(expense.id).set(
-        expense.toMap(),
-      );
+            expense.toMap(),
+          );
     } catch (error) {
-      const Text("Erro ao adicionar despesa", style: TextStyle(fontSize: 12),);
+      const Text(
+        "Erro ao adicionar despesa",
+        style: TextStyle(fontSize: 12),
+      );
     }
     notifyListeners();
   }
@@ -46,7 +50,10 @@ class ExpenseController extends ChangeNotifier {
     try {
       await expenseCollection.doc(expenseId).delete();
     } catch (error) {
-      const Text("Erro ao remover despesa", style: TextStyle(fontSize: 12),);
+      const Text(
+        "Erro ao remover despesa",
+        style: TextStyle(fontSize: 12),
+      );
     }
     notifyListeners();
   }
@@ -54,14 +61,16 @@ class ExpenseController extends ChangeNotifier {
   Future<List<ExpenseModel>> getExpenseFromFirestore() async {
     List<ExpenseModel> expenses = [];
     try {
-      QuerySnapshot querySnapshot =
-      await expenseCollection.get();
+      QuerySnapshot querySnapshot = await expenseCollection.get();
       expenses = querySnapshot.docs
-          .map((doc) =>
-          ExpenseModel.fromMap(doc.data() as Map<String, dynamic>))
+          .map(
+              (doc) => ExpenseModel.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
     } catch (error) {
-      const Text("Erro ao carregar dados", style: TextStyle(fontSize: 12),);
+      const Text(
+        "Erro ao carregar dados",
+        style: TextStyle(fontSize: 12),
+      );
     }
     notifyListeners();
     return expenses;
@@ -69,12 +78,11 @@ class ExpenseController extends ChangeNotifier {
 
   Stream<double> getTotalExpensesByMonth(DateTime selectedMonth) {
     Stream<QuerySnapshot> queryStream = expenseCollection
-        .where(
-        'date',
-        isGreaterThanOrEqualTo:
-        DateTime(selectedMonth.year, selectedMonth.month, 1),
-        isLessThan: DateTime(
-            selectedMonth.year, selectedMonth.month + 1, 1))
+        .where('payday',
+            isGreaterThanOrEqualTo:
+                DateTime(selectedMonth.year, selectedMonth.month, 1),
+            isLessThan:
+                DateTime(selectedMonth.year, selectedMonth.month + 1, 1))
         .snapshots();
 
     return queryStream.map((querySnapshot) {
@@ -88,11 +96,12 @@ class ExpenseController extends ChangeNotifier {
 
   Stream<List<ExpenseModel>> getExpensesByMonth(DateTime selectedMonth) {
     return expenseCollection
-        .where('date',
-        isGreaterThanOrEqualTo:
-        DateTime(selectedMonth.year, selectedMonth.month, 1),
-        isLessThan: DateTime(
-            selectedMonth.year, selectedMonth.month + 1, 1))
+        .where(
+          'payday',
+          isGreaterThanOrEqualTo:
+              DateTime(selectedMonth.year, selectedMonth.month, 1),
+          isLessThan: DateTime(selectedMonth.year, selectedMonth.month + 1, 1),
+        )
         .snapshots()
         .map((querySnapshot) {
       return querySnapshot.docs.map((doc) {
@@ -104,6 +113,7 @@ class ExpenseController extends ChangeNotifier {
           payday: doc['payday'],
           category: doc["category"],
           isRepeat: doc['isRepeat'],
+          numberOfRepeats: doc["numberOfRepeats"],
         );
       }).toList();
     });

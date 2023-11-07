@@ -26,6 +26,7 @@ class RevenueController extends ChangeNotifier {
               isReceived: doc["isReceived"],
               receiptDate: doc["receiptDate"].toDate(),
               isRepeat: doc["isRepeat"],
+              numberOfRepeats: doc["numberOfRepeats"],
             );
           },
         ).toList();
@@ -79,7 +80,7 @@ class RevenueController extends ChangeNotifier {
 
   Stream<double> getTotalRevenueByMonth(DateTime selectedMonth) {
     Stream<QuerySnapshot> queryStream = revenueCollection
-        .where('date',
+        .where('receiptDate',
             isGreaterThanOrEqualTo:
                 DateTime(selectedMonth.year, selectedMonth.month, 1),
             isLessThan:
@@ -95,9 +96,25 @@ class RevenueController extends ChangeNotifier {
     });
   }
 
+  Future<void> updateRevenueInFirestore(RevenueModel updatedRevenue) async {
+    try {
+      final doc = await revenueCollection.doc(updatedRevenue.id).get();
+      if (doc.exists) {
+        await revenueCollection
+            .doc(updatedRevenue.id)
+            .update(updatedRevenue.toMap());
+      } else {
+        const Text("Erro ao atualizar receita");
+      }
+    } catch (error) {
+      const Text("Erro ao atualizar receita");
+    }
+    notifyListeners();
+  }
+
   Stream<List<RevenueModel>> getRevenueByMonth(DateTime selectedMonth) {
     return revenueCollection
-        .where('date',
+        .where('receiptDate',
             isGreaterThanOrEqualTo:
                 DateTime(selectedMonth.year, selectedMonth.month, 1),
             isLessThan:
@@ -112,6 +129,7 @@ class RevenueController extends ChangeNotifier {
           isReceived: doc["isReceived"],
           receiptDate: doc["receiptDate"].toDate(),
           isRepeat: doc["isRepeat"],
+          numberOfRepeats: doc["numberOfRepeats"],
         );
       }).toList();
     });

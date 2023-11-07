@@ -7,10 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/Uuid.dart';
 import '../../../controllers/business/expense_controller.dart';
-import '../../../controllers/business/variable_expense_controller.dart';
 import '../../../models/business/categories_model.dart';
 import '../../../models/business/expense_model.dart';
-import '../../../models/business/variable_expense.dart';
 import '../../show_snackbar.dart';
 
 class ExpenseForm extends StatefulWidget {
@@ -43,7 +41,11 @@ class _ExpenseFormState extends State<ExpenseForm> {
     if (widget.model != null) {
       descriptionController.text = widget.model!.description;
       valueController.text = widget.model!.value.toString();
+      isPaid = widget.model!.isPaid;
+      selectedPicker = widget.model!.payday;
+      numberOfRepeats = widget.model!.numberOfRepeats;
       _isEditing = true;
+      isRepeat = widget.model!.isRepeat;
     }
   }
 
@@ -138,10 +140,12 @@ class _ExpenseFormState extends State<ExpenseForm> {
                       setState(() {
                         isPaid = newValue;
                       });
-                      final expenses = await ExpenseController().getExpenseFromFirestore();
+                      final expenses =
+                          await ExpenseController().getExpenseFromFirestore();
                       if (expenses.isNotEmpty) {
                         final firstExpense = expenses.first;
-                        ExpenseController().updateExpenseStatus(firstExpense.id, newValue);
+                        ExpenseController()
+                            .updateExpenseStatus(firstExpense.id, newValue);
                       }
                     },
                   ),
@@ -162,7 +166,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
                   );
                   if (picked != null) {
                     setState(
-                          () {
+                      () {
                         selectedPicker = picked;
                       },
                     );
@@ -318,7 +322,8 @@ class _ExpenseFormState extends State<ExpenseForm> {
                             isPaid: isPaid,
                             payday: selectedPicker,
                             category: "",
-                            isRepeat: numberOfRepeats,
+                            isRepeat: isRepeat,
+                            numberOfRepeats: numberOfRepeats,
                           );
 
                           if (expenseModel != null) {
