@@ -68,8 +68,8 @@ class _BusinessViewState extends State<BusinessView> {
                 (double totalFixed, double totalVariable) =>
                     totalFixed + totalVariable,
               ),
-              stream1: RevenueController()
-                  .getTotalRevenueByMonth(_selectedDate),
+              stream1: ExpenseController()
+                  .getTotalExpensesByMonth(_selectedDate),
               stream2: VariableExpenseController()
                   .getTotalVariableExpensesByMonth(_selectedDate),
               screen: const ExpenseView(),

@@ -8,7 +8,6 @@ class CatalogController extends ChangeNotifier {
   late String uidCatalog;
   late CollectionReference catalogCollection;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  double totalSelectedItems = 0;
   Map<String, int> selectedCatalogItems = {};
   final _selectedItemsStreamController = StreamController<Map<String, int>>.broadcast();
   Stream<Map<String, int>> get selectedItemsStream => _selectedItemsStreamController.stream;
@@ -19,36 +18,13 @@ class CatalogController extends ChangeNotifier {
         FirebaseFirestore.instance.collection('catalog_$uidCatalog');
   }
 
-  void updateTotalSelectedItems(List<CatalogModel> catalogs) {
-    double total = 0.0;
-
-    selectedCatalogItems.forEach((id, quantity) {
-      final catalog = catalogs.firstWhere((catalog) => catalog.id == id);
-      total += catalog.price * quantity;
-    });
-    totalSelectedItems = total;
-    _selectedItemsStreamController.add(selectedCatalogItems);
-  }
-
-   upup (double newValue) {
-    totalSelectedItems = newValue;
-    return newValue;
-  }
-
-  Stream<List<CatalogModel>> getCatalogStream() {
-    return catalogCollection.snapshots().map(
-          (snapshot) {
-        return snapshot.docs.map(
-              (doc) {
-            return CatalogModel(
-              name: doc['name'],
-              price: doc['price'],
-              id: doc.id,
-            );
-          },
-        ).toList();
-      },
-    );
+  void toggleSelection(String productId) {
+    if (selectedCatalogItems.containsKey(productId)) {
+      selectedCatalogItems.remove(productId);
+    } else {
+      selectedCatalogItems[productId] = 1;
+    }
+    notifyListeners();
   }
 
   Future<void> addCatalogToFirestore(CatalogModel catalog) async {

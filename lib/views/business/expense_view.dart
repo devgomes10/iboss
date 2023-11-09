@@ -64,12 +64,7 @@ class _ExpenseViewState extends State<ExpenseView> {
       floatingActionButton: SingleChildScrollView(
         child: FloatingActionButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ExpenseForm(),
-              ),
-            );
+            Navigator.of(context).pushNamed("/expenseForm");
           },
           backgroundColor: Colors.red,
           child: const FaIcon(FontAwesomeIcons.plus),
@@ -126,11 +121,13 @@ class _ExpenseViewState extends State<ExpenseView> {
                     return ListTile(
                       onTap: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ExpenseForm(
-                                      model: model,
-                                    )));
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ExpenseForm(
+                              model: model,
+                            ),
+                          ),
+                        );
                       },
                       leading: const FaIcon(
                         FontAwesomeIcons.arrowTrendDown,

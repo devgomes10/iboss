@@ -205,7 +205,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
                   final selectedCategory = await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CategoriesView(isSelecting: true),
+                      builder: (context) => const CategoriesView(isSelecting: true),
                     ),
                   );
                   if (selectedCategory != null) {
@@ -300,7 +300,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
                         const SizedBox(
                           height: 8,
                         ),
-                        Text("$numberOfRepeats vezes de R\$ 55.000,00"),
+                        Text("$numberOfRepeats x de R\$ 55.000,00"),
                       ],
                     ),
                 ],

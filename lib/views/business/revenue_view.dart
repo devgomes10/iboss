@@ -21,21 +21,20 @@ class _RevenueViewState extends State<RevenueView> {
   final valueController = TextEditingController();
   final NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
   String invoicingId = const Uuid().v1();
+  StreamSubscription<List<RevenueModel>>? revenueStreamSubscription;
 
-  // StreamSubscription<List<RevenueModel>>? revenueStreamSubscription;
-  //
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   revenueStreamSubscription =
-  //       RevenueController().getRevenueByMonth(_selectedDate).listen((data) {});
-  // }
-  //
-  // @override
-  // void dispose() {
-  //   revenueStreamSubscription?.cancel();
-  //   super.dispose();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    revenueStreamSubscription =
+        RevenueController().getRevenueByMonth(_selectedDate).listen((data) {});
+  }
+
+  @override
+  void dispose() {
+    revenueStreamSubscription?.cancel();
+    super.dispose();
+  }
 
   void _changeMonth(bool increment) {
     setState(() {
@@ -59,12 +58,7 @@ class _RevenueViewState extends State<RevenueView> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const RevenueForm(),
-            ),
-          );
+          Navigator.of(context).pushNamed("/revenueForm");
         },
         backgroundColor: Colors.green,
         child: const FaIcon(FontAwesomeIcons.plus),
@@ -105,9 +99,7 @@ class _RevenueViewState extends State<RevenueView> {
                 }
                 if (snapshot.hasError) {
                   return const Center(
-                    child: Center(
-                      child: Text('Erro ao carregar as receitas'),
-                    ),
+                    child: Text('Erro ao carregar as receitas'),
                   );
                 }
                 final revenues = snapshot.data;
@@ -145,18 +137,35 @@ class _RevenueViewState extends State<RevenueView> {
                           fontSize: 20,
                         ),
                       ),
-                      subtitle: Text(
-                        real.format(
-                          revenues[i].value,
-                        ),
-                        style: const TextStyle(
-                          fontSize: 18,
-                        ),
+                      subtitle: Row(
+                        children: [
+                          Text(
+                            real.format(
+                              revenues[i].value,
+                            ),
+                            style: const TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                           " | ${DateFormat.Md("pt_BR").format(revenues[i].receiptDate)}",
+                            style: const TextStyle(
+                              fontSize: 18,
+                            ),
+                          )
+                        ],
                       ),
-                      trailing: const FaIcon(
-                        FontAwesomeIcons.circle,
-                        color: Colors.yellow,
-                      ),
+                      trailing:
+                          revenues[i].isReceived == true ?
+                      FaIcon(
+                        FontAwesomeIcons.chevronUp,
+                        // color: Colors.lightBlue,
+                        size: 20,
+                      ) : FaIcon(
+                            FontAwesomeIcons.minus,
+                            // color: Colors.yellow,
+                            size: 20,
+                         )
                     );
                   },
                   separatorBuilder: (_, __) =>

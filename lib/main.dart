@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:iboss/components/forms/business/expense_form.dart';
 import 'package:iboss/controllers/business/catalog_controller.dart';
 import 'package:iboss/controllers/business/categories_controller.dart';
 import 'package:iboss/controllers/business/revenue_controller.dart';
@@ -15,10 +16,14 @@ import 'package:iboss/controllers/personal/variable_outflow_controller.dart';
 import 'package:iboss/components/menu_navigation.dart';
 import 'package:iboss/dark_theme.dart';
 import 'package:iboss/views/authentication/auth_view.dart';
+import 'package:iboss/views/business/catalog_view.dart';
+import 'package:iboss/views/business/expense_view.dart';
+import 'package:iboss/views/business/revenue_view.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'components/forms/business/revenue_form.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -33,17 +38,14 @@ void main() async {
         ChangeNotifierProvider(create: (context) => CategoriesController()),
         ChangeNotifierProvider(create: (context) => CatalogController()),
         ChangeNotifierProvider(create: (context) => RevenueController()),
-        ChangeNotifierProvider(
-            create: (context) => DeferredPaymentController()),
+        ChangeNotifierProvider(create: (context) => DeferredPaymentController()),
         ChangeNotifierProvider(create: (context) => CompanyGoalsController()),
         ChangeNotifierProvider(create: (context) => ExpenseController()),
-        ChangeNotifierProvider(
-            create: (context) => VariableExpenseController()),
+        ChangeNotifierProvider(create: (context) => VariableExpenseController()),
         ChangeNotifierProvider(create: (context) => FixedEntryController()),
         ChangeNotifierProvider(create: (context) => VariableEntryController()),
         ChangeNotifierProvider(create: (context) => FixedOutflowController()),
-        ChangeNotifierProvider(
-            create: (context) => VariableOutflowController()),
+        ChangeNotifierProvider(create: (context) => VariableOutflowController()),
         ChangeNotifierProvider(create: (context) => PersonalGoalsController()),
       ],
       child: const Bossover(),
@@ -73,7 +75,15 @@ class Bossover extends StatelessWidget {
       title: 'Bossover',
       debugShowCheckedModeBanner: false,
       theme: myTheme,
-      home: const ScreenRouter(),
+      initialRoute: "/login",
+      routes: {
+        "/login": (context) => const ScreenRouter(),
+        "/revenues": (context) => const RevenueView(),
+        "/revenueForm": (context) => const RevenueForm(),
+        "/expenses": (context) => const ExpenseView(),
+        "/expenseForm": (context) => ExpenseForm(),
+        "/catalog": (context) => const CatalogView(),
+      },
     );
   }
 }
@@ -89,7 +99,7 @@ class ScreenRouter extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else {
-          if (snapshot.hasData) {
+          if (snapshot.hasData && snapshot.data != null) {
             return MenuNavigation(
               transaction: snapshot.data!,
             );
@@ -101,39 +111,3 @@ class ScreenRouter extends StatelessWidget {
     );
   }
 }
-
-// class ScreenRouter extends StatelessWidget {
-//   const ScreenRouter({Key? key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return StreamBuilder(
-//       stream: FirebaseAuth.instance.userChanges(),
-//       builder: (context, snapshot) {
-//         if (snapshot.connectionState == ConnectionState.waiting) {
-//           return const Center(child: CircularProgressIndicator());
-//         } else {
-//           final user = FirebaseAuth.instance.currentUser;
-//           final currentDate = DateTime.now();
-//
-//           if (user != null) {
-//             // O usuário está conectado.
-//             final trialStartDate = user.metadata.creationTime?.toLocal(); // Data de criação da conta.
-//             final trialEndDate = trialStartDate?.add(const Duration(days: 15)); // 15 dias de avaliação gratuita.
-//
-//             if (currentDate.isBefore(trialEndDate!)) {
-//               // O usuário ainda está dentro do período de avaliação gratuita.
-//               return MenuNavigation(transaction: user);
-//             } else {
-//               // O período de avaliação gratuita expirou, redirecione para SubscriptionScreen().
-//               return const SubscriptionScreen();
-//             }
-//           } else {
-//             // O usuário não está conectado, exiba a tela de autenticação.
-//             return const AuthScreen();
-//           }
-//         }
-//       },
-//     );
-//   }
-// }

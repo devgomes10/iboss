@@ -263,7 +263,6 @@ class _RevenueFormState extends State<RevenueForm> {
                           });
                           final revenue = await RevenueController()
                               .getRevenueFromFirestore();
-
                           if (revenue.isNotEmpty) {
                             final firstRevenue = revenue.first;
                             RevenueController()
