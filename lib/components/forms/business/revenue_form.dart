@@ -260,41 +260,71 @@ class _RevenueFormState extends State<RevenueForm> {
                         onChanged: (newValue) async {
                           setState(() {
                             isRepeat = newValue;
+                            if (isRepeat) {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return SafeArea(
+                                    child: Center(
+                                      child: Column(
+                                        children: [
+                                          // const Text("Quantidade de Repetições:"),
+                                          CupertinoPicker(
+                                            itemExtent: 32,
+                                            scrollController: FixedExtentScrollController(
+                                              initialItem: 1,
+                                            ),
+                                            onSelectedItemChanged: (int value) {
+                                              setState(() {
+                                                if (isRepeat) {
+                                                  numberOfRepeats = value + 1;
+                                                }
+                                              });
+                                            },
+                                            children: List.generate(10, (index) {
+                                              return Text((index + 1).toString());
+                                            }),
+                                          ),
+                                          // Text("$numberOfRepeats vezes de R\$ 55.000,00"),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            }
                           });
-                          final revenue = await RevenueController()
-                              .getRevenueFromFirestore();
+                          final revenue = await RevenueController().getRevenueFromFirestore();
                           if (revenue.isNotEmpty) {
                             final firstRevenue = revenue.first;
-                            RevenueController()
-                                .updateRepeatStatus(firstRevenue.id, newValue);
+                            RevenueController().updateRepeatStatus(firstRevenue.id, newValue);
                           }
                         },
                       ),
                     ],
                   ),
+
                   if (isRepeat)
-                    Column(
-                      children: [
-                        const Text("Quantidade de Repetições:"),
-                        CupertinoPicker(
-                          itemExtent: 32,
-                          onSelectedItemChanged: (int value) {
-                            setState(() {
-                              if (isRepeat) {
-                                numberOfRepeats = value + 1;
-                              }
-                            });
-                          },
-                          children: List.generate(10, (index) {
-                            return Text((index + 1).toString());
-                          }),
-                        ),
-                        const SizedBox(height: 10),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Text("$numberOfRepeats vezes de R\$ 55.000,00"),
-                      ],
+                    Container(
+                      child: Column(
+                        children: [
+                          const Text("Quantidade de Repetições:"),
+                          CupertinoPicker(
+                            itemExtent: 32,
+                            onSelectedItemChanged: (int value) {
+                              setState(() {
+                                if (isRepeat) {
+                                  numberOfRepeats = value + 1;
+                                }
+                              });
+                            },
+                            children: List.generate(10, (index) {
+                              return Text((index + 1).toString());
+                            }),
+                          ),
+                          Text("$numberOfRepeats vezes de R\$ 55.000,00"),
+                        ],
+                      ),
                     ),
                 ],
               ),

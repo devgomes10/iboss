@@ -28,14 +28,32 @@ class _CatalogViewState extends State<CatalogView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme
+          .of(context)
+          .colorScheme
+          .background,
       appBar: AppBar(
         actions: [
           if (widget.isSelecting == true)
             IconButton(
               icon: const FaIcon(FontAwesomeIcons.check),
-              onPressed: () {},
+              onPressed: () {
+                // if (widget.revenueForm != null) {
+                //   // Obtém o total dos preços dos produtos selecionados
+                //   final totalSelectedPrice = catalogController
+                //       .calculateTotalSelectedPrice();
+                //   showConfirmation(context: context,
+                //       title: totalSelectedPrice.toString(),
+                //       onPressed: () {},
+                //       messegerSnack: "messegerSnack",
+                //       isError: false);
+                //
+                //   // Faça o que for necessário com o totalSelectedPrice, como atualizar o valor no widget.revenueForm
+                //   // widget.revenueForm!.updateValueControllerWithTotalSelectedItems(totalSelectedPrice);
+                // }
+              },
             ),
+
         ],
         title: const Text("Catálogo"),
         centerTitle: true,
@@ -62,7 +80,9 @@ class _CatalogViewState extends State<CatalogView> {
             children: [
               TextField(
                 controller: _searchController,
-                onChanged: (query) {},
+                onChanged: (query) {
+
+                },
               ),
               Expanded(
                 child: ListView.separated(
@@ -84,37 +104,37 @@ class _CatalogViewState extends State<CatalogView> {
                       ),
                       leading: widget.isSelecting == true
                           ? StreamBuilder<Map<String, int>>(
-                              stream: catalogController.selectedItemsStream,
-                              initialData:
-                                  catalogController.selectedCatalogItems,
-                              builder: (context, snapshot) {
-                                final selectedItems = snapshot.data;
-                                return Text(
-                                  'x ${selectedItems?[product.id] ?? 0}',
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                  ),
-                                );
-                              },
-                            )
+                        stream: catalogController.selectedItemsStream,
+                        initialData:
+                        catalogController.selectedCatalogItems,
+                        builder: (context, snapshot) {
+                          final selectedItems = snapshot.data;
+                          return Text(
+                            'x ${selectedItems?[product.id] ?? 0}',
+                            style: const TextStyle(
+                              fontSize: 18,
+                            ),
+                          );
+                        },
+                      )
                           : null,
                       trailing: widget.isSelecting == false
                           ? IconButton(
-                              icon: const FaIcon(FontAwesomeIcons.trash),
-                              onPressed: () {
-                                showConfirmation(
-                                  context: context,
-                                  title:
-                                      "Deseja mesmo remover esse produto/serviço?",
-                                  onPressed: () {
-                                    catalogController
-                                        .removeCatalogFromFirestore(product.id);
-                                  },
-                                  messegerSnack: "Produto/serviço deletado",
-                                  isError: false,
-                                );
-                              },
-                            )
+                        icon: const FaIcon(FontAwesomeIcons.trash),
+                        onPressed: () {
+                          showConfirmation(
+                            context: context,
+                            title:
+                            "Deseja mesmo remover esse produto/serviço?",
+                            onPressed: () {
+                              catalogController
+                                  .removeCatalogFromFirestore(product.id);
+                            },
+                            messegerSnack: "Produto/serviço deletado",
+                            isError: false,
+                          );
+                        },
+                      )
                           : null,
                       onTap: () {
                         if (widget.isSelecting == true) {
@@ -123,7 +143,7 @@ class _CatalogViewState extends State<CatalogView> {
                               .containsKey(id)) {
                             catalogController.selectedCatalogItems[id] =
                                 (catalogController.selectedCatalogItems[id] ??
-                                        0) +
+                                    0) +
                                     1;
                           } else {
                             catalogController.selectedCatalogItems[id] = 1;
@@ -140,7 +160,7 @@ class _CatalogViewState extends State<CatalogView> {
                     );
                   },
                   separatorBuilder: (_, __) =>
-                      const Divider(color: Colors.white),
+                  const Divider(color: Colors.white),
                   padding: const EdgeInsets.only(
                     top: 14,
                     left: 16,
@@ -155,11 +175,11 @@ class _CatalogViewState extends State<CatalogView> {
       ),
       floatingActionButton: widget.isSelecting == false
           ? FloatingActionButton(
-              onPressed: () {
-                NewCatalogBottomSheet.show(context);
-              },
-              child: const Icon(Icons.add),
-            )
+        onPressed: () {
+          NewCatalogBottomSheet.show(context);
+        },
+        child: const Icon(Icons.add),
+      )
           : null,
     );
   }

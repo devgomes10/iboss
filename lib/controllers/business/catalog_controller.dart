@@ -18,6 +18,22 @@ class CatalogController extends ChangeNotifier {
         FirebaseFirestore.instance.collection('catalog_$uidCatalog');
   }
 
+  // double calculateTotalSelectedPrice() {
+  //   double total = 0.0;
+  //
+  //   // Itera sobre os produtos selecionados e soma os preços
+  //   selectedCatalogItems.forEach((productId, quantity) async {
+  //     // Obtém o preço do produto pelo ID
+  //     final selectedProduct = await catalogCollection.doc(productId).get();
+  //     final price = selectedProduct['price'].toDouble();
+  //
+  //     // Calcula o total para o produto específico
+  //     total += price * quantity;
+  //   });
+  //
+  //   return total;
+  // }
+
   void toggleSelection(String productId) {
     if (selectedCatalogItems.containsKey(productId)) {
       selectedCatalogItems.remove(productId);

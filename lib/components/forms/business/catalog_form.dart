@@ -114,6 +114,7 @@ class __BottomSheetNewCatalogState extends State<_BottomSheetNewCatalog> {
                   }
                   return null;
                 },
+
                 keyboardType: TextInputType.number,
                 controller: priceController,
                 // focusNode: descriptionFocusNode,

@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:iboss/views/dashboard/personal_dash.dart';
 import '../../components/drawer_component.dart';
 import 'business_dash.dart';
 
@@ -41,7 +40,6 @@ class _DashboardViewState extends State<DashboardView> {
         body: const TabBarView(
           children: [
             BusinessDash(),
-            PersonalDash(),
           ],
         ),
       ),

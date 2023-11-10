@@ -9,14 +9,9 @@ import 'package:iboss/controllers/business/expense_controller.dart';
 import 'package:iboss/controllers/business/variable_expense_controller.dart';
 import 'package:iboss/controllers/goals/company_goals_controller.dart';
 import 'package:iboss/controllers/goals/personal_goals_controller.dart';
-import 'package:iboss/controllers/personal/fixed_entry_controller.dart';
-import 'package:iboss/controllers/personal/fixed_outflow_controller.dart';
-import 'package:iboss/controllers/personal/variable_entry_controller.dart';
-import 'package:iboss/controllers/personal/variable_outflow_controller.dart';
 import 'package:iboss/components/menu_navigation.dart';
 import 'package:iboss/dark_theme.dart';
 import 'package:iboss/views/authentication/auth_view.dart';
-import 'package:iboss/views/business/catalog_view.dart';
 import 'package:iboss/views/business/expense_view.dart';
 import 'package:iboss/views/business/revenue_view.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -42,10 +37,6 @@ void main() async {
         ChangeNotifierProvider(create: (context) => CompanyGoalsController()),
         ChangeNotifierProvider(create: (context) => ExpenseController()),
         ChangeNotifierProvider(create: (context) => VariableExpenseController()),
-        ChangeNotifierProvider(create: (context) => FixedEntryController()),
-        ChangeNotifierProvider(create: (context) => VariableEntryController()),
-        ChangeNotifierProvider(create: (context) => FixedOutflowController()),
-        ChangeNotifierProvider(create: (context) => VariableOutflowController()),
         ChangeNotifierProvider(create: (context) => PersonalGoalsController()),
       ],
       child: const Bossover(),
@@ -77,12 +68,11 @@ class Bossover extends StatelessWidget {
       theme: myTheme,
       initialRoute: "/login",
       routes: {
-        "/login": (context) => const ScreenRouter(),
-        "/revenues": (context) => const RevenueView(),
-        "/revenueForm": (context) => const RevenueForm(),
-        "/expenses": (context) => const ExpenseView(),
-        "/expenseForm": (context) => ExpenseForm(),
-        "/catalog": (context) => const CatalogView(),
+        "/login": (context) => ScreenRouter(),
+        "/revenues": (context) => RevenueView(),
+        "/revenueForm": (context) => RevenueForm(),
+        "/expenses": (context) => ExpenseView(),
+        "/ExpenseForm": (context) => ExpenseForm(),
       },
     );
   }

@@ -3,15 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/forms/goals/goals_form.dart';
-import 'package:iboss/components/forms/personal/entry_form.dart';
-import 'package:iboss/components/forms/personal/outflow_form.dart';
 import 'package:iboss/views/business/business_view.dart';
 import 'package:iboss/views/business/expense_view.dart';
 import 'package:iboss/views/business/revenue_view.dart';
 import 'package:iboss/views/dashboard/dashboard_view.dart';
 import 'package:iboss/views/goals/goals_view.dart';
-import '../views/personal/entry.dart';
-import '../views/personal/outflow.dart';
 import '../views/personal/personal.dart';
 
 class MenuNavigation extends StatefulWidget {
@@ -47,7 +43,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
         onPageChanged: setCurrentPage,
         children: [
           BusinessView(user: widget.transaction),
-          Personal(user: widget.transaction),
+          Transactions(),
           GoalsView(user: widget.transaction),
           DashboardView(user: widget.transaction),
         ],
@@ -107,30 +103,14 @@ class _MenuNavigationState extends State<MenuNavigation> {
                   label: 'Renda',
                   labelStyle: const TextStyle(fontSize: 16),
                   backgroundColor: Colors.green,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const Entry(),
-                      ),
-                    );
-                    NewEntryBottomSheet.show(context);
-                  },
+                  onTap: () {},
                 ),
                 SpeedDialChild(
                   child: const FaIcon(FontAwesomeIcons.userLarge),
                   label: 'Gasto',
                   labelStyle: const TextStyle(fontSize: 16),
                   backgroundColor: Colors.red,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const Outflow(),
-                      ),
-                    );
-                    NewOutflowBottomSheet.show(context);
-                  },
+                  onTap: () {},
                 ),
               ],
             ),
