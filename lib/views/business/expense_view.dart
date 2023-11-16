@@ -64,7 +64,7 @@ class _ExpenseViewState extends State<ExpenseView> {
       floatingActionButton: SingleChildScrollView(
         child: FloatingActionButton(
           onPressed: () {
-            Navigator.of(context).pushNamed("/expenseForm");
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ExpenseForm()));
           },
           backgroundColor: Colors.red,
           child: const FaIcon(FontAwesomeIcons.plus),

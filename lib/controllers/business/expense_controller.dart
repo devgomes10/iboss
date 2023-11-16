@@ -23,7 +23,6 @@ class ExpenseController extends ChangeNotifier {
             value: doc['value'],
             isPaid: doc['isPaid'],
             payday: doc['payday'].toDate(),
-            category: doc["category"],
             isRepeat: doc['isRepeat'],
             numberOfRepeats: doc["numberOfRepeats"],
           );
@@ -111,7 +110,6 @@ class ExpenseController extends ChangeNotifier {
           value: doc['value'],
           isPaid: doc['isPaid'],
           payday: doc['payday'].toDate(),
-          category: doc["category"],
           isRepeat: doc['isRepeat'],
           numberOfRepeats: doc["numberOfRepeats"],
         );

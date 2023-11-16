@@ -1,37 +1,42 @@
-class ExpenseModel {
+class TransactionModel {
   String id;
+  bool isRevenue;
   String description;
   double value;
-  bool isPaid;
-  DateTime payday;
+  bool isCompleted;
+  DateTime transactionDate;
   bool isRepeat;
   int numberOfRepeats;
 
-  ExpenseModel({required this.id,
+  TransactionModel({
+    required this.id,
+    required this.isRevenue,
     required this.description,
     required this.value,
-    required this.isPaid,
-    required this.payday,
+    required this.isCompleted,
+    required this.transactionDate,
     required this.isRepeat,
     required this.numberOfRepeats,
   });
 
-  ExpenseModel.fromMap(Map<String, dynamic> map)
+  TransactionModel.fromMap(Map<String, dynamic> map)
       : id = map["id"],
+        isRevenue = map["isRevenue"],
         description = map["description"],
         value = map["value"],
-        isPaid = map["isPaid"],
-        payday = map["payday"],
+        isCompleted = map["isCompleted"],
+        transactionDate = map["transactionDate"],
         isRepeat = map["isRepeat"],
         numberOfRepeats = map["numberOfRepeats"];
 
   Map<String, dynamic> toMap() {
     return {
       "id": id,
+      "isRevenue": isRevenue,
       "description": description,
       "value": value,
-      "isPaid": isPaid,
-      "payday": payday,
+      "isCompleted": isCompleted,
+      "transactionDate": transactionDate,
       "isRepeat": isRepeat,
       "numberOfRepeats": numberOfRepeats,
     };

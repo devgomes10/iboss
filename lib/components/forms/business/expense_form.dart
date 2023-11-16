@@ -321,7 +321,6 @@ class _ExpenseFormState extends State<ExpenseForm> {
                             value: double.parse(valueController.text),
                             isPaid: isPaid,
                             payday: selectedPicker,
-                            category: "",
                             isRepeat: isRepeat,
                             numberOfRepeats: numberOfRepeats,
                           );
