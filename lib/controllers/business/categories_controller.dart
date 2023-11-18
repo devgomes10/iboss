@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:iboss/models/business/categories_model.dart';
+import 'package:iboss/models/business/category_model.dart';
 
 class CategoriesController extends ChangeNotifier {
   late String uidCategories;
@@ -15,12 +15,12 @@ class CategoriesController extends ChangeNotifier {
         FirebaseFirestore.instance.collection('categories_$uidCategories');
   }
 
-  Stream<List<CategoriesModel>> getCategoriesStream() {
+  Stream<List<CategoryModel>> getCategoriesStream() {
     return categoriesCollection.snapshots().map(
           (snapshot) {
         return snapshot.docs.map(
               (doc) {
-            return CategoriesModel(
+            return CategoryModel(
               name: doc['name'],
               id: doc.id,
             );
@@ -30,7 +30,7 @@ class CategoriesController extends ChangeNotifier {
     );
   }
 
-  Future<void> addCategoriesToFirestore(CategoriesModel category) async {
+  Future<void> addCategoriesToFirestore(CategoryModel category) async {
     try {
       await categoriesCollection.doc(category.id).set(
         category.toMap(),
@@ -50,12 +50,12 @@ class CategoriesController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Stream<List<CategoriesModel>> getCategoriesFromFirestore() {
+  Stream<List<CategoryModel>> getCategoriesFromFirestore() {
     return categoriesCollection.snapshots().map(
           (snapshot) {
         return snapshot.docs.map(
               (doc) {
-            return CategoriesModel(
+            return CategoryModel(
               name: doc['name'],
               id: doc.id,
             );

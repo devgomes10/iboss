@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:iboss/models/business/catalog_model.dart';
+import 'package:iboss/models/business/product_model.dart';
 import 'dart:async';
 
 class CatalogController extends ChangeNotifier {
@@ -43,7 +43,7 @@ class CatalogController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addCatalogToFirestore(CatalogModel catalog) async {
+  Future<void> addCatalogToFirestore(ProductModel catalog) async {
     try {
       await catalogCollection.doc(catalog.id).set(
         catalog.toMap(),
@@ -63,12 +63,12 @@ class CatalogController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Stream<List<CatalogModel>> getCatalogFromFirestore() {
+  Stream<List<ProductModel>> getCatalogFromFirestore() {
     return catalogCollection.snapshots().map(
           (snapshot) {
         return snapshot.docs.map(
               (doc) {
-            return CatalogModel(
+            return ProductModel(
               name: doc['name'],
               price: doc['price'].toDouble(),
               id: doc.id,

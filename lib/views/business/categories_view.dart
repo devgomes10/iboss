@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/controllers/business/categories_controller.dart';
 import 'package:iboss/components/show_confirmation.dart';
-import 'package:iboss/models/business/categories_model.dart';
+import 'package:iboss/models/business/category_model.dart';
 
 import '../../components/forms/business/categories_form.dart';
 
@@ -26,9 +26,9 @@ class _CategoriesViewState extends State<CategoriesView> {
         title: const Text("Categorias"),
         centerTitle: true,
       ),
-      body: StreamBuilder<List<CategoriesModel>>(
+      body: StreamBuilder<List<CategoryModel>>(
         stream: CategoriesController().getCategoriesFromFirestore(),
-        builder: (BuildContext context, AsyncSnapshot<List<CategoriesModel>> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<List<CategoryModel>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }

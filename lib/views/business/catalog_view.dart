@@ -4,7 +4,7 @@ import 'package:iboss/components/forms/business/catalog_form.dart';
 import 'package:iboss/components/forms/business/revenue_form.dart';
 import 'package:iboss/components/show_confirmation.dart';
 import 'package:iboss/controllers/business/catalog_controller.dart';
-import 'package:iboss/models/business/catalog_model.dart';
+import 'package:iboss/models/business/product_model.dart';
 import 'package:intl/intl.dart';
 
 class CatalogView extends StatefulWidget {
@@ -58,10 +58,10 @@ class _CatalogViewState extends State<CatalogView> {
         title: const Text("Catálogo"),
         centerTitle: true,
       ),
-      body: StreamBuilder<List<CatalogModel>>(
+      body: StreamBuilder<List<ProductModel>>(
         stream: catalogController.getCatalogFromFirestore(),
         builder:
-            (BuildContext context, AsyncSnapshot<List<CatalogModel>> snapshot) {
+            (BuildContext context, AsyncSnapshot<List<ProductModel>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }

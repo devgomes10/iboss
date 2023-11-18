@@ -7,13 +7,13 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/Uuid.dart';
 import '../../../controllers/business/expense_controller.dart';
-import '../../../models/business/categories_model.dart';
+import '../../../models/business/category_model.dart';
 import '../../../models/business/expense_model.dart';
 import '../../show_snackbar.dart';
 
 class ExpenseForm extends StatefulWidget {
   final ExpenseModel? model;
-  late CategoriesModel? selectedCategory;
+  late CategoryModel? selectedCategory;
 
   ExpenseForm({Key? key, this.model, this.selectedCategory}) : super(key: key);
 

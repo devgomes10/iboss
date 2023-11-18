@@ -1,15 +1,15 @@
-class CatalogModel {
+class ProductModel {
   String name;
   double price;
   String id;
 
-  CatalogModel({
+  ProductModel({
     required this.name,
     required this.price,
     required this.id,
   });
 
-  CatalogModel.fromMap(Map<String, dynamic> map)
+  ProductModel.fromMap(Map<String, dynamic> map)
       : name = map["name"],
         price = map["price"],
         id = map["id"];

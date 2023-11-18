@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:iboss/components/show_snackbar.dart';
 import 'package:iboss/controllers/business/categories_controller.dart';
-import 'package:iboss/models/business/categories_model.dart';
+import 'package:iboss/models/business/category_model.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class NewCategoryBottomSheet {
-  static void show(BuildContext context, {CategoriesModel? model}) {
+  static void show(BuildContext context, {CategoryModel? model}) {
     showModalBottomSheet(
       useSafeArea: true,
       isScrollControlled: true,
@@ -26,7 +26,7 @@ class NewCategoryBottomSheet {
 }
 
 class _BottomSheetNewCategory extends StatefulWidget {
-  final CategoriesModel? model;
+  final CategoryModel? model;
 
   const _BottomSheetNewCategory({this.model});
 
@@ -112,7 +112,7 @@ class __BottomSheetNewCategoryState extends State<_BottomSheetNewCategory> {
                           child: TextButton(
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                CategoriesModel category = CategoriesModel(
+                                CategoryModel category = CategoryModel(
                                   name: nameController.text,
                                   id: invoicingId,
                                 );

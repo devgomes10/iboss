@@ -1,13 +1,13 @@
-class CategoriesModel {
+class CategoryModel {
   String name;
   String id;
 
-  CategoriesModel({
+  CategoryModel({
     required this.name,
     required this.id,
   });
 
-  CategoriesModel.fromMap(Map<String, dynamic> map)
+  CategoryModel.fromMap(Map<String, dynamic> map)
       : name = map["name"],
         id = map["id"];
 

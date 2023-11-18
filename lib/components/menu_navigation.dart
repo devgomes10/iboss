@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/forms/goals/goals_form.dart';
+import 'package:iboss/components/transaction_form.dart';
 import 'package:iboss/views/business/business_view.dart';
 import 'package:iboss/views/business/expense_view.dart';
 import 'package:iboss/views/business/revenue_view.dart';
@@ -43,7 +44,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
         onPageChanged: setCurrentPage,
         children: [
           BusinessView(user: widget.transaction),
-          Transactions(),
+          TransactionView(),
           GoalsView(user: widget.transaction),
           DashboardView(user: widget.transaction),
         ],
@@ -103,7 +104,10 @@ class _MenuNavigationState extends State<MenuNavigation> {
                   label: 'Renda',
                   labelStyle: const TextStyle(fontSize: 16),
                   backgroundColor: Colors.green,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => TransactionForm()));
+
+                  },
                 ),
                 SpeedDialChild(
                   child: const FaIcon(FontAwesomeIcons.userLarge),

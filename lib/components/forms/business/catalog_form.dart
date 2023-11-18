@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:iboss/components/show_snackbar.dart';
 import 'package:iboss/controllers/business/catalog_controller.dart';
-import 'package:iboss/models/business/catalog_model.dart';
+import 'package:iboss/models/business/product_model.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class NewCatalogBottomSheet {
-  static void show(BuildContext context, {CatalogModel? model}) {
+  static void show(BuildContext context, {ProductModel? model}) {
     showModalBottomSheet(
       useSafeArea: true,
       isScrollControlled: true,
@@ -26,7 +26,7 @@ class NewCatalogBottomSheet {
 }
 
 class _BottomSheetNewCatalog extends StatefulWidget {
-  final CatalogModel? model;
+  final ProductModel? model;
 
   const _BottomSheetNewCatalog({this.model});
 
@@ -139,7 +139,7 @@ class __BottomSheetNewCatalogState extends State<_BottomSheetNewCatalog> {
                       child: ElevatedButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            CatalogModel catalog = CatalogModel(
+                            ProductModel catalog = ProductModel(
                               name: nameController.text,
                               price: double.parse(priceController.text),
                               id: invoicingId,

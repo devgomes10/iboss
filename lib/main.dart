@@ -10,6 +10,7 @@ import 'package:iboss/controllers/business/variable_expense_controller.dart';
 import 'package:iboss/controllers/goals/company_goals_controller.dart';
 import 'package:iboss/controllers/goals/personal_goals_controller.dart';
 import 'package:iboss/components/menu_navigation.dart';
+import 'package:iboss/controllers/transaction_controller.dart';
 import 'package:iboss/dark_theme.dart';
 import 'package:iboss/views/authentication/auth_view.dart';
 import 'package:iboss/views/business/expense_view.dart';
@@ -30,6 +31,7 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (context) => TransactionController()),
         ChangeNotifierProvider(create: (context) => CategoriesController()),
         ChangeNotifierProvider(create: (context) => CatalogController()),
         ChangeNotifierProvider(create: (context) => RevenueController()),

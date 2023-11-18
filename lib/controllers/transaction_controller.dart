@@ -26,6 +26,7 @@ class TransactionController extends ChangeNotifier {
               value: doc["value"],
               isCompleted: doc["isCompleted"],
               transactionDate: doc["transactionDate"].toDate(),
+              category: doc["category"],
               isRepeat: doc["isRepeat"],
               numberOfRepeats: doc["numberOfRepeats"],
             );
@@ -70,10 +71,10 @@ class TransactionController extends ChangeNotifier {
               TransactionModel.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
     } catch (error) {
-      const Text(
-        "Erro ao carregar dados",
-        style: TextStyle(fontSize: 12),
-      );
+      // const Text(
+      //   "Erro ao carregar os dados",
+      //   style: TextStyle(fontSize: 12),
+      // );
     }
     notifyListeners();
     return trasactions;
@@ -81,7 +82,7 @@ class TransactionController extends ChangeNotifier {
 
   Stream<List<TransactionModel>> getTransactionByMonth(DateTime selectedMonth) {
     return transactionCollection
-        .where('isCompleted',
+        .where('transactionDate',
             isGreaterThanOrEqualTo:
                 DateTime(selectedMonth.year, selectedMonth.month, 1),
             isLessThan:
@@ -96,10 +97,36 @@ class TransactionController extends ChangeNotifier {
           value: doc["value"],
           isCompleted: doc["isCompleted"],
           transactionDate: doc["transactionDate"].toDate(),
+          category: doc["category"],
           isRepeat: doc["isRepeat"],
           numberOfRepeats: doc["numberOfRepeats"],
         );
       }).toList();
     });
+  }
+
+  Future<void> updateTransactionInFirestore(TransactionModel updatedTransaction) async {
+    try {
+      final doc = await transactionCollection.doc(updatedTransaction.id).get();
+      if (doc.exists) {
+        await transactionCollection
+            .doc(updatedTransaction.id)
+            .update(updatedTransaction.toMap());
+      } else {
+        const Text("Erro ao atualizar");
+      }
+    } catch (error) {
+      const Text("Erro ao atualizar");
+    }
+    notifyListeners();
+  }
+
+  Future<void> updateStatus(String transactionId, String field, dynamic value) async {
+    try {
+      Map<String, dynamic> dataToUpdate = {field: value};
+      await transactionCollection.doc(transactionId).update(dataToUpdate);
+    } catch (error) {
+      const Text("Erro ao atualizar o status");
+    }
   }
 }
