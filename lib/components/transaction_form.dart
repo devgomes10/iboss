@@ -20,7 +20,7 @@ class TransactionForm extends StatefulWidget {
 }
 
 class _TransactionFormState extends State<TransactionForm> {
-  bool isRevenue = false;
+  bool isRevenue = true;
   bool isCompleted = false;
   bool isRepeat = false;
   bool _isEditing = false;

@@ -16,9 +16,9 @@ class TransactionController extends ChangeNotifier {
 
   Stream<List<TransactionModel>> getTransactionStream() {
     return transactionCollection.snapshots().map(
-      (snapshot) {
+          (snapshot) {
         return snapshot.docs.map(
-          (doc) {
+              (doc) {
             return TransactionModel(
               id: doc.id,
               isRevenue: doc["isRevenue"],
@@ -26,7 +26,6 @@ class TransactionController extends ChangeNotifier {
               value: doc["value"],
               isCompleted: doc["isCompleted"],
               transactionDate: doc["transactionDate"].toDate(),
-              category: doc["category"],
               isRepeat: doc["isRepeat"],
               numberOfRepeats: doc["numberOfRepeats"],
             );
@@ -39,27 +38,19 @@ class TransactionController extends ChangeNotifier {
   Future<void> addTransactionToFirestore(TransactionModel transaction) async {
     try {
       await transactionCollection.doc(transaction.id).set(
-            transaction.toMap(),
-          );
-    } catch (error) {
-      const Text(
-        "Erro ao adicionar",
-        style: TextStyle(fontSize: 12),
+        transaction.toMap(),
       );
+    } catch (error) {
+      // tratar em caso de erro
     }
-    notifyListeners();
   }
 
   Future<void> removeTransactionFromFirestore(String transactionId) async {
     try {
       await transactionCollection.doc(transactionId).delete();
     } catch (error) {
-      const Text(
-        "Erro ao remover",
-        style: TextStyle(fontSize: 12),
-      );
+      // tratar em caso de erro
     }
-    notifyListeners();
   }
 
   Future<List<TransactionModel>> getTransactionFromFirestore() async {
@@ -68,25 +59,21 @@ class TransactionController extends ChangeNotifier {
       QuerySnapshot querySnapshot = await transactionCollection.get();
       trasactions = querySnapshot.docs
           .map((doc) =>
-              TransactionModel.fromMap(doc.data() as Map<String, dynamic>))
+          TransactionModel.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
     } catch (error) {
-      // const Text(
-      //   "Erro ao carregar os dados",
-      //   style: TextStyle(fontSize: 12),
-      // );
+      // tratar em caso de erro
     }
-    notifyListeners();
     return trasactions;
   }
 
   Stream<List<TransactionModel>> getTransactionByMonth(DateTime selectedMonth) {
     return transactionCollection
         .where('transactionDate',
-            isGreaterThanOrEqualTo:
-                DateTime(selectedMonth.year, selectedMonth.month, 1),
-            isLessThan:
-                DateTime(selectedMonth.year, selectedMonth.month + 1, 1))
+        isGreaterThanOrEqualTo:
+        DateTime(selectedMonth.year, selectedMonth.month, 1),
+        isLessThan:
+        DateTime(selectedMonth.year, selectedMonth.month + 1, 1))
         .snapshots()
         .map((querySnapshot) {
       return querySnapshot.docs.map((doc) {
@@ -97,7 +84,6 @@ class TransactionController extends ChangeNotifier {
           value: doc["value"],
           isCompleted: doc["isCompleted"],
           transactionDate: doc["transactionDate"].toDate(),
-          category: doc["category"],
           isRepeat: doc["isRepeat"],
           numberOfRepeats: doc["numberOfRepeats"],
         );
@@ -116,9 +102,8 @@ class TransactionController extends ChangeNotifier {
         const Text("Erro ao atualizar");
       }
     } catch (error) {
-      const Text("Erro ao atualizar");
+      // tratar em caso de erro
     }
-    notifyListeners();
   }
 
   Future<void> updateStatus(String transactionId, String field, dynamic value) async {
@@ -126,7 +111,8 @@ class TransactionController extends ChangeNotifier {
       Map<String, dynamic> dataToUpdate = {field: value};
       await transactionCollection.doc(transactionId).update(dataToUpdate);
     } catch (error) {
-      const Text("Erro ao atualizar o status");
+      // tratar em caso de erro
     }
   }
 }
+

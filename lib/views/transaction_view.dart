@@ -78,11 +78,11 @@ class _TransactionViewState extends State<TransactionView> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 }
-                // if (snapshot.hasError) {
-                //   return const Center(
-                //     child: Text('dadoooooooooo'),
-                //   );
-                // }
+                if (snapshot.hasError) {
+                  return const Center(
+                    child: Text('dadoooooooooo'),
+                  );
+                }
                 final transactions = snapshot.data;
                 if (transactions == null || transactions.isEmpty) {
                   return const Center(
@@ -107,7 +107,8 @@ class _TransactionViewState extends State<TransactionView> {
                           Radius.circular(12),
                         ),
                       ),
-                      leading: const FaIcon(
+                      leading:
+                      const FaIcon(
                         FontAwesomeIcons.arrowTrendUp,
                         color: Colors.green,
                       ),
@@ -137,11 +138,11 @@ class _TransactionViewState extends State<TransactionView> {
                       ),
                       trailing:
                       transactions[i].isCompleted == true ?
-                      FaIcon(
+                      const FaIcon(
                         FontAwesomeIcons.chevronUp,
                         // color: Colors.lightBlue,
                         size: 20,
-                      ) : FaIcon(
+                      ) : const FaIcon(
                         FontAwesomeIcons.minus,
                         // color: Colors.yellow,
                         size: 20,

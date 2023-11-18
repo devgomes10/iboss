@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'business/category_model.dart';
 
 class TransactionModel {
@@ -30,13 +29,10 @@ class TransactionModel {
         description = map["description"],
         value = map["value"],
         isCompleted = map["isCompleted"],
-        transactionDate = (map["transactionDate"] as Timestamp).toDate(),
-        category = map.containsKey("category")
-            ? CategoryModel.fromMap(map["category"] as Map<String, dynamic>)
-            : null,
+        transactionDate = map["transactionDate"],
+        category = map["category"],
         isRepeat = map["isRepeat"],
         numberOfRepeats = map["numberOfRepeats"];
-
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {
@@ -50,9 +46,8 @@ class TransactionModel {
       "numberOfRepeats": numberOfRepeats,
     };
 
-    // Adiciona o campo 'category' ao mapa somente se não for nulo
     if (category != null) {
-      map["category"] = category!.toMap(); // Ou ajuste de acordo com a estrutura de CategoryModel
+      map["category"] = category!.toMap();
     }
 
     return map;
