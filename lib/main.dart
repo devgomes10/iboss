@@ -7,7 +7,7 @@ import 'package:iboss/controllers/business/revenue_controller.dart';
 import 'package:iboss/controllers/business/deferred_payment_controller.dart';
 import 'package:iboss/controllers/business/expense_controller.dart';
 import 'package:iboss/controllers/business/variable_expense_controller.dart';
-import 'package:iboss/controllers/goals/company_goals_controller.dart';
+import 'package:iboss/controllers/goals/goal_controller.dart';
 import 'package:iboss/controllers/goals/personal_goals_controller.dart';
 import 'package:iboss/components/menu_navigation.dart';
 import 'package:iboss/controllers/transaction_controller.dart';
@@ -36,7 +36,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => CatalogController()),
         ChangeNotifierProvider(create: (context) => RevenueController()),
         ChangeNotifierProvider(create: (context) => DeferredPaymentController()),
-        ChangeNotifierProvider(create: (context) => CompanyGoalsController()),
+        ChangeNotifierProvider(create: (context) => GoalController()),
         ChangeNotifierProvider(create: (context) => ExpenseController()),
         ChangeNotifierProvider(create: (context) => VariableExpenseController()),
         ChangeNotifierProvider(create: (context) => PersonalGoalsController()),

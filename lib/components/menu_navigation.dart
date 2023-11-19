@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:iboss/components/forms/goals/goals_form.dart';
+import 'package:iboss/components/forms/goals/goal_form.dart';
 import 'package:iboss/components/transaction_form.dart';
 import 'package:iboss/views/business/business_view.dart';
 import 'package:iboss/views/business/expense_view.dart';
