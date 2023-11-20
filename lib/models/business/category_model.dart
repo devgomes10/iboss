@@ -1,20 +1,30 @@
+import 'package:flutter/material.dart';
+
 class CategoryModel {
-  String name;
   String id;
+  String name;
+  Color color;
+  double budget;
 
   CategoryModel({
-    required this.name,
     required this.id,
+    required this.name,
+    required this.color,
+    required this.budget,
   });
 
   CategoryModel.fromMap(Map<String, dynamic> map)
-      : name = map["name"],
-        id = map["id"];
+      : id = map["id"],
+        name = map["name"],
+        color = map["color"],
+        budget = map["budget"];
 
   Map<String, dynamic> toMap() {
     return {
-      "name": name,
       "id": id,
+      "name": name,
+      "color": color,
+      "budget": budget,
     };
   }
 }

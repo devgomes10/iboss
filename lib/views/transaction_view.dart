@@ -89,9 +89,10 @@ class _TransactionViewState extends State<TransactionView> {
                     child: Text('Nenhum dado disponível'),
                   );
                 }
-                return ListView.separated(itemBuilder: (BuildContext context, int i) {
-                  TransactionModel model = transactions[i];
-                  return ListTile(
+                return ListView.separated(
+                  itemBuilder: (BuildContext context, int i) {
+                    TransactionModel model = transactions[i];
+                    return ListTile(
                       onTap: () {
                         Navigator.push(
                           context,
@@ -107,11 +108,9 @@ class _TransactionViewState extends State<TransactionView> {
                           Radius.circular(12),
                         ),
                       ),
-                      leading:
-                      const FaIcon(
-                        FontAwesomeIcons.arrowTrendUp,
-                        color: Colors.green,
-                      ),
+                      leading: (transactions[i].isRevenue == true)
+                          ? const FaIcon(FontAwesomeIcons.arrowTrendUp)
+                          : const FaIcon(FontAwesomeIcons.arrowTrendDown),
                       title: Text(
                         transactions[i].description,
                         style: const TextStyle(
@@ -136,22 +135,24 @@ class _TransactionViewState extends State<TransactionView> {
                           )
                         ],
                       ),
-                      trailing:
-                      transactions[i].isCompleted == true ?
-                      const FaIcon(
-                        FontAwesomeIcons.chevronUp,
-                        // color: Colors.lightBlue,
-                        size: 20,
-                      ) : const FaIcon(
-                        FontAwesomeIcons.minus,
-                        // color: Colors.yellow,
-                        size: 20,
-                      )
-                  );
-                }, separatorBuilder: (_, __) =>
-                const Divider(color: Colors.white),
-                    padding: const EdgeInsets.fromLTRB(16, 14, 16, 80),
-                    itemCount: transactions.length,);
+                      trailing: transactions[i].isCompleted == true
+                          ? const FaIcon(
+                              FontAwesomeIcons.chevronUp,
+                              // color: Colors.lightBlue,
+                              size: 20,
+                            )
+                          : const FaIcon(
+                              FontAwesomeIcons.minus,
+                              // color: Colors.yellow,
+                              size: 20,
+                            ),
+                    );
+                  },
+                  separatorBuilder: (_, __) =>
+                      const Divider(color: Colors.white),
+                  padding: const EdgeInsets.fromLTRB(16, 14, 16, 80),
+                  itemCount: transactions.length,
+                );
               },
             ),
           ),

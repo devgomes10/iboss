@@ -20,7 +20,7 @@ class TransactionForm extends StatefulWidget {
 }
 
 class _TransactionFormState extends State<TransactionForm> {
-  bool isRevenue = true;
+  bool isRevenue = false;
   bool isCompleted = false;
   bool isRepeat = false;
   bool _isEditing = false;
@@ -372,7 +372,7 @@ class _TransactionFormState extends State<TransactionForm> {
                             value: double.parse(valueController.text),
                             isCompleted: isCompleted,
                             transactionDate: transactionDate,
-                            category: CategoryModel(name: "teste", id: "id"),
+                            category: CategoryModel(name: "teste 2", id: "id2", color: Colors.lightBlue, budget: 2),
                             isRepeat: isRepeat,
                             numberOfRepeats: numberOfRepeats,
                           );

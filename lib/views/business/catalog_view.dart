@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/forms/business/catalog_form.dart';
 import 'package:iboss/components/forms/business/revenue_form.dart';
 import 'package:iboss/components/show_confirmation.dart';
-import 'package:iboss/controllers/business/catalog_controller.dart';
+import 'package:iboss/controllers/business/product_controller.dart';
 import 'package:iboss/models/business/product_model.dart';
 import 'package:intl/intl.dart';
 
@@ -21,7 +21,7 @@ class CatalogView extends StatefulWidget {
 }
 
 class _CatalogViewState extends State<CatalogView> {
-  final catalogController = CatalogController();
+  final catalogController = ProductController();
   final NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
   final TextEditingController _searchController = TextEditingController();
 
@@ -59,7 +59,7 @@ class _CatalogViewState extends State<CatalogView> {
         centerTitle: true,
       ),
       body: StreamBuilder<List<ProductModel>>(
-        stream: catalogController.getCatalogFromFirestore(),
+        stream: catalogController.getProductFromFirestore(),
         builder:
             (BuildContext context, AsyncSnapshot<List<ProductModel>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -128,7 +128,7 @@ class _CatalogViewState extends State<CatalogView> {
                             "Deseja mesmo remover esse produto/serviço?",
                             onPressed: () {
                               catalogController
-                                  .removeCatalogFromFirestore(product.id);
+                                  .removeProductFromFirestore(product.id);
                             },
                             messegerSnack: "Produto/serviço deletado",
                             isError: false,

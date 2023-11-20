@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:iboss/models/business/product_model.dart';
 import 'dart:async';
 
-class CatalogController extends ChangeNotifier {
-  late String uidCatalog;
-  late CollectionReference catalogCollection;
+class ProductController extends ChangeNotifier {
+  late String uidProduct;
+  late CollectionReference productCollection;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   Map<String, int> selectedCatalogItems = {};
   final _selectedItemsStreamController = StreamController<Map<String, int>>.broadcast();
   Stream<Map<String, int>> get selectedItemsStream => _selectedItemsStreamController.stream;
 
-  CatalogController() {
-    uidCatalog = FirebaseAuth.instance.currentUser!.uid;
-    catalogCollection =
-        FirebaseFirestore.instance.collection('catalog_$uidCatalog');
+  ProductController() {
+    uidProduct = FirebaseAuth.instance.currentUser!.uid;
+    productCollection =
+        FirebaseFirestore.instance.collection('catalog_$uidProduct');
   }
 
   // double calculateTotalSelectedPrice() {
@@ -43,10 +43,10 @@ class CatalogController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addCatalogToFirestore(ProductModel catalog) async {
+  Future<void> addProductToFirestore(ProductModel product) async {
     try {
-      await catalogCollection.doc(catalog.id).set(
-        catalog.toMap(),
+      await productCollection.doc(product.id).set(
+        product.toMap(),
       );
     } catch (error) {
       // Lida com o erro aqui.
@@ -54,24 +54,25 @@ class CatalogController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> removeCatalogFromFirestore(String catalogId) async {
+  Future<void> removeProductFromFirestore(String productId) async {
     try {
-      await catalogCollection.doc(catalogId).delete();
+      await productCollection.doc(productId).delete();
     } catch (error) {
       // Lida com o erro aqui.
     }
     notifyListeners();
   }
 
-  Stream<List<ProductModel>> getCatalogFromFirestore() {
-    return catalogCollection.snapshots().map(
+  Stream<List<ProductModel>> getProductFromFirestore() {
+    return productCollection.snapshots().map(
           (snapshot) {
         return snapshot.docs.map(
               (doc) {
             return ProductModel(
+              id: doc.id,
               name: doc['name'],
               price: doc['price'].toDouble(),
-              id: doc.id,
+              soldAmount: doc['soldAmount'],
             );
           },
         ).toList();

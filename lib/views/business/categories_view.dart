@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:iboss/controllers/business/categories_controller.dart';
+import 'package:iboss/controllers/business/category_controller.dart';
 import 'package:iboss/components/show_confirmation.dart';
 import 'package:iboss/models/business/category_model.dart';
 
@@ -27,7 +27,7 @@ class _CategoriesViewState extends State<CategoriesView> {
         centerTitle: true,
       ),
       body: StreamBuilder<List<CategoryModel>>(
-        stream: CategoriesController().getCategoriesFromFirestore(),
+        stream: CategoryController().getCategoryFromFirestore(),
         builder: (BuildContext context, AsyncSnapshot<List<CategoryModel>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -72,7 +72,7 @@ class _CategoriesViewState extends State<CategoriesView> {
                             context: context,
                             title: "Deseja deletar essa categoria?",
                             onPressed: () {
-                              CategoriesController().removeCategoriesFromFirestore(category.id);
+                              CategoryController().removeCategoryFromFirestore(category.id);
                             },
                             messegerSnack: "Categoria deletada",
                             isError: false,

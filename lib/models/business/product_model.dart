@@ -1,24 +1,28 @@
 class ProductModel {
+  String id;
   String name;
   double price;
-  String id;
+  int soldAmount;
 
   ProductModel({
+    required this.id,
     required this.name,
     required this.price,
-    required this.id,
+    required this.soldAmount,
   });
 
   ProductModel.fromMap(Map<String, dynamic> map)
-      : name = map["name"],
+      : id = map["id"],
+        name = map["name"],
         price = map["price"],
-        id = map["id"];
+        soldAmount = map["soldAmount"];
 
   Map<String, dynamic> toMap() {
     return {
+      "id": id,
       "name": name,
       "price": price,
-      "id": id,
+      "soldAmount": soldAmount,
     };
   }
 }

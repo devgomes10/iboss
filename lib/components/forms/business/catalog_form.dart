@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iboss/components/show_snackbar.dart';
-import 'package:iboss/controllers/business/catalog_controller.dart';
+import 'package:iboss/controllers/business/product_controller.dart';
 import 'package:iboss/models/business/product_model.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -131,8 +131,8 @@ class __BottomSheetNewCatalogState extends State<_BottomSheetNewCatalog> {
               ),
               const SizedBox(height: 24),
               Center(
-                child: Consumer<CatalogController>(
-                  builder: (BuildContext context, CatalogController catalog,
+                child: Consumer<ProductController>(
+                  builder: (BuildContext context, ProductController catalog,
                       Widget? widget) {
                     return SizedBox(
                       width: 130,
@@ -140,16 +140,17 @@ class __BottomSheetNewCatalogState extends State<_BottomSheetNewCatalog> {
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             ProductModel catalog = ProductModel(
+                              id: invoicingId,
                               name: nameController.text,
                               price: double.parse(priceController.text),
-                              id: invoicingId,
+                              soldAmount: 2,
                             );
 
                             if (catalogModel != null) {
                               catalog.id = catalogModel.id;
                             }
-                            await CatalogController()
-                                .addCatalogToFirestore(catalog);
+                            await ProductController()
+                                .addProductToFirestore(catalog);
 
                             Navigator.pop(context);
 

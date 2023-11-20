@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iboss/components/forms/business/expense_form.dart';
-import 'package:iboss/controllers/business/catalog_controller.dart';
-import 'package:iboss/controllers/business/categories_controller.dart';
+import 'package:iboss/controllers/business/product_controller.dart';
+import 'package:iboss/controllers/business/category_controller.dart';
 import 'package:iboss/controllers/business/revenue_controller.dart';
 import 'package:iboss/controllers/business/deferred_payment_controller.dart';
 import 'package:iboss/controllers/business/expense_controller.dart';
@@ -32,8 +32,8 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => TransactionController()),
-        ChangeNotifierProvider(create: (context) => CategoriesController()),
-        ChangeNotifierProvider(create: (context) => CatalogController()),
+        ChangeNotifierProvider(create: (context) => CategoryController()),
+        ChangeNotifierProvider(create: (context) => ProductController()),
         ChangeNotifierProvider(create: (context) => RevenueController()),
         ChangeNotifierProvider(create: (context) => DeferredPaymentController()),
         ChangeNotifierProvider(create: (context) => GoalController()),

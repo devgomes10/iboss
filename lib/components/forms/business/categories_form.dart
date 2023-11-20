@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iboss/components/show_snackbar.dart';
-import 'package:iboss/controllers/business/categories_controller.dart';
+import 'package:iboss/controllers/business/category_controller.dart';
 import 'package:iboss/models/business/category_model.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -101,8 +101,8 @@ class __BottomSheetNewCategoryState extends State<_BottomSheetNewCategory> {
               ),
               const SizedBox(height: 24),
               Center(
-                child: Consumer<CategoriesController>(
-                  builder: (BuildContext context, CategoriesController category,
+                child: Consumer<CategoryController>(
+                  builder: (BuildContext context, CategoryController category,
                       Widget? widget) {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -113,15 +113,17 @@ class __BottomSheetNewCategoryState extends State<_BottomSheetNewCategory> {
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 CategoryModel category = CategoryModel(
-                                  name: nameController.text,
                                   id: invoicingId,
+                                  name: nameController.text,
+                                  color: Colors.white,
+                                  budget: 2,
                                 );
 
                                 if (categoryModel != null) {
                                   category.id = categoryModel.id;
                                 }
-                                await CategoriesController()
-                                    .addCategoriesToFirestore(category);
+                                await CategoryController()
+                                    .addCategoryToFirestore(category);
 
                                 Navigator.pop(context);
 
