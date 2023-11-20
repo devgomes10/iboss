@@ -23,7 +23,7 @@ class CategoryController extends ChangeNotifier {
             return CategoryModel(
               id: doc.id,
               name: doc['name'],
-              color: doc['color'],
+              // color: doc['color'],
               budget: doc['budget'],
             );
           },
@@ -60,7 +60,7 @@ class CategoryController extends ChangeNotifier {
             return CategoryModel(
               id: doc.id,
               name: doc['name'],
-              color: doc['color'],
+              // color: doc['color'],
               budget: doc['budget'],
             );
           },

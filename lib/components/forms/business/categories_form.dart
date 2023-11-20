@@ -115,7 +115,7 @@ class __BottomSheetNewCategoryState extends State<_BottomSheetNewCategory> {
                                 CategoryModel category = CategoryModel(
                                   id: invoicingId,
                                   name: nameController.text,
-                                  color: Colors.white,
+                                  // color: Colors.white,
                                   budget: 2,
                                 );
 

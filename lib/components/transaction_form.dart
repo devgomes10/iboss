@@ -20,7 +20,7 @@ class TransactionForm extends StatefulWidget {
 }
 
 class _TransactionFormState extends State<TransactionForm> {
-  bool isRevenue = false;
+  bool isRevenue = true;
   bool isCompleted = false;
   bool isRepeat = false;
   bool _isEditing = false;
@@ -126,9 +126,7 @@ class _TransactionFormState extends State<TransactionForm> {
                         width: 15,
                       ),
                       Text(
-                        isRevenue ?
-                        "Recebeu?" :
-                        "Está paga?",
+                        isRevenue ? "Recebeu?" : "Está paga?",
                         style: GoogleFonts.raleway(
                           fontSize: 20,
                         ),
@@ -141,13 +139,11 @@ class _TransactionFormState extends State<TransactionForm> {
                       setState(() {
                         isCompleted = newValue;
                       });
-                      final transaction =
-                      await TransactionController()
+                      final transaction = await TransactionController()
                           .getTransactionFromFirestore();
                       if (transaction.isNotEmpty) {
                         final firstTransaction = transaction.first;
-                        TransactionController()
-                            .updateStatus(
+                        TransactionController().updateStatus(
                             firstTransaction.id, "isCompleted", newValue);
                       }
                     },
@@ -170,7 +166,7 @@ class _TransactionFormState extends State<TransactionForm> {
                   if (picked != null) {
                     setState(
                           () {
-                            transactionDate = picked;
+                        transactionDate = picked;
                       },
                     );
                   }
@@ -225,9 +221,7 @@ class _TransactionFormState extends State<TransactionForm> {
                             width: 15,
                           ),
                           Text(
-                            isRevenue ?
-                            "Catálogo" :
-                            "Categoria",
+                            isRevenue ? "Catálogo" : "Categoria",
                             style: GoogleFonts.raleway(
                               fontSize: 20,
                             ),
@@ -278,7 +272,8 @@ class _TransactionFormState extends State<TransactionForm> {
                                           // const Text("Quantidade de Repetições:"),
                                           CupertinoPicker(
                                             itemExtent: 32,
-                                            scrollController: FixedExtentScrollController(
+                                            scrollController:
+                                            FixedExtentScrollController(
                                               initialItem: 1,
                                             ),
                                             onSelectedItemChanged: (int value) {
@@ -288,8 +283,8 @@ class _TransactionFormState extends State<TransactionForm> {
                                                 }
                                               });
                                             },
-                                            children: List.generate(
-                                                10, (index) {
+                                            children:
+                                            List.generate(10, (index) {
                                               return Text(
                                                   (index + 1).toString());
                                             }),
@@ -314,7 +309,6 @@ class _TransactionFormState extends State<TransactionForm> {
                       ),
                     ],
                   ),
-
                   if (isRepeat)
                     Container(
                       child: Column(
@@ -343,7 +337,8 @@ class _TransactionFormState extends State<TransactionForm> {
                 height: 26,
               ),
               Consumer<TransactionController>(
-                builder: (BuildContext context, TransactionController transaction, Widget? widget) {
+                builder: (BuildContext context,
+                    TransactionController transaction, Widget? widget) {
                   return ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
@@ -355,38 +350,44 @@ class _TransactionFormState extends State<TransactionForm> {
 
                         if (isRevenue == true) {
                           newTransaction = TransactionModel(
-                            id: invoicingId,
+                            id: _isEditing ? transactionModel!.id : invoicingId,
                             isRevenue: isRevenue,
                             description: descriptionController.text,
                             value: double.parse(valueController.text),
                             isCompleted: isCompleted,
                             transactionDate: transactionDate,
                             isRepeat: isRepeat,
-                            numberOfRepeats: numberOfRepeats,
+                            numberOfRepeats: isRepeat ? numberOfRepeats : 1,
                           );
                         } else {
                           newTransaction = TransactionModel(
-                            id: invoicingId,
+                            id: _isEditing ? transactionModel!.id : invoicingId,
                             isRevenue: isRevenue,
                             description: descriptionController.text,
                             value: double.parse(valueController.text),
                             isCompleted: isCompleted,
                             transactionDate: transactionDate,
-                            category: CategoryModel(name: "teste 2", id: "id2", color: Colors.lightBlue, budget: 2),
+                            category: CategoryModel(
+                                name: "teste 2",
+                                id: "id2",
+                                // color: Colors.lightBlue,
+                                budget: 2),
                             isRepeat: isRepeat,
-                            numberOfRepeats: numberOfRepeats,
+                            numberOfRepeats: isRepeat ? numberOfRepeats : 1,
                           );
                         }
 
                         if (_isEditing) {
-                          await transaction.updateTransactionInFirestore(newTransaction);
+                          await transaction
+                              .updateTransactionInFirestore(newTransaction);
                           showSnackbar(
                             context: context,
                             menssager: "Editada",
                             isError: false,
                           );
                         } else {
-                          await transaction.addTransactionToFirestore(newTransaction);
+                          await transaction
+                              .addTransactionToFirestore(newTransaction);
                           showSnackbar(
                             context: context,
                             menssager: "Adicionada",
@@ -397,14 +398,16 @@ class _TransactionFormState extends State<TransactionForm> {
                       }
                     },
                     style: TextButton.styleFrom(
-                      backgroundColor: Theme.of(context).colorScheme.secondary,
+                      backgroundColor: Theme
+                          .of(context)
+                          .colorScheme
+                          .secondary,
                       minimumSize: const Size(300, 40),
                     ),
                     child: const Text("CONFIRMAR"),
                   );
                 },
               )
-
             ],
           ),
         ),

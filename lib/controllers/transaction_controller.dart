@@ -43,6 +43,7 @@ class TransactionController extends ChangeNotifier {
     } catch (error) {
       // tratar em caso de erro
     }
+    notifyListeners();
   }
 
   Future<void> removeTransactionFromFirestore(String transactionId) async {
@@ -51,6 +52,7 @@ class TransactionController extends ChangeNotifier {
     } catch (error) {
       // tratar em caso de erro
     }
+    notifyListeners();
   }
 
   Future<List<TransactionModel>> getTransactionFromFirestore() async {
@@ -99,11 +101,12 @@ class TransactionController extends ChangeNotifier {
             .doc(updatedTransaction.id)
             .update(updatedTransaction.toMap());
       } else {
-        const Text("Erro ao atualizar");
+        // tratar em caso de erro
       }
     } catch (error) {
       // tratar em caso de erro
     }
+    notifyListeners();
   }
 
   Future<void> updateStatus(String transactionId, String field, dynamic value) async {

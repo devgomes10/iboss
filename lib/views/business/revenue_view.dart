@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/components/forms/business/revenue_form.dart';
@@ -112,61 +111,60 @@ class _RevenueViewState extends State<RevenueView> {
                   itemBuilder: (BuildContext context, int i) {
                     RevenueModel model = revenues[i];
                     return ListTile(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => RevenueForm(
-                              model: model,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RevenueForm(
+                                model: model,
+                              ),
                             ),
+                          );
+                        },
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(12),
                           ),
-                        );
-                      },
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(12),
                         ),
-                      ),
-                      leading: const FaIcon(
-                        FontAwesomeIcons.arrowTrendUp,
-                        color: Colors.green,
-                      ),
-                      title: Text(
-                        revenues[i].description,
-                        style: const TextStyle(
-                          fontSize: 20,
+                        leading: const FaIcon(
+                          FontAwesomeIcons.arrowTrendUp,
+                          color: Colors.green,
                         ),
-                      ),
-                      subtitle: Row(
-                        children: [
-                          Text(
-                            real.format(
-                              revenues[i].value,
-                            ),
-                            style: const TextStyle(
-                              fontSize: 18,
-                            ),
+                        title: Text(
+                          revenues[i].description,
+                          style: const TextStyle(
+                            fontSize: 20,
                           ),
-                          Text(
-                           " | ${DateFormat.Md("pt_BR").format(revenues[i].receiptDate)}",
-                            style: const TextStyle(
-                              fontSize: 18,
+                        ),
+                        subtitle: Row(
+                          children: [
+                            Text(
+                              real.format(
+                                revenues[i].value,
+                              ),
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
                             ),
-                          )
-                        ],
-                      ),
-                      trailing:
-                          revenues[i].isReceived == true ?
-                      FaIcon(
-                        FontAwesomeIcons.chevronUp,
-                        // color: Colors.lightBlue,
-                        size: 20,
-                      ) : FaIcon(
-                            FontAwesomeIcons.minus,
-                            // color: Colors.yellow,
-                            size: 20,
-                         )
-                    );
+                            Text(
+                              " | ${DateFormat.Md("pt_BR").format(revenues[i].receiptDate)}",
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                            )
+                          ],
+                        ),
+                        trailing: revenues[i].isReceived == true
+                            ? FaIcon(
+                                FontAwesomeIcons.chevronUp,
+                                // color: Colors.lightBlue,
+                                size: 20,
+                              )
+                            : FaIcon(
+                                FontAwesomeIcons.minus,
+                                // color: Colors.yellow,
+                                size: 20,
+                              ));
                   },
                   separatorBuilder: (_, __) =>
                       const Divider(color: Colors.white),

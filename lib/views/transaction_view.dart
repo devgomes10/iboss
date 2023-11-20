@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/controllers/transaction_controller.dart';
@@ -19,6 +20,20 @@ class _TransactionViewState extends State<TransactionView> {
   final valueController = TextEditingController();
   final NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
   String invoicingId = const Uuid().v1();
+  StreamSubscription<List<TransactionModel>>? transactionStreamSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    transactionStreamSubscription =
+        TransactionController().getTransactionByMonth(_selectedDate).listen((data) {});
+  }
+
+  @override
+  void dispose() {
+    transactionStreamSubscription?.cancel();
+    super.dispose();
+  }
 
   void _changeMonth(bool increment) {
     setState(() {
@@ -38,10 +53,6 @@ class _TransactionViewState extends State<TransactionView> {
       appBar: AppBar(
         title: const Text("Transações"),
         centerTitle: true,
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const FaIcon(FontAwesomeIcons.plus),
       ),
       body: Column(
         children: [
@@ -80,7 +91,7 @@ class _TransactionViewState extends State<TransactionView> {
                 }
                 if (snapshot.hasError) {
                   return const Center(
-                    child: Text('dadoooooooooo'),
+                    child: Text('Erro ao carregar os dados'),
                   );
                 }
                 final transactions = snapshot.data;
