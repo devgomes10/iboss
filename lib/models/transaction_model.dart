@@ -29,7 +29,7 @@ class TransactionModel {
         description = map["description"],
         value = map["value"],
         isCompleted = map["isCompleted"],
-        transactionDate = map["transactionDate"],
+        transactionDate = map["transactionDate"].toDate(),
         category = map["category"],
         isRepeat = map["isRepeat"],
         numberOfRepeats = map["numberOfRepeats"];

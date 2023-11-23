@@ -3,13 +3,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/controllers/business/category_controller.dart';
 import 'package:iboss/components/show_confirmation.dart';
 import 'package:iboss/models/business/category_model.dart';
-
+import 'package:provider/provider.dart';
 import '../../components/forms/business/categories_form.dart';
 
 class CategoriesView extends StatefulWidget {
-  final bool isSelecting;
+  final bool? isSelecting;
 
-  const CategoriesView({Key? key, required this.isSelecting}) : super(key: key);
+  const CategoriesView({Key? key, this.isSelecting})
+      : super(key: key);
 
   @override
   State<CategoriesView> createState() => _CategoriesViewState();
@@ -17,6 +18,7 @@ class CategoriesView extends StatefulWidget {
 
 class _CategoriesViewState extends State<CategoriesView> {
   TextEditingController nameController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,8 @@ class _CategoriesViewState extends State<CategoriesView> {
       ),
       body: StreamBuilder<List<CategoryModel>>(
         stream: CategoryController().getCategoryFromFirestore(),
-        builder: (BuildContext context, AsyncSnapshot<List<CategoryModel>> snapshot) {
+        builder: (BuildContext context,
+            AsyncSnapshot<List<CategoryModel>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -67,26 +70,30 @@ class _CategoriesViewState extends State<CategoriesView> {
                       ),
                       trailing: widget.isSelecting == false
                           ? IconButton(
-                        onPressed: () {
-                          showConfirmation(
-                            context: context,
-                            title: "Deseja deletar essa categoria?",
-                            onPressed: () {
-                              CategoryController().removeCategoryFromFirestore(category.id);
-                            },
-                            messegerSnack: "Categoria deletada",
-                            isError: false,
-                          );
-                        },
-                        icon: const FaIcon(
-                          FontAwesomeIcons.trash,
-                          color: Colors.red,
-                        ),
-                      )
+                              onPressed: () {
+                                showConfirmation(
+                                  context: context,
+                                  title: "Deseja deletar essa categoria?",
+                                  onPressed: () {
+                                    CategoryController()
+                                        .removeCategoryFromFirestore(
+                                            category.id);
+                                  },
+                                  messegerSnack: "Categoria deletada",
+                                  isError: false,
+                                );
+                              },
+                              icon: const FaIcon(
+                                FontAwesomeIcons.trash,
+                                color: Colors.red,
+                              ),
+                            )
                           : null,
                       onTap: () {
                         if (widget.isSelecting == true) {
-                          Navigator.pop(context, category);
+                          Provider.of<CategoryController>(context, listen: false)
+                              .setSelectedCategory(category);
+                          Navigator.pop(context);
                         } else {
                           // Aqui você pode fazer algo se estiver editando
                           NewCategoryBottomSheet.show(context, model: category);
@@ -94,7 +101,8 @@ class _CategoriesViewState extends State<CategoriesView> {
                       },
                     );
                   },
-                  separatorBuilder: (_, __) => const Divider(color: Colors.white),
+                  separatorBuilder: (_, __) =>
+                      const Divider(color: Colors.white),
                   padding: const EdgeInsets.only(
                     top: 14,
                     left: 16,
@@ -109,11 +117,11 @@ class _CategoriesViewState extends State<CategoriesView> {
       ),
       floatingActionButton: widget.isSelecting == false
           ? FloatingActionButton(
-        onPressed: () {
-          NewCategoryBottomSheet.show(context);
-        },
-        child: const FaIcon(FontAwesomeIcons.plus),
-      )
+              onPressed: () {
+                NewCategoryBottomSheet.show(context);
+              },
+              child: const FaIcon(FontAwesomeIcons.plus),
+            )
           : null,
     );
   }

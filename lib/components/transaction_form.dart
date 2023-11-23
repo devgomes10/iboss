@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iboss/components/show_snackbar.dart';
+import 'package:iboss/controllers/business/category_controller.dart';
 import 'package:iboss/controllers/transaction_controller.dart';
-import 'package:iboss/models/business/category_model.dart';
 import 'package:iboss/models/transaction_model.dart';
+import 'package:iboss/views/business/catalog_view.dart';
+import 'package:iboss/views/business/categories_view.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/Uuid.dart';
+
+import '../models/business/category_model.dart';
 
 class TransactionForm extends StatefulWidget {
   final TransactionModel? model;
@@ -20,7 +24,7 @@ class TransactionForm extends StatefulWidget {
 }
 
 class _TransactionFormState extends State<TransactionForm> {
-  bool isRevenue = true;
+  bool isRevenue = false;
   bool isCompleted = false;
   bool isRepeat = false;
   bool _isEditing = false;
@@ -51,17 +55,19 @@ class _TransactionFormState extends State<TransactionForm> {
 
   @override
   Widget build(BuildContext context) {
+    CategoryModel? selectedCategory =
+        Provider.of<CategoryController>(context).selectedCategory;
     final transactionModel = widget.model;
     return Scaffold(
       appBar: AppBar(
         title: Text(
           isRevenue
               ? _isEditing
-              ? "Editando receita"
-              : "Adicionando receita"
+                  ? "Editando receita"
+                  : "Adicionando receita"
               : _isEditing
-              ? "Editando despesa"
-              : "Adicionando despesa",
+                  ? "Editando despesa"
+                  : "Adicionando despesa",
         ),
         centerTitle: true,
       ),
@@ -165,7 +171,7 @@ class _TransactionFormState extends State<TransactionForm> {
                   );
                   if (picked != null) {
                     setState(
-                          () {
+                      () {
                         transactionDate = picked;
                       },
                     );
@@ -201,13 +207,23 @@ class _TransactionFormState extends State<TransactionForm> {
               ),
               InkWell(
                 onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) =>
-                  //     const CatalogView(isSelecting: true),
-                  //   ),
-                  // );
+                  isRevenue
+                      ? Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CatalogView(
+                              isSelecting: true,
+                            ),
+                          ),
+                        )
+                      : Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CategoriesView(
+                              isSelecting: true,
+                            ),
+                          ),
+                        );
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(top: 12, bottom: 12),
@@ -221,7 +237,11 @@ class _TransactionFormState extends State<TransactionForm> {
                             width: 15,
                           ),
                           Text(
-                            isRevenue ? "Catálogo" : "Categoria",
+                            isRevenue
+                                ? "Catálogo"
+                                : selectedCategory != null
+                                    ? selectedCategory!.name
+                                    : "Categoria",
                             style: GoogleFonts.raleway(
                               fontSize: 20,
                             ),
@@ -273,7 +293,7 @@ class _TransactionFormState extends State<TransactionForm> {
                                           CupertinoPicker(
                                             itemExtent: 32,
                                             scrollController:
-                                            FixedExtentScrollController(
+                                                FixedExtentScrollController(
                                               initialItem: 1,
                                             ),
                                             onSelectedItemChanged: (int value) {
@@ -284,7 +304,7 @@ class _TransactionFormState extends State<TransactionForm> {
                                               });
                                             },
                                             children:
-                                            List.generate(10, (index) {
+                                                List.generate(10, (index) {
                                               return Text(
                                                   (index + 1).toString());
                                             }),
@@ -367,11 +387,7 @@ class _TransactionFormState extends State<TransactionForm> {
                             value: double.parse(valueController.text),
                             isCompleted: isCompleted,
                             transactionDate: transactionDate,
-                            category: CategoryModel(
-                                name: "teste 2",
-                                id: "id2",
-                                // color: Colors.lightBlue,
-                                budget: 2),
+                            category: selectedCategory,
                             isRepeat: isRepeat,
                             numberOfRepeats: isRepeat ? numberOfRepeats : 1,
                           );
@@ -398,16 +414,13 @@ class _TransactionFormState extends State<TransactionForm> {
                       }
                     },
                     style: TextButton.styleFrom(
-                      backgroundColor: Theme
-                          .of(context)
-                          .colorScheme
-                          .secondary,
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
                       minimumSize: const Size(300, 40),
                     ),
                     child: const Text("CONFIRMAR"),
                   );
                 },
-              )
+              ),
             ],
           ),
         ),

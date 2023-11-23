@@ -8,11 +8,18 @@ class CategoryController extends ChangeNotifier {
   late String uidCategory;
   late CollectionReference categoryCollection;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  CategoryModel? _selectedCategory;
+  CategoryModel? get selectedCategory => _selectedCategory;
 
   CategoryController() {
     uidCategory = FirebaseAuth.instance.currentUser!.uid;
     categoryCollection =
         FirebaseFirestore.instance.collection('category_$uidCategory');
+  }
+
+  void setSelectedCategory(CategoryModel category) {
+    _selectedCategory = category;
+    notifyListeners();
   }
 
   Stream<List<CategoryModel>> getCategoryStream() {
@@ -23,7 +30,6 @@ class CategoryController extends ChangeNotifier {
             return CategoryModel(
               id: doc.id,
               name: doc['name'],
-              // color: doc['color'],
               budget: doc['budget'],
             );
           },
@@ -60,7 +66,6 @@ class CategoryController extends ChangeNotifier {
             return CategoryModel(
               id: doc.id,
               name: doc['name'],
-              // color: doc['color'],
               budget: doc['budget'],
             );
           },

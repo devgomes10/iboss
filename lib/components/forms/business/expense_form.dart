@@ -205,7 +205,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
                   final selectedCategory = await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const CategoriesView(isSelecting: true),
+                      builder: (context) =>  CategoriesView(isSelecting: true),
                     ),
                   );
                   if (selectedCategory != null) {

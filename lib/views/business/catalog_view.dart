@@ -9,11 +9,9 @@ import 'package:intl/intl.dart';
 
 class CatalogView extends StatefulWidget {
   final bool? isSelecting;
-  final double? catalogTotal;
-  final RevenueForm? revenueForm;
 
   const CatalogView(
-      {Key? key, this.isSelecting, this.catalogTotal, this.revenueForm})
+      {Key? key, this.isSelecting})
       : super(key: key);
 
   @override

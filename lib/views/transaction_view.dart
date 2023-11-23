@@ -25,8 +25,9 @@ class _TransactionViewState extends State<TransactionView> {
   @override
   void initState() {
     super.initState();
-    transactionStreamSubscription =
-        TransactionController().getTransactionByMonth(_selectedDate).listen((data) {});
+    transactionStreamSubscription = TransactionController()
+        .getTransactionByMonth(_selectedDate)
+        .listen((data) {});
   }
 
   @override
@@ -82,8 +83,7 @@ class _TransactionViewState extends State<TransactionView> {
           ),
           Expanded(
             child: StreamBuilder<List<TransactionModel>>(
-              stream:
-                  TransactionController().getTransactionByMonth(_selectedDate),
+              stream: TransactionController().getTransactionByMonth(_selectedDate),
               builder: (BuildContext context,
                   AsyncSnapshot<List<TransactionModel>> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -148,19 +148,19 @@ class _TransactionViewState extends State<TransactionView> {
                       ),
                       trailing: transactions[i].isCompleted == true
                           ? const FaIcon(
-                              FontAwesomeIcons.chevronUp,
-                              // color: Colors.lightBlue,
-                              size: 20,
-                            )
+                        FontAwesomeIcons.chevronUp,
+                        // color: Colors.lightBlue,
+                        size: 20,
+                      )
                           : const FaIcon(
-                              FontAwesomeIcons.minus,
-                              // color: Colors.yellow,
-                              size: 20,
-                            ),
+                        FontAwesomeIcons.minus,
+                        // color: Colors.yellow,
+                        size: 20,
+                      ),
                     );
                   },
                   separatorBuilder: (_, __) =>
-                      const Divider(color: Colors.white),
+                  const Divider(color: Colors.white),
                   padding: const EdgeInsets.fromLTRB(16, 14, 16, 80),
                   itemCount: transactions.length,
                 );

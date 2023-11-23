@@ -9,7 +9,7 @@ import 'package:iboss/views/business/expense_view.dart';
 import 'package:iboss/views/business/revenue_view.dart';
 import 'package:iboss/views/dashboard/dashboard_view.dart';
 import 'package:iboss/views/goals/goals_view.dart';
-import '../views/personal/personal.dart';
+import '../views/transaction_view.dart';
 
 class MenuNavigation extends StatefulWidget {
   final User transaction;

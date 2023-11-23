@@ -66,6 +66,7 @@ class TransactionController extends ChangeNotifier {
     } catch (error) {
       // tratar em caso de erro
     }
+    notifyListeners();
     return trasactions;
   }
 

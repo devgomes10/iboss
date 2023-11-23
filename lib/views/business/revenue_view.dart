@@ -126,10 +126,12 @@ class _RevenueViewState extends State<RevenueView> {
                             Radius.circular(12),
                           ),
                         ),
-                        leading: const FaIcon(
+                        leading:
+                        (revenues[i].isReceived == true) ?
+                        FaIcon(
                           FontAwesomeIcons.arrowTrendUp,
                           color: Colors.green,
-                        ),
+                        ) : FaIcon(FontAwesomeIcons.arrowTrendDown),
                         title: Text(
                           revenues[i].description,
                           style: const TextStyle(
