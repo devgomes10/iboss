@@ -4,7 +4,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iboss/controllers/transaction_controller.dart';
 import 'package:iboss/models/transaction_model.dart';
 import 'package:intl/intl.dart';
-import 'package:uuid/Uuid.dart';
 import '../components/transaction_form.dart';
 
 class TransactionView extends StatefulWidget {
@@ -15,11 +14,9 @@ class TransactionView extends StatefulWidget {
 }
 
 class _TransactionViewState extends State<TransactionView> {
+  var description = "";
   DateTime _selectedDate = DateTime.now();
-  final descriptionController = TextEditingController();
-  final valueController = TextEditingController();
   final NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
-  String invoicingId = const Uuid().v1();
   StreamSubscription<List<TransactionModel>>? transactionStreamSubscription;
 
   @override
@@ -79,6 +76,26 @@ class _TransactionViewState extends State<TransactionView> {
                   onPressed: () => _changeMonth(true),
                 ),
               ],
+            ),
+          ),
+          TextField(
+            onChanged: (value) {
+              description = value;
+            },
+            decoration: InputDecoration(
+              border:  OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide.none,
+              ),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+              filled: true,
+              fillColor: const Color.fromARGB(255, 39, 39, 39),
+              hintText: 'Search',
+              hintStyle: const TextStyle(color: Colors.grey),
+              prefixIcon: const Icon(
+                Icons.search,
+                color: Colors.grey,
+              ),
             ),
           ),
           Expanded(

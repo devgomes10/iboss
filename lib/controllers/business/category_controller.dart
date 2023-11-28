@@ -9,6 +9,7 @@ class CategoryController extends ChangeNotifier {
   late CollectionReference categoryCollection;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   CategoryModel? _selectedCategory;
+
   CategoryModel? get selectedCategory => _selectedCategory;
 
   CategoryController() {
@@ -30,7 +31,7 @@ class CategoryController extends ChangeNotifier {
             return CategoryModel(
               id: doc.id,
               name: doc['name'],
-              budget: doc['budget'],
+              // budget: doc['budget'],
             );
           },
         ).toList();
@@ -66,7 +67,7 @@ class CategoryController extends ChangeNotifier {
             return CategoryModel(
               id: doc.id,
               name: doc['name'],
-              budget: doc['budget'],
+              // budget: doc['budget'],
             );
           },
         ).toList();

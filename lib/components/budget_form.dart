@@ -5,7 +5,7 @@ import 'package:iboss/models/business/category_model.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
-class NewCategoryBottomSheet {
+class NewBudgetBottomSheet {
   static void show(BuildContext context, {CategoryModel? model}) {
     showModalBottomSheet(
       useSafeArea: true,
@@ -17,7 +17,7 @@ class NewCategoryBottomSheet {
       ),
       context: context,
       builder: (BuildContext context) {
-        return _BottomSheetNewCategory(
+        return _BottomSheetNewBudget(
           model: model,
         );
       },
@@ -25,19 +25,17 @@ class NewCategoryBottomSheet {
   }
 }
 
-class _BottomSheetNewCategory extends StatefulWidget {
+class _BottomSheetNewBudget extends StatefulWidget {
   final CategoryModel? model;
 
-  const _BottomSheetNewCategory({this.model});
+  const _BottomSheetNewBudget({this.model});
 
   @override
-  __BottomSheetNewCategoryState createState() =>
-      __BottomSheetNewCategoryState();
+  __BottomSheetNewBudgetState createState() => __BottomSheetNewBudgetState();
 }
 
-class __BottomSheetNewCategoryState extends State<_BottomSheetNewCategory> {
+class __BottomSheetNewBudgetState extends State<_BottomSheetNewBudget> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController nameController = TextEditingController();
   TextEditingController valueController = TextEditingController();
   String invoicingId = const Uuid().v1();
   bool _isEditing = false;
@@ -46,7 +44,7 @@ class __BottomSheetNewCategoryState extends State<_BottomSheetNewCategory> {
   void initState() {
     super.initState();
     if (widget.model != null) {
-      nameController.text = widget.model!.name;
+      valueController.text = widget.model!.budget.toString();
       _isEditing = true;
     }
   }
@@ -87,7 +85,7 @@ class __BottomSheetNewCategoryState extends State<_BottomSheetNewCategory> {
                   return null;
                 },
                 keyboardType: TextInputType.text,
-                controller: nameController,
+                controller: valueController,
                 // focusNode: descriptionFocusNode,
                 decoration: const InputDecoration(
                   labelText: 'Nome da categoria',
@@ -115,7 +113,7 @@ class __BottomSheetNewCategoryState extends State<_BottomSheetNewCategory> {
                               if (_formKey.currentState!.validate()) {
                                 CategoryModel category = CategoryModel(
                                   id: invoicingId,
-                                  name: nameController.text,
+                                  name: valueController.text,
                                   budget: double.parse(valueController.text),
                                 );
 
@@ -130,14 +128,16 @@ class __BottomSheetNewCategoryState extends State<_BottomSheetNewCategory> {
 
                                 if (!_isEditing) {
                                   showSnackbar(
-                                      context: context,
-                                      menssager: "Categoria editada",
-                                      isError: false);
+                                    context: context,
+                                    menssager: "Categoria editada",
+                                    isError: false,
+                                  );
                                 } else {
                                   showSnackbar(
-                                      context: context,
-                                      menssager: "Categoria adicionada",
-                                      isError: false);
+                                    context: context,
+                                    menssager: "Categoria adicionada",
+                                    isError: false,
+                                  );
                                 }
                               }
                             },

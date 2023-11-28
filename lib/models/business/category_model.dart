@@ -1,12 +1,12 @@
 class CategoryModel {
   String id;
   String name;
-  double budget;
+  double? budget;
 
   CategoryModel({
     required this.id,
     required this.name,
-    required this.budget,
+    this.budget,
   });
 
   CategoryModel.fromMap(Map<String, dynamic> map)

@@ -73,7 +73,7 @@ class DrawerComponent extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        CategoriesView(isSelecting: false),
+                        CategoriesView(isSelecting: false, ),
                   ),
                 );
               },

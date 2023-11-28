@@ -8,24 +8,22 @@ import '../../components/forms/business/categories_form.dart';
 
 class CategoriesView extends StatefulWidget {
   final bool? isSelecting;
+  final bool? isBudget;
 
-  const CategoriesView({Key? key, this.isSelecting})
-      : super(key: key);
+  const CategoriesView({Key? key, this.isSelecting, this.isBudget}) : super(key: key);
 
   @override
   State<CategoriesView> createState() => _CategoriesViewState();
 }
 
 class _CategoriesViewState extends State<CategoriesView> {
-  TextEditingController nameController = TextEditingController();
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        title: const Text("Categorias"),
+        title: const Text("Orçamentos"),
         centerTitle: true,
       ),
       body: StreamBuilder<List<CategoryModel>>(
@@ -91,7 +89,8 @@ class _CategoriesViewState extends State<CategoriesView> {
                           : null,
                       onTap: () {
                         if (widget.isSelecting == true) {
-                          Provider.of<CategoryController>(context, listen: false)
+                          Provider.of<CategoryController>(context,
+                                  listen: false)
                               .setSelectedCategory(category);
                           Navigator.pop(context);
                         } else {

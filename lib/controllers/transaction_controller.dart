@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uuid/Uuid.dart';
 import '../models/transaction_model.dart';
 
 class TransactionController extends ChangeNotifier {
@@ -16,9 +17,9 @@ class TransactionController extends ChangeNotifier {
 
   Stream<List<TransactionModel>> getTransactionStream() {
     return transactionCollection.snapshots().map(
-          (snapshot) {
+      (snapshot) {
         return snapshot.docs.map(
-              (doc) {
+          (doc) {
             return TransactionModel(
               id: doc.id,
               isRevenue: doc["isRevenue"],
@@ -37,9 +38,40 @@ class TransactionController extends ChangeNotifier {
 
   Future<void> addTransactionToFirestore(TransactionModel transaction) async {
     try {
+      int numberOfRepeats = transaction.numberOfRepeats;
+
       await transactionCollection.doc(transaction.id).set(
         transaction.toMap(),
       );
+
+      if (transaction.isRepeat && numberOfRepeats > 1) {
+        DateTime transactionDate = transaction.transactionDate;
+
+        for (int i = 1; i < numberOfRepeats; i++) {
+          DateTime repeatedDate = DateTime(
+            transactionDate.year,
+            transactionDate.month + i,
+            transactionDate.day,
+            transactionDate.hour,
+            transactionDate.minute,
+          );
+
+          TransactionModel repeatedTransaction = TransactionModel(
+            id: const Uuid().v4(),
+            isRevenue: transaction.isRevenue,
+            description: transaction.description,
+            value: transaction.value,
+            isCompleted: transaction.isCompleted,
+            transactionDate: repeatedDate,
+            isRepeat: false,
+            numberOfRepeats: 0,
+          );
+
+          await transactionCollection.doc(repeatedTransaction.id).set(
+            repeatedTransaction.toMap(),
+          );
+        }
+      }
     } catch (error) {
       // tratar em caso de erro
     }
@@ -61,7 +93,7 @@ class TransactionController extends ChangeNotifier {
       QuerySnapshot querySnapshot = await transactionCollection.get();
       trasactions = querySnapshot.docs
           .map((doc) =>
-          TransactionModel.fromMap(doc.data() as Map<String, dynamic>))
+              TransactionModel.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
     } catch (error) {
       // tratar em caso de erro
@@ -94,7 +126,8 @@ class TransactionController extends ChangeNotifier {
     });
   }
 
-  Future<void> updateTransactionInFirestore(TransactionModel updatedTransaction) async {
+  Future<void> updateTransactionInFirestore(
+      TransactionModel updatedTransaction) async {
     try {
       final doc = await transactionCollection.doc(updatedTransaction.id).get();
       if (doc.exists) {
@@ -110,7 +143,8 @@ class TransactionController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateStatus(String transactionId, String field, dynamic value) async {
+  Future<void> updateStatus(
+      String transactionId, String field, dynamic value) async {
     try {
       Map<String, dynamic> dataToUpdate = {field: value};
       await transactionCollection.doc(transactionId).update(dataToUpdate);
@@ -119,4 +153,3 @@ class TransactionController extends ChangeNotifier {
     }
   }
 }
-
