@@ -14,7 +14,7 @@ import '../views/transaction_view.dart';
 class MenuNavigation extends StatefulWidget {
   final User transaction;
 
-  const MenuNavigation({super.key, required this.transaction});
+  const MenuNavigation({Key? key, required this.transaction}) : super(key: key);
 
   @override
   State<MenuNavigation> createState() => _MenuNavigationState();
@@ -39,6 +39,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: PageView(
         controller: pc,
         onPageChanged: setCurrentPage,
@@ -52,72 +53,69 @@ class _MenuNavigationState extends State<MenuNavigation> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: currentPage == 2
           ? FloatingActionButton(
-              backgroundColor: Colors.white,
-              onPressed: () {
-                NewGoalBottomSheet.show(context);
-                // NewGoal.show(context);
-              },
-              child: const Icon(
-                FontAwesomeIcons.plus,
-              ),
-            )
+        backgroundColor: Colors.white,
+        onPressed: () {
+          NewGoalBottomSheet.show(context);
+        },
+        child: const Icon(
+          FontAwesomeIcons.plus,
+        ),
+      )
           : SpeedDial(
-              icon: FontAwesomeIcons.plus,
-              backgroundColor: const Color(0xFF5CE1E6),
-              overlayColor: Colors.black,
-              overlayOpacity: 0.7,
-              spacing: 12,
-              spaceBetweenChildren: 15,
-              curve: Curves.easeInOutCirc,
-              children: [
-                SpeedDialChild(
-                  child: const FaIcon(FontAwesomeIcons.solidHandshake),
-                  label: 'Pagamento',
-                  labelStyle: const TextStyle(fontSize: 16),
-                  backgroundColor: Colors.green,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const RevenueView(),
-                      ),
-                    );
-                    // NewRevenueBottomSheet.show(context);
-                  },
+        icon: FontAwesomeIcons.plus,
+        backgroundColor: const Color(0xFF5CE1E6),
+        overlayColor: Colors.black,
+        overlayOpacity: 0.7,
+        spacing: 12,
+        spaceBetweenChildren: 15,
+        curve: Curves.easeInOutCirc,
+        children: [
+          SpeedDialChild(
+            child: const FaIcon(FontAwesomeIcons.solidHandshake),
+            label: 'Pagamento',
+            labelStyle: const TextStyle(fontSize: 16),
+            backgroundColor: Colors.green,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const RevenueView(),
                 ),
-                SpeedDialChild(
-                  child: const FaIcon(FontAwesomeIcons.solidHandshake),
-                  label: 'Despesa',
-                  labelStyle: const TextStyle(fontSize: 16),
-                  backgroundColor: Colors.red,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ExpenseView(),
-                      ),
-                    );
-                  },
+              );
+            },
+          ),
+          SpeedDialChild(
+            child: const FaIcon(FontAwesomeIcons.solidHandshake),
+            label: 'Despesa',
+            labelStyle: const TextStyle(fontSize: 16),
+            backgroundColor: Colors.red,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ExpenseView(),
                 ),
-                SpeedDialChild(
-                  child: const FaIcon(FontAwesomeIcons.userLarge),
-                  label: 'Renda',
-                  labelStyle: const TextStyle(fontSize: 16),
-                  backgroundColor: Colors.green,
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => TransactionForm()));
-
-                  },
-                ),
-                SpeedDialChild(
-                  child: const FaIcon(FontAwesomeIcons.userLarge),
-                  label: 'Gasto',
-                  labelStyle: const TextStyle(fontSize: 16),
-                  backgroundColor: Colors.red,
-                  onTap: () {},
-                ),
-              ],
-            ),
+              );
+            },
+          ),
+          SpeedDialChild(
+            child: const FaIcon(FontAwesomeIcons.userLarge),
+            label: 'Renda',
+            labelStyle: const TextStyle(fontSize: 16),
+            backgroundColor: Colors.green,
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => TransactionForm()));
+            },
+          ),
+          SpeedDialChild(
+            child: const FaIcon(FontAwesomeIcons.userLarge),
+            label: 'Gasto',
+            labelStyle: const TextStyle(fontSize: 16),
+            backgroundColor: Colors.red,
+            onTap: () {},
+          ),
+        ],
+      ),
       extendBody: true,
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
@@ -129,8 +127,6 @@ class _MenuNavigationState extends State<MenuNavigation> {
           ),
         ),
         child: BottomAppBar(
-          // notchMargin: 8,
-          // shape: const CircularNotchedRectangle(),
           color: Theme.of(context).colorScheme.primary,
           child: IconTheme(
             data: IconThemeData(color: Theme.of(context).colorScheme.secondary),
@@ -163,9 +159,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
                         ? const Color(0xFF5CE1E6)
                         : Colors.grey,
                   ),
-                  const SizedBox(
-                    width: 24,
-                  ),
+                  const SizedBox(width: 24),
                   IconButton(
                     onPressed: () {
                       setState(() {

@@ -24,7 +24,7 @@ class TransactionForm extends StatefulWidget {
 }
 
 class _TransactionFormState extends State<TransactionForm> {
-  bool isRevenue = false;
+  bool isRevenue = true;
   bool isCompleted = false;
   bool isRepeat = false;
   bool _isEditing = false;
@@ -279,45 +279,48 @@ class _TransactionFormState extends State<TransactionForm> {
                       Switch(
                         value: isRepeat,
                         onChanged: (newValue) async {
-                          setState(() {
-                            isRepeat = newValue;
-                            if (isRepeat) {
-                              showModalBottomSheet(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return SafeArea(
-                                    child: Center(
-                                      child: Column(
-                                        children: [
-                                          // const Text("Quantidade de Repetições:"),
-                                          CupertinoPicker(
-                                            itemExtent: 32,
-                                            scrollController:
-                                                FixedExtentScrollController(
-                                              initialItem: 1,
+                          setState(
+                            () {
+                              isRepeat = newValue;
+                              if (isRepeat) {
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return SafeArea(
+                                      child: Center(
+                                        child: Column(
+                                          children: [
+                                            // const Text("Quantidade de Repetições:"),
+                                            CupertinoPicker(
+                                              itemExtent: 32,
+                                              scrollController:
+                                                  FixedExtentScrollController(
+                                                initialItem: 1,
+                                              ),
+                                              onSelectedItemChanged:
+                                                  (int value) {
+                                                setState(() {
+                                                  if (isRepeat) {
+                                                    numberOfRepeats = value + 1;
+                                                  }
+                                                });
+                                              },
+                                              children:
+                                                  List.generate(10, (index) {
+                                                return Text(
+                                                    (index + 1).toString());
+                                              }),
                                             ),
-                                            onSelectedItemChanged: (int value) {
-                                              setState(() {
-                                                if (isRepeat) {
-                                                  numberOfRepeats = value + 1;
-                                                }
-                                              });
-                                            },
-                                            children:
-                                                List.generate(10, (index) {
-                                              return Text(
-                                                  (index + 1).toString());
-                                            }),
-                                          ),
-                                          // Text("$numberOfRepeats vezes de R\$ 55.000,00"),
-                                        ],
+                                            // Text("$numberOfRepeats vezes de R\$ 55.000,00"),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
-                              );
-                            }
-                          });
+                                    );
+                                  },
+                                );
+                              }
+                            },
+                          );
                           final transaction = await TransactionController()
                               .getTransactionFromFirestore();
                           if (transaction.isNotEmpty) {
